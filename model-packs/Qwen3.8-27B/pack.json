@@ -2,7 +2,7 @@
   "schema_version": 1,
   "id": "qwen38-27b-b70",
   "name": "Qwen3.8 27B B70 Pack (MTP1 / dFlash2)",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "models": [
     {
       "id": "qwen38-27b-fp8",
@@ -355,8 +355,8 @@
       "name": "Qwen3.8 27B Uncensored FP8",
       "kind": "target",
       "repo": "orcarouter/Qwen3.8-27B-Uncensored-FP8",
-      "revision": "9228df5c6c9c509e1019f83b4e085cf643118bac",
-      "gated": false,
+      "revision": "0f3cdb83820a8190ffedaef5b29cf4a635e49b4d",
+      "gated": true,
       "files": [
         {
           "path": ".gitattributes",
@@ -368,7 +368,7 @@
         },
         {
           "path": "README.md",
-          "size": 15665
+          "size": 15649
         },
         {
           "path": "chat_template.jinja",

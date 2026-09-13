@@ -7,13 +7,13 @@ This is the qualified Qwen3.8-27B pack I use with B70 LLM Controller. It contain
 | Variant | Repository | Revision |
 | --- | --- | --- |
 | Standard FP8 | `Qwen/Qwen3.8-27B-FP8` | `017b9c7af6b5689d5dd426a76e0bc077eb5ca20a` |
-| Uncensored FP8 | `orcarouter/Qwen3.8-27B-Uncensored-FP8` | `9228df5c6c9c509e1019f83b4e085cf643118bac` |
+| Uncensored FP8 | `orcarouter/Qwen3.8-27B-Uncensored-FP8` | `0f3cdb83820a8190ffedaef5b29cf4a635e49b4d` |
 | Standard INT4 | `RedHatAI/Qwen3.8-27B-INT4` | `2fb0debc365fb6c1683d7d3ad7722470919627a8` |
 | Uncensored INT4 | `noon-at-cgn/Qwen3.8-27B-Uncensored-W4A16-AutoRound` | `0e10c9f6b5b8a97fba199e82c49690d272f776ce` |
 
 dFlash2 uses `incoai/Qwen3.8-27B-DFlash2` at revision `dedf8df68adfb1afeaf7b7480c0a0243108177b4` as a support artifact. It is not a checkpoint you serve directly.
 
-All repositories in this pack are marked ungated. `b70ctl` downloads the exact revisions above and checks them against the file inventories in `pack.json`.
+Four of the five repositories are ungated. `orcarouter/Qwen3.8-27B-Uncensored-FP8` is gated on Hugging Face (`auto`), so downloading it requires an authenticated account that has accepted its terms; `b70ctl` treats it as a gated model and reports access failures accordingly. `b70ctl` downloads the exact revisions above and checks them against the file inventories in `pack.json`. The 1.0.1 revision repin of the Uncensored FP8 model is provenance-only: every runtime-relevant file at the new revision is byte-identical to the qualified artifact (only `README.md` differs), so no requalification was needed.
 
 ## Modes
 
