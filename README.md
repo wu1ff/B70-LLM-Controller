@@ -6,7 +6,7 @@ A working B70 deployment requires the model revision, runtime image, quantizatio
 
 It manages the LLMs running on the B70s; it does not configure the GPUs or the host driver stack.
 
-Current release: **1.0.0**.
+Current release: **1.0.1**.
 
 ## What it does
 
@@ -30,11 +30,11 @@ The serving-side Intel GPU userspace ships inside the pack's container runtime; 
 
 ## Installation
 
-Release builds are distributed as a Debian package with a `SHA256SUMS` checksum file. Download both from the [1.0.0 release](https://github.com/wu1ff/B70-LLM-Controller/releases/tag/v1.0.0), then verify and install:
+Release builds are distributed as a Debian package with a `SHA256SUMS` checksum file. Download both from the [1.0.1 release](https://github.com/wu1ff/B70-LLM-Controller/releases/tag/v1.0.1), then verify and install:
 
 ```bash
 sha256sum -c SHA256SUMS
-sudo apt install ./b70-llm-controller_1.0.0_amd64.deb
+sudo apt install ./b70-llm-controller_1.0.1_amd64.deb
 ```
 
 The package installs `b70ctl` to `/usr/bin/b70ctl` and contains only `b70ctl` — not Docker, Intel drivers, model weights, or runtime images. Run `b70ctl --version` to check the installed version.
@@ -115,7 +115,7 @@ The `VERSION` file is the single version authority. Tags follow `v` + `VERSION` 
 
 ## Status
 
-The install, model preparation, serving, and uninstall flows are implemented and shipped in the [1.0.0 release](https://github.com/wu1ff/B70-LLM-Controller/releases/tag/v1.0.0).
+The install, model preparation, serving, and uninstall flows are implemented and shipped in the [1.0.1 release](https://github.com/wu1ff/B70-LLM-Controller/releases/tag/v1.0.1).
 
 ## License
 
