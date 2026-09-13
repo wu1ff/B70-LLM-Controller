@@ -1,0 +1,3153 @@
+{
+  "schema_version": 1,
+  "id": "qwen38-27b-b70",
+  "name": "Qwen3.8 27B B70 Pack (MTP1 / dFlash2)",
+  "version": "1.0.0",
+  "models": [
+    {
+      "id": "qwen38-27b-fp8",
+      "name": "Qwen3.8 27B FP8",
+      "kind": "target",
+      "repo": "Qwen/Qwen3.8-27B-FP8",
+      "revision": "017b9c7af6b5689d5dd426a76e0bc077eb5ca20a",
+      "gated": false,
+      "files": [
+        {
+          "path": ".gitattributes",
+          "size": 1570
+        },
+        {
+          "path": "LICENSE",
+          "size": 11544
+        },
+        {
+          "path": "README.md",
+          "size": 65249
+        },
+        {
+          "path": "chat_template.jinja",
+          "size": 8952
+        },
+        {
+          "path": "config.json",
+          "size": 51350
+        },
+        {
+          "path": "crc32.txt",
+          "size": 2426
+        },
+        {
+          "path": "generation_config.json",
+          "size": 202
+        },
+        {
+          "path": "layers-0.safetensors",
+          "size": 383865448
+        },
+        {
+          "path": "layers-1.safetensors",
+          "size": 383865448
+        },
+        {
+          "path": "layers-10.safetensors",
+          "size": 383865472
+        },
+        {
+          "path": "layers-11.safetensors",
+          "size": 372313760
+        },
+        {
+          "path": "layers-12.safetensors",
+          "size": 383865472
+        },
+        {
+          "path": "layers-13.safetensors",
+          "size": 383865472
+        },
+        {
+          "path": "layers-14.safetensors",
+          "size": 383865472
+        },
+        {
+          "path": "layers-15.safetensors",
+          "size": 372313760
+        },
+        {
+          "path": "layers-16.safetensors",
+          "size": 383865472
+        },
+        {
+          "path": "layers-17.safetensors",
+          "size": 383865472
+        },
+        {
+          "path": "layers-18.safetensors",
+          "size": 383865472
+        },
+        {
+          "path": "layers-19.safetensors",
+          "size": 372313760
+        },
+        {
+          "path": "layers-2.safetensors",
+          "size": 383865448
+        },
+        {
+          "path": "layers-20.safetensors",
+          "size": 383865472
+        },
+        {
+          "path": "layers-21.safetensors",
+          "size": 383865472
+        },
+        {
+          "path": "layers-22.safetensors",
+          "size": 383865472
+        },
+        {
+          "path": "layers-23.safetensors",
+          "size": 372313760
+        },
+        {
+          "path": "layers-24.safetensors",
+          "size": 383865472
+        },
+        {
+          "path": "layers-25.safetensors",
+          "size": 383865472
+        },
+        {
+          "path": "layers-26.safetensors",
+          "size": 383865472
+        },
+        {
+          "path": "layers-27.safetensors",
+          "size": 372313760
+        },
+        {
+          "path": "layers-28.safetensors",
+          "size": 383865472
+        },
+        {
+          "path": "layers-29.safetensors",
+          "size": 383865472
+        },
+        {
+          "path": "layers-3.safetensors",
+          "size": 372313744
+        },
+        {
+          "path": "layers-30.safetensors",
+          "size": 383865472
+        },
+        {
+          "path": "layers-31.safetensors",
+          "size": 372313760
+        },
+        {
+          "path": "layers-32.safetensors",
+          "size": 383865472
+        },
+        {
+          "path": "layers-33.safetensors",
+          "size": 383865472
+        },
+        {
+          "path": "layers-34.safetensors",
+          "size": 383865472
+        },
+        {
+          "path": "layers-35.safetensors",
+          "size": 372313760
+        },
+        {
+          "path": "layers-36.safetensors",
+          "size": 383865472
+        },
+        {
+          "path": "layers-37.safetensors",
+          "size": 383865472
+        },
+        {
+          "path": "layers-38.safetensors",
+          "size": 383865472
+        },
+        {
+          "path": "layers-39.safetensors",
+          "size": 372313760
+        },
+        {
+          "path": "layers-4.safetensors",
+          "size": 383865448
+        },
+        {
+          "path": "layers-40.safetensors",
+          "size": 383865472
+        },
+        {
+          "path": "layers-41.safetensors",
+          "size": 383865472
+        },
+        {
+          "path": "layers-42.safetensors",
+          "size": 383865472
+        },
+        {
+          "path": "layers-43.safetensors",
+          "size": 372313760
+        },
+        {
+          "path": "layers-44.safetensors",
+          "size": 383865472
+        },
+        {
+          "path": "layers-45.safetensors",
+          "size": 383865472
+        },
+        {
+          "path": "layers-46.safetensors",
+          "size": 383865472
+        },
+        {
+          "path": "layers-47.safetensors",
+          "size": 372313760
+        },
+        {
+          "path": "layers-48.safetensors",
+          "size": 383865472
+        },
+        {
+          "path": "layers-49.safetensors",
+          "size": 383865472
+        },
+        {
+          "path": "layers-5.safetensors",
+          "size": 383865448
+        },
+        {
+          "path": "layers-50.safetensors",
+          "size": 383865472
+        },
+        {
+          "path": "layers-51.safetensors",
+          "size": 372313760
+        },
+        {
+          "path": "layers-52.safetensors",
+          "size": 383865472
+        },
+        {
+          "path": "layers-53.safetensors",
+          "size": 383865472
+        },
+        {
+          "path": "layers-54.safetensors",
+          "size": 383865472
+        },
+        {
+          "path": "layers-55.safetensors",
+          "size": 372313760
+        },
+        {
+          "path": "layers-56.safetensors",
+          "size": 383865472
+        },
+        {
+          "path": "layers-57.safetensors",
+          "size": 383865472
+        },
+        {
+          "path": "layers-58.safetensors",
+          "size": 383865472
+        },
+        {
+          "path": "layers-59.safetensors",
+          "size": 372313760
+        },
+        {
+          "path": "layers-6.safetensors",
+          "size": 383865448
+        },
+        {
+          "path": "layers-60.safetensors",
+          "size": 383865472
+        },
+        {
+          "path": "layers-61.safetensors",
+          "size": 383865472
+        },
+        {
+          "path": "layers-62.safetensors",
+          "size": 383865472
+        },
+        {
+          "path": "layers-63.safetensors",
+          "size": 372313760
+        },
+        {
+          "path": "layers-7.safetensors",
+          "size": 372313744
+        },
+        {
+          "path": "layers-8.safetensors",
+          "size": 383865448
+        },
+        {
+          "path": "layers-9.safetensors",
+          "size": 383865448
+        },
+        {
+          "path": "merges.txt",
+          "size": 3353259
+        },
+        {
+          "path": "model.safetensors.index.json",
+          "size": 137335
+        },
+        {
+          "path": "mtp.safetensors",
+          "size": 477202224
+        },
+        {
+          "path": "outside.safetensors",
+          "size": 6007102112
+        },
+        {
+          "path": "preprocessor_config.json",
+          "size": 390
+        },
+        {
+          "path": "safetensors-md5sum.txt",
+          "size": 0
+        },
+        {
+          "path": "tokenizer.json",
+          "size": 12809320
+        },
+        {
+          "path": "tokenizer_config.json",
+          "size": 17928
+        },
+        {
+          "path": "video_preprocessor_config.json",
+          "size": 385
+        },
+        {
+          "path": "vocab.json",
+          "size": 6722759
+        }
+      ],
+      "mount_path": "/models/Qwen__Qwen3.8-27B-FP8",
+      "launch": {
+        "docker_args": [],
+        "environment": {},
+        "command_args": [
+          "/models/Qwen__Qwen3.8-27B-FP8",
+          "--gpu-memory-utilization",
+          "0.82",
+          "--served-model-name",
+          "Qwen/Qwen3.8-27B-FP8"
+        ]
+      }
+    },
+    {
+      "id": "qwen38-27b-uncensored-fp8",
+      "name": "Qwen3.8 27B Uncensored FP8",
+      "kind": "target",
+      "repo": "orcarouter/Qwen3.8-27B-Uncensored-FP8",
+      "revision": "9228df5c6c9c509e1019f83b4e085cf643118bac",
+      "gated": false,
+      "files": [
+        {
+          "path": ".gitattributes",
+          "size": 1570
+        },
+        {
+          "path": "LICENSE",
+          "size": 11544
+        },
+        {
+          "path": "README.md",
+          "size": 15665
+        },
+        {
+          "path": "chat_template.jinja",
+          "size": 8952
+        },
+        {
+          "path": "config.json",
+          "size": 51350
+        },
+        {
+          "path": "generation_config.json",
+          "size": 202
+        },
+        {
+          "path": "merges.txt",
+          "size": 3353259
+        },
+        {
+          "path": "model-00001-of-00007.safetensors",
+          "size": 3969317448
+        },
+        {
+          "path": "model-00002-of-00007.safetensors",
+          "size": 4939321704
+        },
+        {
+          "path": "model-00003-of-00007.safetensors",
+          "size": 4939863424
+        },
+        {
+          "path": "model-00004-of-00007.safetensors",
+          "size": 4971328696
+        },
+        {
+          "path": "model-00005-of-00007.safetensors",
+          "size": 4955596064
+        },
+        {
+          "path": "model-00006-of-00007.safetensors",
+          "size": 4071440632
+        },
+        {
+          "path": "model-00007-of-00007.safetensors",
+          "size": 3019999168
+        },
+        {
+          "path": "model.safetensors.index.json",
+          "size": 156034
+        },
+        {
+          "path": "preprocessor_config.json",
+          "size": 390
+        },
+        {
+          "path": "tokenizer.json",
+          "size": 12809320
+        },
+        {
+          "path": "tokenizer_config.json",
+          "size": 17928
+        },
+        {
+          "path": "video_preprocessor_config.json",
+          "size": 385
+        },
+        {
+          "path": "vocab.json",
+          "size": 6722759
+        }
+      ],
+      "mount_path": "/models/orcarouter__Qwen3.8-27B-Uncensored-FP8",
+      "launch": {
+        "docker_args": [],
+        "environment": {},
+        "command_args": [
+          "/models/orcarouter__Qwen3.8-27B-Uncensored-FP8",
+          "--gpu-memory-utilization",
+          "0.82",
+          "--served-model-name",
+          "orcarouter/Qwen3.8-27B-Uncensored-FP8"
+        ]
+      }
+    },
+    {
+      "id": "qwen38-27b-int4",
+      "name": "Qwen3.8 27B INT4",
+      "kind": "target",
+      "repo": "RedHatAI/Qwen3.8-27B-INT4",
+      "revision": "2fb0debc365fb6c1683d7d3ad7722470919627a8",
+      "gated": false,
+      "files": [
+        {
+          "path": ".gitattributes",
+          "size": 1570
+        },
+        {
+          "path": "README.md",
+          "size": 5522
+        },
+        {
+          "path": "chat_template.jinja",
+          "size": 8952
+        },
+        {
+          "path": "config.json",
+          "size": 18145
+        },
+        {
+          "path": "generation_config.json",
+          "size": 214
+        },
+        {
+          "path": "model.safetensors",
+          "size": 18603383720
+        },
+        {
+          "path": "model.safetensors.index.json",
+          "size": 168292
+        },
+        {
+          "path": "model_mtp.safetensors",
+          "size": 849400392
+        },
+        {
+          "path": "processor_config.json",
+          "size": 1191
+        },
+        {
+          "path": "recipe.yaml",
+          "size": 1449
+        },
+        {
+          "path": "tokenizer.json",
+          "size": 19989325
+        },
+        {
+          "path": "tokenizer_config.json",
+          "size": 1166
+        }
+      ],
+      "mount_path": "/models/RedHatAI__Qwen3.8-27B-INT4",
+      "launch": {
+        "docker_args": [],
+        "environment": {},
+        "command_args": [
+          "/models/RedHatAI__Qwen3.8-27B-INT4",
+          "--served-model-name",
+          "RedHatAI/Qwen3.8-27B-INT4"
+        ]
+      }
+    },
+    {
+      "id": "qwen38-27b-uncensored-int4",
+      "name": "Qwen3.8 27B Uncensored W4A16 AutoRound",
+      "kind": "target",
+      "repo": "noon-at-cgn/Qwen3.8-27B-Uncensored-W4A16-AutoRound",
+      "revision": "0e10c9f6b5b8a97fba199e82c49690d272f776ce",
+      "gated": false,
+      "files": [
+        {
+          "path": ".gitattributes",
+          "size": 1570
+        },
+        {
+          "path": "README.md",
+          "size": 5196
+        },
+        {
+          "path": "chat_template.jinja",
+          "size": 8952
+        },
+        {
+          "path": "config.json",
+          "size": 20521
+        },
+        {
+          "path": "generation_config.json",
+          "size": 214
+        },
+        {
+          "path": "model-00001-of-00007.safetensors",
+          "size": 3211003472
+        },
+        {
+          "path": "model-00002-of-00007.safetensors",
+          "size": 3195027104
+        },
+        {
+          "path": "model-00003-of-00007.safetensors",
+          "size": 3195027104
+        },
+        {
+          "path": "model-00004-of-00007.safetensors",
+          "size": 3217442568
+        },
+        {
+          "path": "model-00005-of-00007.safetensors",
+          "size": 699275200
+        },
+        {
+          "path": "model-00006-of-00007.safetensors",
+          "size": 2542807272
+        },
+        {
+          "path": "model-00007-of-00007.safetensors",
+          "size": 2542796896
+        },
+        {
+          "path": "model.safetensors.index.json",
+          "size": 198290
+        },
+        {
+          "path": "model_extra_tensors.safetensors",
+          "size": 849400392
+        },
+        {
+          "path": "preprocessor_config.json",
+          "size": 390
+        },
+        {
+          "path": "processor_config.json",
+          "size": 1191
+        },
+        {
+          "path": "quantization_config.json",
+          "size": 16136
+        },
+        {
+          "path": "tokenizer.json",
+          "size": 19989325
+        },
+        {
+          "path": "tokenizer_config.json",
+          "size": 1165
+        }
+      ],
+      "mount_path": "/models/noon-at-cgn__Qwen3.8-27B-Uncensored-W4A16-AutoRound",
+      "launch": {
+        "docker_args": [],
+        "environment": {},
+        "command_args": [
+          "/models/noon-at-cgn__Qwen3.8-27B-Uncensored-W4A16-AutoRound",
+          "--served-model-name",
+          "noon-at-cgn/Qwen3.8-27B-Uncensored-W4A16-AutoRound"
+        ]
+      }
+    },
+    {
+      "id": "qwen38-27b-dflash2",
+      "name": "Qwen3.8 27B dFlash2 assistant",
+      "kind": "assistant",
+      "repo": "incoai/Qwen3.8-27B-DFlash2",
+      "revision": "dedf8df68adfb1afeaf7b7480c0a0243108177b4",
+      "gated": false,
+      "files": [
+        {
+          "path": ".gitattributes",
+          "size": 1581
+        },
+        {
+          "path": "README.md",
+          "size": 5399
+        },
+        {
+          "path": "assets/dflash2-figure.png",
+          "size": 286889
+        },
+        {
+          "path": "config.json",
+          "size": 1239
+        },
+        {
+          "path": "model.safetensors",
+          "size": 3848817896
+        }
+      ],
+      "mount_path": "/models/incoai__Qwen3.8-27B-DFlash2",
+      "launch": {
+        "docker_args": [],
+        "environment": {},
+        "command_args": []
+      }
+    }
+  ],
+  "runtimes": [
+    {
+      "id": "qwen38-27b-runtime-1.0.0",
+      "image": "ghcr.io/wu1ff/qwen38-27b-b70:1.0.0",
+      "digest": "sha256:78a3720f542f8d7974aa6cf38eff4bfd612fcecb1bc7c06a42ddeb4d6febe1aa",
+      "registry": "ghcr.io/wu1ff/qwen38-27b-b70@sha256:78a3720f542f8d7974aa6cf38eff4bfd612fcecb1bc7c06a42ddeb4d6febe1aa",
+      "container_port": 8000,
+      "health_path": "/health",
+      "launch": {
+        "docker_args": [
+          "--device=/dev/dri:/dev/dri",
+          "--mount",
+          "type=bind,source=/dev/dri/by-path,target=/dev/dri/by-path,readonly",
+          "--ipc=host",
+          "--shm-size=32g",
+          "--security-opt",
+          "seccomp=unconfined",
+          "--security-opt",
+          "label=disable"
+        ],
+        "environment": {
+          "CCL_SYCL_ALLGATHERV_TMP_BUF": "1",
+          "CCL_SYCL_ALLREDUCE_TMP_BUF": "1",
+          "HF_DATASETS_OFFLINE": "1",
+          "HF_HOME": "/work/hf-cache",
+          "HF_HUB_OFFLINE": "1",
+          "LD_PRELOAD": "/opt/b70-residency-shim/libl0_peer_residency_shim.so",
+          "TORCH_COMPILE_DISABLE": "0",
+          "TRANSFORMERS_OFFLINE": "1",
+          "VLLM_TARGET_DEVICE": "xpu",
+          "VLLM_WORKER_MULTIPROC_METHOD": "spawn",
+          "VLLM_XPU_ALLREDUCE_RETRY_ON_NAN": "0",
+          "VLLM_XPU_ENABLE_XPU_GRAPH": "1",
+          "ZE_FLAT_DEVICE_HIERARCHY": "FLAT"
+        },
+        "command": [
+          "vllm",
+          "serve",
+          "--host",
+          "0.0.0.0",
+          "--port",
+          "8000",
+          "--dtype",
+          "float16",
+          "--reasoning-parser",
+          "qwen3",
+          "--default-chat-template-kwargs",
+          "{\"enable_thinking\":true,\"preserve_thinking\":true}",
+          "--trust-remote-code",
+          "--limit-mm-per-prompt",
+          "{\"image\":2,\"video\":0}",
+          "--mm-encoder-attn-backend",
+          "TORCH_SDPA",
+          "--mm-processor-kwargs",
+          "{\"size\":{\"longest_edge\":1048576,\"shortest_edge\":65536}}",
+          "--skip-mm-profiling",
+          "--enable-auto-tool-choice",
+          "--tool-call-parser",
+          "qwen3_coder"
+        ]
+      }
+    }
+  ],
+  "modes": [
+    {
+      "id": "base",
+      "display_name": "Base",
+      "assistants": [],
+      "launch": {
+        "docker_args": [],
+        "environment": {},
+        "command_args": [
+          "--max-num-seqs",
+          "8",
+          "--compilation-config",
+          "{\"mode\":\"VLLM_COMPILE\",\"cudagraph_mode\":\"FULL_AND_PIECEWISE\",\"cudagraph_capture_sizes\":[1],\"max_cudagraph_capture_size\":1}"
+        ]
+      }
+    },
+    {
+      "id": "mtp",
+      "display_name": "MTP1",
+      "assistants": [],
+      "launch": {
+        "docker_args": [],
+        "environment": {},
+        "command_args": [
+          "--speculative-config",
+          "{\"num_speculative_tokens\":1,\"method\":\"mtp\",\"enforce_eager\":true}",
+          "--compilation-config",
+          "{\"mode\":\"VLLM_COMPILE\",\"cudagraph_mode\":\"FULL_AND_PIECEWISE\",\"cudagraph_capture_sizes\":[1,2,4],\"max_cudagraph_capture_size\":4}"
+        ]
+      }
+    },
+    {
+      "id": "dflash2",
+      "display_name": "dFlash2",
+      "assistants": [
+        "qwen38-27b-dflash2"
+      ],
+      "launch": {
+        "docker_args": [],
+        "environment": {},
+        "command_args": [
+          "--speculative-config",
+          "{\"method\":\"dflash\",\"model\":\"/models/incoai__Qwen3.8-27B-DFlash2\",\"revision\":\"dedf8df68adfb1afeaf7b7480c0a0243108177b4\",\"num_speculative_tokens\":7,\"draft_sample_method\":\"probabilistic\",\"rejection_sample_method\":\"standard\",\"enforce_eager\":true}",
+          "--max-num-batched-tokens",
+          "4096",
+          "--max-num-seqs",
+          "256",
+          "--no-enable-prefix-caching"
+        ]
+      }
+    }
+  ],
+  "profiles": [
+    {
+      "id": "fp8-base-tp2-32768",
+      "model_id": "qwen38-27b-fp8",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 2,
+      "tensor_parallel": 2,
+      "context": 32768,
+      "mode": "base",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0,1"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "2",
+          "--max-model-len",
+          "32768",
+          "--max-num-batched-tokens",
+          "256"
+        ]
+      }
+    },
+    {
+      "id": "fp8-base-tp2-65536",
+      "model_id": "qwen38-27b-fp8",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 2,
+      "tensor_parallel": 2,
+      "context": 65536,
+      "mode": "base",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0,1"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "2",
+          "--max-model-len",
+          "65536",
+          "--max-num-batched-tokens",
+          "256"
+        ]
+      }
+    },
+    {
+      "id": "fp8-base-tp4-32768",
+      "model_id": "qwen38-27b-fp8",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 4,
+      "tensor_parallel": 4,
+      "context": 32768,
+      "mode": "base",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0,1,2,3"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "4",
+          "--max-model-len",
+          "32768",
+          "--max-num-batched-tokens",
+          "256"
+        ]
+      }
+    },
+    {
+      "id": "fp8-base-tp4-65536",
+      "model_id": "qwen38-27b-fp8",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 4,
+      "tensor_parallel": 4,
+      "context": 65536,
+      "mode": "base",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0,1,2,3"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "4",
+          "--max-model-len",
+          "65536",
+          "--max-num-batched-tokens",
+          "256"
+        ]
+      }
+    },
+    {
+      "id": "fp8-base-tp4-131072",
+      "model_id": "qwen38-27b-fp8",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 4,
+      "tensor_parallel": 4,
+      "context": 131072,
+      "mode": "base",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0,1,2,3"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "4",
+          "--max-model-len",
+          "131072",
+          "--max-num-batched-tokens",
+          "256"
+        ]
+      }
+    },
+    {
+      "id": "fp8-base-tp4-262144",
+      "model_id": "qwen38-27b-fp8",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 4,
+      "tensor_parallel": 4,
+      "context": 262144,
+      "mode": "base",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0,1,2,3"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "4",
+          "--max-model-len",
+          "262144",
+          "--max-num-batched-tokens",
+          "256"
+        ]
+      }
+    },
+    {
+      "id": "fp8-mtp1-tp2-32768",
+      "model_id": "qwen38-27b-fp8",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 2,
+      "tensor_parallel": 2,
+      "context": 32768,
+      "mode": "mtp",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0,1"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "2",
+          "--max-model-len",
+          "32768",
+          "--max-num-batched-tokens",
+          "2048",
+          "--no-enable-prefix-caching"
+        ]
+      }
+    },
+    {
+      "id": "fp8-mtp1-tp2-65536",
+      "model_id": "qwen38-27b-fp8",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 2,
+      "tensor_parallel": 2,
+      "context": 65536,
+      "mode": "mtp",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0,1"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "2",
+          "--max-model-len",
+          "65536",
+          "--max-num-batched-tokens",
+          "2048",
+          "--no-enable-prefix-caching"
+        ]
+      }
+    },
+    {
+      "id": "fp8-mtp1-tp4-32768",
+      "model_id": "qwen38-27b-fp8",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 4,
+      "tensor_parallel": 4,
+      "context": 32768,
+      "mode": "mtp",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0,1,2,3"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "4",
+          "--max-model-len",
+          "32768",
+          "--max-num-batched-tokens",
+          "2048",
+          "--no-enable-prefix-caching"
+        ]
+      }
+    },
+    {
+      "id": "fp8-mtp1-tp4-65536",
+      "model_id": "qwen38-27b-fp8",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 4,
+      "tensor_parallel": 4,
+      "context": 65536,
+      "mode": "mtp",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0,1,2,3"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "4",
+          "--max-model-len",
+          "65536",
+          "--max-num-batched-tokens",
+          "2048",
+          "--no-enable-prefix-caching"
+        ]
+      }
+    },
+    {
+      "id": "fp8-mtp1-tp4-131072",
+      "model_id": "qwen38-27b-fp8",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 4,
+      "tensor_parallel": 4,
+      "context": 131072,
+      "mode": "mtp",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0,1,2,3"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "4",
+          "--max-model-len",
+          "131072",
+          "--max-num-batched-tokens",
+          "2048",
+          "--no-enable-prefix-caching"
+        ]
+      }
+    },
+    {
+      "id": "fp8-mtp1-tp4-262144",
+      "model_id": "qwen38-27b-fp8",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 4,
+      "tensor_parallel": 4,
+      "context": 262144,
+      "mode": "mtp",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0,1,2,3"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "4",
+          "--max-model-len",
+          "262144",
+          "--max-num-batched-tokens",
+          "2048",
+          "--no-enable-prefix-caching"
+        ]
+      }
+    },
+    {
+      "id": "fp8-dflash2-tp2-32768",
+      "model_id": "qwen38-27b-fp8",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 2,
+      "tensor_parallel": 2,
+      "context": 32768,
+      "mode": "dflash2",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0,1"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "2",
+          "--max-model-len",
+          "32768",
+          "--compilation-config",
+          "{\"mode\":\"VLLM_COMPILE\",\"cudagraph_mode\":\"PIECEWISE\",\"cudagraph_capture_sizes\":[1,2,4,8,16,32,64],\"max_cudagraph_capture_size\":64}"
+        ]
+      }
+    },
+    {
+      "id": "fp8-dflash2-tp2-65536",
+      "model_id": "qwen38-27b-fp8",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 2,
+      "tensor_parallel": 2,
+      "context": 65536,
+      "mode": "dflash2",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0,1"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "2",
+          "--max-model-len",
+          "65536",
+          "--compilation-config",
+          "{\"mode\":\"VLLM_COMPILE\",\"cudagraph_mode\":\"PIECEWISE\",\"cudagraph_capture_sizes\":[1,2,4,8,16,32,64],\"max_cudagraph_capture_size\":64}"
+        ]
+      }
+    },
+    {
+      "id": "fp8-dflash2-tp4-32768",
+      "model_id": "qwen38-27b-fp8",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 4,
+      "tensor_parallel": 4,
+      "context": 32768,
+      "mode": "dflash2",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0,1,2,3"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "4",
+          "--max-model-len",
+          "32768",
+          "--compilation-config",
+          "{\"mode\":\"VLLM_COMPILE\",\"cudagraph_mode\":\"PIECEWISE\",\"cudagraph_capture_sizes\":[1,2,4,8,16,32,64],\"max_cudagraph_capture_size\":64}"
+        ]
+      }
+    },
+    {
+      "id": "fp8-dflash2-tp4-65536",
+      "model_id": "qwen38-27b-fp8",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 4,
+      "tensor_parallel": 4,
+      "context": 65536,
+      "mode": "dflash2",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0,1,2,3"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "4",
+          "--max-model-len",
+          "65536",
+          "--compilation-config",
+          "{\"mode\":\"VLLM_COMPILE\",\"cudagraph_mode\":\"PIECEWISE\",\"cudagraph_capture_sizes\":[1,2,4,8,16,32,64],\"max_cudagraph_capture_size\":64}"
+        ]
+      }
+    },
+    {
+      "id": "fp8-dflash2-tp4-131072",
+      "model_id": "qwen38-27b-fp8",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 4,
+      "tensor_parallel": 4,
+      "context": 131072,
+      "mode": "dflash2",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0,1,2,3"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "4",
+          "--max-model-len",
+          "131072",
+          "--compilation-config",
+          "{\"mode\":\"VLLM_COMPILE\",\"cudagraph_mode\":\"PIECEWISE\",\"cudagraph_capture_sizes\":[1,2,4,8,16,32,64],\"max_cudagraph_capture_size\":64}"
+        ]
+      }
+    },
+    {
+      "id": "fp8-dflash2-tp4-262144",
+      "model_id": "qwen38-27b-fp8",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 4,
+      "tensor_parallel": 4,
+      "context": 262144,
+      "mode": "dflash2",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0,1,2,3"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "4",
+          "--max-model-len",
+          "262144",
+          "--compilation-config",
+          "{\"mode\":\"VLLM_COMPILE\",\"cudagraph_mode\":\"PIECEWISE\",\"cudagraph_capture_sizes\":[1,2,4,8,16,32,64],\"max_cudagraph_capture_size\":64}"
+        ]
+      }
+    },
+    {
+      "id": "uncensored-fp8-base-tp2-32768",
+      "model_id": "qwen38-27b-uncensored-fp8",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 2,
+      "tensor_parallel": 2,
+      "context": 32768,
+      "mode": "base",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0,1"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "2",
+          "--max-model-len",
+          "32768",
+          "--max-num-batched-tokens",
+          "256"
+        ]
+      }
+    },
+    {
+      "id": "uncensored-fp8-base-tp2-65536",
+      "model_id": "qwen38-27b-uncensored-fp8",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 2,
+      "tensor_parallel": 2,
+      "context": 65536,
+      "mode": "base",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0,1"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "2",
+          "--max-model-len",
+          "65536",
+          "--max-num-batched-tokens",
+          "256"
+        ]
+      }
+    },
+    {
+      "id": "uncensored-fp8-base-tp4-32768",
+      "model_id": "qwen38-27b-uncensored-fp8",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 4,
+      "tensor_parallel": 4,
+      "context": 32768,
+      "mode": "base",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0,1,2,3"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "4",
+          "--max-model-len",
+          "32768",
+          "--max-num-batched-tokens",
+          "256"
+        ]
+      }
+    },
+    {
+      "id": "uncensored-fp8-base-tp4-65536",
+      "model_id": "qwen38-27b-uncensored-fp8",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 4,
+      "tensor_parallel": 4,
+      "context": 65536,
+      "mode": "base",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0,1,2,3"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "4",
+          "--max-model-len",
+          "65536",
+          "--max-num-batched-tokens",
+          "256"
+        ]
+      }
+    },
+    {
+      "id": "uncensored-fp8-base-tp4-131072",
+      "model_id": "qwen38-27b-uncensored-fp8",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 4,
+      "tensor_parallel": 4,
+      "context": 131072,
+      "mode": "base",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0,1,2,3"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "4",
+          "--max-model-len",
+          "131072",
+          "--max-num-batched-tokens",
+          "256"
+        ]
+      }
+    },
+    {
+      "id": "uncensored-fp8-base-tp4-262144",
+      "model_id": "qwen38-27b-uncensored-fp8",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 4,
+      "tensor_parallel": 4,
+      "context": 262144,
+      "mode": "base",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0,1,2,3"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "4",
+          "--max-model-len",
+          "262144",
+          "--max-num-batched-tokens",
+          "256"
+        ]
+      }
+    },
+    {
+      "id": "uncensored-fp8-mtp1-tp2-32768",
+      "model_id": "qwen38-27b-uncensored-fp8",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 2,
+      "tensor_parallel": 2,
+      "context": 32768,
+      "mode": "mtp",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0,1"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "2",
+          "--max-model-len",
+          "32768",
+          "--max-num-batched-tokens",
+          "2048",
+          "--no-enable-prefix-caching"
+        ]
+      }
+    },
+    {
+      "id": "uncensored-fp8-mtp1-tp2-65536",
+      "model_id": "qwen38-27b-uncensored-fp8",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 2,
+      "tensor_parallel": 2,
+      "context": 65536,
+      "mode": "mtp",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0,1"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "2",
+          "--max-model-len",
+          "65536",
+          "--max-num-batched-tokens",
+          "2048",
+          "--no-enable-prefix-caching"
+        ]
+      }
+    },
+    {
+      "id": "uncensored-fp8-mtp1-tp4-32768",
+      "model_id": "qwen38-27b-uncensored-fp8",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 4,
+      "tensor_parallel": 4,
+      "context": 32768,
+      "mode": "mtp",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0,1,2,3"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "4",
+          "--max-model-len",
+          "32768",
+          "--max-num-batched-tokens",
+          "2048",
+          "--no-enable-prefix-caching"
+        ]
+      }
+    },
+    {
+      "id": "uncensored-fp8-mtp1-tp4-65536",
+      "model_id": "qwen38-27b-uncensored-fp8",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 4,
+      "tensor_parallel": 4,
+      "context": 65536,
+      "mode": "mtp",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0,1,2,3"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "4",
+          "--max-model-len",
+          "65536",
+          "--max-num-batched-tokens",
+          "2048",
+          "--no-enable-prefix-caching"
+        ]
+      }
+    },
+    {
+      "id": "uncensored-fp8-mtp1-tp4-131072",
+      "model_id": "qwen38-27b-uncensored-fp8",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 4,
+      "tensor_parallel": 4,
+      "context": 131072,
+      "mode": "mtp",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0,1,2,3"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "4",
+          "--max-model-len",
+          "131072",
+          "--max-num-batched-tokens",
+          "2048",
+          "--no-enable-prefix-caching"
+        ]
+      }
+    },
+    {
+      "id": "uncensored-fp8-mtp1-tp4-262144",
+      "model_id": "qwen38-27b-uncensored-fp8",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 4,
+      "tensor_parallel": 4,
+      "context": 262144,
+      "mode": "mtp",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0,1,2,3"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "4",
+          "--max-model-len",
+          "262144",
+          "--max-num-batched-tokens",
+          "2048",
+          "--no-enable-prefix-caching"
+        ]
+      }
+    },
+    {
+      "id": "uncensored-fp8-dflash2-tp2-32768",
+      "model_id": "qwen38-27b-uncensored-fp8",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 2,
+      "tensor_parallel": 2,
+      "context": 32768,
+      "mode": "dflash2",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0,1"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "2",
+          "--max-model-len",
+          "32768",
+          "--compilation-config",
+          "{\"mode\":\"VLLM_COMPILE\",\"cudagraph_mode\":\"PIECEWISE\",\"cudagraph_capture_sizes\":[1,2,4,8,16,32,64],\"max_cudagraph_capture_size\":64}"
+        ]
+      }
+    },
+    {
+      "id": "uncensored-fp8-dflash2-tp2-65536",
+      "model_id": "qwen38-27b-uncensored-fp8",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 2,
+      "tensor_parallel": 2,
+      "context": 65536,
+      "mode": "dflash2",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0,1"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "2",
+          "--max-model-len",
+          "65536",
+          "--compilation-config",
+          "{\"mode\":\"VLLM_COMPILE\",\"cudagraph_mode\":\"PIECEWISE\",\"cudagraph_capture_sizes\":[1,2,4,8,16,32,64],\"max_cudagraph_capture_size\":64}"
+        ]
+      }
+    },
+    {
+      "id": "uncensored-fp8-dflash2-tp4-32768",
+      "model_id": "qwen38-27b-uncensored-fp8",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 4,
+      "tensor_parallel": 4,
+      "context": 32768,
+      "mode": "dflash2",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0,1,2,3"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "4",
+          "--max-model-len",
+          "32768",
+          "--compilation-config",
+          "{\"mode\":\"VLLM_COMPILE\",\"cudagraph_mode\":\"PIECEWISE\",\"cudagraph_capture_sizes\":[1,2,4,8,16,32,64],\"max_cudagraph_capture_size\":64}"
+        ]
+      }
+    },
+    {
+      "id": "uncensored-fp8-dflash2-tp4-65536",
+      "model_id": "qwen38-27b-uncensored-fp8",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 4,
+      "tensor_parallel": 4,
+      "context": 65536,
+      "mode": "dflash2",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0,1,2,3"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "4",
+          "--max-model-len",
+          "65536",
+          "--compilation-config",
+          "{\"mode\":\"VLLM_COMPILE\",\"cudagraph_mode\":\"PIECEWISE\",\"cudagraph_capture_sizes\":[1,2,4,8,16,32,64],\"max_cudagraph_capture_size\":64}"
+        ]
+      }
+    },
+    {
+      "id": "uncensored-fp8-dflash2-tp4-131072",
+      "model_id": "qwen38-27b-uncensored-fp8",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 4,
+      "tensor_parallel": 4,
+      "context": 131072,
+      "mode": "dflash2",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0,1,2,3"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "4",
+          "--max-model-len",
+          "131072",
+          "--compilation-config",
+          "{\"mode\":\"VLLM_COMPILE\",\"cudagraph_mode\":\"PIECEWISE\",\"cudagraph_capture_sizes\":[1,2,4,8,16,32,64],\"max_cudagraph_capture_size\":64}"
+        ]
+      }
+    },
+    {
+      "id": "uncensored-fp8-dflash2-tp4-262144",
+      "model_id": "qwen38-27b-uncensored-fp8",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 4,
+      "tensor_parallel": 4,
+      "context": 262144,
+      "mode": "dflash2",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0,1,2,3"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "4",
+          "--max-model-len",
+          "262144",
+          "--compilation-config",
+          "{\"mode\":\"VLLM_COMPILE\",\"cudagraph_mode\":\"PIECEWISE\",\"cudagraph_capture_sizes\":[1,2,4,8,16,32,64],\"max_cudagraph_capture_size\":64}"
+        ]
+      }
+    },
+    {
+      "id": "int4-base-tp1-32768",
+      "model_id": "qwen38-27b-int4",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 1,
+      "tensor_parallel": 1,
+      "context": 32768,
+      "mode": "base",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "1",
+          "--max-model-len",
+          "32768",
+          "--max-num-batched-tokens",
+          "2048",
+          "--gpu-memory-utilization",
+          "0.90"
+        ]
+      }
+    },
+    {
+      "id": "int4-base-tp1-65536",
+      "model_id": "qwen38-27b-int4",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 1,
+      "tensor_parallel": 1,
+      "context": 65536,
+      "mode": "base",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "1",
+          "--max-model-len",
+          "65536",
+          "--max-num-batched-tokens",
+          "2048",
+          "--gpu-memory-utilization",
+          "0.90"
+        ]
+      }
+    },
+    {
+      "id": "int4-base-tp1-131072",
+      "model_id": "qwen38-27b-int4",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 1,
+      "tensor_parallel": 1,
+      "context": 131072,
+      "mode": "base",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "1",
+          "--max-model-len",
+          "131072",
+          "--max-num-batched-tokens",
+          "2048",
+          "--gpu-memory-utilization",
+          "0.90"
+        ]
+      }
+    },
+    {
+      "id": "int4-base-tp2-32768",
+      "model_id": "qwen38-27b-int4",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 2,
+      "tensor_parallel": 2,
+      "context": 32768,
+      "mode": "base",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0,1"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "2",
+          "--max-model-len",
+          "32768",
+          "--max-num-batched-tokens",
+          "256",
+          "--gpu-memory-utilization",
+          "0.90"
+        ]
+      }
+    },
+    {
+      "id": "int4-base-tp2-65536",
+      "model_id": "qwen38-27b-int4",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 2,
+      "tensor_parallel": 2,
+      "context": 65536,
+      "mode": "base",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0,1"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "2",
+          "--max-model-len",
+          "65536",
+          "--max-num-batched-tokens",
+          "256",
+          "--gpu-memory-utilization",
+          "0.90"
+        ]
+      }
+    },
+    {
+      "id": "int4-base-tp2-131072",
+      "model_id": "qwen38-27b-int4",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 2,
+      "tensor_parallel": 2,
+      "context": 131072,
+      "mode": "base",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0,1"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "2",
+          "--max-model-len",
+          "131072",
+          "--max-num-batched-tokens",
+          "256",
+          "--gpu-memory-utilization",
+          "0.90"
+        ]
+      }
+    },
+    {
+      "id": "int4-base-tp2-262144",
+      "model_id": "qwen38-27b-int4",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 2,
+      "tensor_parallel": 2,
+      "context": 262144,
+      "mode": "base",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0,1"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "2",
+          "--max-model-len",
+          "262144",
+          "--max-num-batched-tokens",
+          "256",
+          "--gpu-memory-utilization",
+          "0.90"
+        ]
+      }
+    },
+    {
+      "id": "int4-base-tp4-32768",
+      "model_id": "qwen38-27b-int4",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 4,
+      "tensor_parallel": 4,
+      "context": 32768,
+      "mode": "base",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0,1,2,3"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "4",
+          "--max-model-len",
+          "32768",
+          "--max-num-batched-tokens",
+          "256",
+          "--gpu-memory-utilization",
+          "0.90"
+        ]
+      }
+    },
+    {
+      "id": "int4-base-tp4-65536",
+      "model_id": "qwen38-27b-int4",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 4,
+      "tensor_parallel": 4,
+      "context": 65536,
+      "mode": "base",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0,1,2,3"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "4",
+          "--max-model-len",
+          "65536",
+          "--max-num-batched-tokens",
+          "256",
+          "--gpu-memory-utilization",
+          "0.90"
+        ]
+      }
+    },
+    {
+      "id": "int4-base-tp4-131072",
+      "model_id": "qwen38-27b-int4",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 4,
+      "tensor_parallel": 4,
+      "context": 131072,
+      "mode": "base",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0,1,2,3"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "4",
+          "--max-model-len",
+          "131072",
+          "--max-num-batched-tokens",
+          "256",
+          "--gpu-memory-utilization",
+          "0.90"
+        ]
+      }
+    },
+    {
+      "id": "int4-base-tp4-262144",
+      "model_id": "qwen38-27b-int4",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 4,
+      "tensor_parallel": 4,
+      "context": 262144,
+      "mode": "base",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0,1,2,3"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "4",
+          "--max-model-len",
+          "262144",
+          "--max-num-batched-tokens",
+          "256",
+          "--gpu-memory-utilization",
+          "0.90"
+        ]
+      }
+    },
+    {
+      "id": "int4-mtp1-tp1-32768",
+      "model_id": "qwen38-27b-int4",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 1,
+      "tensor_parallel": 1,
+      "context": 32768,
+      "mode": "mtp",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "1",
+          "--max-model-len",
+          "32768",
+          "--max-num-batched-tokens",
+          "2048",
+          "--max-num-seqs",
+          "8",
+          "--gpu-memory-utilization",
+          "0.90"
+        ]
+      }
+    },
+    {
+      "id": "int4-mtp1-tp1-65536",
+      "model_id": "qwen38-27b-int4",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 1,
+      "tensor_parallel": 1,
+      "context": 65536,
+      "mode": "mtp",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "1",
+          "--max-model-len",
+          "65536",
+          "--max-num-batched-tokens",
+          "2048",
+          "--max-num-seqs",
+          "8",
+          "--gpu-memory-utilization",
+          "0.90"
+        ]
+      }
+    },
+    {
+      "id": "int4-mtp1-tp2-32768",
+      "model_id": "qwen38-27b-int4",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 2,
+      "tensor_parallel": 2,
+      "context": 32768,
+      "mode": "mtp",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0,1"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "2",
+          "--max-model-len",
+          "32768",
+          "--max-num-batched-tokens",
+          "256",
+          "--max-num-seqs",
+          "8",
+          "--gpu-memory-utilization",
+          "0.90"
+        ]
+      }
+    },
+    {
+      "id": "int4-mtp1-tp2-65536",
+      "model_id": "qwen38-27b-int4",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 2,
+      "tensor_parallel": 2,
+      "context": 65536,
+      "mode": "mtp",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0,1"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "2",
+          "--max-model-len",
+          "65536",
+          "--max-num-batched-tokens",
+          "256",
+          "--max-num-seqs",
+          "8",
+          "--gpu-memory-utilization",
+          "0.90"
+        ]
+      }
+    },
+    {
+      "id": "int4-mtp1-tp2-131072",
+      "model_id": "qwen38-27b-int4",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 2,
+      "tensor_parallel": 2,
+      "context": 131072,
+      "mode": "mtp",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0,1"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "2",
+          "--max-model-len",
+          "131072",
+          "--max-num-batched-tokens",
+          "256",
+          "--max-num-seqs",
+          "8",
+          "--gpu-memory-utilization",
+          "0.90"
+        ]
+      }
+    },
+    {
+      "id": "int4-mtp1-tp2-262144",
+      "model_id": "qwen38-27b-int4",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 2,
+      "tensor_parallel": 2,
+      "context": 262144,
+      "mode": "mtp",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0,1"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "2",
+          "--max-model-len",
+          "262144",
+          "--max-num-batched-tokens",
+          "256",
+          "--max-num-seqs",
+          "8",
+          "--gpu-memory-utilization",
+          "0.90"
+        ]
+      }
+    },
+    {
+      "id": "int4-mtp1-tp4-32768",
+      "model_id": "qwen38-27b-int4",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 4,
+      "tensor_parallel": 4,
+      "context": 32768,
+      "mode": "mtp",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0,1,2,3"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "4",
+          "--max-model-len",
+          "32768",
+          "--max-num-batched-tokens",
+          "256",
+          "--max-num-seqs",
+          "8",
+          "--gpu-memory-utilization",
+          "0.90"
+        ]
+      }
+    },
+    {
+      "id": "int4-mtp1-tp4-65536",
+      "model_id": "qwen38-27b-int4",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 4,
+      "tensor_parallel": 4,
+      "context": 65536,
+      "mode": "mtp",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0,1,2,3"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "4",
+          "--max-model-len",
+          "65536",
+          "--max-num-batched-tokens",
+          "256",
+          "--max-num-seqs",
+          "8",
+          "--gpu-memory-utilization",
+          "0.90"
+        ]
+      }
+    },
+    {
+      "id": "int4-mtp1-tp4-131072",
+      "model_id": "qwen38-27b-int4",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 4,
+      "tensor_parallel": 4,
+      "context": 131072,
+      "mode": "mtp",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0,1,2,3"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "4",
+          "--max-model-len",
+          "131072",
+          "--max-num-batched-tokens",
+          "256",
+          "--max-num-seqs",
+          "8",
+          "--gpu-memory-utilization",
+          "0.90"
+        ]
+      }
+    },
+    {
+      "id": "int4-mtp1-tp4-262144",
+      "model_id": "qwen38-27b-int4",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 4,
+      "tensor_parallel": 4,
+      "context": 262144,
+      "mode": "mtp",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0,1,2,3"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "4",
+          "--max-model-len",
+          "262144",
+          "--max-num-batched-tokens",
+          "256",
+          "--max-num-seqs",
+          "8",
+          "--gpu-memory-utilization",
+          "0.90"
+        ]
+      }
+    },
+    {
+      "id": "int4-dflash2-tp1-32768",
+      "model_id": "qwen38-27b-int4",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 1,
+      "tensor_parallel": 1,
+      "context": 32768,
+      "mode": "dflash2",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "1",
+          "--max-model-len",
+          "32768",
+          "--gpu-memory-utilization",
+          "0.82",
+          "--compilation-config",
+          "{\"mode\":\"VLLM_COMPILE\",\"cudagraph_mode\":\"PIECEWISE\",\"cudagraph_capture_sizes\":[1,2,4,8],\"max_cudagraph_capture_size\":8}"
+        ]
+      }
+    },
+    {
+      "id": "int4-dflash2-tp2-32768",
+      "model_id": "qwen38-27b-int4",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 2,
+      "tensor_parallel": 2,
+      "context": 32768,
+      "mode": "dflash2",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0,1"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "2",
+          "--max-model-len",
+          "32768",
+          "--gpu-memory-utilization",
+          "0.82",
+          "--compilation-config",
+          "{\"mode\":\"VLLM_COMPILE\",\"cudagraph_mode\":\"PIECEWISE\",\"cudagraph_capture_sizes\":[1,2,4,8,16,32,64],\"max_cudagraph_capture_size\":64}"
+        ]
+      }
+    },
+    {
+      "id": "int4-dflash2-tp2-65536",
+      "model_id": "qwen38-27b-int4",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 2,
+      "tensor_parallel": 2,
+      "context": 65536,
+      "mode": "dflash2",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0,1"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "2",
+          "--max-model-len",
+          "65536",
+          "--gpu-memory-utilization",
+          "0.82",
+          "--compilation-config",
+          "{\"mode\":\"VLLM_COMPILE\",\"cudagraph_mode\":\"PIECEWISE\",\"cudagraph_capture_sizes\":[1,2,4,8,16,32,64],\"max_cudagraph_capture_size\":64}"
+        ]
+      }
+    },
+    {
+      "id": "int4-dflash2-tp2-131072",
+      "model_id": "qwen38-27b-int4",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 2,
+      "tensor_parallel": 2,
+      "context": 131072,
+      "mode": "dflash2",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0,1"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "2",
+          "--max-model-len",
+          "131072",
+          "--gpu-memory-utilization",
+          "0.82",
+          "--compilation-config",
+          "{\"mode\":\"VLLM_COMPILE\",\"cudagraph_mode\":\"PIECEWISE\",\"cudagraph_capture_sizes\":[1,2,4,8,16,32,64],\"max_cudagraph_capture_size\":64}"
+        ]
+      }
+    },
+    {
+      "id": "int4-dflash2-tp2-262144",
+      "model_id": "qwen38-27b-int4",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 2,
+      "tensor_parallel": 2,
+      "context": 262144,
+      "mode": "dflash2",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0,1"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "2",
+          "--max-model-len",
+          "262144",
+          "--gpu-memory-utilization",
+          "0.82",
+          "--compilation-config",
+          "{\"mode\":\"VLLM_COMPILE\",\"cudagraph_mode\":\"PIECEWISE\",\"cudagraph_capture_sizes\":[1,2,4,8,16,32,64],\"max_cudagraph_capture_size\":64}"
+        ]
+      }
+    },
+    {
+      "id": "int4-dflash2-tp4-32768",
+      "model_id": "qwen38-27b-int4",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 4,
+      "tensor_parallel": 4,
+      "context": 32768,
+      "mode": "dflash2",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0,1,2,3"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "4",
+          "--max-model-len",
+          "32768",
+          "--gpu-memory-utilization",
+          "0.82",
+          "--compilation-config",
+          "{\"mode\":\"VLLM_COMPILE\",\"cudagraph_mode\":\"PIECEWISE\",\"cudagraph_capture_sizes\":[1,2,4,8,16,32,64],\"max_cudagraph_capture_size\":64}"
+        ]
+      }
+    },
+    {
+      "id": "int4-dflash2-tp4-65536",
+      "model_id": "qwen38-27b-int4",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 4,
+      "tensor_parallel": 4,
+      "context": 65536,
+      "mode": "dflash2",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0,1,2,3"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "4",
+          "--max-model-len",
+          "65536",
+          "--gpu-memory-utilization",
+          "0.82",
+          "--compilation-config",
+          "{\"mode\":\"VLLM_COMPILE\",\"cudagraph_mode\":\"PIECEWISE\",\"cudagraph_capture_sizes\":[1,2,4,8,16,32,64],\"max_cudagraph_capture_size\":64}"
+        ]
+      }
+    },
+    {
+      "id": "int4-dflash2-tp4-131072",
+      "model_id": "qwen38-27b-int4",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 4,
+      "tensor_parallel": 4,
+      "context": 131072,
+      "mode": "dflash2",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0,1,2,3"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "4",
+          "--max-model-len",
+          "131072",
+          "--gpu-memory-utilization",
+          "0.82",
+          "--compilation-config",
+          "{\"mode\":\"VLLM_COMPILE\",\"cudagraph_mode\":\"PIECEWISE\",\"cudagraph_capture_sizes\":[1,2,4,8,16,32,64],\"max_cudagraph_capture_size\":64}"
+        ]
+      }
+    },
+    {
+      "id": "int4-dflash2-tp4-262144",
+      "model_id": "qwen38-27b-int4",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 4,
+      "tensor_parallel": 4,
+      "context": 262144,
+      "mode": "dflash2",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0,1,2,3"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "4",
+          "--max-model-len",
+          "262144",
+          "--gpu-memory-utilization",
+          "0.82",
+          "--compilation-config",
+          "{\"mode\":\"VLLM_COMPILE\",\"cudagraph_mode\":\"PIECEWISE\",\"cudagraph_capture_sizes\":[1,2,4,8,16,32,64],\"max_cudagraph_capture_size\":64}"
+        ]
+      }
+    },
+    {
+      "id": "uncensored-int4-base-tp1-32768",
+      "model_id": "qwen38-27b-uncensored-int4",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 1,
+      "tensor_parallel": 1,
+      "context": 32768,
+      "mode": "base",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "1",
+          "--max-model-len",
+          "32768",
+          "--max-num-batched-tokens",
+          "2048",
+          "--gpu-memory-utilization",
+          "0.90"
+        ]
+      }
+    },
+    {
+      "id": "uncensored-int4-base-tp1-65536",
+      "model_id": "qwen38-27b-uncensored-int4",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 1,
+      "tensor_parallel": 1,
+      "context": 65536,
+      "mode": "base",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "1",
+          "--max-model-len",
+          "65536",
+          "--max-num-batched-tokens",
+          "2048",
+          "--gpu-memory-utilization",
+          "0.90"
+        ]
+      }
+    },
+    {
+      "id": "uncensored-int4-base-tp1-131072",
+      "model_id": "qwen38-27b-uncensored-int4",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 1,
+      "tensor_parallel": 1,
+      "context": 131072,
+      "mode": "base",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "1",
+          "--max-model-len",
+          "131072",
+          "--max-num-batched-tokens",
+          "2048",
+          "--gpu-memory-utilization",
+          "0.90"
+        ]
+      }
+    },
+    {
+      "id": "uncensored-int4-base-tp2-32768",
+      "model_id": "qwen38-27b-uncensored-int4",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 2,
+      "tensor_parallel": 2,
+      "context": 32768,
+      "mode": "base",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0,1"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "2",
+          "--max-model-len",
+          "32768",
+          "--max-num-batched-tokens",
+          "256",
+          "--gpu-memory-utilization",
+          "0.90"
+        ]
+      }
+    },
+    {
+      "id": "uncensored-int4-base-tp2-65536",
+      "model_id": "qwen38-27b-uncensored-int4",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 2,
+      "tensor_parallel": 2,
+      "context": 65536,
+      "mode": "base",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0,1"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "2",
+          "--max-model-len",
+          "65536",
+          "--max-num-batched-tokens",
+          "256",
+          "--gpu-memory-utilization",
+          "0.90"
+        ]
+      }
+    },
+    {
+      "id": "uncensored-int4-base-tp2-131072",
+      "model_id": "qwen38-27b-uncensored-int4",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 2,
+      "tensor_parallel": 2,
+      "context": 131072,
+      "mode": "base",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0,1"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "2",
+          "--max-model-len",
+          "131072",
+          "--max-num-batched-tokens",
+          "256",
+          "--gpu-memory-utilization",
+          "0.90"
+        ]
+      }
+    },
+    {
+      "id": "uncensored-int4-base-tp2-262144",
+      "model_id": "qwen38-27b-uncensored-int4",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 2,
+      "tensor_parallel": 2,
+      "context": 262144,
+      "mode": "base",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0,1"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "2",
+          "--max-model-len",
+          "262144",
+          "--max-num-batched-tokens",
+          "256",
+          "--gpu-memory-utilization",
+          "0.90"
+        ]
+      }
+    },
+    {
+      "id": "uncensored-int4-base-tp4-32768",
+      "model_id": "qwen38-27b-uncensored-int4",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 4,
+      "tensor_parallel": 4,
+      "context": 32768,
+      "mode": "base",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0,1,2,3"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "4",
+          "--max-model-len",
+          "32768",
+          "--max-num-batched-tokens",
+          "256",
+          "--gpu-memory-utilization",
+          "0.90"
+        ]
+      }
+    },
+    {
+      "id": "uncensored-int4-base-tp4-65536",
+      "model_id": "qwen38-27b-uncensored-int4",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 4,
+      "tensor_parallel": 4,
+      "context": 65536,
+      "mode": "base",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0,1,2,3"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "4",
+          "--max-model-len",
+          "65536",
+          "--max-num-batched-tokens",
+          "256",
+          "--gpu-memory-utilization",
+          "0.90"
+        ]
+      }
+    },
+    {
+      "id": "uncensored-int4-base-tp4-131072",
+      "model_id": "qwen38-27b-uncensored-int4",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 4,
+      "tensor_parallel": 4,
+      "context": 131072,
+      "mode": "base",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0,1,2,3"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "4",
+          "--max-model-len",
+          "131072",
+          "--max-num-batched-tokens",
+          "256",
+          "--gpu-memory-utilization",
+          "0.90"
+        ]
+      }
+    },
+    {
+      "id": "uncensored-int4-base-tp4-262144",
+      "model_id": "qwen38-27b-uncensored-int4",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 4,
+      "tensor_parallel": 4,
+      "context": 262144,
+      "mode": "base",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0,1,2,3"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "4",
+          "--max-model-len",
+          "262144",
+          "--max-num-batched-tokens",
+          "256",
+          "--gpu-memory-utilization",
+          "0.90"
+        ]
+      }
+    },
+    {
+      "id": "uncensored-int4-mtp1-tp1-32768",
+      "model_id": "qwen38-27b-uncensored-int4",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 1,
+      "tensor_parallel": 1,
+      "context": 32768,
+      "mode": "mtp",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "1",
+          "--max-model-len",
+          "32768",
+          "--max-num-batched-tokens",
+          "2048",
+          "--max-num-seqs",
+          "8",
+          "--gpu-memory-utilization",
+          "0.90"
+        ]
+      }
+    },
+    {
+      "id": "uncensored-int4-mtp1-tp1-65536",
+      "model_id": "qwen38-27b-uncensored-int4",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 1,
+      "tensor_parallel": 1,
+      "context": 65536,
+      "mode": "mtp",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "1",
+          "--max-model-len",
+          "65536",
+          "--max-num-batched-tokens",
+          "2048",
+          "--max-num-seqs",
+          "8",
+          "--gpu-memory-utilization",
+          "0.90"
+        ]
+      }
+    },
+    {
+      "id": "uncensored-int4-mtp1-tp2-32768",
+      "model_id": "qwen38-27b-uncensored-int4",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 2,
+      "tensor_parallel": 2,
+      "context": 32768,
+      "mode": "mtp",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0,1"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "2",
+          "--max-model-len",
+          "32768",
+          "--max-num-batched-tokens",
+          "256",
+          "--max-num-seqs",
+          "8",
+          "--gpu-memory-utilization",
+          "0.90"
+        ]
+      }
+    },
+    {
+      "id": "uncensored-int4-mtp1-tp2-65536",
+      "model_id": "qwen38-27b-uncensored-int4",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 2,
+      "tensor_parallel": 2,
+      "context": 65536,
+      "mode": "mtp",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0,1"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "2",
+          "--max-model-len",
+          "65536",
+          "--max-num-batched-tokens",
+          "256",
+          "--max-num-seqs",
+          "8",
+          "--gpu-memory-utilization",
+          "0.90"
+        ]
+      }
+    },
+    {
+      "id": "uncensored-int4-mtp1-tp2-131072",
+      "model_id": "qwen38-27b-uncensored-int4",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 2,
+      "tensor_parallel": 2,
+      "context": 131072,
+      "mode": "mtp",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0,1"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "2",
+          "--max-model-len",
+          "131072",
+          "--max-num-batched-tokens",
+          "256",
+          "--max-num-seqs",
+          "8",
+          "--gpu-memory-utilization",
+          "0.90"
+        ]
+      }
+    },
+    {
+      "id": "uncensored-int4-mtp1-tp2-262144",
+      "model_id": "qwen38-27b-uncensored-int4",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 2,
+      "tensor_parallel": 2,
+      "context": 262144,
+      "mode": "mtp",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0,1"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "2",
+          "--max-model-len",
+          "262144",
+          "--max-num-batched-tokens",
+          "256",
+          "--max-num-seqs",
+          "8",
+          "--gpu-memory-utilization",
+          "0.90"
+        ]
+      }
+    },
+    {
+      "id": "uncensored-int4-mtp1-tp4-32768",
+      "model_id": "qwen38-27b-uncensored-int4",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 4,
+      "tensor_parallel": 4,
+      "context": 32768,
+      "mode": "mtp",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0,1,2,3"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "4",
+          "--max-model-len",
+          "32768",
+          "--max-num-batched-tokens",
+          "256",
+          "--max-num-seqs",
+          "8",
+          "--gpu-memory-utilization",
+          "0.90"
+        ]
+      }
+    },
+    {
+      "id": "uncensored-int4-mtp1-tp4-65536",
+      "model_id": "qwen38-27b-uncensored-int4",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 4,
+      "tensor_parallel": 4,
+      "context": 65536,
+      "mode": "mtp",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0,1,2,3"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "4",
+          "--max-model-len",
+          "65536",
+          "--max-num-batched-tokens",
+          "256",
+          "--max-num-seqs",
+          "8",
+          "--gpu-memory-utilization",
+          "0.90"
+        ]
+      }
+    },
+    {
+      "id": "uncensored-int4-mtp1-tp4-131072",
+      "model_id": "qwen38-27b-uncensored-int4",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 4,
+      "tensor_parallel": 4,
+      "context": 131072,
+      "mode": "mtp",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0,1,2,3"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "4",
+          "--max-model-len",
+          "131072",
+          "--max-num-batched-tokens",
+          "256",
+          "--max-num-seqs",
+          "8",
+          "--gpu-memory-utilization",
+          "0.90"
+        ]
+      }
+    },
+    {
+      "id": "uncensored-int4-mtp1-tp4-262144",
+      "model_id": "qwen38-27b-uncensored-int4",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 4,
+      "tensor_parallel": 4,
+      "context": 262144,
+      "mode": "mtp",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0,1,2,3"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "4",
+          "--max-model-len",
+          "262144",
+          "--max-num-batched-tokens",
+          "256",
+          "--max-num-seqs",
+          "8",
+          "--gpu-memory-utilization",
+          "0.90"
+        ]
+      }
+    },
+    {
+      "id": "uncensored-int4-dflash2-tp1-32768",
+      "model_id": "qwen38-27b-uncensored-int4",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 1,
+      "tensor_parallel": 1,
+      "context": 32768,
+      "mode": "dflash2",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "1",
+          "--max-model-len",
+          "32768",
+          "--gpu-memory-utilization",
+          "0.82",
+          "--compilation-config",
+          "{\"mode\":\"VLLM_COMPILE\",\"cudagraph_mode\":\"PIECEWISE\",\"cudagraph_capture_sizes\":[1,2,4,8],\"max_cudagraph_capture_size\":8}"
+        ]
+      }
+    },
+    {
+      "id": "uncensored-int4-dflash2-tp2-32768",
+      "model_id": "qwen38-27b-uncensored-int4",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 2,
+      "tensor_parallel": 2,
+      "context": 32768,
+      "mode": "dflash2",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0,1"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "2",
+          "--max-model-len",
+          "32768",
+          "--gpu-memory-utilization",
+          "0.82",
+          "--compilation-config",
+          "{\"mode\":\"VLLM_COMPILE\",\"cudagraph_mode\":\"PIECEWISE\",\"cudagraph_capture_sizes\":[1,2,4,8,16,32,64],\"max_cudagraph_capture_size\":64}"
+        ]
+      }
+    },
+    {
+      "id": "uncensored-int4-dflash2-tp2-65536",
+      "model_id": "qwen38-27b-uncensored-int4",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 2,
+      "tensor_parallel": 2,
+      "context": 65536,
+      "mode": "dflash2",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0,1"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "2",
+          "--max-model-len",
+          "65536",
+          "--gpu-memory-utilization",
+          "0.82",
+          "--compilation-config",
+          "{\"mode\":\"VLLM_COMPILE\",\"cudagraph_mode\":\"PIECEWISE\",\"cudagraph_capture_sizes\":[1,2,4,8,16,32,64],\"max_cudagraph_capture_size\":64}"
+        ]
+      }
+    },
+    {
+      "id": "uncensored-int4-dflash2-tp2-131072",
+      "model_id": "qwen38-27b-uncensored-int4",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 2,
+      "tensor_parallel": 2,
+      "context": 131072,
+      "mode": "dflash2",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0,1"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "2",
+          "--max-model-len",
+          "131072",
+          "--gpu-memory-utilization",
+          "0.82",
+          "--compilation-config",
+          "{\"mode\":\"VLLM_COMPILE\",\"cudagraph_mode\":\"PIECEWISE\",\"cudagraph_capture_sizes\":[1,2,4,8,16,32,64],\"max_cudagraph_capture_size\":64}"
+        ]
+      }
+    },
+    {
+      "id": "uncensored-int4-dflash2-tp2-262144",
+      "model_id": "qwen38-27b-uncensored-int4",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 2,
+      "tensor_parallel": 2,
+      "context": 262144,
+      "mode": "dflash2",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0,1"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "2",
+          "--max-model-len",
+          "262144",
+          "--gpu-memory-utilization",
+          "0.82",
+          "--compilation-config",
+          "{\"mode\":\"VLLM_COMPILE\",\"cudagraph_mode\":\"PIECEWISE\",\"cudagraph_capture_sizes\":[1,2,4,8,16,32,64],\"max_cudagraph_capture_size\":64}"
+        ]
+      }
+    },
+    {
+      "id": "uncensored-int4-dflash2-tp4-32768",
+      "model_id": "qwen38-27b-uncensored-int4",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 4,
+      "tensor_parallel": 4,
+      "context": 32768,
+      "mode": "dflash2",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0,1,2,3"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "4",
+          "--max-model-len",
+          "32768",
+          "--gpu-memory-utilization",
+          "0.82",
+          "--compilation-config",
+          "{\"mode\":\"VLLM_COMPILE\",\"cudagraph_mode\":\"PIECEWISE\",\"cudagraph_capture_sizes\":[1,2,4,8,16,32,64],\"max_cudagraph_capture_size\":64}"
+        ]
+      }
+    },
+    {
+      "id": "uncensored-int4-dflash2-tp4-65536",
+      "model_id": "qwen38-27b-uncensored-int4",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 4,
+      "tensor_parallel": 4,
+      "context": 65536,
+      "mode": "dflash2",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0,1,2,3"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "4",
+          "--max-model-len",
+          "65536",
+          "--gpu-memory-utilization",
+          "0.82",
+          "--compilation-config",
+          "{\"mode\":\"VLLM_COMPILE\",\"cudagraph_mode\":\"PIECEWISE\",\"cudagraph_capture_sizes\":[1,2,4,8,16,32,64],\"max_cudagraph_capture_size\":64}"
+        ]
+      }
+    },
+    {
+      "id": "uncensored-int4-dflash2-tp4-131072",
+      "model_id": "qwen38-27b-uncensored-int4",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 4,
+      "tensor_parallel": 4,
+      "context": 131072,
+      "mode": "dflash2",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0,1,2,3"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "4",
+          "--max-model-len",
+          "131072",
+          "--gpu-memory-utilization",
+          "0.82",
+          "--compilation-config",
+          "{\"mode\":\"VLLM_COMPILE\",\"cudagraph_mode\":\"PIECEWISE\",\"cudagraph_capture_sizes\":[1,2,4,8,16,32,64],\"max_cudagraph_capture_size\":64}"
+        ]
+      }
+    },
+    {
+      "id": "uncensored-int4-dflash2-tp4-262144",
+      "model_id": "qwen38-27b-uncensored-int4",
+      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "cards": 4,
+      "tensor_parallel": 4,
+      "context": 262144,
+      "mode": "dflash2",
+      "launch": {
+        "docker_args": [],
+        "environment": {
+          "ZE_AFFINITY_MASK": "0,1,2,3"
+        },
+        "command_args": [
+          "--tensor-parallel-size",
+          "4",
+          "--max-model-len",
+          "262144",
+          "--gpu-memory-utilization",
+          "0.82",
+          "--compilation-config",
+          "{\"mode\":\"VLLM_COMPILE\",\"cudagraph_mode\":\"PIECEWISE\",\"cudagraph_capture_sizes\":[1,2,4,8,16,32,64],\"max_cudagraph_capture_size\":64}"
+        ]
+      }
+    }
+  ]
+}
