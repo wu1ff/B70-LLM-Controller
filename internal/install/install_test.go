@@ -139,7 +139,26 @@ func TestMissingGatedArtifactsCanBeSkipped(t *testing.T) {
 	}
 }
 
-func TestPrepareContinuesAfterAccessFailureAndKeepsSuccesses(t *testing.T) {
+func TestFailureReasonClassifiesAccessAndAmbiguity(t *testing.T) {
+	tests := []struct {
+		err  error
+		want string
+	}{
+		{hf.ErrAuthenticationRequired, "Hugging Face token not configured"},
+		{hf.ErrAccessUncertain, "Hugging Face token not configured"},
+		{hf.ErrAccessDenied, "Hugging Face access denied"},
+		{hf.ErrRepositoryNotFound, "repository not found"},
+		{hf.ErrRevisionNotFound, "revision not found"},
+		{fmt.Errorf("wrap: %w", hf.ErrAccessUncertain), "Hugging Face token not configured"},
+	}
+	for _, test := range tests {
+		if got := FailureReason(test.err); got != test.want {
+			t.Fatalf("FailureReason(%v) = %q, want %q", test.err, got, test.want)
+		}
+	}
+}
+
+func TestPrepareStopsAtAccessFailureBeforeAnyDownloads(t *testing.T) {
 	manifest := syntheticManifest()
 	source := writePack(t, manifest)
 	store := t.TempDir()
@@ -163,7 +182,105 @@ func TestPrepareContinuesAfterAccessFailureAndKeepsSuccesses(t *testing.T) {
 	defer server.Close()
 
 	runtimeCalls := 0
-	ops := operations{
+	ops := accessTestOperations(t, server, &runtimeCalls)
+
+	result, err := prepare(context.Background(), source, store, models, plan, ops, packstore.SourceLocal, nil)
+	if !errors.Is(err, hf.ErrAccessDenied) || !hf.IsAccessFailure(err) {
+		t.Fatalf("prepare() error = %v, want wrapped access denial", err)
+	}
+	if !strings.Contains(err.Error(), "Gated Target") {
+		t.Fatalf("prepare() error does not name the inaccessible artifact: %v", err)
+	}
+	if got := requested; !reflect.DeepEqual(got, []string{
+		"/inspect:example/public",
+		"/inspect:example/gated",
+	}) {
+		t.Fatalf("requests = %v", got)
+	}
+	if runtimeCalls != 0 || len(result.RuntimeItems) != 0 {
+		t.Fatalf("runtime was acquired after an access failure: %#v, calls = %d", result.RuntimeItems, runtimeCalls)
+	}
+	if len(result.Items) != 0 {
+		t.Fatalf("artifact items were produced after an access failure: %#v", result.Items)
+	}
+	if _, found := modelstore.Find(result.Inventory, "example/public", publicRevision); found {
+		t.Fatal("public artifact was downloaded despite the access stop")
+	}
+	installed, err := packstore.List(store)
+	if err != nil || len(installed) != 1 {
+		t.Fatalf("installed pack after access stop = %#v, %v", installed, err)
+	}
+}
+
+func TestPrepareContinuesAfterNonAccessInspectFailure(t *testing.T) {
+	manifest := syntheticManifest()
+	source := writePack(t, manifest)
+	store := t.TempDir()
+	models := t.TempDir()
+	plan, err := BuildPlan(manifest, []string{"target-public", "target-gated"}, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	plan.Artifacts = []Artifact{plan.Artifacts[0], plan.Artifacts[2], plan.Artifacts[1]}
+
+	var requested []string
+	server := httptest.NewServer(http.HandlerFunc(func(writer http.ResponseWriter, request *http.Request) {
+		repo := request.URL.Query().Get("repo")
+		requested = append(requested, request.URL.Path+":"+repo)
+		fmt.Fprint(writer, "model")
+	}))
+	defer server.Close()
+
+	runtimeCalls := 0
+	ops := accessTestOperations(t, server, &runtimeCalls)
+	delegate := ops.inspect
+	ops.inspect = func(ctx context.Context, repo, revision string) (hf.Repository, error) {
+		if repo == "example/gated" {
+			return hf.Repository{}, hf.ErrNetworkUnavailable
+		}
+		return delegate(ctx, repo, revision)
+	}
+
+	result, err := prepare(context.Background(), source, store, models, plan, ops, packstore.SourceLocal, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if got := outcomes(result.Items); !reflect.DeepEqual(got, []Outcome{Downloaded, Failed, Downloaded}) {
+		t.Fatalf("outcomes = %v", got)
+	}
+	if !errors.Is(result.Items[1].Err, hf.ErrNetworkUnavailable) || result.HasAccessIssue() {
+		t.Fatalf("network failure was not retained as a non-access failure: %#v", result.Items[1])
+	}
+	if runtimeCalls != 1 || len(result.RuntimeItems) != 1 {
+		t.Fatalf("runtime preparation = %#v, calls = %d", result.RuntimeItems, runtimeCalls)
+	}
+	// The gated artifact's inspect fails before reaching the HTTP fixture
+	// (the wrapper returns the network error directly), so it never appears
+	// in the server-side request log.
+	if got := requested; !reflect.DeepEqual(got, []string{
+		"/inspect:example/public", "/inspect:example/shared",
+		"/download:example/public",
+		"/download:example/shared",
+	}) {
+		t.Fatalf("requests = %v", got)
+	}
+	for _, identity := range [][2]string{{"example/public", publicRevision}, {"example/shared", assistantRevision}} {
+		if _, found := modelstore.Find(result.Inventory, identity[0], identity[1]); !found {
+			t.Fatalf("successful artifact %v missing from final scan: %#v", identity, result.Inventory)
+		}
+	}
+	installed, err := packstore.List(store)
+	if err != nil || len(installed) != 1 {
+		t.Fatalf("installed pack after partial failure = %#v, %v", installed, err)
+	}
+}
+
+// accessTestOperations wires inspect/install/acquire through the test HTTP
+// server, mapping its 403 responses to access denials, and counts runtime
+// acquisitions.
+func accessTestOperations(t *testing.T, server *httptest.Server, runtimeCalls *int) operations {
+	t.Helper()
+	return operations{
 		inspect: func(ctx context.Context, repo, revision string) (hf.Repository, error) {
 			request, _ := http.NewRequestWithContext(ctx, http.MethodGet, server.URL+"/inspect?repo="+repo, nil)
 			response, err := http.DefaultClient.Do(request)
@@ -192,39 +309,9 @@ func TestPrepareContinuesAfterAccessFailureAndKeepsSuccesses(t *testing.T) {
 			return hf.Result{Path: path, BytesDownloaded: 5}, nil
 		},
 		acquire: func(context.Context, modelpack.Runtime, func(runtimebackend.PullProgress)) runtimebackend.AcquisitionResult {
-			runtimeCalls++
+			*runtimeCalls++
 			return runtimebackend.AcquisitionResult{Outcome: runtimebackend.AcquisitionFailed, Reason: "Docker pull failed", Err: errors.New("pull failed")}
 		},
-	}
-
-	result, err := prepare(context.Background(), source, store, models, plan, ops, packstore.SourceLocal, nil)
-	if err != nil {
-		t.Fatal(err)
-	}
-	if got := outcomes(result.Items); !reflect.DeepEqual(got, []Outcome{Downloaded, Failed, Downloaded}) {
-		t.Fatalf("outcomes = %v", got)
-	}
-	if !errors.Is(result.Items[1].Err, hf.ErrAccessDenied) || !result.HasAccessIssue() {
-		t.Fatalf("access failure was not retained: %#v", result.Items[1])
-	}
-	if runtimeCalls != 1 || len(result.RuntimeItems) != 1 || !result.HasRuntimeFailure() {
-		t.Fatalf("runtime preparation = %#v, calls = %d", result.RuntimeItems, runtimeCalls)
-	}
-	if got := requested; !reflect.DeepEqual(got, []string{
-		"/inspect:example/public", "/download:example/public",
-		"/inspect:example/gated",
-		"/inspect:example/shared", "/download:example/shared",
-	}) {
-		t.Fatalf("requests = %v", got)
-	}
-	for _, identity := range [][2]string{{"example/public", publicRevision}, {"example/shared", assistantRevision}} {
-		if _, found := modelstore.Find(result.Inventory, identity[0], identity[1]); !found {
-			t.Fatalf("successful artifact %v missing from final scan: %#v", identity, result.Inventory)
-		}
-	}
-	installed, err := packstore.List(store)
-	if err != nil || len(installed) != 1 {
-		t.Fatalf("installed pack after partial failure = %#v, %v", installed, err)
 	}
 }
 

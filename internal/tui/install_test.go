@@ -63,19 +63,39 @@ func TestPartialFailureSummaryIncludesOneAccessGuidanceBlock(t *testing.T) {
 		{Artifact: install.Artifact{Name: "Gated Target"}, Outcome: install.Failed, Reason: "Hugging Face access denied", Err: hf.ErrAccessDenied},
 		{Artifact: install.Artifact{Name: "Other Target"}, Outcome: install.Failed, Reason: "Hugging Face access denied", Err: errors.Join(hf.ErrAccessDenied, errors.New("403"))},
 	}}
-	got := strings.Join(packInstallSummary(result), "\n")
+	got := strings.Join(packInstallSummary(result, true), "\n")
 	if strings.Count(got, "Hugging Face access issue") != 1 {
 		t.Fatalf("access guidance count in summary = %d: %q", strings.Count(got, "Hugging Face access issue"), got)
 	}
-	for _, want := range []string{"Public Target\nDownloaded", "Gated Target\nFailed — Hugging Face access denied", "2 artifacts could not be acquired.", "Missing models can be retried later from Models."} {
+	for _, want := range []string{"Public Target\nDownloaded", "Gated Target\nFailed — Hugging Face access denied", "2 artifacts could not be acquired.", "- your token is valid", "Missing models can be retried later from Models."} {
 		if !strings.Contains(got, want) {
 			t.Fatalf("summary missing %q: %q", want, got)
 		}
 	}
 }
 
+func TestAccessFailureSummaryWithoutTokenPointsToSettings(t *testing.T) {
+	result := install.Result{Items: []install.Item{
+		{Artifact: install.Artifact{Name: "Uncensored Target"}, Outcome: install.Failed, Reason: "Hugging Face token not configured", Err: hf.ErrAccessUncertain},
+	}}
+	got := strings.Join(packInstallSummary(result, false), "\n")
+	for _, want := range []string{
+		"Uncensored Target\nFailed — Hugging Face token not configured",
+		"No Hugging Face token is configured.",
+		"Set one under Settings → Hugging Face Token, then retry.",
+		"Missing models can be retried later from Models.",
+	} {
+		if !strings.Contains(got, want) {
+			t.Fatalf("summary missing %q: %q", want, got)
+		}
+	}
+	if strings.Contains(got, "your token is valid") {
+		t.Fatalf("no-token summary told the user to check a token: %q", got)
+	}
+}
+
 func TestPackOnlyInstallSummary(t *testing.T) {
-	got := strings.Join(packInstallSummary(install.Result{}), "\n")
+	got := strings.Join(packInstallSummary(install.Result{}, false), "\n")
 	if !strings.Contains(got, "No models were downloaded.\nYou can add them later from Models.") {
 		t.Fatalf("pack-only summary = %q", got)
 	}
@@ -88,7 +108,7 @@ func TestPackInstallSummaryIncludesRuntimeResultAndRetryGuidance(t *testing.T) {
 			Runtime: modelpack.Runtime{ID: "runtime"}, Outcome: runtime.AcquisitionFailed, Reason: "Docker pull failed",
 		}},
 	}
-	got := strings.Join(packInstallSummary(result), "\n")
+	got := strings.Join(packInstallSummary(result, false), "\n")
 	for _, want := range []string{
 		"Target\nDownloaded", "Runtime\nFailed — Docker pull failed",
 		"Models can still be managed from Models.", "Runtime can be retried later from Installed Packs.",

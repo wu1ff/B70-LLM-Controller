@@ -24,12 +24,24 @@ var (
 	ErrRevisionNotFound       = errors.New("revision not found")
 	ErrAuthenticationRequired = errors.New("authentication required")
 	ErrAccessDenied           = errors.New("access denied")
+	ErrAccessUncertain        = errors.New("model access could not be verified without a Hugging Face token")
 	ErrDownloadFailed         = errors.New("download failed")
 	ErrDestinationExists      = errors.New("destination already exists")
 	ErrNetworkUnavailable     = errors.New("network unavailable")
 	ErrDownloadedIncomplete   = errors.New("downloaded model is incomplete")
 	ErrDownloadInProgress     = errors.New("model download already in progress")
 )
+
+// IsAccessFailure reports whether an error means Hugging Face refused or
+// could not verify access to a repository: no token is configured, the
+// configured token was rejected, or an unauthenticated request received a
+// not-found-shaped answer that Hugging Face also gives for gated, private,
+// and hidden repositories.
+func IsAccessFailure(err error) bool {
+	return errors.Is(err, ErrAuthenticationRequired) ||
+		errors.Is(err, ErrAccessDenied) ||
+		errors.Is(err, ErrAccessUncertain)
+}
 
 // LegacyDownloadPrefix is the throwaway temporary-directory prefix used by
 // older Controller downloads. Current downloads stage resumably under
@@ -365,6 +377,13 @@ func (client *Client) metadataStatus(response *http.Response) error {
 	case http.StatusForbidden:
 		return ErrAccessDenied
 	case http.StatusNotFound:
+		if client.token == "" {
+			// Hugging Face answers unauthenticated requests for gated,
+			// private, and hidden repositories exactly like requests for
+			// absent ones, so without a token the difference cannot be
+			// established and a missing revision must not be claimed.
+			return ErrAccessUncertain
+		}
 		if response.Header.Get("X-Error-Code") == "RevisionNotFound" {
 			return ErrRevisionNotFound
 		}

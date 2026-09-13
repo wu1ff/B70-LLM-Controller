@@ -68,23 +68,55 @@ func TestInspectRepositoryAndRevisionFailures(t *testing.T) {
 	tests := []struct {
 		name      string
 		errorCode string
+		token     string
 		want      error
 	}{
-		{name: "repository", errorCode: "RepoNotFound", want: ErrRepositoryNotFound},
-		{name: "revision", errorCode: "RevisionNotFound", want: ErrRevisionNotFound},
+		{name: "repository with token", errorCode: "RepoNotFound", token: "token", want: ErrRepositoryNotFound},
+		{name: "revision with token", errorCode: "RevisionNotFound", token: "token", want: ErrRevisionNotFound},
+		{name: "revision without token", errorCode: "RevisionNotFound", want: ErrAccessUncertain},
+		{name: "repository without token", errorCode: "RepoNotFound", want: ErrAccessUncertain},
+		{name: "bare not-found without token", want: ErrAccessUncertain},
 	}
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
 			server := httptest.NewServer(http.HandlerFunc(func(writer http.ResponseWriter, request *http.Request) {
-				writer.Header().Set("X-Error-Code", test.errorCode)
+				if test.errorCode != "" {
+					writer.Header().Set("X-Error-Code", test.errorCode)
+				}
 				writer.WriteHeader(http.StatusNotFound)
 			}))
 			defer server.Close()
-			_, err := testClient(server, "").Inspect(context.Background(), "example/model", testRevision)
+			_, err := testClient(server, test.token).Inspect(context.Background(), "example/model", testRevision)
 			if !errors.Is(err, test.want) {
 				t.Fatalf("Inspect() error = %v, want %v", err, test.want)
 			}
 		})
+	}
+}
+
+func TestInspectErrorsNeverContainTheToken(t *testing.T) {
+	const token = "hf_secret-token-value_DoNotLeak"
+	statuses := []int{http.StatusUnauthorized, http.StatusForbidden, http.StatusNotFound, http.StatusInternalServerError}
+	calls := 0
+	server := httptest.NewServer(http.HandlerFunc(func(writer http.ResponseWriter, request *http.Request) {
+		status := statuses[calls%len(statuses)]
+		calls++
+		if status == http.StatusNotFound {
+			writer.Header().Set("X-Error-Code", "RevisionNotFound")
+		}
+		writer.WriteHeader(status)
+		fmt.Fprint(writer, "server body")
+	}))
+	defer server.Close()
+	client := testClient(server, token)
+	for _, status := range statuses {
+		_, err := client.Inspect(context.Background(), "example/model", testRevision)
+		if err == nil {
+			t.Fatalf("HTTP %d: Inspect() succeeded unexpectedly", status)
+		}
+		if message := err.Error(); strings.Contains(message, token) {
+			t.Fatalf("HTTP %d: error leaks the token: %q", status, message)
+		}
 	}
 }
 

@@ -1147,11 +1147,8 @@ func (a *app) downloadComplete(repo string, downloaded int64) error {
 
 func (a *app) hfDownloadError(repo string, err error) error {
 	switch {
-	case errors.Is(err, hf.ErrAuthenticationRequired), errors.Is(err, hf.ErrAccessDenied):
-		return a.noticeScreen("Hugging Face access denied.", []string{
-			"Check that your token is valid and that your account",
-			"has access to " + repo + ".",
-		})
+	case hf.IsAccessFailure(err):
+		return a.hfAccessFailureNotice(err)
 	case errors.Is(err, hf.ErrDestinationExists):
 		return a.noticeScreen("Model download failed", []string{
 			"Model directory already exists but does not match",
@@ -1170,6 +1167,36 @@ func (a *app) hfDownloadError(repo string, err error) error {
 	}
 }
 
+// hfAccessFailureNotice renders guidance for a Hugging Face access
+// failure. A rejected configured token is never answered with "add a
+// token", and a not-found-shaped response to an unauthenticated request
+// is never claimed to be a missing revision: Hugging Face hides gated,
+// private, and hidden repositories behind such answers.
+func (a *app) hfAccessFailureNotice(err error) error {
+	switch {
+	case errors.Is(err, hf.ErrAccessDenied):
+		return a.noticeScreen("Hugging Face access denied", []string{
+			"The configured token could not access this model.",
+			"Check the token and make sure your account has access",
+			"to the gated repository.",
+		})
+	case errors.Is(err, hf.ErrAuthenticationRequired):
+		return a.noticeScreen("Hugging Face access required", []string{
+			"No Hugging Face token is configured for this model.",
+			"Set a token under Settings → Hugging Face Token, then retry.",
+			"",
+			"If the repository is gated, make sure your Hugging Face",
+			"account has been granted access / accepted its terms.",
+		})
+	default:
+		return a.noticeScreen("Could not access model revision", []string{
+			"No Hugging Face token is configured. If this model is",
+			"gated or private, set a token under",
+			"Settings → Hugging Face Token and retry.",
+		})
+	}
+}
+
 func (a *app) hfAccessRequired() error {
 	selected := 0
 	for {
@@ -1181,7 +1208,7 @@ func (a *app) hfAccessRequired() error {
 			continue
 		}
 		contentWidth := subpageWidth(a.width()) - 2
-		lines := []string{messageLine("This model requires authenticated Hugging Face access.", contentWidth, muted), "", messageLine("• Configure a Hugging Face token", contentWidth, muted), messageLine("• Have access to the model repository", contentWidth, muted), "", actionRow("Set Token", selected == 0, false, actionPrimary, contentWidth), actionRow("Back", selected == 1, false, actionSecondary, contentWidth)}
+		lines := []string{messageLine("This model requires authenticated Hugging Face access.", contentWidth, muted), "", messageLine("• Set a token under Settings → Hugging Face Token", contentWidth, muted), messageLine("• Have access to the model repository", contentWidth, muted), "", actionRow("Set Token", selected == 0, false, actionPrimary, contentWidth), actionRow("Back", selected == 1, false, actionSecondary, contentWidth)}
 		if a.message != "" {
 			lines = append(lines, "", messageLine(a.message, contentWidth, red))
 		}
@@ -1535,7 +1562,7 @@ func (a *app) packGatedPreflight(plan *install.Plan) (bool, error) {
 				continue
 			}
 			contentWidth := subpageWidth(a.width()) - 2
-			lines := []string{messageLine("Some selected models require authenticated Hugging Face access.", contentWidth, muted), "", messageLine("• Configure a Hugging Face token", contentWidth, muted), messageLine("• Have access to the model repository", contentWidth, muted), "", actionRow("Set Token", selected == 0, false, actionPrimary, contentWidth), actionRow("Continue Without Gated Models", selected == 1, false, actionSecondary, contentWidth), actionRow("Back", selected == 2, false, actionSecondary, contentWidth)}
+			lines := []string{messageLine("Some selected models require authenticated Hugging Face access.", contentWidth, muted), "", messageLine("• Set a token under Settings → Hugging Face Token", contentWidth, muted), messageLine("• Have access to the model repository", contentWidth, muted), "", actionRow("Set Token", selected == 0, false, actionPrimary, contentWidth), actionRow("Continue Without Gated Models", selected == 1, false, actionSecondary, contentWidth), actionRow("Back", selected == 2, false, actionSecondary, contentWidth)}
 			if a.message != "" {
 				lines = append(lines, "", messageLine(a.message, contentWidth, red))
 			}
@@ -1668,6 +1695,9 @@ func (a *app) preparePack(sourcePath string, plan install.Plan, source string) e
 			default:
 			}
 			if outcome.err != nil {
+				if hf.IsAccessFailure(outcome.err) {
+					return a.hfAccessFailureNotice(outcome.err)
+				}
 				return a.messageScreen("Install Pack", outcome.err.Error())
 			}
 			return a.packInstallResult(outcome.result)
@@ -1693,6 +1723,10 @@ func (a *app) showInstallEvent(state *modelDownloadState, event install.Event) *
 }
 
 func (a *app) packInstallResult(result install.Result) error {
+	token, _, err := hf.Get()
+	if err != nil {
+		return err
+	}
 	for {
 		if !a.sizeOK() {
 			exit, err := a.tooSmall()
@@ -1703,7 +1737,7 @@ func (a *app) packInstallResult(result install.Result) error {
 		}
 		contentWidth := subpageWidth(a.width()) - 2
 		styled := []string{}
-		for _, line := range packInstallSummary(result) {
+		for _, line := range packInstallSummary(result, token != "") {
 			styled = append(styled, messageLine(line, contentWidth, muted))
 		}
 		a.drawSubpage("Install Pack", "RESULT", styled, subpageFooter("Enter Continue", "Esc Back"), false)
@@ -1720,7 +1754,7 @@ func (a *app) packInstallResult(result install.Result) error {
 	}
 }
 
-func packInstallSummary(result install.Result) []string {
+func packInstallSummary(result install.Result, tokenConfigured bool) []string {
 	lines := []string{blue + "Pack installed." + reset, ""}
 	if len(result.Items) == 0 && len(result.RuntimeItems) == 0 {
 		lines = append(lines,
@@ -1771,9 +1805,20 @@ func packInstallSummary(result install.Result) []string {
 		lines = append(lines,
 			"Hugging Face access issue",
 			"",
-			"Check that:",
-			"- your token is valid",
-			"- your account has access to the required repository",
+		)
+		if tokenConfigured {
+			lines = append(lines,
+				"Check that:",
+				"- your token is valid",
+				"- your account has access to the required repository",
+			)
+		} else {
+			lines = append(lines,
+				"No Hugging Face token is configured.",
+				"Set one under Settings → Hugging Face Token, then retry.",
+			)
+		}
+		lines = append(lines,
 			"",
 			"Missing models can be retried later from Models.",
 			"",

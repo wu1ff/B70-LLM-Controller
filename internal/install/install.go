@@ -221,6 +221,11 @@ func prepare(ctx context.Context, sourcePath, storeRoot, modelRoot string, plan 
 		return result, err
 	}
 
+	verified, err := verifyAccess(ctx, plan, inventory, ops.inspect, notify)
+	if err != nil {
+		return result, err
+	}
+
 	for _, artifact := range plan.Artifacts {
 		readiness := modelstore.Assess(inventory, artifact.model())
 		if readiness.State == modelstore.Present {
@@ -235,13 +240,16 @@ func prepare(ctx context.Context, sourcePath, storeRoot, modelRoot string, plan 
 			result.Items = append(result.Items, Item{Artifact: artifact, Outcome: Skipped, Reason: artifact.SkipReason})
 			continue
 		}
-		if notify != nil {
-			notify(Event{Artifact: artifact})
-		}
-		repository, err := ops.inspect(ctx, artifact.Repo, artifact.Revision)
-		if err != nil {
-			result.Items = append(result.Items, failedItem(artifact, err))
-			continue
+		repository, verifiedHere := verified[artifact.Repo+"\x00"+artifact.Revision]
+		if !verifiedHere {
+			if notify != nil {
+				notify(Event{Artifact: artifact})
+			}
+			repository, err = ops.inspect(ctx, artifact.Repo, artifact.Revision)
+			if err != nil {
+				result.Items = append(result.Items, failedItem(artifact, err))
+				continue
+			}
 		}
 		if notify != nil {
 			notify(Event{Artifact: artifact, Repository: &repository, Progress: initialProgress(repository)})
@@ -285,6 +293,35 @@ func prepare(ctx context.Context, sourcePath, storeRoot, modelRoot string, plan 
 	return result, nil
 }
 
+// verifyAccess resolves revision metadata for every artifact that still
+// needs to be downloaded and stops at the first access failure before any
+// bytes move, so an unreachable model surfaces the token guidance instead
+// of a partial multi-gigabyte install. Non-access failures are left to the
+// per-artifact flow, which also reuses the successful resolutions.
+func verifyAccess(ctx context.Context, plan Plan, inventory []modelstore.Artifact, inspect func(context.Context, string, string) (hf.Repository, error), notify func(Event)) (map[string]hf.Repository, error) {
+	verified := make(map[string]hf.Repository)
+	for _, artifact := range plan.Artifacts {
+		if artifact.SkipReason != "" {
+			continue
+		}
+		if modelstore.Assess(inventory, artifact.model()).State != modelstore.Missing {
+			continue
+		}
+		if notify != nil {
+			notify(Event{Artifact: artifact})
+		}
+		repository, err := inspect(ctx, artifact.Repo, artifact.Revision)
+		if err != nil {
+			if hf.IsAccessFailure(err) {
+				return verified, fmt.Errorf("%s: %w", artifact.Name, err)
+			}
+			continue
+		}
+		verified[artifact.Repo+"\x00"+artifact.Revision] = repository
+	}
+	return verified, nil
+}
+
 func (artifact Artifact) model() modelpack.Model {
 	return modelpack.Model{
 		ID: artifact.ModelID, Name: artifact.Name, Kind: artifact.Kind, Repo: artifact.Repo,
@@ -308,7 +345,7 @@ func failedItem(artifact Artifact, err error) Item {
 
 func FailureReason(err error) string {
 	switch {
-	case errors.Is(err, hf.ErrAuthenticationRequired):
+	case errors.Is(err, hf.ErrAuthenticationRequired), errors.Is(err, hf.ErrAccessUncertain):
 		return "Hugging Face token not configured"
 	case errors.Is(err, hf.ErrAccessDenied):
 		return "Hugging Face access denied"
@@ -327,7 +364,7 @@ func FailureReason(err error) string {
 
 func (result Result) HasAccessIssue() bool {
 	for _, item := range result.Items {
-		if errors.Is(item.Err, hf.ErrAuthenticationRequired) || errors.Is(item.Err, hf.ErrAccessDenied) {
+		if hf.IsAccessFailure(item.Err) {
 			return true
 		}
 	}
