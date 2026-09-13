@@ -150,9 +150,9 @@ func statusText(status string) string {
 	upper := strings.ToUpper(status)
 	style := muted
 	switch upper {
-	case "PRESENT", "AVAILABLE", "RUNNING", "COMPLETE", "DOWNLOADED", "REUSED":
+	case "PRESENT", "AVAILABLE", "RUNNING", "COMPLETE", "DOWNLOADED", "REUSED", "NEWER INSTALLED":
 		style = green
-	case "STARTING", "INCOMPLETE", "PULLING", "ORPHANED":
+	case "STARTING", "INCOMPLETE", "PULLING", "ORPHANED", "UPDATE AVAILABLE", "FINISH UPDATE":
 		style = amber
 	case "MISSING", "UNAVAILABLE", "FAILED", "ERROR":
 		style = red

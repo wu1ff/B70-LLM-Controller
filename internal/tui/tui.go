@@ -22,6 +22,7 @@ import (
 	"b70ctl/internal/modelpack"
 	"b70ctl/internal/modelstore"
 	"b70ctl/internal/packstore"
+	"b70ctl/internal/packupdate"
 	"b70ctl/internal/runtime"
 	"b70ctl/internal/uninstall"
 )
@@ -1319,7 +1320,7 @@ func (a *app) modelPacksScreen() error {
 							var inventory []modelstore.Artifact
 							inventory, err = modelstore.Scan(a.config.ModelDirectory)
 							if err == nil {
-								err = a.installPack(path, manifest, inventory, packstore.SourceLocal)
+								err = a.installPack(path, manifest, inventory, packstore.SourceLocal, "")
 							}
 						}
 					}
@@ -1378,20 +1379,20 @@ func (a *app) browseAvailablePacksScreen() error {
 			end := min(len(result.Catalog.Packs), start+visible)
 			for index := start; index < end; index++ {
 				entry := result.Catalog.Packs[index]
-				status := "Available"
-				if catalogEntryInstalled(installed, entry) {
-					status = "Installed"
-				}
 				lines = append(lines,
 					focusRow(entry.Name, index == selected, false, contentWidth),
-					"    "+muted+"v"+entry.Version+"     "+reset+statusText(status),
+					catalogEntryDetail(entry, packupdate.Classify(installed, entry)),
 					"",
 				)
 			}
 			lines = append(lines, listPosition(start, end, len(result.Catalog.Packs))...)
 		}
+		if a.message != "" {
+			lines = append(lines, "", messageLine(a.message, contentWidth, muted))
+		}
 		actionLines := []string{actionRow("Back", selected == len(result.Catalog.Packs), false, actionSecondary, contentWidth)}
 		a.drawSubpagePanels("Available Packs", []subpagePanel{{title: "CATALOG", content: lines}, {title: "ACTIONS", content: actionLines}}, subpageFooter("↑↓ Navigate", "Enter Select", "Esc Back"), false)
+		a.message = ""
 		event, err := a.in.next()
 		if err != nil {
 			return err
@@ -1410,13 +1411,40 @@ func (a *app) browseAvailablePacksScreen() error {
 				return nil
 			}
 			entry := result.Catalog.Packs[selected]
-			if catalogEntryInstalled(installed, entry) {
+			state := packupdate.Classify(installed, entry)
+			switch state.Status {
+			case packupdate.StatusInstalled:
 				if err := a.noticeScreen("Model Pack", []string{"Pack is already installed."}); err != nil {
 					return err
 				}
 				continue
+			case packupdate.StatusOlderCatalog:
+				if err := a.noticeScreen("Model Pack", []string{
+					fmt.Sprintf("Version %s is already installed.", state.Current),
+					"The catalog entry is older, so a downgrade is not offered.",
+				}); err != nil {
+					return err
+				}
+				continue
+			case packupdate.StatusFinishUpdate:
+				if err := a.packFinishUpdateScreen(entry, state); err != nil {
+					return err
+				}
+				continue
+			case packupdate.StatusUpdateAvailable:
+				if err := a.packUpdateScreen(client, entry, state); err != nil {
+					return err
+				}
+				continue
+			case packupdate.StatusIncomparable:
+				if err := a.noticeScreen("Model Pack", []string{
+					state.Reason,
+					"Falling back to an exact-version install.",
+				}); err != nil {
+					return err
+				}
 			}
-			acquired, err := a.downloadRemotePack(client, entry)
+			acquired, err := a.downloadRemotePack(client, entry, "Install Pack")
 			if err != nil {
 				if err := a.noticeScreen("Download Model Pack", []string{err.Error()}); err != nil {
 					return err
@@ -1425,7 +1453,7 @@ func (a *app) browseAvailablePacksScreen() error {
 			}
 			inventory, scanErr := modelstore.Scan(a.config.ModelDirectory)
 			if scanErr == nil {
-				scanErr = a.installPack(acquired.Path, acquired.Manifest, inventory, packstore.SourceRemote)
+				scanErr = a.installPack(acquired.Path, acquired.Manifest, inventory, packstore.SourceRemote, "")
 			}
 			closeErr := acquired.Close()
 			if scanErr != nil {
@@ -1438,12 +1466,12 @@ func (a *app) browseAvailablePacksScreen() error {
 	}
 }
 
-func (a *app) downloadRemotePack(client *catalog.Client, entry catalog.Entry) (*catalog.AcquiredPack, error) {
+func (a *app) downloadRemotePack(client *catalog.Client, entry catalog.Entry, title string) (*catalog.AcquiredPack, error) {
 	started := time.Now()
 	frame := 0
 	draw := func(now time.Time) {
 		contentWidth := subpageWidth(a.width()) - 2
-		a.drawSubpage("Install Pack", "DOWNLOAD", []string{fieldRow("Pack", entry.Name, contentWidth), fieldRow("Version", entry.Version, contentWidth), fieldRow("Status", statusText("Downloading"), contentWidth), fieldRow("Elapsed", formatElapsed(now.Sub(started)), contentWidth), "", messageLine(string(`|/-\`[frame])+" Working...", contentWidth, cyan)}, "", false)
+		a.drawSubpage(title, "DOWNLOAD", []string{fieldRow("Pack", entry.Name, contentWidth), fieldRow("Version", entry.Version, contentWidth), fieldRow("Status", statusText("Downloading"), contentWidth), fieldRow("Elapsed", formatElapsed(now.Sub(started)), contentWidth), "", messageLine(string(`|/-\`[frame])+" Working...", contentWidth, cyan)}, "", false)
 	}
 	finished := make(chan remotePackOutcome, 1)
 	go func() {
@@ -1473,7 +1501,358 @@ func catalogEntryInstalled(installed []packstore.InstalledPack, entry catalog.En
 	return false
 }
 
-func (a *app) installPack(sourcePath string, manifest *modelpack.Manifest, inventory []modelstore.Artifact, source string) error {
+// catalogEntryDetail renders the version/status line for one Available Packs
+// row: updates show the installed → available transition, and a newest
+// version with old versions still present asks the user to finish the
+// update.
+func catalogEntryDetail(entry catalog.Entry, state packupdate.State) string {
+	plain := "    " + muted + "v" + entry.Version + "     " + reset
+	switch state.Status {
+	case packupdate.StatusUpdateAvailable:
+		return "    " + muted + "v" + state.Current + " → v" + entry.Version + "     " + reset + statusText("Update Available")
+	case packupdate.StatusFinishUpdate:
+		return "    " + muted + "v" + entry.Version + " (old " + strings.Join(state.OldVersions, ", ") + ")" + "     " + reset + statusText("Finish Update")
+	case packupdate.StatusOlderCatalog:
+		return plain + statusText("Newer Installed")
+	default:
+		status := "Available"
+		if state.Status == packupdate.StatusInstalled {
+			status = "Installed"
+		}
+		return plain + statusText(status)
+	}
+}
+
+// errUpdatePrepareShown marks an update whose preparation failure was already
+// displayed by the normal install flow, so the update wrapper only has to
+// report that the previous version stays installed.
+var errUpdatePrepareShown = errors.New("update preparation failed")
+
+// packUpdateScreen identifies the installed and catalog versions for one
+// update and offers to run it. The update itself acquires and validates the
+// new pack, prepares it through the normal install flow, and only then
+// retires the old version.
+func (a *app) packUpdateScreen(client *catalog.Client, entry catalog.Entry, state packupdate.State) error {
+	selected := 0
+	for {
+		if !a.sizeOK() {
+			exit, err := a.tooSmall()
+			if err != nil || exit {
+				return err
+			}
+			continue
+		}
+		contentWidth := subpageWidth(a.width()) - 2
+		packLines := []string{
+			fieldRow("Pack", entry.Name, contentWidth),
+			fieldRow("Current", "v"+state.Current, contentWidth),
+			fieldRow("Available", "v"+entry.Version, contentWidth),
+		}
+		actionLines := []string{
+			actionRow("Update", selected == 0, false, actionPrimary, contentWidth),
+			actionRow("Back", selected == 1, false, actionSecondary, contentWidth),
+		}
+		a.drawSubpagePanels("Update Pack", []subpagePanel{{title: "PACK", content: packLines}, {title: "ACTIONS", content: actionLines}}, subpageFooter("↑↓ Navigate", "Enter Select", "Esc Back"), false)
+		event, err := a.in.next()
+		if err != nil {
+			return err
+		}
+		switch event.key {
+		case keyCtrlC:
+			return io.EOF
+		case keyEscape:
+			return nil
+		case keyUp, keyDown:
+			selected = 1 - selected
+		case keyEnter:
+			if selected == 1 {
+				return nil
+			}
+			acquired, err := a.downloadRemotePack(client, entry, "Update Pack")
+			if err != nil {
+				if err := a.noticeScreen("Update Pack", []string{err.Error()}); err != nil {
+					return err
+				}
+				continue
+			}
+			inventory, scanErr := modelstore.Scan(a.config.ModelDirectory)
+			if scanErr == nil {
+				scanErr = a.installPack(acquired.Path, acquired.Manifest, inventory, packstore.SourceRemote, state.Current)
+			}
+			closeErr := acquired.Close()
+			if scanErr != nil {
+				return scanErr
+			}
+			if closeErr != nil {
+				return closeErr
+			}
+			return nil
+		}
+	}
+}
+
+func (a *app) confirmPackUpdate(manifest *modelpack.Manifest, plan install.Plan, current string) (bool, error) {
+	selected := 0
+	counts := plan.Counts()
+	for {
+		if !a.sizeOK() {
+			exit, err := a.tooSmall()
+			if err != nil {
+				return false, err
+			}
+			if exit {
+				return false, nil
+			}
+			continue
+		}
+		contentWidth := subpageWidth(a.width()) - 2
+		lines := []string{
+			messageLine(fmt.Sprintf("Update %s to %s?", manifest.Name, manifest.Version), contentWidth, muted), "",
+			fieldRow("Current", "v"+current, contentWidth),
+			fieldRow("Available", "v"+manifest.Version, contentWidth),
+			fieldRow("Selected targets", strconv.Itoa(counts.SelectedTargets), contentWidth),
+			fieldRow("Existing", strconv.Itoa(counts.Existing), contentWidth),
+			fieldRow("Incomplete", strconv.Itoa(counts.Incomplete), contentWidth),
+			fieldRow("Downloads", strconv.Itoa(counts.Downloads), contentWidth),
+			fieldRow("Skipped", strconv.Itoa(counts.Skipped), contentWidth),
+			"",
+			actionRow("No", selected == 0, false, actionSecondary, contentWidth),
+			actionRow("Yes", selected == 1, false, actionPrimary, contentWidth),
+		}
+		a.drawSubpage("Update Pack", "REVIEW", lines, subpageFooter("↑↓ Navigate", "Enter Select", "Esc Cancel"), false)
+		event, err := a.in.next()
+		if err != nil {
+			return false, err
+		}
+		switch event.key {
+		case keyCtrlC:
+			return false, io.EOF
+		case keyEscape:
+			return false, nil
+		case keyUp, keyDown:
+			selected = 1 - selected
+		case keyEnter:
+			return selected == 1, nil
+		}
+	}
+}
+
+// updatePack completes an update after target selection: prepare the new
+// version (which installs it into the pack store and verifies its selected
+// artifacts), roll the new version back unless that fully succeeded, and only
+// then retire the old version through the shared uninstall engine.
+func (a *app) updatePack(sourcePath string, manifest *modelpack.Manifest, plan install.Plan, current string) error {
+	yes, err := a.confirmPackUpdate(manifest, plan, current)
+	if err != nil || !yes {
+		return err
+	}
+	contentWidth := subpageWidth(a.width()) - 2
+	a.drawSubpage("Update Pack", "UPDATING", []string{
+		fieldRow("Pack", manifest.Name, contentWidth),
+		fieldRow("From", "v"+current, contentWidth),
+		fieldRow("To", "v"+manifest.Version, contentWidth),
+		"",
+		messageLine("Preparing the new version…", contentWidth, cyan),
+	}, "", false)
+	outcome := packupdate.Apply(a.paths.PacksRoot, a.paths.DataRoot, a.config.ModelDirectory, manifest.ID, manifest.Version, func() (install.Result, error) {
+		result, prepared, err := a.preparePack("Update Pack", sourcePath, plan, packstore.SourceRemote)
+		if err != nil {
+			return install.Result{}, err
+		}
+		if !prepared {
+			return install.Result{}, errUpdatePrepareShown
+		}
+		return result, nil
+	})
+	switch {
+	case errors.Is(outcome.Err, io.EOF):
+		return outcome.Err
+	case outcome.Outcome == packupdate.OutcomeUpdated, outcome.Outcome == packupdate.OutcomeRetireIncomplete:
+		return a.packUpdateResultScreen(manifest, current, outcome)
+	case outcome.Outcome == packupdate.OutcomePrepareIncomplete:
+		return a.packUpdateResultScreen(manifest, current, outcome)
+	case errors.Is(outcome.Err, errUpdatePrepareShown):
+		a.message = "Update did not complete — version " + current + " is still installed."
+		return nil
+	default:
+		return a.noticeScreen("Update Pack", []string{
+			"Update did not complete — version " + current + " is still installed.",
+			outcome.Err.Error(),
+		})
+	}
+}
+
+func (a *app) packUpdateResultScreen(manifest *modelpack.Manifest, current string, outcome packupdate.Result) error {
+	token, _, err := hf.Get()
+	if err != nil {
+		return err
+	}
+	for {
+		if !a.sizeOK() {
+			exit, err := a.tooSmall()
+			if err != nil || exit {
+				return err
+			}
+			continue
+		}
+		contentWidth := subpageWidth(a.width()) - 2
+		styled := []string{}
+		for _, line := range packUpdateSummary(manifest, current, outcome, token != "") {
+			styled = append(styled, messageLine(line, contentWidth, muted))
+		}
+		a.drawSubpage("Update Pack", "RESULT", styled, subpageFooter("Enter Continue", "Esc Back"), false)
+		event, err := a.in.next()
+		if err != nil {
+			return err
+		}
+		if event.key == keyCtrlC {
+			return io.EOF
+		}
+		if event.key == keyEscape || event.key == keyEnter {
+			return nil
+		}
+	}
+}
+
+// packUpdateSummary renders the update result screen contents: the completed
+// update with what retiring the old version cleaned up, or — when the new
+// version could not be prepared completely — the kept previous version with
+// the per-artifact outcomes.
+func packUpdateSummary(manifest *modelpack.Manifest, current string, outcome packupdate.Result, tokenConfigured bool) []string {
+	if outcome.Outcome == packupdate.OutcomeUpdated || outcome.Outcome == packupdate.OutcomeRetireIncomplete {
+		lines := []string{green + "Pack updated to " + manifest.Version + "." + reset, ""}
+		for _, retired := range outcome.Retired {
+			for _, item := range retired.Items {
+				lines = append(lines, item.Artifact, item.Outcome, "")
+			}
+		}
+		if outcome.Outcome == packupdate.OutcomeRetireIncomplete {
+			lines = append(lines,
+				"An older pack version could not be removed:",
+				outcome.Err.Error(),
+				"",
+				"Finish the update later from Available Packs.",
+				"",
+			)
+		}
+		return append(lines, "Press Enter to continue.")
+	}
+	lines := []string{
+		red + "Update did not complete." + reset,
+		"Version " + current + " is still installed.",
+		"",
+	}
+	if outcome.Err != nil && !errors.Is(outcome.Err, errUpdatePrepareShown) {
+		lines = append(lines, outcome.Err.Error(), "")
+	}
+	return append(lines, packArtifactSummary(outcome.Prepared, tokenConfigured)...)
+}
+
+// packFinishUpdateScreen resolves the dual-version state left by an
+// interrupted update (or by installing a newer pack version alongside an
+// older one before updates existed): the newest version is already installed
+// and only the old versions remain to retire. No new download happens here.
+func (a *app) packFinishUpdateScreen(entry catalog.Entry, state packupdate.State) error {
+	selected := 0
+	for {
+		if !a.sizeOK() {
+			exit, err := a.tooSmall()
+			if err != nil || exit {
+				return err
+			}
+			continue
+		}
+		contentWidth := subpageWidth(a.width()) - 2
+		packLines := []string{
+			fieldRow("Pack", entry.Name, contentWidth),
+			fieldRow("Installed", "v"+entry.Version, contentWidth),
+			fieldRow("Old version", "v"+strings.Join(state.OldVersions, ", v"), contentWidth),
+		}
+		detailLines := []string{messageLine("Version "+entry.Version+" is installed; an older version is still present.", contentWidth, muted)}
+		actionLines := []string{
+			actionRow("Remove Old Version", selected == 0, false, actionDestructive, contentWidth),
+			actionRow("Back", selected == 1, false, actionSecondary, contentWidth),
+		}
+		a.drawSubpagePanels("Update Pack", []subpagePanel{{title: "PACK", content: packLines}, {title: "DETAILS", content: detailLines}, {title: "ACTIONS", content: actionLines}}, subpageFooter("↑↓ Navigate", "Enter Select", "Esc Back"), false)
+		event, err := a.in.next()
+		if err != nil {
+			return err
+		}
+		switch event.key {
+		case keyCtrlC:
+			return io.EOF
+		case keyEscape:
+			return nil
+		case keyUp, keyDown:
+			selected = 1 - selected
+		case keyEnter:
+			if selected == 1 {
+				return nil
+			}
+			yes, err := a.confirm("Remove old pack version " + strings.Join(state.OldVersions, ", ") + "?")
+			if err != nil {
+				return err
+			}
+			if !yes {
+				continue
+			}
+			contentWidth := subpageWidth(a.width()) - 2
+			a.drawSubpage("Update Pack", "REMOVING", []string{fieldRow("Pack", entry.Name, contentWidth), "", messageLine("Removing the old pack version…", contentWidth, red)}, "", false)
+			retired, err := packupdate.RetireOlder(a.paths.PacksRoot, a.paths.DataRoot, a.config.ModelDirectory, entry.ID, entry.Version)
+			if err != nil {
+				if err := a.messageScreen("Update Pack", err.Error()); err != nil {
+					return err
+				}
+				continue
+			}
+			return a.packRetireResultScreen(entry, retired)
+		}
+	}
+}
+
+func (a *app) packRetireResultScreen(entry catalog.Entry, retired []uninstall.Result) error {
+	for {
+		if !a.sizeOK() {
+			exit, err := a.tooSmall()
+			if err != nil || exit {
+				return err
+			}
+			continue
+		}
+		contentWidth := subpageWidth(a.width()) - 2
+		lines := []string{
+			messageLine("● OLD VERSION REMOVED", contentWidth, green),
+			"",
+			messageLine("Old pack version removed.", contentWidth, muted),
+			messageLine("Current version: "+entry.Version, contentWidth, muted),
+			"",
+		}
+		for _, result := range retired {
+			for _, item := range result.Items {
+				lines = append(lines, messageLine(item.Artifact, contentWidth, muted), messageLine(item.Outcome, contentWidth, muted))
+			}
+		}
+		lines = append(lines, "", messageLine("Press Enter to continue.", contentWidth, muted))
+		a.drawSubpage("Update Pack", "RESULT", lines, subpageFooter("Enter Continue", "Esc Back"), false)
+		event, err := a.in.next()
+		if err != nil {
+			return err
+		}
+		if event.key == keyCtrlC {
+			return io.EOF
+		}
+		if event.key == keyEscape || event.key == keyEnter {
+			return nil
+		}
+	}
+}
+
+// installPack runs the pack installation flow: target selection, gated-model
+// preflight, confirmation, and artifact preparation. updateCurrent is the
+// currently installed version when this is an update ("" for a plain
+// install); updates confirm with update wording and finish by retiring the
+// old version only after the new one is fully prepared.
+func (a *app) installPack(sourcePath string, manifest *modelpack.Manifest, inventory []modelstore.Artifact, source string, updateCurrent string) error {
 	selection := localPackSelection{targets: install.Targets(manifest), selected: map[string]bool{}}
 	focused := 0
 	for {
@@ -1489,7 +1868,11 @@ func (a *app) installPack(sourcePath string, manifest *modelpack.Manifest, inven
 			focused = 0
 		}
 		contentWidth := subpageWidth(a.width()) - 2
-		lines := []string{messageLine(manifest.Name+"  v"+manifest.Version, contentWidth, muted), ""}
+		header := manifest.Name + "  v" + manifest.Version
+		if updateCurrent != "" {
+			header = manifest.Name + "  v" + updateCurrent + " → v" + manifest.Version
+		}
+		lines := []string{messageLine(header, contentWidth, muted), ""}
 		for index, target := range selection.targets {
 			state := string(modelstore.Assess(inventory, target).State)
 			mark := "[ ]"
@@ -1501,7 +1884,11 @@ func (a *app) installPack(sourcePath string, manifest *modelpack.Manifest, inven
 			lines = append(lines, focusRow(label, index == focused, false, contentWidth), "    "+statusText(state))
 		}
 		lines = append(lines, "", actionRow("Continue", focused == len(selection.targets), false, actionPrimary, contentWidth), actionRow("Back", focused == len(selection.targets)+1, false, actionSecondary, contentWidth))
-		a.drawSubpage("Install Pack", "TARGETS", lines, subpageFooter("↑↓ Navigate", "Enter Toggle/Select", "Esc Back"), false)
+		title := "Install Pack"
+		if updateCurrent != "" {
+			title = "Update Pack"
+		}
+		a.drawSubpage(title, "TARGETS", lines, subpageFooter("↑↓ Navigate", "Enter Toggle/Select", "Esc Back"), false)
 		event, err := a.in.next()
 		if err != nil {
 			return err
@@ -1531,11 +1918,21 @@ func (a *app) installPack(sourcePath string, manifest *modelpack.Manifest, inven
 				if !continueInstall {
 					return nil
 				}
+				if updateCurrent != "" {
+					return a.updatePack(sourcePath, manifest, plan, updateCurrent)
+				}
 				yes, err := a.confirmPackInstall(manifest, plan)
 				if err != nil || !yes {
 					return err
 				}
-				return a.preparePack(sourcePath, plan, source)
+				result, prepared, err := a.preparePack(title, sourcePath, plan, source)
+				if err != nil {
+					return err
+				}
+				if !prepared {
+					return nil
+				}
+				return a.packInstallResult(result)
 			default:
 				return nil
 			}
@@ -1637,12 +2034,16 @@ func (a *app) confirmPackInstall(manifest *modelpack.Manifest, plan install.Plan
 	}
 }
 
-func (a *app) preparePack(sourcePath string, plan install.Plan, source string) error {
+// preparePack runs the artifact preparation for a pack and reports whether
+// preparation ran to completion. Failures the flow displays itself (access
+// notices, error screens) return prepared=false with a nil error so callers
+// can react without double-reporting; only terminal errors are returned.
+func (a *app) preparePack(title, sourcePath string, plan install.Plan, source string) (install.Result, bool, error) {
 	token, _, err := hf.Get()
 	if err != nil {
-		return err
+		return install.Result{}, false, err
 	}
-	a.drawSubpage("Install Pack", "PREPARING", []string{messageLine("Preparing pack…", subpageWidth(a.width())-2, cyan)}, "", false)
+	a.drawSubpage(title, "PREPARING", []string{messageLine("Preparing pack…", subpageWidth(a.width())-2, cyan)}, "", false)
 	events := make(chan install.Event, 1)
 	finished := make(chan preparationOutcome, 1)
 	client := hf.NewClient(token)
@@ -1669,7 +2070,7 @@ func (a *app) preparePack(sourcePath string, plan install.Plan, source string) e
 				a.runtimeDownloadProgress(*runtimeState)
 				modelState = nil
 			} else {
-				modelState = a.showInstallEvent(modelState, event)
+				modelState = a.showInstallEvent(title, modelState, event)
 				runtimeState = nil
 			}
 		case now := <-ticker.C:
@@ -1690,25 +2091,31 @@ func (a *app) preparePack(sourcePath string, plan install.Plan, source string) e
 					}
 					runtimeState.update(event.RuntimeProgress)
 				} else {
-					modelState = a.showInstallEvent(modelState, event)
+					modelState = a.showInstallEvent(title, modelState, event)
 				}
 			default:
 			}
 			if outcome.err != nil {
 				if hf.IsAccessFailure(outcome.err) {
-					return a.hfAccessFailureNotice(outcome.err)
+					if err := a.hfAccessFailureNotice(outcome.err); err != nil {
+						return install.Result{}, false, err
+					}
+					return install.Result{}, false, nil
 				}
-				return a.messageScreen("Install Pack", outcome.err.Error())
+				if err := a.messageScreen(title, outcome.err.Error()); err != nil {
+					return install.Result{}, false, err
+				}
+				return install.Result{}, false, nil
 			}
-			return a.packInstallResult(outcome.result)
+			return outcome.result, true, nil
 		}
 	}
 }
 
-func (a *app) showInstallEvent(state *modelDownloadState, event install.Event) *modelDownloadState {
+func (a *app) showInstallEvent(title string, state *modelDownloadState, event install.Event) *modelDownloadState {
 	if event.Repository == nil {
 		contentWidth := subpageWidth(a.width()) - 2
-		a.drawSubpage("Install Pack", "PREPARING", []string{fieldRow("Model", event.Artifact.Repo, contentWidth), "", messageLine("Retrieving exact revision metadata…", contentWidth, muted)}, "", false)
+		a.drawSubpage(title, "PREPARING", []string{fieldRow("Model", event.Artifact.Repo, contentWidth), "", messageLine("Retrieving exact revision metadata…", contentWidth, muted)}, "", false)
 		return nil
 	}
 	if state == nil || state.repository != event.Repository.Repo {
@@ -1756,6 +2163,13 @@ func (a *app) packInstallResult(result install.Result) error {
 
 func packInstallSummary(result install.Result, tokenConfigured bool) []string {
 	lines := []string{blue + "Pack installed." + reset, ""}
+	return append(lines, packArtifactSummary(result, tokenConfigured)...)
+}
+
+// packArtifactSummary renders the per-artifact outcomes and retry guidance
+// shared by the install and update result screens.
+func packArtifactSummary(result install.Result, tokenConfigured bool) []string {
+	lines := []string{}
 	if len(result.Items) == 0 && len(result.RuntimeItems) == 0 {
 		lines = append(lines,
 			"No models were downloaded.",
