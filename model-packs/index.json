@@ -7,6 +7,13 @@
       "version": "1.0.1",
       "archive_url": "https://github.com/wu1ff/B70-LLM-Controller/releases/download/qwen3.8-27b-v1.0.1/qwen38-27b-b70-1.0.1.tar.gz",
       "sha256": "sha256:6f857de7f79573aa4f1a6a4e5d51b3a312bce51c9f1a9a8ea42f6acbba3f6bff"
+    },
+    {
+      "id": "qwen36-35b-a3b-b70",
+      "name": "Qwen3.6-35B-A3B B70 Pack (Base / DFlash)",
+      "version": "1.0.0",
+      "archive_url": "https://github.com/wu1ff/B70-LLM-Controller/releases/download/qwen3.6-35b-a3b-v1.0.0/qwen36-35b-a3b-b70-1.0.0.tar.gz",
+      "sha256": "sha256:899ae802de6495186bf94bb8cc72704ce7540fbdb06e35fe14e1d666ee6f7e6a"
     }
   ]
 }

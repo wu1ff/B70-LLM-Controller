@@ -30,6 +30,11 @@ const (
 	publicArchiveURL = "https://packs.example.com/" + publicArchiveName
 )
 
+// publishedPackDirectories lists every pack directory that must have a
+// matching tracked catalog entry. A pack's release tag is the lowercased
+// directory name plus -v<version> (Qwen3.8-27B -> qwen3.8-27b-v1.0.1).
+var publishedPackDirectories = []string{"Qwen3.8-27B", "Qwen3.6-35B-A3B"}
+
 // Pack distribution archives are generated release artifacts and are not
 // committed. The tests build them from the source pack with the established
 // normalization: the pack's three files in sorted order, regular mode 0644,
@@ -185,8 +190,8 @@ func TestTrackedCatalogListsNoRepositoryArchives(t *testing.T) {
 	}
 }
 
-// The tracked catalog entry for the published pack must stay in lockstep
-// with the pack source directory: matching id, name, and version; the
+// The tracked catalog entries for the published packs must stay in lockstep
+// with the pack source directories: matching id, name, and version; the
 // SHA-256 of the archive built from that source by the established
 // normalization; and the archive hosted at the pack tag's GitHub release
 // download URL. Validated without requiring the archive to be committed.
@@ -203,29 +208,40 @@ func TestTrackedCatalogMatchesPublishedPack(t *testing.T) {
 	if closeErr != nil {
 		t.Fatal(closeErr)
 	}
-	if len(catalog.Packs) != 1 {
-		t.Fatalf("tracked catalog lists %d packs, want exactly the published Qwen3.8-27B pack", len(catalog.Packs))
-	}
-	entry := catalog.Packs[0]
-
-	packPath := filepath.Join("..", "..", "model-packs", publicPackDirectory)
-	manifest, err := modelpack.Load(packPath)
-	if err != nil {
-		t.Fatal(err)
-	}
-	if entry.ID != manifest.ID || entry.Name != manifest.Name || entry.Version != manifest.Version {
-		t.Fatalf("catalog entry %+v does not match pack manifest id/name/version %+v", entry, manifest)
+	if len(catalog.Packs) != len(publishedPackDirectories) {
+		t.Fatalf("tracked catalog lists %d packs, want exactly the %d published packs %v", len(catalog.Packs), len(publishedPackDirectories), publishedPackDirectories)
 	}
 
-	archivePath := filepath.Join(t.TempDir(), publicArchiveName)
-	writePackArchive(t, packPath, archivePath)
-	if digest := fileDigest(t, archivePath); entry.SHA256 != digest {
-		t.Fatalf("catalog sha256 %s does not match archive built from pack source %s", entry.SHA256, digest)
-	}
+	for _, directory := range publishedPackDirectories {
+		packPath := filepath.Join("..", "..", "model-packs", directory)
+		manifest, err := modelpack.Load(packPath)
+		if err != nil {
+			t.Fatal(err)
+		}
+		var entry Entry
+		for _, candidate := range catalog.Packs {
+			if candidate.ID == manifest.ID {
+				entry = candidate
+			}
+		}
+		if entry.ID == "" {
+			t.Fatalf("pack %s (%s) has no catalog entry; catalogs and pack directories must be added together", manifest.ID, directory)
+		}
+		if entry.Name != manifest.Name || entry.Version != manifest.Version {
+			t.Fatalf("catalog entry %+v does not match pack manifest id/name/version %+v", entry, manifest)
+		}
 
-	wantURL := "https://github.com/wu1ff/B70-LLM-Controller/releases/download/qwen3.8-27b-v" + manifest.Version + "/" + manifest.ID + "-" + manifest.Version + ".tar.gz"
-	if entry.ArchiveURL != wantURL {
-		t.Fatalf("catalog archive_url %s does not match pack release download URL %s", entry.ArchiveURL, wantURL)
+		archiveName := manifest.ID + "-" + manifest.Version + ".tar.gz"
+		archivePath := filepath.Join(t.TempDir(), archiveName)
+		writePackArchive(t, packPath, archivePath)
+		if digest := fileDigest(t, archivePath); entry.SHA256 != digest {
+			t.Fatalf("catalog sha256 %s does not match archive built from pack source %s", entry.SHA256, digest)
+		}
+
+		wantURL := "https://github.com/wu1ff/B70-LLM-Controller/releases/download/" + strings.ToLower(directory) + "-v" + manifest.Version + "/" + archiveName
+		if entry.ArchiveURL != wantURL {
+			t.Fatalf("catalog archive_url %s does not match pack release download URL %s", entry.ArchiveURL, wantURL)
+		}
 	}
 }
 
