@@ -109,9 +109,12 @@ make release        # additionally requires tag v<VERSION> at HEAD
 
 The `VERSION` file is the single version authority. Tags follow `v` + `VERSION` (`v1.0.0`); in Debian package versions a pre-release dash becomes `~`. Both release commands require a clean tracked tree, run the full test, vet, build, and packaging cycle, and write the `.deb` and `SHA256SUMS` to `dist/`. Nothing uploads automatically; publishing is a manual step.
 
-## Included pack
+## Included model packs
 
-[Qwen3.8-27B](model-packs/Qwen3.8-27B/README.md) is the currently included qualified pack, distributed with this repository. It covers standard and uncensored FP8 and INT4 checkpoints with Base, MTP1, and dFlash2 serving modes where each combination passed qualification.
+- [Qwen3.8-27B](model-packs/Qwen3.8-27B/README.md) — standard and uncensored FP8 and INT4 checkpoints with Base, MTP1, and dFlash2 modes where each combination passed qualification.
+- [Qwen3.6-35B-A3B](model-packs/Qwen3.6-35B-A3B/README.md) — FP8 and INT4 checkpoints with Base and DFlash modes across the qualified one-, two-, and four-card profiles.
+
+Each pack pins its own exact model revisions, runtime image, context/card matrix, and launch settings. See the pack README for the full qualification matrix.
 
 ## Status
 
