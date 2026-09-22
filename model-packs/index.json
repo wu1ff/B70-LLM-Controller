@@ -1,19 +1,19 @@
 {
-  "schema_version": 1,
-  "packs": [
-    {
-      "id": "qwen38-27b-b70",
-      "name": "Qwen3.8 27B B70 Pack (MTP1 / dFlash2)",
-      "version": "1.0.3",
-      "archive_url": "https://github.com/wu1ff/B70-LLM-Controller/releases/download/qwen3.8-27b-v1.0.3/qwen38-27b-b70-1.0.3.tar.gz",
-      "sha256": "sha256:be5b9a5114d524f52d4cc3e790920d47c2d3de2ae61d52be1fd4f907de5dfee0"
-    },
-    {
-      "id": "qwen36-35b-a3b-b70",
-      "name": "Qwen3.6-35B-A3B B70 Pack (Base / DFlash)",
-      "version": "1.0.0",
-      "archive_url": "https://github.com/wu1ff/B70-LLM-Controller/releases/download/qwen3.6-35b-a3b-v1.0.0/qwen36-35b-a3b-b70-1.0.0.tar.gz",
-      "sha256": "sha256:899ae802de6495186bf94bb8cc72704ce7540fbdb06e35fe14e1d666ee6f7e6a"
-    }
-  ]
+    "schema_version": 1,
+    "packs": [
+        {
+            "id": "qwen38-27b-b70",
+            "name": "Qwen3.8 27B B70 Pack (MTP1 / dFlash2)",
+            "version": "1.0.4",
+            "archive_url": "https://github.com/wu1ff/B70-LLM-Controller/releases/download/qwen3.8-27b-v1.0.4/qwen38-27b-b70-1.0.4.tar.gz",
+            "sha256": "sha256:9fd27217ca1f10ed723120ddf260df213c32bb2fda714ed689007cc3e356b818"
+        },
+        {
+            "id": "qwen36-35b-a3b-b70",
+            "name": "Qwen3.6-35B-A3B B70 Pack (Base / DFlash)",
+            "version": "1.0.0",
+            "archive_url": "https://github.com/wu1ff/B70-LLM-Controller/releases/download/qwen3.6-35b-a3b-v1.0.0/qwen36-35b-a3b-b70-1.0.0.tar.gz",
+            "sha256": "sha256:899ae802de6495186bf94bb8cc72704ce7540fbdb06e35fe14e1d666ee6f7e6a"
+        }
+    ]
 }

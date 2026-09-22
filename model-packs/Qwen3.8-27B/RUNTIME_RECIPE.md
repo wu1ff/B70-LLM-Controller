@@ -244,7 +244,110 @@ The last blocker for prefix caching on this hybrid-GDN runtime was an address bu
 
 **What I changed.** One file: the retained upstream PR #48109 fix (`patches/012-xpu-mamba-pointer-overflow/`) — a `_reinterpret_u64_as_i64` helper wrapped around exactly those two stores. Subtracting 2^64 yields the same 64-bit pattern in two's-complement signed form; dtypes, call sites, and the Triton consumer ABI (int64 load → offset arithmetic → bit-cast to pointer) are unchanged. For pointers < 2^63 the helper is the identity, and for pointers ≥ 2^63 the parent crashed — there is no input where both complete with different bits, which is the Base/MTP1 inertness argument (their launch contracts are untouched).
 
-**What that gave me.** DFlash2 production APC turned ON (`--enable-prefix-caching`, effective ALIGN via the normal config path), qualified 2026-09-22 with verdict PROMOTE: 12/12 delta lanes across INT4 TP1/TP2/TP4 and FP8 TP2/TP4, standard + uncensored artifacts each, with real FA+Mamba prefix-cache hits, tool calls, restart episodes, 951/951 strict proposal-q rows matched (0 misses) on the new lanes, and a 12/12 health campaign with zero fault-class events. Two utilization envelopes were corrected as pack-envelope fixes (independently required by the APC-off parent, not an ALIGN tax): INT4 DFlash2 TP1 32K → 0.91, INT4 DFlash2 TP2 256K → 0.86; all other DFlash2 profiles stay 0.82. Effective posture: APC ON, Mamba cache mode ALIGN, probabilistic N=7, standard rejection, AsyncScheduler. Text and tools only — vision remains separately unqualified (the TORCH_SDPA encoder defect).
+**What that gave me.** DFlash2 production APC turned ON (`--enable-prefix-caching`, effective ALIGN via the normal config path), qualified 2026-09-22 with verdict PROMOTE: 12/12 delta lanes across INT4 TP1/TP2/TP4 and FP8 TP2/TP4, standard + uncensored artifacts each, with real FA+Mamba prefix-cache hits, tool calls, restart episodes, 951/951 strict proposal-q rows matched (0 misses) on the new lanes, and a 12/12 health campaign with zero fault-class events. Two utilization envelopes were corrected as pack-envelope fixes (independently required by the APC-off parent, not an ALIGN tax): INT4 DFlash2 TP1 32K → 0.91, INT4 DFlash2 TP2 256K → 0.86; all other DFlash2 profiles stay 0.82. Effective posture: APC ON, Mamba cache mode ALIGN, probabilistic N=7, standard rejection, AsyncScheduler. Text and tools only at promotion time — vision was resolved separately the same day without touching these bytes (next section).
+
+---
+
+## Vision: VISION-LAUNCH-FLAG-FIX (2026-09-22, launch contract only — no image change)
+
+Vision input died on every 1.0.x lane with `RuntimeError: could not create a primitive` out of oneDNN, reached from the ViT encoder's scaled-dot-product-attention. The mechanism, proven from the frozen 1.0.3 bytes plus one diagnostic boot:
+
+```text
+v0.21-era tuning flag --mm-encoder-attn-backend TORCH_SDPA
+  -> copied forward verbatim into every v0.26 recipe/launch contract
+  -> on image input the head-dim-72 ViT SDPA path asks oneDNN 3.12 for
+     a primitive it cannot create
+  -> engine death on the FIRST image request (text-only traffic never
+     reaches the encoder, which is why text/tools qualification never
+     saw it)
+
+remove the stale override
+  -> XPU platform default selection: FLASH_ATTN
+  -> existing vllm-xpu-kernels ViT flash path (kernels byte-identical
+     to the vision-qualified Qwen3.6 r9-c1 runtime)
+  -> vision works
+```
+
+The fix is exactly the removal of `--mm-encoder-attn-backend TORCH_SDPA`
+from the launch contract (recipes, pack runtime command). No explicit
+`FLASH_ATTN` override was added — the qualified posture is *no explicit
+override*, letting the XPU default select FLASH_ATTN. No source patch, no
+image rebuild: the runtime bytes remain `c0c9b8f3…` (tag 1.0.3).
+
+**External-report history corrected.** The external deployment capture
+previously cited as a "working vision contrast" was not one: its first
+image request reached patch embedding (the Triton `_bilinear_pos_embed_kernel`
+frame in its traceback) and then died at the SAME TORCH_SDPA
+primitive-creation path. The old inference that the presence of the Triton
+kernel in the trace proved working vision upstream is wrong — it only
+proved the request got as far as patch embedding before the encoder
+attention backend failed. Both our lanes and the external capture fail at
+the identical defect; removing the stale flag is the complete fix.
+
+**What is live-proven.** On INT4 DFlash2 TP2 65536 @util 0.82, APC ON
+(effective ALIGN), the diagnostic boot (2026-09-22, container
+`qwen38-visionfix-c1`, image identity-gated `c0c9b8f3…`) proved: text
+PASS; vision cold PASS (512×512, grounded answer, 1.9 s); vision warm
+PASS (second image, 1.4 s); APC + vision PASS (11K-token text producer →
+image-bearing consumer, engine prefix-cache hit 45.1%, SpecDecoding live);
+vision-grounded tool call PASS (parsed structured `report_colors`
+arguments); health 200; zero fault signatures; whole-battery memory
+envelope ≤ ~0.5 GiB/device (256-patch fixtures — a floor, not a ceiling).
+
+The backend fix itself is vision-path/model-level and carries by
+launch/source equivalence to every other profile (the flag was
+runtime-level and identical across Base/MTP1/DFlash2 recipes). It is NOT
+separately live-qualified on every Base/MTP1/uncensored/topology
+combination, and this document does not claim it was.
+
+**TP1 vision boundary (documented, not re-measured).** INT4 TP1 32K
+@util 0.91 has only ~0.9–1.1 GiB residual per device. The TP2 diagnostic
+measured ≤ ~0.5 GiB/device for small images, but that is a floor and
+larger images cost more. Therefore INT4 TP1 32K: text/tools qualified;
+the vision backend fix applies by launch equivalence; the vision memory
+envelope is NOT qualified; large-image/multimodal use is not recommended
+on this marginal profile. No boot was spent resolving it.
+
+---
+
+## Short-prefix APC behavior (hybrid FA+Mamba geometry — expected, not a defect)
+
+DFlash2 APC uses 1024-token hybrid cache blocks. Because speculative
+decoding retains one lookahead block (the EAGLE drop) and Mamba state is
+materialized only at safe chunk boundaries (2048-token cadence under the
+production ALIGN prefill), very short shared prefixes may not produce
+reusable cache state. On the TP2 production geometry, the reconciled-hit
+staircase (derived from the 1.0.3 source, anchored by the retained
+2026-09-21/22 A2/A3 live lanes at 1568→0 / 3504→2048 / 3584→2048, and
+confirmed at the exact boundaries by the 2026-09-22 closeout matrix) is:
+
+```text
+shared prefix < 3072 tokens  ->  no reconciled reuse (hit 0)
+shared 3072–5119 tokens      ->  2048 reusable tokens
+shared 5120–7167 tokens      ->  4096 reusable tokens
+(each further 2048 tokens of shared prefix adds 2048 reusable tokens)
+```
+
+A zero hit below the ~3K threshold is APC geometry working as designed —
+the fixed-point reconciliation only restores a prefix that every surface
+(attention KV after the EAGLE drop, and a materialized Mamba chunk-end
+state) can vouch for simultaneously. It is not an APC failure and needs
+no user action; prefixes ≥ 3K restore normally. (Live law: smallest
+useful shared prefix = 3072 exactly — 3071 yields 0; next staircase at
+5120; deterministic from block/chunk geometry.)
+
+## INT4 TP2 256K — maximum-capacity profile warning
+
+INT4 DFlash2 (and Base/MTP1) TP2 at 262,144 context is a
+maximum-capacity profile. Exact qualified numbers (2026-09-22 §20
+campaign): KV capacity 264,248 tokens at util 0.86 — a capacity ratio of
+~1.01× the configured context window; runtime peak free memory in the
+232K test ~1.8 GiB/device. The runtime is stable; the limitation is KV
+concurrency at maximum context. INT4 TP2 256K is intended for one
+near-full-context request at a time — useful concurrency should not be
+expected when requests approach 256K tokens. (INT4 TP4 256K and FP8
+TP4 256K have materially larger capacity ratios and are not covered by
+this warning.)
 
 ---
 
@@ -295,4 +398,4 @@ Serving modes: **Base** (plain decode), **MTP1** (the model's own one-token mult
 - The dFlash2 noise cache preserves exact noise tensors and GPU RNG state per request; it does not make seeded stochastic sampling deterministic (that was never deterministic), and no all-temperature output-parity claim is made beyond the validated greedy lane.
 - The promoted image's qualification record retains one unexplained hardware event: a 2026-09-12 08:04Z cold-initialization engine fault (GPU1, during draft weight loading, before any serving) that preceded the campaign, resolved by a host reboot. Three subsequent fully cold initializations and the entire qualification campaign on the same bytes were clean, the fault was never attributed to the cache (the cached path had not executed at the point of failure), and the prior-boot fault history of the affected cards is part of the retained record.
 - `orcarouter/Qwen3.8-27B-Uncensored-FP8` is access-controlled on Hugging Face; the other four repositories resolve publicly at the pinned revisions.
-- DFlash2 Automatic Prefix Caching is ON in production since 2026-09-22 (`--enable-prefix-caching`; the Qwen3.8 hybrid config resolves the Mamba cache mode to ALIGN), qualified text + tools across INT4 TP1/TP2/TP4 and FP8 TP2/TP4 — vision is NOT included (the TORCH_SDPA encoder defect remains a separate unresolved ticket; do not advertise vision for these lanes). Base and MTP1 keep their engine-default APC posture. The 2026-09-21 scheduler fix does not weaken the strict proposal-probability verifier: a suppressed round degrades to plain decode rather than substituting a fallback distribution.
+- DFlash2 Automatic Prefix Caching is ON in production since 2026-09-22 (`--enable-prefix-caching`; the Qwen3.8 hybrid config resolves the Mamba cache mode to ALIGN), qualified text + tools across INT4 TP1/TP2/TP4 and FP8 TP2/TP4. Vision was fixed the same day by the VISION-LAUNCH-FLAG-FIX (removal of the stale `--mm-encoder-attn-backend TORCH_SDPA` override → XPU default FLASH_ATTN ViT): live-qualified INT4 DFlash2 TP2 64K (cold/warm/APC-composed vision, vision-grounded tool call); other profiles carry the fix by launch equivalence, with the INT4 TP1 32K vision memory envelope explicitly unqualified (see the vision section above). Base and MTP1 keep their engine-default APC posture. The 2026-09-21 scheduler fix does not weaken the strict proposal-probability verifier: a suppressed round degrades to plain decode rather than substituting a fallback distribution.

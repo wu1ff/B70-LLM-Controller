@@ -133,8 +133,7 @@ Mamba cache mode to ALIGN). Qualification (verdict PROMOTE): 12/12
 delta lanes across INT4 TP1/TP2/TP4 and FP8 TP2/TP4, standard and
 uncensored artifacts each, with real FA+Mamba prefix-cache hits, tool
 calls, restarts, 951/951 strict proposal rows with zero misses, and a
-clean 12/12 health campaign. Text and tools are qualified — vision
-remains separately unqualified and must not be assumed on these lanes.
+clean 12/12 health campaign. Text and tools are qualified.
 Two DFlash2 utilization envelopes changed with this pack as
 pack-envelope corrections independently required by the previous
 runtime as well (not an ALIGN tax): INT4 dFlash2 TP1 32K serves at
@@ -142,6 +141,44 @@ runtime as well (not an ALIGN tax): INT4 dFlash2 TP1 32K serves at
 at 0.82. The previous digests `sha256:314786fd…c90f` (tag `1.0.2`) and
 `sha256:78a3720f…be1aa` (tag `1.0.0`) remain pullable by digest as the
 retained parents.
+
+### Pack 1.0.4 — vision fix (launch contract only)
+
+Pack 1.0.4 (2026-09-22 final closeout) changes NO runtime byte: the
+image, digest, and registry reference above are unchanged. The single
+semantic change is the removal of the stale
+`--mm-encoder-attn-backend TORCH_SDPA` launch override, which made the
+ViT encoder ask oneDNN 3.12 for a head-dim-72 SDPA primitive it cannot
+create — every image request died there ("could not create a
+primitive"; text-only traffic never reaches the encoder). With the
+override removed the XPU platform default selects FLASH_ATTN for the
+ViT and vision works. **Vision is live-qualified on INT4 dFlash2 TP2
+64K** (cold and warm image grounding, prefix-cache-composed vision,
+and an image-grounded tool call); every other profile carries the same
+fix by launch equivalence (the flag was runtime-level and identical
+across Base/MTP1/dFlash2). Exception: **INT4 TP1 32K's vision memory
+envelope is unqualified** (~0.9–1.1 GiB residual at util 0.91 vs a
+~0.5 GiB small-image floor) — large-image or multimodal use is not
+recommended on that profile.
+
+### Capacity and cache-behavior notes
+
+**INT4 TP2 256K is a maximum-capacity profile** (all modes): its KV
+pool is sized at roughly 1.01x the configured context window (264,248
+tokens at util 0.86 against a 262,144-token context; ~1.8 GiB/device
+peak free in the 232K test). The runtime is stable; the limitation is
+KV concurrency at maximum context — expect one near-full-context
+request at a time, and do not expect useful concurrency when requests
+approach 256K tokens. INT4 TP4 256K and FP8 TP4 256K have materially
+larger capacity ratios and are not affected.
+
+**Short shared prefixes may not cache-reuse on dFlash2** (expected
+geometry, not a failure): APC uses 1024-token hybrid blocks and Mamba
+state materializes only at 2048-token chunk boundaries, with one
+lookahead block reserved by speculative decoding. Shared prefixes
+under ~3072 tokens produce no reconciled reuse; 3072–5119 shared
+tokens restore 2048; 5120–7167 restore 4096; each further 2048 shared
+tokens adds 2048 restored.
 
 Every launch requires `CCL_SYCL_ALLREDUCE_TMP_BUF=1` and
 `CCL_SYCL_ALLGATHERV_TMP_BUF=1`. Patch 010's serving synchronization was

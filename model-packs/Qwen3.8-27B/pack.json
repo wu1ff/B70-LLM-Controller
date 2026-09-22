@@ -2,7 +2,7 @@
   "schema_version": 1,
   "id": "qwen38-27b-b70",
   "name": "Qwen3.8 27B B70 Pack (MTP1 / dFlash2)",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "models": [
     {
       "id": "qwen38-27b-fp8",
@@ -704,8 +704,6 @@
           "--trust-remote-code",
           "--limit-mm-per-prompt",
           "{\"image\":2,\"video\":0}",
-          "--mm-encoder-attn-backend",
-          "TORCH_SDPA",
           "--mm-processor-kwargs",
           "{\"size\":{\"longest_edge\":1048576,\"shortest_edge\":65536}}",
           "--skip-mm-profiling",
