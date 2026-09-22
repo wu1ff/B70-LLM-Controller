@@ -2,7 +2,7 @@
   "schema_version": 1,
   "id": "qwen38-27b-b70",
   "name": "Qwen3.8 27B B70 Pack (MTP1 / dFlash2)",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "models": [
     {
       "id": "qwen38-27b-fp8",

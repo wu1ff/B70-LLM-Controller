@@ -313,28 +313,40 @@ on this marginal profile. No boot was spent resolving it.
 ## Short-prefix APC behavior (hybrid FA+Mamba geometry — expected, not a defect)
 
 DFlash2 APC uses 1024-token hybrid cache blocks. Because speculative
-decoding retains one lookahead block (the EAGLE drop) and Mamba state is
-materialized only at safe chunk boundaries (2048-token cadence under the
-production ALIGN prefill), very short shared prefixes may not produce
-reusable cache state. On the TP2 production geometry, the reconciled-hit
-staircase (derived from the 1.0.3 source, anchored by the retained
-2026-09-21/22 A2/A3 live lanes at 1568→0 / 3504→2048 / 3584→2048, and
-confirmed at the exact boundaries by the 2026-09-22 closeout matrix) is:
+decoding drops one EAGLE lookahead block and Mamba state is materialized
+only at safe chunk boundaries (2048-token cadence under the production
+ALIGN prefill), very short shared prefixes may not produce reusable
+cache state. Measured live on the TP2 production geometry (2026-09-22
+closeout matrix, 15 exact tokenizer-verified boundaries on the final
+public-path boot; full table in the runtime journal §24 and
+`issue-forensics/apc/short-prefix/SHORT-PREFIX-RESULT.md`):
 
 ```text
-shared prefix < 3072 tokens  ->  no reconciled reuse (hit 0)
-shared 3072–5119 tokens      ->  2048 reusable tokens
-shared 5120–7167 tokens      ->  4096 reusable tokens
-(each further 2048 tokens of shared prefix adds 2048 reusable tokens)
+with B = floor(shared_tokens / 1024):
+  hit = 1024 * (B - 1)        normally
+  hit = 1024 * (B - 2)        when the divergence lands in the FINAL
+                              token of a hash block
+                              (shared_tokens mod 1024 == 1023)
+
+shared < 2048        ->  hit 0
+shared 2048          ->  hit 1024        shared 3071  ->  hit 0 (edge)
+shared 3072          ->  hit 2048        shared 4096  ->  hit 3072
+shared 5120          ->  hit 4096        shared 5119  ->  hit 2048 (edge)
+shared 6144          ->  hit 5120        shared 7168  ->  hit 6144
 ```
 
-A zero hit below the ~3K threshold is APC geometry working as designed —
-the fixed-point reconciliation only restores a prefix that every surface
-(attention KV after the EAGLE drop, and a materialized Mamba chunk-end
-state) can vouch for simultaneously. It is not an APC failure and needs
-no user action; prefixes ≥ 3K restore normally. (Live law: smallest
-useful shared prefix = 3072 exactly — 3071 yields 0; next staircase at
-5120; deterministic from block/chunk geometry.)
+The staircase restores roughly `shared − 1024` tokens (one block is
+always dropped for the EAGLE lookahead), stepping 1024 tokens at a
+time. Two adjacent shared lengths can differ by one block when the
+divergence sits in the last token of a hash block. A zero hit below
+~2K shared tokens (and the one-block dip at block edges) is APC
+geometry working as designed — the fixed-point reconciliation restores
+only a prefix every surface can vouch for simultaneously. It is not an
+APC failure and needs no user action; prefixes ≥ 2048 restore
+normally. (An earlier revision of this section stated a coarser
+2048-step staircase with a ~3072 threshold — that reading was an
+artifact of prior evidence landing only on odd block counts; the 1.0.5
+documentation corrects it to the measured law above.)
 
 ## INT4 TP2 256K — maximum-capacity profile warning
 

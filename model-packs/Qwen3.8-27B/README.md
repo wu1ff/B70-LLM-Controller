@@ -172,13 +172,16 @@ request at a time, and do not expect useful concurrency when requests
 approach 256K tokens. INT4 TP4 256K and FP8 TP4 256K have materially
 larger capacity ratios and are not affected.
 
-**Short shared prefixes may not cache-reuse on dFlash2** (expected
-geometry, not a failure): APC uses 1024-token hybrid blocks and Mamba
-state materializes only at 2048-token chunk boundaries, with one
-lookahead block reserved by speculative decoding. Shared prefixes
-under ~3072 tokens produce no reconciled reuse; 3072–5119 shared
-tokens restore 2048; 5120–7167 restore 4096; each further 2048 shared
-tokens adds 2048 restored.
+**Short shared prefixes may not cache-reuse on dFlash2** (measured
+geometry, not a failure): APC uses 1024-token hybrid blocks, Mamba
+state materializes at 2048-token chunk boundaries, and speculative
+decoding drops one lookahead block. Measured live (2026-09-22): a
+shared prefix below 2048 tokens produces no reconciled reuse; from
+there the restore is roughly `shared − 1024` tokens, stepping one
+block per block (2048 shared → 1024 restored, 3072 → 2048, 4096 →
+3072, 5120 → 4096), with one block additionally lost when the
+divergence lands in the final token of a 1024-token block. (Pack 1.0.5
+corrects the coarser estimate shipped in 1.0.4 to this measured law.)
 
 Every launch requires `CCL_SYCL_ALLREDUCE_TMP_BUF=1` and
 `CCL_SYCL_ALLGATHERV_TMP_BUF=1`. Patch 010's serving synchronization was

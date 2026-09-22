@@ -63,7 +63,7 @@ func TestImportPublicQwenPack(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Import() error = %v", err)
 	}
-	if *installed != (InstalledPack{ID: "qwen38-27b-b70", Name: "Qwen3.8 27B B70 Pack (MTP1 / dFlash2)", Version: "1.0.4", Source: SourceLocal}) {
+	if *installed != (InstalledPack{ID: "qwen38-27b-b70", Name: "Qwen3.8 27B B70 Pack (MTP1 / dFlash2)", Version: "1.0.5", Source: SourceLocal}) {
 		t.Fatalf("Import() = %#v", installed)
 	}
 	manifest, err := modelpack.Load(filepath.Join(store, installed.ID, installed.Version))

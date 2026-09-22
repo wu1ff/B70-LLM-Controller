@@ -23,7 +23,7 @@ import (
 
 const (
 	publicPackDirectory = "Qwen3.8-27B"
-	publicArchiveName   = "qwen38-27b-b70-1.0.4.tar.gz"
+	publicArchiveName   = "qwen38-27b-b70-1.0.5.tar.gz"
 	// Fixture URL for the locally served archive; generated catalogs never
 	// reference the repository itself because generated archives are not
 	// tracked there.
