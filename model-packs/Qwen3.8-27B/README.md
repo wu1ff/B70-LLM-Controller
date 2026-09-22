@@ -114,28 +114,34 @@ RUNTIME_RECIPE.md remains the deep technical companion for this runtime's proven
 The pack uses this final qualified runtime:
 
 ```text
-ghcr.io/wu1ff/qwen38-27b-b70@sha256:314786fd704d5393630e4e292a60bc30e5ade1fa4aa372cf986106e16828c90f
+ghcr.io/wu1ff/qwen38-27b-b70@sha256:c0c9b8f382298bdd90f78ae2f4700637241c7a8e2b6c7ab591dc933c76b73cbf
 ```
 
-This is the 2026-09-21 promotion (pack 1.0.2): the previous authority
-bytes plus exactly two installed scheduler files — the DFlash2
-proposal-lifecycle fix. The proposal-lifecycle crash that could kill
-long 62–65K agentic conversations (a verification round holding
-speculative slots whose exact same-round proposal distribution no longer
-existed) is fixed in this runtime: probabilistic-DFlash2 slots reach
-verification only when the matching proposal distribution exists,
-otherwise that round degrades to plain decode and a fresh proposal
-follows later. The strict verifier and standard rejection sampling are
-unchanged; the fix is inert in Base and MTP1 (proven deterministically
-against the exact bytes). DFlash2 long-agent qualification: 80/80
-sequential agent steps through the original crash window, a
-126,483-token long-context prompt, TP2 and TP4, 103,264 draft rows with
-zero cache misses and zero unmatched proposals. DFlash2 Automatic
-Prefix Caching remains unsupported and not yet qualified for DFlash2; it
-is not part of this runtime promotion (the next separate capability
-campaign). The previous digest
-`sha256:78a3720f…be1aa` remains pullable by digest (tag `1.0.0`) as the
-retained parent.
+This is the 2026-09-22 promotion (pack 1.0.3): the previous authority
+bytes (the 2026-09-21 proposal-lifecycle runtime, which fixed the crash
+that could kill long 62–65K agentic conversations) plus exactly one
+installed worker file — the retained upstream vLLM #48109 fix for the
+XPU Mamba state pointer overflow. Level Zero device pointers at or above
+2^63 crashed the int64 state-address stores ("Overflow when unpacking
+long long"), which was the hard blocker that kept DFlash2 prefix
+caching off; the fix preserves the exact 64-bit pattern and is inert
+wherever that crash path is not hit (Base and MTP1 unchanged).
+
+DFlash2 **Automatic Prefix Caching is ON** from this pack
+(`--enable-prefix-caching`; the Qwen3.8 hybrid config resolves the
+Mamba cache mode to ALIGN). Qualification (verdict PROMOTE): 12/12
+delta lanes across INT4 TP1/TP2/TP4 and FP8 TP2/TP4, standard and
+uncensored artifacts each, with real FA+Mamba prefix-cache hits, tool
+calls, restarts, 951/951 strict proposal rows with zero misses, and a
+clean 12/12 health campaign. Text and tools are qualified — vision
+remains separately unqualified and must not be assumed on these lanes.
+Two DFlash2 utilization envelopes changed with this pack as
+pack-envelope corrections independently required by the previous
+runtime as well (not an ALIGN tax): INT4 dFlash2 TP1 32K serves at
+0.91, INT4 dFlash2 TP2 256K at 0.86; every other DFlash2 profile stays
+at 0.82. The previous digests `sha256:314786fd…c90f` (tag `1.0.2`) and
+`sha256:78a3720f…be1aa` (tag `1.0.0`) remain pullable by digest as the
+retained parents.
 
 Every launch requires `CCL_SYCL_ALLREDUCE_TMP_BUF=1` and
 `CCL_SYCL_ALLGATHERV_TMP_BUF=1`. Patch 010's serving synchronization was

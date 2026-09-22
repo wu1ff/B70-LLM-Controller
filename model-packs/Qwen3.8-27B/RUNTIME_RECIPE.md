@@ -39,6 +39,7 @@ This work grew out of Intel's pre-release **llm-scaler** vLLM 0.26 integration f
 17. dFlash2 exact Gumbel-noise caching (performance — in the final image)
 18. dFlash2 widened capture, PIECEWISE64 at TP2/TP4 (launch tuning, not an image change)
 19. DFlash2 proposal-lifecycle scheduler fix (correctness — in the final image)
+20. XPU Mamba pointer-overflow fix, upstream #48109 (correctness — in the final image; enables DFlash2 ALIGN APC)
 
 → the final qualified runtime.
 
@@ -237,20 +238,31 @@ An external report surfaced a probabilistic-dFlash2 engine death inside long age
 
 ---
 
+## DFlash2 ALIGN APC + the XPU Mamba pointer fix (2026-09-22, in the final image)
+
+The last blocker for prefix caching on this hybrid-GDN runtime was an address bug, not a scheduler bug. Qwen3.8's hybrid config resolves the Mamba cache mode to ALIGN whenever prefix caching is on; the ALIGN manager (`MambaSpecDecodeGPUContext.initialize_from_forward_context`) stores raw device pointers into `torch.int64` tensors. `data_ptr()` is an unsigned 64-bit virtual address and the Level Zero USM allocator routinely returns VAs ≥ 2^63, so the int64 store routes through a C `long long` and dies with `ValueError: Overflow when unpacking long long` (exactly `mamba_utils.py:649` `state_base_addrs` and `:732` `block_table_ptrs`). CUDA survives the same upstream code by pointer-range luck.
+
+**What I changed.** One file: the retained upstream PR #48109 fix (`patches/012-xpu-mamba-pointer-overflow/`) — a `_reinterpret_u64_as_i64` helper wrapped around exactly those two stores. Subtracting 2^64 yields the same 64-bit pattern in two's-complement signed form; dtypes, call sites, and the Triton consumer ABI (int64 load → offset arithmetic → bit-cast to pointer) are unchanged. For pointers < 2^63 the helper is the identity, and for pointers ≥ 2^63 the parent crashed — there is no input where both complete with different bits, which is the Base/MTP1 inertness argument (their launch contracts are untouched).
+
+**What that gave me.** DFlash2 production APC turned ON (`--enable-prefix-caching`, effective ALIGN via the normal config path), qualified 2026-09-22 with verdict PROMOTE: 12/12 delta lanes across INT4 TP1/TP2/TP4 and FP8 TP2/TP4, standard + uncensored artifacts each, with real FA+Mamba prefix-cache hits, tool calls, restart episodes, 951/951 strict proposal-q rows matched (0 misses) on the new lanes, and a 12/12 health campaign with zero fault-class events. Two utilization envelopes were corrected as pack-envelope fixes (independently required by the APC-off parent, not an ALIGN tax): INT4 DFlash2 TP1 32K → 0.91, INT4 DFlash2 TP2 256K → 0.86; all other DFlash2 profiles stay 0.82. Effective posture: APC ON, Mamba cache mode ALIGN, probabilistic N=7, standard rejection, AsyncScheduler. Text and tools only — vision remains separately unqualified (the TORCH_SDPA encoder defect).
+
+---
+
 ## The final runtime
 
 What came out the other end of that chain:
 
 ```text
-local/qwen38-27b-b70:proposal-lifecycle-20260921
-Image ID: sha256:314786fd704d5393630e4e292a60bc30e5ade1fa4aa372cf986106e16828c90f
-(publication: ghcr.io/wu1ff/qwen38-27b-b70:1.0.2
- @sha256:314786fd704d5393630e4e292a60bc30e5ade1fa4aa372cf986106e16828c90f — promoted 2026-09-21;
- the previous authority 78a3720f542f8d7974aa6cf38eff4bfd612fcecb1bc7c06a42ddeb4d6febe1aa
- remains published/pullable as tag 1.0.0 and by digest)
+local/qwen38-v26-dflash2:align-apc-c1
+Image ID: sha256:c0c9b8f382298bdd90f78ae2f4700637241c7a8e2b6c7ab591dc933c76b73cbf
+(publication: ghcr.io/wu1ff/qwen38-27b-b70:1.0.3
+ @sha256:c0c9b8f382298bdd90f78ae2f4700637241c7a8e2b6c7ab591dc933c76b73cbf — promoted
+ 2026-09-22 retag-only, no rebuild; the previous authority
+ 314786fd704d5393630e4e292a60bc30e5ade1fa4aa372cf986106e16828c90f
+ remains published/pullable as tag 1.0.2 and by digest)
 ```
 
-These are the patch-009 bytes (stage 14) plus exactly two installed deltas since — the dFlash2 exact Gumbel-noise cache (stage 17) and the DFlash2 proposal-lifecycle scheduler fix (stage 19). The final serving corrections that are NOT in the image are the required launch environment:
+These are the patch-009 bytes (stage 14) plus exactly three installed deltas since — the dFlash2 exact Gumbel-noise cache (stage 17), the DFlash2 proposal-lifecycle scheduler fix (stage 19), and the XPU Mamba pointer-overflow fix (stage 20, upstream #48109). The final serving corrections that are NOT in the image are the required launch environment:
 
 ```text
 CCL_SYCL_ALLREDUCE_TMP_BUF=1
@@ -283,4 +295,4 @@ Serving modes: **Base** (plain decode), **MTP1** (the model's own one-token mult
 - The dFlash2 noise cache preserves exact noise tensors and GPU RNG state per request; it does not make seeded stochastic sampling deterministic (that was never deterministic), and no all-temperature output-parity claim is made beyond the validated greedy lane.
 - The promoted image's qualification record retains one unexplained hardware event: a 2026-09-12 08:04Z cold-initialization engine fault (GPU1, during draft weight loading, before any serving) that preceded the campaign, resolved by a host reboot. Three subsequent fully cold initializations and the entire qualification campaign on the same bytes were clean, the fault was never attributed to the cache (the cached path had not executed at the point of failure), and the prior-boot fault history of the affected cards is part of the retained record.
 - `orcarouter/Qwen3.8-27B-Uncensored-FP8` is access-controlled on Hugging Face; the other four repositories resolve publicly at the pinned revisions.
-- DFlash2 Automatic Prefix Caching is OFF in every qualified lane of this runtime and is NOT part of the 2026-09-21 promotion; DFlash2 APC enablement is the next separate capability campaign. Base and MTP1 keep their engine-default APC posture. The 2026-09-21 scheduler fix does not weaken the strict proposal-probability verifier: a suppressed round degrades to plain decode rather than substituting a fallback distribution.
+- DFlash2 Automatic Prefix Caching is ON in production since 2026-09-22 (`--enable-prefix-caching`; the Qwen3.8 hybrid config resolves the Mamba cache mode to ALIGN), qualified text + tools across INT4 TP1/TP2/TP4 and FP8 TP2/TP4 — vision is NOT included (the TORCH_SDPA encoder defect remains a separate unresolved ticket; do not advertise vision for these lanes). Base and MTP1 keep their engine-default APC posture. The 2026-09-21 scheduler fix does not weaken the strict proposal-probability verifier: a suppressed round degrades to plain decode rather than substituting a fallback distribution.
