@@ -114,14 +114,28 @@ RUNTIME_RECIPE.md remains the deep technical companion for this runtime's proven
 The pack uses this final qualified runtime:
 
 ```text
-ghcr.io/wu1ff/qwen38-27b-b70@sha256:78a3720f542f8d7974aa6cf38eff4bfd612fcecb1bc7c06a42ddeb4d6febe1aa
+ghcr.io/wu1ff/qwen38-27b-b70@sha256:314786fd704d5393630e4e292a60bc30e5ade1fa4aa372cf986106e16828c90f
 ```
 
-This is the 2026-09-12 promotion: the previous authority bytes plus one
-installed change — the dFlash2 exact Gumbel-noise cache (per-request noise
-is reused exactly instead of rebuilt every round; GPU RNG behavior
-preserved; inert in Base and MTP1). The previous digest
-`sha256:68f1d8a8…d00690b` remains pullable by digest as the retained parent.
+This is the 2026-09-21 promotion (pack 1.0.2): the previous authority
+bytes plus exactly two installed scheduler files — the DFlash2
+proposal-lifecycle fix. The proposal-lifecycle crash that could kill
+long 62–65K agentic conversations (a verification round holding
+speculative slots whose exact same-round proposal distribution no longer
+existed) is fixed in this runtime: probabilistic-DFlash2 slots reach
+verification only when the matching proposal distribution exists,
+otherwise that round degrades to plain decode and a fresh proposal
+follows later. The strict verifier and standard rejection sampling are
+unchanged; the fix is inert in Base and MTP1 (proven deterministically
+against the exact bytes). DFlash2 long-agent qualification: 80/80
+sequential agent steps through the original crash window, a
+126,483-token long-context prompt, TP2 and TP4, 103,264 draft rows with
+zero cache misses and zero unmatched proposals. DFlash2 Automatic
+Prefix Caching remains unsupported and not yet qualified for DFlash2; it
+is not part of this runtime promotion (the next separate capability
+campaign). The previous digest
+`sha256:78a3720f…be1aa` remains pullable by digest (tag `1.0.0`) as the
+retained parent.
 
 Every launch requires `CCL_SYCL_ALLREDUCE_TMP_BUF=1` and
 `CCL_SYCL_ALLGATHERV_TMP_BUF=1`. Patch 010's serving synchronization was

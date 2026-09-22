@@ -2,7 +2,7 @@
   "schema_version": 1,
   "id": "qwen38-27b-b70",
   "name": "Qwen3.8 27B B70 Pack (MTP1 / dFlash2)",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "models": [
     {
       "id": "qwen38-27b-fp8",
@@ -655,10 +655,10 @@
   ],
   "runtimes": [
     {
-      "id": "qwen38-27b-runtime-1.0.0",
-      "image": "ghcr.io/wu1ff/qwen38-27b-b70:1.0.0",
-      "digest": "sha256:78a3720f542f8d7974aa6cf38eff4bfd612fcecb1bc7c06a42ddeb4d6febe1aa",
-      "registry": "ghcr.io/wu1ff/qwen38-27b-b70@sha256:78a3720f542f8d7974aa6cf38eff4bfd612fcecb1bc7c06a42ddeb4d6febe1aa",
+      "id": "qwen38-27b-runtime-1.0.2",
+      "image": "ghcr.io/wu1ff/qwen38-27b-b70:1.0.2",
+      "digest": "sha256:314786fd704d5393630e4e292a60bc30e5ade1fa4aa372cf986106e16828c90f",
+      "registry": "ghcr.io/wu1ff/qwen38-27b-b70@sha256:314786fd704d5393630e4e292a60bc30e5ade1fa4aa372cf986106e16828c90f",
       "container_port": 8000,
       "health_path": "/health",
       "launch": {
@@ -772,7 +772,7 @@
     {
       "id": "fp8-base-tp2-32768",
       "model_id": "qwen38-27b-fp8",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 2,
       "tensor_parallel": 2,
       "context": 32768,
@@ -795,7 +795,7 @@
     {
       "id": "fp8-base-tp2-65536",
       "model_id": "qwen38-27b-fp8",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 2,
       "tensor_parallel": 2,
       "context": 65536,
@@ -818,7 +818,7 @@
     {
       "id": "fp8-base-tp4-32768",
       "model_id": "qwen38-27b-fp8",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 4,
       "tensor_parallel": 4,
       "context": 32768,
@@ -841,7 +841,7 @@
     {
       "id": "fp8-base-tp4-65536",
       "model_id": "qwen38-27b-fp8",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 4,
       "tensor_parallel": 4,
       "context": 65536,
@@ -864,7 +864,7 @@
     {
       "id": "fp8-base-tp4-131072",
       "model_id": "qwen38-27b-fp8",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 4,
       "tensor_parallel": 4,
       "context": 131072,
@@ -887,7 +887,7 @@
     {
       "id": "fp8-base-tp4-262144",
       "model_id": "qwen38-27b-fp8",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 4,
       "tensor_parallel": 4,
       "context": 262144,
@@ -910,7 +910,7 @@
     {
       "id": "fp8-mtp1-tp2-32768",
       "model_id": "qwen38-27b-fp8",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 2,
       "tensor_parallel": 2,
       "context": 32768,
@@ -934,7 +934,7 @@
     {
       "id": "fp8-mtp1-tp2-65536",
       "model_id": "qwen38-27b-fp8",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 2,
       "tensor_parallel": 2,
       "context": 65536,
@@ -958,7 +958,7 @@
     {
       "id": "fp8-mtp1-tp4-32768",
       "model_id": "qwen38-27b-fp8",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 4,
       "tensor_parallel": 4,
       "context": 32768,
@@ -982,7 +982,7 @@
     {
       "id": "fp8-mtp1-tp4-65536",
       "model_id": "qwen38-27b-fp8",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 4,
       "tensor_parallel": 4,
       "context": 65536,
@@ -1006,7 +1006,7 @@
     {
       "id": "fp8-mtp1-tp4-131072",
       "model_id": "qwen38-27b-fp8",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 4,
       "tensor_parallel": 4,
       "context": 131072,
@@ -1030,7 +1030,7 @@
     {
       "id": "fp8-mtp1-tp4-262144",
       "model_id": "qwen38-27b-fp8",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 4,
       "tensor_parallel": 4,
       "context": 262144,
@@ -1054,7 +1054,7 @@
     {
       "id": "fp8-dflash2-tp2-32768",
       "model_id": "qwen38-27b-fp8",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 2,
       "tensor_parallel": 2,
       "context": 32768,
@@ -1077,7 +1077,7 @@
     {
       "id": "fp8-dflash2-tp2-65536",
       "model_id": "qwen38-27b-fp8",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 2,
       "tensor_parallel": 2,
       "context": 65536,
@@ -1100,7 +1100,7 @@
     {
       "id": "fp8-dflash2-tp4-32768",
       "model_id": "qwen38-27b-fp8",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 4,
       "tensor_parallel": 4,
       "context": 32768,
@@ -1123,7 +1123,7 @@
     {
       "id": "fp8-dflash2-tp4-65536",
       "model_id": "qwen38-27b-fp8",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 4,
       "tensor_parallel": 4,
       "context": 65536,
@@ -1146,7 +1146,7 @@
     {
       "id": "fp8-dflash2-tp4-131072",
       "model_id": "qwen38-27b-fp8",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 4,
       "tensor_parallel": 4,
       "context": 131072,
@@ -1169,7 +1169,7 @@
     {
       "id": "fp8-dflash2-tp4-262144",
       "model_id": "qwen38-27b-fp8",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 4,
       "tensor_parallel": 4,
       "context": 262144,
@@ -1192,7 +1192,7 @@
     {
       "id": "uncensored-fp8-base-tp2-32768",
       "model_id": "qwen38-27b-uncensored-fp8",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 2,
       "tensor_parallel": 2,
       "context": 32768,
@@ -1215,7 +1215,7 @@
     {
       "id": "uncensored-fp8-base-tp2-65536",
       "model_id": "qwen38-27b-uncensored-fp8",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 2,
       "tensor_parallel": 2,
       "context": 65536,
@@ -1238,7 +1238,7 @@
     {
       "id": "uncensored-fp8-base-tp4-32768",
       "model_id": "qwen38-27b-uncensored-fp8",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 4,
       "tensor_parallel": 4,
       "context": 32768,
@@ -1261,7 +1261,7 @@
     {
       "id": "uncensored-fp8-base-tp4-65536",
       "model_id": "qwen38-27b-uncensored-fp8",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 4,
       "tensor_parallel": 4,
       "context": 65536,
@@ -1284,7 +1284,7 @@
     {
       "id": "uncensored-fp8-base-tp4-131072",
       "model_id": "qwen38-27b-uncensored-fp8",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 4,
       "tensor_parallel": 4,
       "context": 131072,
@@ -1307,7 +1307,7 @@
     {
       "id": "uncensored-fp8-base-tp4-262144",
       "model_id": "qwen38-27b-uncensored-fp8",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 4,
       "tensor_parallel": 4,
       "context": 262144,
@@ -1330,7 +1330,7 @@
     {
       "id": "uncensored-fp8-mtp1-tp2-32768",
       "model_id": "qwen38-27b-uncensored-fp8",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 2,
       "tensor_parallel": 2,
       "context": 32768,
@@ -1354,7 +1354,7 @@
     {
       "id": "uncensored-fp8-mtp1-tp2-65536",
       "model_id": "qwen38-27b-uncensored-fp8",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 2,
       "tensor_parallel": 2,
       "context": 65536,
@@ -1378,7 +1378,7 @@
     {
       "id": "uncensored-fp8-mtp1-tp4-32768",
       "model_id": "qwen38-27b-uncensored-fp8",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 4,
       "tensor_parallel": 4,
       "context": 32768,
@@ -1402,7 +1402,7 @@
     {
       "id": "uncensored-fp8-mtp1-tp4-65536",
       "model_id": "qwen38-27b-uncensored-fp8",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 4,
       "tensor_parallel": 4,
       "context": 65536,
@@ -1426,7 +1426,7 @@
     {
       "id": "uncensored-fp8-mtp1-tp4-131072",
       "model_id": "qwen38-27b-uncensored-fp8",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 4,
       "tensor_parallel": 4,
       "context": 131072,
@@ -1450,7 +1450,7 @@
     {
       "id": "uncensored-fp8-mtp1-tp4-262144",
       "model_id": "qwen38-27b-uncensored-fp8",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 4,
       "tensor_parallel": 4,
       "context": 262144,
@@ -1474,7 +1474,7 @@
     {
       "id": "uncensored-fp8-dflash2-tp2-32768",
       "model_id": "qwen38-27b-uncensored-fp8",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 2,
       "tensor_parallel": 2,
       "context": 32768,
@@ -1497,7 +1497,7 @@
     {
       "id": "uncensored-fp8-dflash2-tp2-65536",
       "model_id": "qwen38-27b-uncensored-fp8",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 2,
       "tensor_parallel": 2,
       "context": 65536,
@@ -1520,7 +1520,7 @@
     {
       "id": "uncensored-fp8-dflash2-tp4-32768",
       "model_id": "qwen38-27b-uncensored-fp8",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 4,
       "tensor_parallel": 4,
       "context": 32768,
@@ -1543,7 +1543,7 @@
     {
       "id": "uncensored-fp8-dflash2-tp4-65536",
       "model_id": "qwen38-27b-uncensored-fp8",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 4,
       "tensor_parallel": 4,
       "context": 65536,
@@ -1566,7 +1566,7 @@
     {
       "id": "uncensored-fp8-dflash2-tp4-131072",
       "model_id": "qwen38-27b-uncensored-fp8",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 4,
       "tensor_parallel": 4,
       "context": 131072,
@@ -1589,7 +1589,7 @@
     {
       "id": "uncensored-fp8-dflash2-tp4-262144",
       "model_id": "qwen38-27b-uncensored-fp8",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 4,
       "tensor_parallel": 4,
       "context": 262144,
@@ -1612,7 +1612,7 @@
     {
       "id": "int4-base-tp1-32768",
       "model_id": "qwen38-27b-int4",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 1,
       "tensor_parallel": 1,
       "context": 32768,
@@ -1637,7 +1637,7 @@
     {
       "id": "int4-base-tp1-65536",
       "model_id": "qwen38-27b-int4",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 1,
       "tensor_parallel": 1,
       "context": 65536,
@@ -1662,7 +1662,7 @@
     {
       "id": "int4-base-tp1-131072",
       "model_id": "qwen38-27b-int4",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 1,
       "tensor_parallel": 1,
       "context": 131072,
@@ -1687,7 +1687,7 @@
     {
       "id": "int4-base-tp2-32768",
       "model_id": "qwen38-27b-int4",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 2,
       "tensor_parallel": 2,
       "context": 32768,
@@ -1712,7 +1712,7 @@
     {
       "id": "int4-base-tp2-65536",
       "model_id": "qwen38-27b-int4",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 2,
       "tensor_parallel": 2,
       "context": 65536,
@@ -1737,7 +1737,7 @@
     {
       "id": "int4-base-tp2-131072",
       "model_id": "qwen38-27b-int4",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 2,
       "tensor_parallel": 2,
       "context": 131072,
@@ -1762,7 +1762,7 @@
     {
       "id": "int4-base-tp2-262144",
       "model_id": "qwen38-27b-int4",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 2,
       "tensor_parallel": 2,
       "context": 262144,
@@ -1787,7 +1787,7 @@
     {
       "id": "int4-base-tp4-32768",
       "model_id": "qwen38-27b-int4",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 4,
       "tensor_parallel": 4,
       "context": 32768,
@@ -1812,7 +1812,7 @@
     {
       "id": "int4-base-tp4-65536",
       "model_id": "qwen38-27b-int4",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 4,
       "tensor_parallel": 4,
       "context": 65536,
@@ -1837,7 +1837,7 @@
     {
       "id": "int4-base-tp4-131072",
       "model_id": "qwen38-27b-int4",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 4,
       "tensor_parallel": 4,
       "context": 131072,
@@ -1862,7 +1862,7 @@
     {
       "id": "int4-base-tp4-262144",
       "model_id": "qwen38-27b-int4",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 4,
       "tensor_parallel": 4,
       "context": 262144,
@@ -1887,7 +1887,7 @@
     {
       "id": "int4-mtp1-tp1-32768",
       "model_id": "qwen38-27b-int4",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 1,
       "tensor_parallel": 1,
       "context": 32768,
@@ -1914,7 +1914,7 @@
     {
       "id": "int4-mtp1-tp1-65536",
       "model_id": "qwen38-27b-int4",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 1,
       "tensor_parallel": 1,
       "context": 65536,
@@ -1941,7 +1941,7 @@
     {
       "id": "int4-mtp1-tp2-32768",
       "model_id": "qwen38-27b-int4",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 2,
       "tensor_parallel": 2,
       "context": 32768,
@@ -1968,7 +1968,7 @@
     {
       "id": "int4-mtp1-tp2-65536",
       "model_id": "qwen38-27b-int4",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 2,
       "tensor_parallel": 2,
       "context": 65536,
@@ -1995,7 +1995,7 @@
     {
       "id": "int4-mtp1-tp2-131072",
       "model_id": "qwen38-27b-int4",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 2,
       "tensor_parallel": 2,
       "context": 131072,
@@ -2022,7 +2022,7 @@
     {
       "id": "int4-mtp1-tp2-262144",
       "model_id": "qwen38-27b-int4",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 2,
       "tensor_parallel": 2,
       "context": 262144,
@@ -2049,7 +2049,7 @@
     {
       "id": "int4-mtp1-tp4-32768",
       "model_id": "qwen38-27b-int4",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 4,
       "tensor_parallel": 4,
       "context": 32768,
@@ -2076,7 +2076,7 @@
     {
       "id": "int4-mtp1-tp4-65536",
       "model_id": "qwen38-27b-int4",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 4,
       "tensor_parallel": 4,
       "context": 65536,
@@ -2103,7 +2103,7 @@
     {
       "id": "int4-mtp1-tp4-131072",
       "model_id": "qwen38-27b-int4",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 4,
       "tensor_parallel": 4,
       "context": 131072,
@@ -2130,7 +2130,7 @@
     {
       "id": "int4-mtp1-tp4-262144",
       "model_id": "qwen38-27b-int4",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 4,
       "tensor_parallel": 4,
       "context": 262144,
@@ -2157,7 +2157,7 @@
     {
       "id": "int4-dflash2-tp1-32768",
       "model_id": "qwen38-27b-int4",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 1,
       "tensor_parallel": 1,
       "context": 32768,
@@ -2182,7 +2182,7 @@
     {
       "id": "int4-dflash2-tp2-32768",
       "model_id": "qwen38-27b-int4",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 2,
       "tensor_parallel": 2,
       "context": 32768,
@@ -2207,7 +2207,7 @@
     {
       "id": "int4-dflash2-tp2-65536",
       "model_id": "qwen38-27b-int4",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 2,
       "tensor_parallel": 2,
       "context": 65536,
@@ -2232,7 +2232,7 @@
     {
       "id": "int4-dflash2-tp2-131072",
       "model_id": "qwen38-27b-int4",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 2,
       "tensor_parallel": 2,
       "context": 131072,
@@ -2257,7 +2257,7 @@
     {
       "id": "int4-dflash2-tp2-262144",
       "model_id": "qwen38-27b-int4",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 2,
       "tensor_parallel": 2,
       "context": 262144,
@@ -2282,7 +2282,7 @@
     {
       "id": "int4-dflash2-tp4-32768",
       "model_id": "qwen38-27b-int4",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 4,
       "tensor_parallel": 4,
       "context": 32768,
@@ -2307,7 +2307,7 @@
     {
       "id": "int4-dflash2-tp4-65536",
       "model_id": "qwen38-27b-int4",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 4,
       "tensor_parallel": 4,
       "context": 65536,
@@ -2332,7 +2332,7 @@
     {
       "id": "int4-dflash2-tp4-131072",
       "model_id": "qwen38-27b-int4",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 4,
       "tensor_parallel": 4,
       "context": 131072,
@@ -2357,7 +2357,7 @@
     {
       "id": "int4-dflash2-tp4-262144",
       "model_id": "qwen38-27b-int4",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 4,
       "tensor_parallel": 4,
       "context": 262144,
@@ -2382,7 +2382,7 @@
     {
       "id": "uncensored-int4-base-tp1-32768",
       "model_id": "qwen38-27b-uncensored-int4",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 1,
       "tensor_parallel": 1,
       "context": 32768,
@@ -2407,7 +2407,7 @@
     {
       "id": "uncensored-int4-base-tp1-65536",
       "model_id": "qwen38-27b-uncensored-int4",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 1,
       "tensor_parallel": 1,
       "context": 65536,
@@ -2432,7 +2432,7 @@
     {
       "id": "uncensored-int4-base-tp1-131072",
       "model_id": "qwen38-27b-uncensored-int4",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 1,
       "tensor_parallel": 1,
       "context": 131072,
@@ -2457,7 +2457,7 @@
     {
       "id": "uncensored-int4-base-tp2-32768",
       "model_id": "qwen38-27b-uncensored-int4",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 2,
       "tensor_parallel": 2,
       "context": 32768,
@@ -2482,7 +2482,7 @@
     {
       "id": "uncensored-int4-base-tp2-65536",
       "model_id": "qwen38-27b-uncensored-int4",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 2,
       "tensor_parallel": 2,
       "context": 65536,
@@ -2507,7 +2507,7 @@
     {
       "id": "uncensored-int4-base-tp2-131072",
       "model_id": "qwen38-27b-uncensored-int4",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 2,
       "tensor_parallel": 2,
       "context": 131072,
@@ -2532,7 +2532,7 @@
     {
       "id": "uncensored-int4-base-tp2-262144",
       "model_id": "qwen38-27b-uncensored-int4",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 2,
       "tensor_parallel": 2,
       "context": 262144,
@@ -2557,7 +2557,7 @@
     {
       "id": "uncensored-int4-base-tp4-32768",
       "model_id": "qwen38-27b-uncensored-int4",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 4,
       "tensor_parallel": 4,
       "context": 32768,
@@ -2582,7 +2582,7 @@
     {
       "id": "uncensored-int4-base-tp4-65536",
       "model_id": "qwen38-27b-uncensored-int4",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 4,
       "tensor_parallel": 4,
       "context": 65536,
@@ -2607,7 +2607,7 @@
     {
       "id": "uncensored-int4-base-tp4-131072",
       "model_id": "qwen38-27b-uncensored-int4",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 4,
       "tensor_parallel": 4,
       "context": 131072,
@@ -2632,7 +2632,7 @@
     {
       "id": "uncensored-int4-base-tp4-262144",
       "model_id": "qwen38-27b-uncensored-int4",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 4,
       "tensor_parallel": 4,
       "context": 262144,
@@ -2657,7 +2657,7 @@
     {
       "id": "uncensored-int4-mtp1-tp1-32768",
       "model_id": "qwen38-27b-uncensored-int4",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 1,
       "tensor_parallel": 1,
       "context": 32768,
@@ -2684,7 +2684,7 @@
     {
       "id": "uncensored-int4-mtp1-tp1-65536",
       "model_id": "qwen38-27b-uncensored-int4",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 1,
       "tensor_parallel": 1,
       "context": 65536,
@@ -2711,7 +2711,7 @@
     {
       "id": "uncensored-int4-mtp1-tp2-32768",
       "model_id": "qwen38-27b-uncensored-int4",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 2,
       "tensor_parallel": 2,
       "context": 32768,
@@ -2738,7 +2738,7 @@
     {
       "id": "uncensored-int4-mtp1-tp2-65536",
       "model_id": "qwen38-27b-uncensored-int4",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 2,
       "tensor_parallel": 2,
       "context": 65536,
@@ -2765,7 +2765,7 @@
     {
       "id": "uncensored-int4-mtp1-tp2-131072",
       "model_id": "qwen38-27b-uncensored-int4",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 2,
       "tensor_parallel": 2,
       "context": 131072,
@@ -2792,7 +2792,7 @@
     {
       "id": "uncensored-int4-mtp1-tp2-262144",
       "model_id": "qwen38-27b-uncensored-int4",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 2,
       "tensor_parallel": 2,
       "context": 262144,
@@ -2819,7 +2819,7 @@
     {
       "id": "uncensored-int4-mtp1-tp4-32768",
       "model_id": "qwen38-27b-uncensored-int4",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 4,
       "tensor_parallel": 4,
       "context": 32768,
@@ -2846,7 +2846,7 @@
     {
       "id": "uncensored-int4-mtp1-tp4-65536",
       "model_id": "qwen38-27b-uncensored-int4",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 4,
       "tensor_parallel": 4,
       "context": 65536,
@@ -2873,7 +2873,7 @@
     {
       "id": "uncensored-int4-mtp1-tp4-131072",
       "model_id": "qwen38-27b-uncensored-int4",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 4,
       "tensor_parallel": 4,
       "context": 131072,
@@ -2900,7 +2900,7 @@
     {
       "id": "uncensored-int4-mtp1-tp4-262144",
       "model_id": "qwen38-27b-uncensored-int4",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 4,
       "tensor_parallel": 4,
       "context": 262144,
@@ -2927,7 +2927,7 @@
     {
       "id": "uncensored-int4-dflash2-tp1-32768",
       "model_id": "qwen38-27b-uncensored-int4",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 1,
       "tensor_parallel": 1,
       "context": 32768,
@@ -2952,7 +2952,7 @@
     {
       "id": "uncensored-int4-dflash2-tp2-32768",
       "model_id": "qwen38-27b-uncensored-int4",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 2,
       "tensor_parallel": 2,
       "context": 32768,
@@ -2977,7 +2977,7 @@
     {
       "id": "uncensored-int4-dflash2-tp2-65536",
       "model_id": "qwen38-27b-uncensored-int4",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 2,
       "tensor_parallel": 2,
       "context": 65536,
@@ -3002,7 +3002,7 @@
     {
       "id": "uncensored-int4-dflash2-tp2-131072",
       "model_id": "qwen38-27b-uncensored-int4",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 2,
       "tensor_parallel": 2,
       "context": 131072,
@@ -3027,7 +3027,7 @@
     {
       "id": "uncensored-int4-dflash2-tp2-262144",
       "model_id": "qwen38-27b-uncensored-int4",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 2,
       "tensor_parallel": 2,
       "context": 262144,
@@ -3052,7 +3052,7 @@
     {
       "id": "uncensored-int4-dflash2-tp4-32768",
       "model_id": "qwen38-27b-uncensored-int4",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 4,
       "tensor_parallel": 4,
       "context": 32768,
@@ -3077,7 +3077,7 @@
     {
       "id": "uncensored-int4-dflash2-tp4-65536",
       "model_id": "qwen38-27b-uncensored-int4",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 4,
       "tensor_parallel": 4,
       "context": 65536,
@@ -3102,7 +3102,7 @@
     {
       "id": "uncensored-int4-dflash2-tp4-131072",
       "model_id": "qwen38-27b-uncensored-int4",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 4,
       "tensor_parallel": 4,
       "context": 131072,
@@ -3127,7 +3127,7 @@
     {
       "id": "uncensored-int4-dflash2-tp4-262144",
       "model_id": "qwen38-27b-uncensored-int4",
-      "runtime_id": "qwen38-27b-runtime-1.0.0",
+      "runtime_id": "qwen38-27b-runtime-1.0.2",
       "cards": 4,
       "tensor_parallel": 4,
       "context": 262144,

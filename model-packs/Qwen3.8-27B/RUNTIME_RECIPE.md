@@ -38,6 +38,7 @@ This work grew out of Intel's pre-release **llm-scaler** vLLM 0.26 integration f
 16. oneCCL temporary-buffer launch contract — the final TP2 serving reliability fix (launch environment, no image change)
 17. dFlash2 exact Gumbel-noise caching (performance — in the final image)
 18. dFlash2 widened capture, PIECEWISE64 at TP2/TP4 (launch tuning, not an image change)
+19. DFlash2 proposal-lifecycle scheduler fix (correctness — in the final image)
 
 → the final qualified runtime.
 
@@ -223,18 +224,33 @@ dFlash2 speculative decoding with N=7 means one request produces **8 verifier ro
 
 ---
 
+## DFlash2 proposal-lifecycle crash fix (2026-09-21, in the final image)
+
+An external report surfaced a probabilistic-dFlash2 engine death inside long agentic conversations: once histories grew through the 62–65K-token region, a verification round arrived whose speculative slots had no proposal distribution `q` behind them, and the strict verifier (`GPUModelRunner._get_spec_decode_draft_probs()`) correctly killed the engine rather than sample against a wrong distribution. The proposal cache has a single-round lifetime; two scheduler-side lifecycle holes let slots outlive their `q`:
+
+1. **Tail/drafter-fit boundary.** The drafter refuses to propose when the batch's max optimistic sequence length plus the 8 query tokens (7 speculative + 1 dFlash bonus) exceeds the effective drafter context (boundary 65528 at the 64K tier). The parent `AsyncScheduler` still assigned `[-1]*7` placeholder spec slots on those rounds — exactly the rounds the worker produces null `q`.
+2. **Non-preemptive deferral.** Any path that leaves a RUNNING request with pending spec slots out of a step's schedule (token-budget exit, allocation failure, zero-token skip, async max-tokens skip, decode-eligibility skip, pause) drops it from the worker's persistent batch, so the next proposal snapshot cannot contain a `q` row for it.
+
+**What I changed.** Two Python scheduler files only (`vllm/v1/core/sched/scheduler.py`, `async_scheduler.py`; retained as `patches/011-dflash2-proposal-lifecycle/`). The scheduler now mirrors the runner's drafter-fits projection exactly and assigns placeholder slots only when a `q` can exist; a single post-running-loop sweep invalidates the pending slots of requests not scheduled this step (the same defense preemption already had). A suppressed round degrades to plain 1-token decode and a fresh proposal follows when the drafter fits again. Nothing else moved: the strict verifier, the proposer, and the rejection sampler are byte-identical; no fallback distribution is ever substituted.
+
+**What that gave me.** The deterministic reproducer flips from crash to clean suppression exactly between 65528 and 65529; 80/80 sequential agent steps through the original crash window (histories to 64,340 tokens, one live deferral handled cleanly); a 126,483-token long-context prompt 512/512; TP2 and TP4 both pass; 103,264 draft rows with 0 cache misses and 0 unmatched `q`; SQL continuation +14% (the documented warm-server upside ceiling). Inertness for Base/MTP1/non-probabilistic methods was proven deterministically against the exact bytes (42-scenario parent-vs-candidate differential, identical digest), not re-qualified by server campaigns. DFlash2 APC is OFF in every lane of this promotion — APC enablement is the next separate campaign.
+
+---
+
 ## The final runtime
 
 What came out the other end of that chain:
 
 ```text
-local/qwen38-27b-b70:astra-noise-cache-20260912
-Image ID: sha256:78a3720f542f8d7974aa6cf38eff4bfd612fcecb1bc7c06a42ddeb4d6febe1aa
-(publication: ghcr.io/wu1ff/qwen38-27b-b70:1.0.0
- @sha256:78a3720f542f8d7974aa6cf38eff4bfd612fcecb1bc7c06a42ddeb4d6febe1aa — promoted 2026-09-12)
+local/qwen38-27b-b70:proposal-lifecycle-20260921
+Image ID: sha256:314786fd704d5393630e4e292a60bc30e5ade1fa4aa372cf986106e16828c90f
+(publication: ghcr.io/wu1ff/qwen38-27b-b70:1.0.2
+ @sha256:314786fd704d5393630e4e292a60bc30e5ade1fa4aa372cf986106e16828c90f — promoted 2026-09-21;
+ the previous authority 78a3720f542f8d7974aa6cf38eff4bfd612fcecb1bc7c06a42ddeb4d6febe1aa
+ remains published/pullable as tag 1.0.0 and by digest)
 ```
 
-These are the patch-009 bytes (stage 14) plus exactly one installed delta — the dFlash2 exact Gumbel-noise cache (stage 17). The final serving corrections that are NOT in the image are the required launch environment:
+These are the patch-009 bytes (stage 14) plus exactly two installed deltas since — the dFlash2 exact Gumbel-noise cache (stage 17) and the DFlash2 proposal-lifecycle scheduler fix (stage 19). The final serving corrections that are NOT in the image are the required launch environment:
 
 ```text
 CCL_SYCL_ALLREDUCE_TMP_BUF=1
@@ -267,3 +283,4 @@ Serving modes: **Base** (plain decode), **MTP1** (the model's own one-token mult
 - The dFlash2 noise cache preserves exact noise tensors and GPU RNG state per request; it does not make seeded stochastic sampling deterministic (that was never deterministic), and no all-temperature output-parity claim is made beyond the validated greedy lane.
 - The promoted image's qualification record retains one unexplained hardware event: a 2026-09-12 08:04Z cold-initialization engine fault (GPU1, during draft weight loading, before any serving) that preceded the campaign, resolved by a host reboot. Three subsequent fully cold initializations and the entire qualification campaign on the same bytes were clean, the fault was never attributed to the cache (the cached path had not executed at the point of failure), and the prior-boot fault history of the affected cards is part of the retained record.
 - `orcarouter/Qwen3.8-27B-Uncensored-FP8` is access-controlled on Hugging Face; the other four repositories resolve publicly at the pinned revisions.
+- DFlash2 Automatic Prefix Caching is OFF in every qualified lane of this runtime and is NOT part of the 2026-09-21 promotion; DFlash2 APC enablement is the next separate capability campaign. Base and MTP1 keep their engine-default APC posture. The 2026-09-21 scheduler fix does not weaken the strict proposal-probability verifier: a suppressed round degrades to plain decode rather than substituting a fallback distribution.
