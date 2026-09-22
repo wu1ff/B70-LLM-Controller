@@ -4,9 +4,9 @@
     {
       "id": "qwen38-27b-b70",
       "name": "Qwen3.8 27B B70 Pack (MTP1 / dFlash2)",
-      "version": "1.0.1",
-      "archive_url": "https://github.com/wu1ff/B70-LLM-Controller/releases/download/qwen3.8-27b-v1.0.1/qwen38-27b-b70-1.0.1.tar.gz",
-      "sha256": "sha256:6f857de7f79573aa4f1a6a4e5d51b3a312bce51c9f1a9a8ea42f6acbba3f6bff"
+      "version": "1.0.2",
+      "archive_url": "https://github.com/wu1ff/B70-LLM-Controller/releases/download/qwen3.8-27b-v1.0.2/qwen38-27b-b70-1.0.2.tar.gz",
+      "sha256": "sha256:c212bc8fb4e4064483671b39a50ed640a03bffda9995519d883cdb5e6df6a57c"
     },
     {
       "id": "qwen36-35b-a3b-b70",
