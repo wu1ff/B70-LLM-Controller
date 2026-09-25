@@ -27,8 +27,8 @@ const (
 	e2ePackDirectory = "Qwen3.8-27B"
 	e2ePackID        = "qwen38-27b-b70"
 	e2ePackName      = "Qwen3.8 27B B70 Pack (MTP1 / dFlash2)"
-	e2ePackVersion   = "1.0.5"
-	e2eArchiveName   = "qwen38-27b-b70-1.0.5.tar.gz"
+	e2ePackVersion   = "1.0.6"
+	e2eArchiveName   = "qwen38-27b-b70-1.0.6.tar.gz"
 	e2eArchiveURL    = "https://packs.example.com/" + e2eArchiveName
 )
 

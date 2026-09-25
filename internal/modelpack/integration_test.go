@@ -99,7 +99,7 @@ func TestPublicQwenPackFinalRuntimeContract(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	wantDigest := "sha256:c0c9b8f382298bdd90f78ae2f4700637241c7a8e2b6c7ab591dc933c76b73cbf"
+	wantDigest := "sha256:f3006020add52dedfed08947b05234ef4c058b47158afe61c0e79f9ef60a6f4a"
 	wantRegistry := "ghcr.io/wu1ff/qwen38-27b-b70@" + wantDigest
 	if len(manifest.Runtimes) != 1 || manifest.Runtimes[0].Digest != wantDigest || manifest.Runtimes[0].Registry != wantRegistry {
 		t.Fatalf("runtime authority = %#v", manifest.Runtimes)
@@ -192,7 +192,7 @@ func TestPublicQwenPackRepresentativeFP8TP264KDFlash2Contract(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if resolved.Digest != "sha256:c0c9b8f382298bdd90f78ae2f4700637241c7a8e2b6c7ab591dc933c76b73cbf" || resolved.Environment["CCL_SYCL_ALLREDUCE_TMP_BUF"] != "1" || resolved.Environment["CCL_SYCL_ALLGATHERV_TMP_BUF"] != "1" {
+	if resolved.Digest != "sha256:f3006020add52dedfed08947b05234ef4c058b47158afe61c0e79f9ef60a6f4a" || resolved.Environment["CCL_SYCL_ALLREDUCE_TMP_BUF"] != "1" || resolved.Environment["CCL_SYCL_ALLGATHERV_TMP_BUF"] != "1" {
 		t.Fatalf("representative resolved contract = %#v", resolved)
 	}
 	if len(resolved.Mounts) != 2 || resolved.Mounts[0].ModelID != "qwen38-27b-fp8" || resolved.Mounts[1].ModelID != "qwen38-27b-dflash2" {

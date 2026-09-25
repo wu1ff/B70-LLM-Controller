@@ -248,6 +248,26 @@ The last blocker for prefix caching on this hybrid-GDN runtime was an address bu
 
 ---
 
+## SD conv-state migration fix (2026-09-25, in the final image)
+
+Two files, `patches/013-sd-conv-state-migration/`: both speculative-decode
+conv-state copy sites now source the full conv-state block from the
+per-token block-table column of the aligned accepted position
+(`get_conv_copy_spec` SD branch → `block_ids[cur_block_idx +
+num_accepted_tokens - 1]`; `_copy_mamba_state_block` SD conv branch →
+`state[bt[src_col + token_bias]]`, the same source column the exact
+temporal branch uses). The shipped code used a row-offset within the
+running column, corrupting every acc≥2 ALIGN advance/checkpoint — the
+root cause of the spontaneous `!`-degeneration regression (closed
+2026-09-25; full chain in CURRENT.md §1.19 and
+`issue-forensics/apc/align-address-fix/` + `bang-regression-20260924/`).
+acc=1/bias=0 copies are byte-identical to the parent (offline-proven).
+Qualification on the exact promoted bytes: b6 instrumented gate + §N+5
+battery (TP4 FP8 unc 262144) + representative production lanes FP8 TP2
+64K std and INT4 TP1 32K @0.91 — all PASS with real APC hits and normal
+acceptance; the historical 12-lane matrix deliberately not rerun.
+DFlash2 posture, launch contract, envelopes: unchanged.
+
 ## Vision: VISION-LAUNCH-FLAG-FIX (2026-09-22, launch contract only — no image change)
 
 Vision input died on every 1.0.x lane with `RuntimeError: could not create a primitive` out of oneDNN, reached from the ViT encoder's scaled-dot-product-attention. The mechanism, proven from the frozen 1.0.3 bytes plus one diagnostic boot:
@@ -272,7 +292,10 @@ The fix is exactly the removal of `--mm-encoder-attn-backend TORCH_SDPA`
 from the launch contract (recipes, pack runtime command). No explicit
 `FLASH_ATTN` override was added — the qualified posture is *no explicit
 override*, letting the XPU default select FLASH_ATTN. No source patch, no
-image rebuild: the runtime bytes remain `c0c9b8f3…` (tag 1.0.3).
+image rebuild was needed AT THAT TIME: the then-runtime bytes remained
+`c0c9b8f3…` (tag 1.0.3). (Since 2026-09-25 the ACTIVE runtime is
+`f3006020…` / tag 1.0.6 — the SD conv-migration promotion, §1.19 of
+CURRENT.md — carrying the identical no-explicit-override posture.)
 
 **External-report history corrected.** The external deployment capture
 previously cited as a "working vision contrast" was not one: its first
@@ -368,16 +391,16 @@ this warning.)
 What came out the other end of that chain:
 
 ```text
-local/qwen38-v26-dflash2:align-apc-c1
-Image ID: sha256:c0c9b8f382298bdd90f78ae2f4700637241c7a8e2b6c7ab591dc933c76b73cbf
-(publication: ghcr.io/wu1ff/qwen38-27b-b70:1.0.3
- @sha256:c0c9b8f382298bdd90f78ae2f4700637241c7a8e2b6c7ab591dc933c76b73cbf — promoted
- 2026-09-22 retag-only, no rebuild; the previous authority
- 314786fd704d5393630e4e292a60bc30e5ade1fa4aa372cf986106e16828c90f
- remains published/pullable as tag 1.0.2 and by digest)
+local/qwen38-v26-dflash2:convfix-c1
+Image ID: sha256:f3006020add52dedfed08947b05234ef4c058b47158afe61c0e79f9ef60a6f4a
+(publication: ghcr.io/wu1ff/qwen38-27b-b70:1.0.6
+ @sha256:f3006020add52dedfed08947b05234ef4c058b47158afe61c0e79f9ef60a6f4a — promoted
+ 2026-09-25 retag-only, no rebuild; the previous authority
+ c0c9b8f382298bdd90f78ae2f4700637241c7a8e2b6c7ab591dc933c76b73cbf
+ remains published/pullable as tag 1.0.3 and by digest)
 ```
 
-These are the patch-009 bytes (stage 14) plus exactly three installed deltas since — the dFlash2 exact Gumbel-noise cache (stage 17), the DFlash2 proposal-lifecycle scheduler fix (stage 19), and the XPU Mamba pointer-overflow fix (stage 20, upstream #48109). The final serving corrections that are NOT in the image are the required launch environment:
+These are the patch-009 bytes (stage 14) plus exactly four installed deltas since — the dFlash2 exact Gumbel-noise cache (stage 17), the DFlash2 proposal-lifecycle scheduler fix (stage 19), the XPU Mamba pointer-overflow fix (stage 20, upstream #48109), and the SD conv-state migration source-column fix (stage 21, patches/013 — two files). The final serving corrections that are NOT in the image are the required launch environment:
 
 ```text
 CCL_SYCL_ALLREDUCE_TMP_BUF=1

@@ -114,18 +114,27 @@ RUNTIME_RECIPE.md remains the deep technical companion for this runtime's proven
 The pack uses this final qualified runtime:
 
 ```text
-ghcr.io/wu1ff/qwen38-27b-b70@sha256:c0c9b8f382298bdd90f78ae2f4700637241c7a8e2b6c7ab591dc933c76b73cbf
+ghcr.io/wu1ff/qwen38-27b-b70@sha256:f3006020add52dedfed08947b05234ef4c058b47158afe61c0e79f9ef60a6f4a
 ```
 
-This is the 2026-09-22 promotion (pack 1.0.3): the previous authority
-bytes (the 2026-09-21 proposal-lifecycle runtime, which fixed the crash
-that could kill long 62–65K agentic conversations) plus exactly one
-installed worker file — the retained upstream vLLM #48109 fix for the
-XPU Mamba state pointer overflow. Level Zero device pointers at or above
-2^63 crashed the int64 state-address stores ("Overflow when unpacking
-long long"), which was the hard blocker that kept DFlash2 prefix
-caching off; the fix preserves the exact 64-bit pattern and is inert
-wherever that crash path is not hit (Base and MTP1 unchanged).
+This is the 2026-09-25 promotion (pack 1.0.6): the pack-1.0.3 authority
+bytes (the 2026-09-22 promotion, which fixed the crash that could kill
+long 62–65K agentic conversations and the XPU Mamba state pointer
+overflow that had kept DFlash2 prefix caching off) plus exactly one
+further delta — the two-file SD conv-state migration fix (patches/013).
+That fix closes the spontaneous `!`-degeneration seen under APC/ALIGN:
+every conv-state migration at an ALIGN advance or checkpoint with
+accepted ≥ 2 copied from the wrong block-table source column
+(`src_col + accepted − 1` instead of `src_col + token_bias`), corrupting
+temporal state from the next token on; the accepted=1/bias=0 path —
+all of Base and MTP1, and every APC-off posture — was already
+byte-identical and is untouched. The launch contract, the DFlash2
+APC-ON posture, graph policy, utilization envelopes, and model
+revisions are all unchanged from pack 1.0.5. Qualification: live b6
+gate, the 18-probe degeneration battery clean on TP4 FP8 uncensored
+262144 (0/18 enter), production lanes FP8 TP2 64K and INT4 TP1 32K
+(2/2 PASS), the 96/96 deterministic pack export, and the final
+end-to-end `b70ctl` wiring on int4-dflash2-tp2-65536.
 
 DFlash2 **Automatic Prefix Caching is ON** from this pack
 (`--enable-prefix-caching`; the Qwen3.8 hybrid config resolves the
@@ -138,8 +147,9 @@ Two DFlash2 utilization envelopes changed with this pack as
 pack-envelope corrections independently required by the previous
 runtime as well (not an ALIGN tax): INT4 dFlash2 TP1 32K serves at
 0.91, INT4 dFlash2 TP2 256K at 0.86; every other DFlash2 profile stays
-at 0.82. The previous digests `sha256:314786fd…c90f` (tag `1.0.2`) and
-`sha256:78a3720f…be1aa` (tag `1.0.0`) remain pullable by digest as the
+at 0.82. The previous digests `sha256:c0c9b8f3…73cbf` (tag `1.0.3`),
+`sha256:314786fd…c90f` (tag `1.0.2`), and `sha256:78a3720f…be1aa`
+(tag `1.0.0`) remain pullable by digest as the
 retained parents.
 
 ### Pack 1.0.4 — vision fix (launch contract only)

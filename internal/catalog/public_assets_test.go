@@ -23,7 +23,7 @@ import (
 
 const (
 	publicPackDirectory = "Qwen3.8-27B"
-	publicArchiveName   = "qwen38-27b-b70-1.0.5.tar.gz"
+	publicArchiveName   = "qwen38-27b-b70-1.0.6.tar.gz"
 	// Fixture URL for the locally served archive; generated catalogs never
 	// reference the repository itself because generated archives are not
 	// tracked there.
@@ -154,8 +154,8 @@ func TestPublicCatalogArchive(t *testing.T) {
 	if len(acquired.Manifest.Models) != 5 || len(acquired.Manifest.Runtimes) != 1 || len(acquired.Manifest.Modes) != 3 || len(acquired.Manifest.Profiles) != 96 {
 		t.Fatalf("pack counts = models=%d runtimes=%d modes=%d profiles=%d", len(acquired.Manifest.Models), len(acquired.Manifest.Runtimes), len(acquired.Manifest.Modes), len(acquired.Manifest.Profiles))
 	}
-	wantRegistry := "ghcr.io/wu1ff/qwen38-27b-b70@sha256:c0c9b8f382298bdd90f78ae2f4700637241c7a8e2b6c7ab591dc933c76b73cbf"
-	wantDigest := "sha256:c0c9b8f382298bdd90f78ae2f4700637241c7a8e2b6c7ab591dc933c76b73cbf"
+	wantRegistry := "ghcr.io/wu1ff/qwen38-27b-b70@sha256:f3006020add52dedfed08947b05234ef4c058b47158afe61c0e79f9ef60a6f4a"
+	wantDigest := "sha256:f3006020add52dedfed08947b05234ef4c058b47158afe61c0e79f9ef60a6f4a"
 	if len(acquired.Manifest.Runtimes) != 1 || acquired.Manifest.Runtimes[0].Registry != wantRegistry || acquired.Manifest.Runtimes[0].Digest != wantDigest {
 		t.Fatalf("runtime authority = %#v", acquired.Manifest.Runtimes)
 	}
