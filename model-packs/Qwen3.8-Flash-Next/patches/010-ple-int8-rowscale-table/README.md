@@ -1,0 +1,11 @@
+# PLE table in INT8, one scale per row
+
+- **Purpose:** PLE table in INT8, one scale per row.
+- **Category:** resource.
+- **Pinned upstream base:** vLLM 0.30.0 XPU image `vllm/vllm-openai-xpu@sha256:e4446310b1d30015e8fdc1a0a2ef1669ac6bef857cbe772487571ed5c1a926a9` (`gced6857af`; extracted `image-source/vllm`) plus patches 001–005 and the vLLM half of 006 (the 1.0.2 tree).
+- **Files affected:** `vllm/models/qwen4_exp/nvidia/ngram_embedding.py`; recipe `build_int8_ple.py` (in this directory, not applied to the tree).
+- **Applied runtime stage:** Not in a published image. Proposed stage: `b70-ple`, on top of `gdn-index64-c1`.
+- **Currently shipping:** No. Not in `ghcr.io/wu1ff/qwen38-flashnext-b70:1.0.0`; proposed. It runs on our 4× Arc Pro B70 host in a tree built from 001–006 plus this series (github.com/Lumnus/b70-flash-next, release `0.30.0-b70.1`).
+- **Technical explanation:** Opt-in with `B70_PLE_INT8=1` + `B70_PLE_INT8_PATH`. Keeps the table as INT8 with one float32 scale per row: 164 B/row (160 int8 + the scale), 48.9 GiB pinned over 4 ranks instead of 95.4 GiB BF16. The scale travels with its row through the gather and the ETP reduce; dequantisation runs after the gather. The table is a derived file built from the checkpoint's `ple_table_qwen4exp.pt` by `build_int8_ple.py` (deterministic; same input bytes give the same output bytes; format tag `lumnus-ple-int8-rowscale/v1`, compared by equality). At boot it refuses a wrong tag, dtype, width or row count, a non-finite or negative scale in this rank's rows, or, with `PLE_TABLE_PATH` set, a cross-check error above `B70_PLE_INT8_MAX_REL_ERR` (default 0.02; measured ~0.0066) on 4,096 random rows. Switch unset: 009's path, unchanged.
+- **Reproduction/application:** Apply `010-ple-int8-rowscale-table.patch` after 009 from the vLLM tree root (`patch -p1 --fuzz=0`).
+- **Retained provenance:** github.com/Lumnus/vllm, branch `b70/v0.30.0`, commit `b3cbc0be56` (`0008-b70-ple-int8-rowscale-pinned-table`); exported as `patches/vllm/0008-b70-ple-int8-rowscale-pinned-table.patch` in github.com/Lumnus/b70-flash-next. This file is the same change rewritten as a plain unified diff against the 1.0.2 tree; applying the proposed patches to that tree gives files byte-identical to ours.
