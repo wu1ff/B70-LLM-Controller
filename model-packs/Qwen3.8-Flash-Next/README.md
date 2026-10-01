@@ -31,7 +31,7 @@ Only combinations that passed qualification are included. `b70ctl` reads the exa
 
 ## Hard runtime requirements (baked into the image)
 
-These are properties of the pinned runtime image, not options: pinned-host PLE table (2-slab UVA load, zero device residency — `PLE_TABLE_PATH` resolves into the read-only model mount), the B70 Level-Zero peer-residency shim (`LD_PRELOAD`), TP4 + expert parallelism, W4A16 bf16 serving, breakable FULL_AND_PIECEWISE XPU graphs `[1,2,4,8,256]` at `--max-num-batched-tokens 256` / `--max-num-seqs 4` (torch.compile mode NONE), automatic prefix caching ON with the ALIGN Mamba cache mode, and the dense-QSA serve configuration.
+These are properties of the pinned runtime image, not options: pinned-host PLE table (2-slab UVA load, zero device residency — `PLE_TABLE_PATH` resolves into the read-only model mount), the B70 Level-Zero peer-residency shim (`LD_PRELOAD`), TP4 + expert parallelism, W4A16 bf16 serving, breakable FULL_AND_PIECEWISE XPU graphs (torch.compile mode NONE) — Base: `[1,2,4,8,16,256,512,1024]` at `--max-num-batched-tokens 1024` / `--max-num-seqs 16`; MTP3: `[1,2,4,8,256]` at `--max-num-batched-tokens 256` / `--max-num-seqs 4` (see [Base serving profile](#base-serving-profile)), automatic prefix caching ON with the ALIGN Mamba cache mode, and the dense-QSA serve configuration.
 
 Dense QSA is a correctness requirement for this checkpoint: the pinned config ships five `text_config.indexer_*` keys but the checkpoint contains no indexer weights, so the runtime image carries the patched serving config (the pinned config minus exactly those five keys, sha256 `91fa33ca…`) and its entrypoint rebuilds the serve directory inside the container at boot (`/work/flashnext-serve`) from the read-only Controller model mount. The mounted snapshot is never written.
 
@@ -54,7 +54,20 @@ Retained qualified results from the promoted unified runtime (BetterBench v0.6.0
 | TTFT p50 (shorts) | 107.5 ms | 123.0 ms |
 | Concurrency C4 aggregate | 183.7 tok/s | 138.3 tok/s |
 
-Where each mode wins: MTP3 wins every single-stream decode category (+69% to +155%) and C1/C2 aggregates (2.00×/1.82×); Base wins prefill throughput at every depth (+7.3–8.5%), TTFT at every depth/level, and C4 aggregate (+32.7%). The two modes are complementary rather than overlapping. Concurrency numbers are recorded envelope data only — concurrency tuning is explicitly deferred (the `max_num_seqs 4` contract is unchanged from qualification).
+Where each mode wins: MTP3 wins every single-stream decode category (+69% to +155%) and C1/C2 aggregates (2.00×/1.82×); Base wins prefill throughput at every depth (+7.3–8.5%), TTFT at every depth/level, and C4 aggregate (+32.7%). The two modes are complementary rather than overlapping. The numbers in this table are from the original qualification at `max_num_seqs 4` and a 256-token prefill chunk; the Base profile now uses 16 slots and a 1024-token chunk (next section). MTP3 keeps the qualified 4 / 256.
+
+## Base serving profile
+
+Base mode launches with `--max-num-batched-tokens 1024`, `--max-num-seqs 16` and capture sizes `[1,2,4,8,16,256,512,1024]`. These three flags moved from the shared runtime layer to the mode layer, so MTP3 still renders exactly the qualified `256` / `4` / `[1,2,4,8,256]` (only the argument order changed). Utilisation stays 0.85.
+
+Measured on 4× Arc Pro B70, TP4 + EP, this checkpoint (`devan-carlin` @ `40b8f18d`), vLLM v0.30.0 with patches 001–006. The prefill row ran in an image built from the official v0.30.0 XPU image with these patches plus one boot-memory patch; the slots row ran with the PLE table in INT8 (proposed separately) at utilisation 0.87–0.88:
+
+| change | measured |
+| --- | --- |
+| prefill chunk 256 → 1024 | prefill 2,674 → 4,711 tok/s at an 18.7K-token prompt, 1,686 → 3,711 tok/s at 98K; decode, C4 aggregate and MMLU/TruthfulQA unchanged (paired test, p = 1.0) |
+| 4 → 16 slots | chat mix (1–4K in, 0.5–1.5K out) aggregate decode 181 / 289 / 364 / 425 tok/s at 4 / 8 / 12 / 16 concurrent, 0 preemptions; an agent mix of 20–60K-token prompts saturates at 8 and preempts at 16 (KV pool full) |
+
+**Keep every capture size a power of two.** The 4 → 16 measurement above used `[1,2,4,6,8,12,16,256,512,1024]`. With those non-power-of-two sizes some requests in the minutes after a boot produced a repeated single token from the first output token on (NaN logits; with `logprobs` the response is HTTP 400 "Out of range float values are not JSON compliant: nan"). Under the same load, 40 of 84 requests hit it in 7 minutes with that list and 0 of 115 in 18 minutes with `[1,2,4,8,256,512,1024]`. The 16-slot power-of-two list above has served on the same vLLM tree since. With this checkpoint it held 20 minutes of 16 concurrent ~40K-token uncached prompts: 104 requests, 0 errors. This is strong evidence, not a proof: we have not isolated which size triggers it, so we keep every size a power of two.
 
 ## Runtime
 
