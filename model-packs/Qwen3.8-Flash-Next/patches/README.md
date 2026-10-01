@@ -23,3 +23,11 @@ The vLLM base is the official `vllm/vllm-openai-xpu` v0.30.0 amd64 image at `sha
 Apply vLLM patches 001–005 in order to the pristine vLLM tree, then the vLLM dispatch patch in 006. Apply the native patch in 006 separately to the pinned kernel source. Apply the model config patch in 007 to the pinned model config. Build the native correction library and shim from their retained C/C++ source and recipes. The image lineage was base-c5 → full-c1 → hcsplit-c1 → astra-cumulative/mtp3-c1 → gdn-index64-c1, then the 007 packaging layer with the pinned serving config and entrypoint. Both Base and MTP3 use the final unified image.
 
 The patches were checked by applying them to clean retained source copies in lineage order and comparing the resulting files byte-for-byte with the production overlays. Native patch reversal and reapplication were checked against the retained pinned tree. `SHA256SUMS` covers all other files in this directory, in sorted order. Rejected experiments, temporary probes, observers, and diagnostic-only patches are intentionally omitted.
+
+## Proposed: skip indexer tensors on dense-QSA configs (023)
+
+| Patch | Purpose | Category | Source base | Shipping |
+| --- | --- | --- | --- | --- |
+| [023](023-dense-qsa-skip-indexer-weights/README.md) | Dense QSA: skip indexer tensors at load | correctness | vLLM 1.0.2 tree, after 006 (vLLM half) | No (proposed) |
+
+Apply 023 after the vLLM half of 006. It changes nothing for the pinned `devan-carlin` revision (no indexer tensors). It lets the same runtime and 007's dense-QSA serve config load checkpoints that still ship `self_attn.indexer.*` tensors, such as the calibrated AWQ export `wtdcode/Qwen3.8-Flash-Next-AWQ-W4A16` at revision `0939125`.
