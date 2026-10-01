@@ -23,3 +23,15 @@ The vLLM base is the official `vllm/vllm-openai-xpu` v0.30.0 amd64 image at `sha
 Apply vLLM patches 001–005 in order to the pristine vLLM tree, then the vLLM dispatch patch in 006. Apply the native patch in 006 separately to the pinned kernel source. Apply the model config patch in 007 to the pinned model config. Build the native correction library and shim from their retained C/C++ source and recipes. The image lineage was base-c5 → full-c1 → hcsplit-c1 → astra-cumulative/mtp3-c1 → gdn-index64-c1, then the 007 packaging layer with the pinned serving config and entrypoint. Both Base and MTP3 use the final unified image.
 
 The patches were checked by applying them to clean retained source copies in lineage order and comparing the resulting files byte-for-byte with the production overlays. Native patch reversal and reapplication were checked against the retained pinned tree. `SHA256SUMS` covers all other files in this directory, in sorted order. Rejected experiments, temporary probes, observers, and diagnostic-only patches are intentionally omitted.
+
+## Proposed: chat API helpers (020–022)
+
+| Patch | Purpose | Category | Source base | Shipping |
+| --- | --- | --- | --- | --- |
+| [020](020-api-thinking-budget/README.md) | Per-effort thinking budget; server default presence penalty | api | vLLM 1.0.2 tree, after 006 (vLLM half) | No (proposed) |
+| [021](021-api-default-repetition-detection/README.md) | Server default for vLLM's repetition stop | api | vLLM 1.0.2 tree, after 020 | No (proposed) |
+| [022](022-api-reasoning-effort-alias/README.md) | OpenRouter-style reasoning.effort alias | api | vLLM 1.0.2 tree, after 021 | No (proposed) |
+
+Apply 020–022 in order after the vLLM half of 006. All three touch only the chat-completion request protocol and are off unless their environment variable is set; the one ungated change is that `reasoning_effort` also accepts `"ultra"`.
+
+What we serve: `B70_THINKING_BUDGET=minimal=512,low=512,medium=2048,high=4096,xhigh=8192,max=12288,ultra=12288,default=8192`, `B70_DEFAULT_REPETITION_DETECTION=max=1,min=1,count=128`, `B70_REASONING_EFFORT_ALIAS=1`, `B70_DEFAULT_PRESENCE_PENALTY=0` (we ran 0.7 earlier; 0 is the stock default), with `--reasoning-config '{"reasoning_end_str": "\n\nI have thought enough; time to answer.\n</think>\n\n"}'` so a budget-forced close reads as a transition. Upstream vLLM has open work in the same area; these may become unnecessary on a newer base.
