@@ -1,0 +1,11 @@
+# Split the pinned CPU KV pool when one allocation is too large
+
+- **Purpose:** Split the pinned CPU KV pool when one allocation is too large.
+- **Category:** resource.
+- **Pinned upstream base:** vLLM 0.30.0 XPU image `vllm/vllm-openai-xpu@sha256:e4446310b1d30015e8fdc1a0a2ef1669ac6bef857cbe772487571ed5c1a926a9` (`gced6857af`; extracted `image-source/vllm`) plus patches 001–005 and the vLLM half of 006 (the 1.0.2 tree).
+- **Files affected:** `vllm/v1/kv_offload/cpu/gpu_worker.py`; CPU tests in `chunked-pool-tests.patch` (not applied to the image).
+- **Applied runtime stage:** Not in a published image. Proposed stage: `b70-offload`, on top of `gdn-index64-c1`.
+- **Currently shipping:** No. Not in `ghcr.io/wu1ff/qwen38-flashnext-b70:1.0.0`; proposed. It runs on our 4× Arc Pro B70 host in a tree built from 001–006 plus this series (github.com/Lumnus/b70-flash-next, release `0.30.0-b70.1`).
+- **Technical explanation:** The CPU offload worker allocates each KV tensor's pool as one pinned tensor. Level Zero refuses a host allocation above the device's per-allocation limit (between 30 and 31 GiB on a 32 GB B70, measured), so a 128 GiB pool on TP4 (32 GiB per rank) fails at boot: torch 2.13 gets a null pointer and every rank segfaults filling it. This keeps one tensor whenever it fits and otherwise stores the pool as equal row-aligned chunks (power-of-two count, so 32 GiB → 2 × 16 GiB); a row never straddles two chunks, so every copy descriptor stays inside one allocation. A null pinned allocation now raises instead of being filled. Ungated, but a pool that fits in one allocation is unchanged. Also carries our `0013`'s one log-line change in this file (the host-tensor allocation line moves from DEBUG to INFO and prints `is_pinned()`), so this directory applies without 011.
+- **Reproduction/application:** Apply `019-offload-chunked-pinned-pool.patch` after 018 from the vLLM tree root (`patch -p1 --fuzz=0`).
+- **Retained provenance:** github.com/Lumnus/vllm, branch `b70/v0.30.0`, commit `5ab7410fe0` (`0018-b70-offload-chunked-pinned-pool`), with one log-line hunk in `gpu_worker.py` moved between 011 and 019 (see above). Applying all proposed patches to the 1.0.2 tree gives files byte-identical to ours.
