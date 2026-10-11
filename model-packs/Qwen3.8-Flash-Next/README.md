@@ -39,7 +39,7 @@ Required correctness protections include the hyperconnection (HC) wide-GEMM K-sp
 
 **114.0 tok/s weighted single-stream generation**, measured with the released Disk image in MTP3 mode on 2026-10-11 using BetterBench v0.6.0.
 
-This is BetterBench's default weighted mean of six category decode medians: **code 30%, reasoning 20%, prose 15%, JSON 15%, file editing 10%, summarization 10%**. Chat and math are measured with zero headline weight. It is not the arithmetic mean of all eight medians. The weighting and timing definitions are documented in the [methodology](../../betterbench-results/2026-10-11-flash-next-disk-mtp3/METHODOLOGY.md).
+This is BetterBench's default weighted mean of six category decode medians: **code 30%, reasoning 20%, prose 15%, JSON 15%, file editing 10%, summarization 10%**. Chat and math are measured with zero headline weight. It is not the arithmetic mean of all eight medians. Workload and timing definitions are summarized [below](#benchmark-system-and-methodology).
 
 ### Single-stream generation
 
@@ -77,36 +77,59 @@ Each depth completed **8/8 measured requests**, with a 16-token generation cap. 
 
 Aggregate throughput is successful output tokens divided by the level's elapsed wall time, including TTFT and scheduling. It is not the sum of per-request medians. Total output rises with load while individual streams slow; C4 does not scale linearly from C1.
 
-All **336 measured requests** succeeded. Full distributions, stream-update metrics and percentile warnings are in the [standalone HTML report](../../betterbench-results/2026-10-11-flash-next-disk-mtp3/results.html), with [sanitized results JSON](../../betterbench-results/2026-10-11-flash-next-disk-mtp3/results.json) for inspection. Download the HTML file to view its interactive charts in a browser. **All performance numbers here describe MTP3; Base was not included in this campaign.**
+All **336 measured requests** succeeded: 160 category, 32 prefill and 144 concurrency requests. The campaign made **368 calls including discarded warmups**. **All performance numbers here describe MTP3; Base was not included in this campaign.**
 
 ## Benchmark system and methodology
 
 | Component | Measured system |
 | --- | --- |
 | CPU | AMD EPYC 7443, one socket, 24 cores / 48 threads |
+| CPU policy / NUMA topology | `schedutil` governor; six cores / twelve threads per NUMA node |
 | Motherboard | HUANANZHI H12D-8D V2.0; four NUMA nodes |
 | Memory | 256 GiB DDR4, eight 32 GiB DIMMs; frequency not independently verified |
 | GPUs | Four Intel Arc Pro B70 GPUs, 32 GiB each |
+| GPU capacity reported by PyTorch | 32656 MiB per device |
 | GPU links | Verified host-facing PCIe 4.0 ×16 on all four cards |
 | OS / kernel | Ubuntu 26.04 LTS / Linux 7.2.0-070200-generic |
+| Architecture / GPU driver | x86_64 / `xe` |
 | Checkpoint storage | Samsung MZVLB1T0HBLR-000L2 NVMe, 1.024 TB, ext4 |
+| Storage capacity / policy | 1,024,209,543,168-byte device; ext4 `rw,relatime`; NVMe scheduler `none`; 128 KiB read-ahead |
+| Host GPU userspace | Intel compute runtime 26.27.39122.14-1~26.04~ppa1; Level Zero loader 1.32.0-1~26.04~ppa1; IGC 2.38.5-1~26.04 |
+| Container GPU userspace | Intel compute runtime 26.27.39122.11-0; Level Zero loader 1.32.0 |
 | Released runtime | Pack 1.0.3, `ghcr.io/wu1ff/qwen38-flashnext-b70:disk`, identity `b13fed6dd540…` |
 | Serving stack | vLLM 0.30.0+xpu; PyTorch 2.13.0+xpu; Triton XPU 3.7.2; oneCCL 2022.0.0 |
+| Additional runtime packages | Transformers 5.16.1; Intel SYCL/unified/compiler runtime and oneMKL SYCL 2026.0.0 |
+| Containers | Docker 29.7.2; containerd 2.3.3; runc 1.4.3 |
 | Serving profile | TP4 + expert parallelism, BF16 activations, MTP3, 262144 context, four slots, MBT1024, GPU memory utilization 0.91 |
 | Benchmark | BetterBench v0.6.0, corpus 1.0; source commit `d00ad5ec8098c06584a88ec3468bacd37d5ed098` |
+| Benchmark environment | Python 3.14.4; NumPy 2.5.3; corpus hash `e332dceff176d033` |
 
-The [hardware record](../../betterbench-results/2026-10-11-flash-next-disk-mtp3/HARDWARE.md) retains the exact image identity and driver/runtime versions. DDR4 firmware speed fields disagree, so no operating frequency is claimed.
+The exact campaign image identity was `sha256:b13fed6dd54051395f603409ada440c74afcbd5331810eee3acd62315d7787e3`. The checkpoint was `devan-carlin/Qwen3.8-Flash-Next-W4A16` at revision `40b8f18df4d4a32cb6e687a51c78207e5e438522`, mounted read-only; all 31 release file sizes matched. Image identity and configuration matched [pack.json](pack.json).
 
-The campaign used all eight categories (29 corpus prompts): three discarded warmups and 20 measured passes per category; two warmups and eight samples at each 2K–32K prefill target; and 48 requests at each of C1/C2/C4. It reused one healthy MTP3 server with the **262144-context profile**, without exercising prompts near that ceiling.
+DDR4 firmware fields report conflicting configured **3200 MT/s** and rated **2667 MT/s** speeds, so no operating frequency is claimed. PCIe figures describe the host-facing bridges (16 GT/s ×16), rather than the GPUs' internal endpoint link fields. No clock, link, governor or firmware settings were changed.
 
-Fresh nonce prefixes and regenerated prefill bodies prevented prior prompt-prefix/KV reuse. APC remained enabled; the OS page cache was retained. **Fresh-prefix measurements are not storage-cold measurements.**
+The campaign used all eight categories (29 corpus prompts): three discarded warmups and 20 measured passes per category; two warmups and eight samples at each 2K–32K prefill target; and 48 requests at each of C1/C2/C4, with no additional concurrency warmup. Category prompts cycled in standard corpus order; concurrency used the flattened corpus order and a client semaphore. It reused one healthy MTP3 server with the **262144-context profile**, without restart, profile transition, additional tuning, a repeated phase or prompts near that ceiling.
+
+Fresh nonce prefixes and regenerated prefill bodies prevented prior prompt-prefix/KV reuse; campaign counters recorded zero prefix-cache hits. APC remained enabled; the OS page cache was retained. **Fresh-prefix measurements are not storage-cold measurements.**
+
+Metric definitions:
+
+- **TTFT:** monotonic-clock time from client request send to the first text-bearing reasoning or answer update.
+- **Decode tok/s:** `(completion_tokens - 1) / (last_text_update - first_text_update)`; the first token belongs to TTFT. Category rates are medians.
+- **Prompt processing:** actual `prompt_tokens / TTFT_seconds` for each request, including network and first-token generation time. The table reports the median of those rates, rather than a ratio of two medians.
+- **Aggregate output tok/s:** successful completion-token sum divided by the full concurrency-level wall time, including TTFT and client scheduling.
+- **Stream-update gaps:** elapsed time between text-bearing updates. MTP updates can carry multiple tokens, so these are not per-token latencies.
+
+The weighted category-median sum is divided by the sum of included weights (1.0 here), yielding **113.96633676142689 tok/s**, rounded to **114.0 tok/s**. Prefill construction approximated four characters per token and retained BetterBench's 256-token context margin; actual token counts came from server usage. Half-token prefill medians average the two central observations of eight samples.
 
 Interpretation limits:
 
-- Category and concurrency sampling used temperature 0.7, top_p 0.95 and top_k 20, without a request seed override. Prefill used temperature 0.
-- Corpus output caps were retained: **126/160 category requests (78.8%)** reached their limit. Generated tokens include reasoning and potentially incomplete answers; these are performance measurements, not task-quality scores.
+- Category and concurrency sampling used temperature 0.7, top_p 0.95 and top_k 20, without a request seed override. Prefill used temperature 0, retaining top_p/top_k and a 16-token generation cap. Only concurrency levels and prefill targets overrode tool defaults.
+- Corpus output caps of 120–900 tokens were retained: **126/160 category requests (78.8%)** reached their limit. Generated tokens include reasoning and potentially incomplete answers; these are performance measurements, not task-quality scores.
 - Four first-use Triton JIT warnings appeared during concurrency. Associated latency spikes remain in the results; later runs may avoid those compilation costs.
-- TTFT p99 has only 20 category or 48 concurrency observations; prefill has eight samples per depth. Tail estimates are under-sampled and should be treated as roughly the slowest observed, not reliable population percentiles.
+- TTFT p99 has only 20 category or 48 concurrency observations; prefill has eight samples per depth. BetterBench's p99 gate requires 500 observations. Tail estimates are under-sampled and should be treated as roughly the slowest observed, not reliable population percentiles. IQR is p75 minus p25.
+- An external evidence wrapper journaled results after request timing stopped. Its small between-request overhead remains in concurrency wall time; prompts, sampling, token limits, request timing and scoring were unchanged.
+- Read-only `xe` sysfs samples at 15-second intervals observed at most 72 °C per GPU and no thermal-throttle flags; unsampled transients remain possible. No request failure, kernel GPU fault, restart or preemption was observed. Unprivileged `xpu-smi` was unavailable during the campaign; the subsequent privileged idle checks are described below.
 
 ### Observed Resource Usage
 

@@ -431,7 +431,7 @@ history, not cold storage.
 [README](README.md#betterbench-performance) now reports the released Disk image's
 MTP3 BetterBench v0.6.0 campaign. It measured short-corpus C1/C2/C4 aggregate
 output throughput of **111/184/249 tok/s**, with **48/48 successful requests per
-level**. See the retained [methodology](../../betterbench-results/2026-10-11-flash-next-disk-mtp3/METHODOLOGY.md)
+level**. See the README's [benchmark system and methodology](README.md#benchmark-system-and-methodology)
 for workload and timing definitions.
 
 Numerical/reduction-order equivalence is bounded by retained differential
