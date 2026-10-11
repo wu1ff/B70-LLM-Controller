@@ -1,0 +1,543 @@
+--- a/vllm/models/qwen4_exp/nvidia/ngram_embedding.py
++++ b/vllm/models/qwen4_exp/nvidia/ngram_embedding.py
+@@ -7,6 +7,8 @@
+ from typing import ClassVar
+ 
+ import os
++import ctypes
++import threading
+ 
+ import torch
+ import torch.nn.functional as F
+@@ -53,6 +55,107 @@
+ from .ops.ple import ple_ngram_ids
+ 
+ logger = init_logger(__name__)
++
++# Keep DMA owners alive if a device fence fails. Process teardown is the only
++# safe release in that case; never fall back to a different table mid-forward.
++_disk_bf16_quarantine: list[object] = []
++
++
++def _ple_disk_bf16_enabled() -> bool:
++    return os.environ.get("B70_PLE_DISK_BF16") == "1"
++
++
++def _validate_disk_bf16_config(
++    embedding_method: "Qwen4ExpPLEEmbeddingMethod",
++    params_dtype: torch.dtype,
++    max_total_tokens: int,
++) -> int:
++    config = get_current_vllm_config()
++    parallel = config.parallel_config
++    scheduler = config.scheduler_config
++    if os.environ.get("B70_PLE_DIRECT_PINNED") == "1":
++        raise ValueError("Disk BF16 PLE and #008 direct-pinned loading are exclusive")
++    if any(os.environ.get(name) == "1" for name in (
++        "B70_PLE_FP8", "B70_PLE_INT8", "B70_PLE_INT8_NVME",
++        "B70_PLE_INT8_NVME_LOOKAHEAD",
++    )):
++        raise ValueError("Disk BF16 PLE cannot enable another PLE storage gate")
++    if (
++        not _is_xpu()
++        or params_dtype != torch.bfloat16
++        or not isinstance(embedding_method, Qwen4ExpPLEUnquantizedEmbeddingMethod)
++        or not os.environ.get("PLE_TABLE_PATH")
++        or parallel.tensor_parallel_size != 4
++        or not parallel.enable_expert_parallel
++        or parallel.pipeline_parallel_size != 1
++        or parallel.data_parallel_size != 1
++        or parallel.use_ubatching
++        or parallel.decode_context_parallel_size != 1
++        or parallel.prefill_context_parallel_size != 1
++        or scheduler.max_num_seqs != 4
++        or getattr(config.cache_config, "kv_offloading_size", None)
++    ):
++        raise ValueError("Disk BF16 PLE requires the frozen XPU BF16 TP4+EP/PP1/DP1, four-slot contract")
++    # Resolve the actual scheduler, including the default async subclass.
++    # Exact class identities reject arbitrary subclasses and method overrides.
++    from vllm.v1.core.sched.scheduler import Scheduler
++    from vllm.v1.core.sched.async_scheduler import AsyncScheduler
++
++    resolved = scheduler.get_scheduler_cls()
++    if (resolved not in (Scheduler, AsyncScheduler)
++        or resolved.schedule is not Scheduler.schedule
++        or resolved._mamba_block_aligned_split is not Scheduler._mamba_block_aligned_split
++        or resolved._effective_max_num_scheduled_tokens is not Scheduler._effective_max_num_scheduled_tokens):
++        raise ValueError("Disk BF16 PLE requires the retained aggregate-budget scheduler contract")
++    mbt = scheduler.max_num_batched_tokens
++    spec = config.speculative_config
++    conditional_cap = int(os.environ.get("B70_CONDITIONAL_PREFILL_TOKEN_CAP", "0"))
++    if conditional_cap < 0:
++        raise ValueError("B70_CONDITIONAL_PREFILL_TOKEN_CAP must be nonnegative")
++    if spec is not None:
++        if (mbt != 256 or spec.method != "mtp"
++            or spec.num_speculative_tokens != 3):
++            raise ValueError("Disk BF16 MTP requires original MBT256/depth3 scheduling")
++        # The retained scheduler disables its gate for every speculative config.
++    elif mbt == 1024:
++        if conditional_cap != 256:
++            raise ValueError("Disk BF16 Base MBT1024 requires aggregate cap256")
++    elif mbt != 256:
++        raise ValueError("Disk BF16 PLE supports only retained MBT256 or conditional Base MBT1024")
++    captures = config.compilation_config.cudagraph_capture_sizes or []
++    capacity = max([max_total_tokens, *captures])
++    if (max_total_tokens != mbt or capacity != mbt
++        or any(not isinstance(n, int) or n <= 0 or n > mbt for n in captures)):
++        raise ValueError("Disk BF16 PLE effective dispatch/capture capacity must equal MBT")
++    return capacity
++
++
++def _protect_disk_bf16_mapping(table: torch.Tensor, path: str) -> None:
++    """Make the torch-owned file mapping read-only, without touching its pages."""
++    page_size = os.sysconf("SC_PAGE_SIZE")
++    start = table.data_ptr() // page_size * page_size
++    end = (table.data_ptr() + table.numel() * table.element_size() + page_size - 1) // page_size * page_size
++    stat = os.stat(path)
++    cursor = start
++    with open("/proc/self/maps") as maps:
++        for line in maps:
++            fields = line.split(maxsplit=5)
++            left, right = (int(value, 16) for value in fields[0].split("-"))
++            if right <= cursor or left >= end:
++                continue
++            major, minor = (int(value, 16) for value in fields[3].split(":"))
++            if (left > cursor or "p" not in fields[1]
++                or int(fields[4]) != stat.st_ino
++                or os.makedev(major, minor) != stat.st_dev):
++                raise ValueError("PLE tensor is not a private mmap of the selected BF16 file")
++            cursor = min(right, end)
++    if cursor != end:
++        raise ValueError("PLE tensor mapping does not cover the selected BF16 table")
++    libc = ctypes.CDLL(None, use_errno=True)
++    libc.mprotect.argtypes = [ctypes.c_void_p, ctypes.c_size_t, ctypes.c_int]
++    libc.mprotect.restype = ctypes.c_int
++    if libc.mprotect(start, end - start, 1) != 0:  # PROT_READ
++        raise OSError(ctypes.get_errno(), "Cannot protect BF16 PLE mmap")
+ 
+ 
+ def _is_xpu() -> bool:
+@@ -694,6 +797,217 @@
+         return output
+ 
+ 
++class Qwen4ExpPLEDiskBF16Embedding(Qwen4ExpPLEPinnedHostEmbedding):
++    """Immutable torch mmap plus one serialized, bounded XPU DMA stage.
++
++    Only the producer changes. The inherited forward still reduces owned
++    contributions and copies into graph-owned output before GPU PLE math.
++    """
++
++    disk_bf16: ClassVar[bool] = True
++
++    def __init__(
++        self, num_embeddings: int, embedding_dim: int, *,
++        params_dtype: torch.dtype, padding_size: int, prefix: str,
++        embedding_method: Qwen4ExpPLEEmbeddingMethod,
++        num_ngram_heads: int = 1, max_total_tokens: int = 0,
++        data_parallel_rank: int = 0,
++    ) -> None:
++        capacity = _validate_disk_bf16_config(
++            embedding_method, params_dtype, max_total_tokens,
++        )
++        if (num_embeddings, embedding_dim, num_ngram_heads) != (320001536, 160, 16):
++            raise ValueError("Disk BF16 PLE supports only the original B70 table layout")
++        Qwen4ExpPLEEmbedding.__init__(
++            self, num_embeddings, embedding_dim, params_dtype=params_dtype,
++            padding_size=padding_size, prefix=prefix,
++            embedding_method=embedding_method, num_ngram_heads=num_ngram_heads,
++            max_total_tokens=max_total_tokens, data_parallel_rank=data_parallel_rank,
++        )
++        if self.etp_data_parallel_size != 1 or self.tp_size != 4:
++            raise ValueError("Disk BF16 PLE requires ETP=TP=4")
++        self._stream_mod = torch.xpu
++        self._capacity = capacity
++        self._heads = num_ngram_heads
++        self._output_dim = num_ngram_heads * embedding_dim
++        self._prefetch_buffer = torch.empty(
++            capacity, num_ngram_heads, embedding_dim,
++            dtype=params_dtype, device="xpu",
++        )
++        self._stage = torch.empty(
++            capacity, num_ngram_heads, embedding_dim,
++            dtype=params_dtype, device="cpu", pin_memory=True,
++        )
++        if not self._stage.is_pinned():
++            raise RuntimeError("Disk BF16 PLE stage failed to pin on XPU")
++        self._mmap_owner = None
++        self._table = None
++        self._pending = False
++        self._copy_event = torch.xpu.Event()
++        self._owner_stream = None
++        self._owner_thread = None
++        self._lock = threading.Lock()
++        self._failed = False
++        self._closed = False
++        self._generation = 0
++        self._prepared_tokens = 0
++
++    def allocate_embedding_weight(self, num_embeddings, embedding_dim, dtype):
++        # Metadata/loaded-name compatibility only: never reserve a TP shard.
++        return torch.empty(0, embedding_dim, dtype=dtype, device="cpu")
++
++    def weight_loader(self, *args, **kwargs) -> None:
++        raise RuntimeError("Disk BF16 PLE rejects checkpoint row-shards and reloads")
++
++    def load_mmap(self, path: str) -> None:
++        if self._mmap_owner is not None or self._closed or self._failed:
++            raise RuntimeError("Disk BF16 PLE rejects mmap reload")
++        owner = torch.load(path, map_location="cpu", mmap=True, weights_only=True)
++        table = owner["table"] if isinstance(owner, dict) else owner
++        if (not isinstance(table, torch.Tensor) or table.device.type != "cpu"
++            or table.dtype != torch.bfloat16
++            or tuple(table.shape) != (self.org_vocab_size, self.embedding_dim)
++            or not table.is_contiguous() or table.requires_grad or table.is_pinned()):
++            raise ValueError("Disk BF16 PLE requires an exact contiguous CPU BF16 table")
++        _protect_disk_bf16_mapping(table, path)
++        self._mmap_owner = owner
++        self._table = table
++        logger.info(
++            "Disk BF16 PLE mmap ready: shape=%s, capacity=%d, pinned_stage_bytes=%d, "
++            "weight_elements=%d, tp_range=[%d,%d)",
++            tuple(table.shape), self._capacity,
++            self._stage.numel() * self._stage.element_size(), self.weight.numel(),
++            self.shard_indices.org_vocab_start_index,
++            self.shard_indices.org_vocab_end_index,
++        )
++
++    def _check_capacity(self, num_tokens: int) -> None:
++        if not 0 <= num_tokens <= self._capacity:
++            raise ValueError(f"Disk BF16 PLE stage overflow: {num_tokens} > {self._capacity}")
++        if self._closed or self._failed:
++            raise RuntimeError("Disk BF16 PLE stage is closed or quarantined")
++        if self._stream_mod.is_current_stream_capturing():
++            raise RuntimeError("Disk BF16 PLE host preparation cannot run inside capture")
++
++    def _wait_for_stage(self) -> None:
++        if self._pending:
++            try:
++                self._copy_event.synchronize()
++            except BaseException:
++                self._failed = True
++                _disk_bf16_quarantine.append(self)
++                raise
++            self._pending = False
++
++    def _fill_stage(self, ids_cpu: torch.Tensor, num_tokens: int) -> None:
++        """CPU-only selected-row gather; pads/non-owned contributions are zero."""
++        self._stage.zero_()
++        ids = ids_cpu[:num_tokens].reshape(-1)
++        if ids.numel() and (ids.min() < 0 or ids.max() >= self.org_vocab_size):
++            raise ValueError("Disk BF16 PLE received an out-of-table row ID")
++        owned = ((ids >= self.shard_indices.org_vocab_start_index)
++                 & (ids < self.shard_indices.org_vocab_end_index))
++        # Advanced indexing allocates at most dispatch capacity, never a shard.
++        self._stage[:num_tokens].view(-1, self.embedding_dim)[owned] = self._table[ids[owned]]
++
++    def prepare(self, ngram_ids: torch.Tensor | None, num_tokens: int,
++                num_tokens_padded: int) -> None:
++        """Refresh the fixed GPU producer outside forward, including FULL replay."""
++        self._check_capacity(num_tokens_padded)
++        if not 0 <= num_tokens <= num_tokens_padded:
++            raise ValueError("Disk BF16 PLE invalid actual/padded token counts")
++        if not self._lock.acquire(blocking=False):
++            raise RuntimeError("Concurrent Disk BF16 PLE stage preparation")
++        try:
++            stream = self._stream_mod.current_stream()
++            thread = threading.get_ident()
++            # The worker RPC loop serializes prepare -> forward/replay. Host
++            # ownership may change only between these submitted dispatches.
++            # Recheck after acquiring the lock: close/failure may have raced us.
++            self._check_capacity(num_tokens_padded)
++            self._wait_for_stage()  # CPU DMA source must be safe before refill.
++            if self._owner_stream is not None and (
++                stream != self._owner_stream or thread != self._owner_thread
++            ):
++                # The copy event precedes the model's GPU reads. Drain the OLD
++                # stream as well, including FULL replay which bypasses Python.
++                # This occurs only on ownership changes, outside capture; the
++                # ordinary same-owner path retains current-stream ordering.
++                try:
++                    self._owner_stream.synchronize()
++                except BaseException:
++                    self._failed = True
++                    _disk_bf16_quarantine.append(self)
++                    raise
++            # Publish the new owner only after both fences have succeeded.
++            self._owner_stream, self._owner_thread = stream, thread
++            if ngram_ids is None:
++                # Deterministic dummy contents before warmup/capture; no table IO.
++                self._stage.zero_()
++            else:
++                if (self._table is None or ngram_ids.dtype != torch.int64
++                    or tuple(ngram_ids.shape) != (num_tokens_padded, self._heads)
++                    or ngram_ids.device != self._prefetch_buffer.device):
++                    raise ValueError("Disk BF16 PLE missing mmap or invalid dispatch IDs")
++                ids_cpu = ngram_ids.to(device="cpu", non_blocking=False)
++                self._fill_stage(ids_cpu, num_tokens)
++            if num_tokens_padded:
++                # Same-stream ordering prevents overwrite while a previous graph
++                # reads the GPU buffer. The event protects the CPU source.
++                self._pending = True
++                try:
++                    self._prefetch_buffer[:num_tokens_padded].copy_(
++                        self._stage[:num_tokens_padded], non_blocking=True,
++                    )
++                    self._copy_event.record(stream)
++                except BaseException:
++                    self._failed = True
++                    _disk_bf16_quarantine.append(self)
++                    raise
++            self._generation += 1
++            self._prepared_tokens = num_tokens_padded
++        finally:
++            self._lock.release()
++
++    def start_prefetch(self, hidden_states, ngram_ids) -> None:
++        return None
++
++    @eager_break_during_capture
++    def _finalize_prefetch(self, prefetch_output, output) -> None:
++        if self._closed or self._failed or self._prepared_tokens != output.shape[0]:
++            raise RuntimeError("Disk BF16 PLE consumer has no matching prepared dispatch")
++        embeddings = self._reduce_etp_embeddings(prefetch_output[:output.shape[0]])
++        output.copy_(embeddings.flatten(-2))
++
++    def close(self) -> None:
++        # Worker lifetime owns all buffers. Explicit teardown fences before free.
++        if getattr(self, "_closed", True):
++            return
++        if not self._lock.acquire(blocking=False):
++            raise RuntimeError("Cannot close a busy Disk BF16 PLE stage")
++        try:
++            if self._failed:
++                raise RuntimeError("Cannot release a quarantined Disk BF16 PLE stage")
++            self._wait_for_stage()
++            # Also drain graph readers of the GPU destination.
++            if self._owner_stream is not None:
++                try:
++                    self._owner_stream.synchronize()
++                except BaseException:
++                    self._failed = True
++                    _disk_bf16_quarantine.append(self)
++                    raise
++            self._closed = True
++        finally:
++            self._lock.release()
++
++    def __del__(self):
++        try:
++            self.close()
++        except BaseException:
++            _disk_bf16_quarantine.append(self)
++
++
+ class Qwen4ExpNGramEmbedding(nn.Module):
+     _MASK64 = (1 << 64) - 1
+     _SPLITMIX_GAMMA = 0x9E3779B97F4A7C15
+@@ -716,6 +1030,9 @@
+         if not table_path:
+             return False
+         embedding = self.ngram_embedding
++        if isinstance(embedding, Qwen4ExpPLEDiskBF16Embedding):
++            embedding.load_mmap(table_path)
++            return True
+         if not isinstance(embedding, Qwen4ExpPLEPinnedHostEmbedding):
+             raise RuntimeError(
+                 "PLE_TABLE_PATH is set but the PLE table is device-resident; "
+@@ -924,7 +1241,9 @@
+         if params_dtype is None:
+             params_dtype = torch.get_default_dtype()
+         engram_config = get_current_vllm_config().engram_config
+-        if engram_config is not None and engram_config.cpu_offload:
++        if _ple_disk_bf16_enabled():
++            embedding_cls = Qwen4ExpPLEDiskBF16Embedding
++        elif engram_config is not None and engram_config.cpu_offload:
+             embedding_cls = Qwen4ExpPLEPinnedHostEmbedding
+         elif _is_xpu() and os.environ.get("PLE_TABLE_PATH"):
+             # B70 XPU bring-up: pinned-host PLE table selected by
+@@ -1088,6 +1407,8 @@
+     ) -> None:
+         """Start the pinned lookup while the preceding decoder layer runs."""
+         embedding = self.ngram_embedding
++        if isinstance(embedding, Qwen4ExpPLEDiskBF16Embedding):
++            return
+         if not embedding.supports_prefetch:
+             return
+         ngram_ids = self.compute_ngram_ids(
+@@ -1099,6 +1420,10 @@
+ 
+     def load_weights(self, weights: Iterable[tuple[str, torch.Tensor]]) -> set[str]:
+         """Load hash buffers and checkpoint-split embedding rows."""
++
++        disk = isinstance(self.ngram_embedding, Qwen4ExpPLEDiskBF16Embedding)
++        if disk and self.ngram_embedding._mmap_owner is not None:
++            raise RuntimeError("Disk BF16 PLE rejects weight/hash reload")
+ 
+         persistent_buffers = {
+             "layer_multipliers": self.layer_multipliers,
+@@ -1110,6 +1435,8 @@
+         shard_prefix = "ngram_embedding.shard_"
+ 
+         for name, loaded_weight in weights:
++            if disk and name.startswith("ngram_embedding."):
++                raise RuntimeError("Disk BF16 PLE rejects checkpoint embedding rows/scales")
+             leaf_name = name.rsplit(".", 1)[-1]
+             if leaf_name.startswith("hashstats_") or leaf_name == "token_lookup":
+                 continue
+--- a/vllm/models/qwen4_exp/nvidia/model_state.py
++++ b/vllm/models/qwen4_exp/nvidia/model_state.py
+@@ -26,6 +26,18 @@
+     ) -> None:
+         super().__init__(vllm_config, model, encoder_cache, device)
+         config = self.model_config.hf_text_config
++        from .ngram_embedding import (
++            Qwen4ExpNGramEmbedding,
++            Qwen4ExpPLEDiskBF16Embedding,
++        )
++
++        self._disk_ple_modules = tuple(
++            module for module in model.modules()
++            if isinstance(module, Qwen4ExpNGramEmbedding)
++            and isinstance(module.ngram_embedding, Qwen4ExpPLEDiskBF16Embedding)
++        )
++        if self._disk_ple_modules and len(self._disk_ple_modules) != 1:
++            raise RuntimeError("Disk BF16 PLE requires exactly one target PLE module")
+         self.uses_ngram_embedding = bool(config.ple_layer_ids)
+         if not self.uses_ngram_embedding:
+             self.ngram_context_len = 0
+@@ -110,6 +122,22 @@
+             query_start_loc=query_start_loc,
+             ngram_context=self._prepare_ngram_context(input_batch, req_states),
+         )
++        for module in self._disk_ple_modules:
++            num_tokens_padded = input_batch.num_tokens_after_padding
++            module.ngram_embedding._check_capacity(num_tokens_padded)
++            if input_batch.input_ids.shape[0] != num_tokens_padded:
++                raise ValueError("Disk BF16 PLE input length differs from dispatch")
++            if num_tokens_padded == 0:
++                continue
++            # Existing GPU IDs use the authoritative committed context above.
++            # This producer runs before FULL replay as well as ordinary forward.
++            ids = module.compute_ngram_ids(
++                input_batch.input_ids, query_start_loc,
++                model_inputs["ngram_context"],
++            )
++            module.ngram_embedding.prepare(
++                ids, input_batch.num_tokens, num_tokens_padded,
++            )
+         return model_inputs
+ 
+     def prepare_dummy_inputs(
+@@ -141,6 +169,8 @@
+             query_start_loc=query_start_loc,
+             ngram_context=ngram_context,
+         )
++        for module in self._disk_ple_modules:
++            module.ngram_embedding.prepare(None, 0, num_tokens)
+         return model_inputs
+ 
+ 
+--- a/vllm/v1/attention/backends/gdn_attn.py
++++ b/vllm/v1/attention/backends/gdn_attn.py
+@@ -250,11 +250,9 @@
+         else:
+             spec_sequence_masks_cpu = num_decode_draft_tokens_cpu >= 0
+             num_spec_decodes = spec_sequence_masks_cpu.sum().item()
+-            if (
+-                num_spec_decodes == 0
+-                or num_decode_draft_tokens_cpu[spec_sequence_masks_cpu].sum().item()
+-                == 0
+-            ):
++            # A zero-draft decode has one real token and still selects a
++            # previous accepted state; it is not a zero-length padding row.
++            if num_spec_decodes == 0:
+                 num_spec_decodes = 0
+                 spec_sequence_masks = None
+                 spec_sequence_masks_cpu = None
+--- a/vllm/v1/worker/gpu/model_states/mamba_hybrid.py
++++ b/vllm/v1/worker/gpu/model_states/mamba_hybrid.py
+@@ -275,13 +275,21 @@
+             # need the -1 sentinel rather than a raw zero draft count.
+             num_decode_draft_tokens_np = np.full(num_reqs, -1, dtype=np.int32)
+             num_draft_tokens_per_req = input_batch.num_draft_tokens_per_req
++            if num_draft_tokens_per_req is None:
++                num_draft_tokens_per_req = np.zeros(input_batch.num_reqs, dtype=np.int32)
+             if num_draft_tokens_per_req is not None:
+-                # A row is a spec-decode row only when its whole prompt is already
+-                # computed, i.e. exactly one non-draft (decode) token is scheduled.
++                # A transaction has exactly one non-draft input; positive
++                # drafts may accompany a stateful final prompt token.
+                 is_decode = (
+                     input_batch.num_scheduled_tokens == num_draft_tokens_per_req + 1
+                 )
+-                spec_decode_mask = (num_draft_tokens_per_req > 0) & is_decode
++                # Preserve positive-draft prompt-tail transactions; their
++                # intermediate states are required for acceptance rollback.
++                # Also retain prior acceptance for zero-draft decode, while
++                # ordinary one-input prefills keep the non-spec path.
++                spec_decode_mask = is_decode & (
++                    (num_draft_tokens_per_req > 0) | ~input_batch.is_prefilling_np
++                )
+                 num_decode_draft_tokens_np[: input_batch.num_reqs] = np.where(
+                     spec_decode_mask, num_draft_tokens_per_req, -1
+                 )
+--- a/vllm/v1/core/sched/scheduler.py
++++ b/vllm/v1/core/sched/scheduler.py
+@@ -1,6 +1,7 @@
+ # SPDX-License-Identifier: Apache-2.0
+ # SPDX-FileCopyrightText: Copyright contributors to the vLLM project
+ import itertools
++import os
+ import time
+ from collections import defaultdict, deque
+ from collections.abc import Iterable
+@@ -90,6 +91,13 @@
+     ) -> None:
+         self.vllm_config = vllm_config
+         self.scheduler_config = vllm_config.scheduler_config
++        # Experimental Base-only gate; speculative scheduling stays unchanged.
++        conditional_cap = int(os.getenv("B70_CONDITIONAL_PREFILL_TOKEN_CAP", "0"))
++        if conditional_cap < 0:
++            raise ValueError("B70_CONDITIONAL_PREFILL_TOKEN_CAP must be nonnegative")
++        self.conditional_prefill_token_cap = (
++            conditional_cap if vllm_config.speculative_config is None else 0
++        )
+         self.cache_config = vllm_config.cache_config
+         self.lora_config = vllm_config.lora_config
+         self.model_uses_mrope = vllm_config.model_config.uses_mrope
+@@ -410,6 +418,16 @@
+         # async KV loads). Their remaining-block reservation gates async loads.
+         self._inflight_prefills: set[Request] = set()
+ 
++    def _effective_max_num_scheduled_tokens(self) -> int:
++        cap = self.conditional_prefill_token_cap
++        if cap > 0 and any(
++            request.num_computed_tokens
++            >= max(request.num_prompt_tokens, request.num_tokens - 1)
++            for request in self.running
++        ):
++            return min(self.max_num_scheduled_tokens, cap)
++        return self.max_num_scheduled_tokens
++
+     def _mamba_block_aligned_split(
+         self,
+         request: Request,
+@@ -470,7 +488,7 @@
+         # to the boundary. A block too wide for one chunk advances sub-block
+         # and re-aligns at the next boundary.
+         if end < prefill_end:
+-            max_prefill_tokens = self.max_num_scheduled_tokens
++            max_prefill_tokens = self._effective_max_num_scheduled_tokens()
+             long_prefill_threshold = self.scheduler_config.long_prefill_token_threshold
+             if long_prefill_threshold > 0:
+                 max_prefill_tokens = min(max_prefill_tokens, long_prefill_threshold)
+@@ -578,7 +596,7 @@
+ 
+         req_to_new_blocks: dict[str, KVCacheBlocks] = {}
+         num_scheduled_tokens: dict[str, int] = {}
+-        token_budget = self.max_num_scheduled_tokens
++        token_budget = self._effective_max_num_scheduled_tokens()
+         spec = self.vllm_config.speculative_config
+         draft_slots = spec.max_num_new_slots_for_drafting if spec is not None else 0
+         input_budget = self.scheduler_config.max_num_batched_tokens

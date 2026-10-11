@@ -1,0 +1,141 @@
+{
+  "reference": "ghcr.io/wu1ff/qwen38-flashnext-b70@sha256:b13fed6dd54051395f603409ada440c74afcbd5331810eee3acd62315d7787e3",
+  "tag": "ghcr.io/wu1ff/qwen38-flashnext-b70:disk",
+  "manifest_digest": "sha256:b13fed6dd54051395f603409ada440c74afcbd5331810eee3acd62315d7787e3",
+  "config_digest": "sha256:2399885f6fbc59cdb602fe869350ddd80e085f62da25d55859d683b5e3450baf",
+  "media_type": "application/vnd.oci.image.manifest.v1+json",
+  "manifest_bytes_identical_to_rc": true,
+  "config_bytes_identical_to_rc": true,
+  "platform": "linux/amd64",
+  "layers": [
+    {
+      "digest": "sha256:0e78a9c8f896e63d8642ce60318a53cefea24162038c8cf76c13d8a94dceeb5f",
+      "bytes": 30628821,
+      "status": 200
+    },
+    {
+      "digest": "sha256:2f66ff0195cbc2c3828dcbb3460a1ebaff8f03635f9371a0b4df48006978ab12",
+      "bytes": 99,
+      "status": 200
+    },
+    {
+      "digest": "sha256:d5ec9da7f5e63ab4ed1f3c782d00bd7b53b4a6e2cbf5929ab7533a559e9b244f",
+      "bytes": 328419766,
+      "status": 200
+    },
+    {
+      "digest": "sha256:5e71cd8d6df267f2ce8493f0f03735025f1acff568fddf880699cee7489db777",
+      "bytes": 117197250,
+      "status": 200
+    },
+    {
+      "digest": "sha256:c28fe244c47c12d1d3945251695922f5bfe09ec76149368566406ae2033fc4fc",
+      "bytes": 80715087,
+      "status": 200
+    },
+    {
+      "digest": "sha256:74f9bb138216176e9e0a7e1263e5fce29232aaa21863aba1f1037b30ee46ffe8",
+      "bytes": 23668063,
+      "status": 200
+    },
+    {
+      "digest": "sha256:794a0d409021ba3c07306f320ccdfd2172c14f044623a48dd062cc043e162af7",
+      "bytes": 120,
+      "status": 200
+    },
+    {
+      "digest": "sha256:2e05c39cabfd4ff7680549b9fc927fd5cd84328ee9de87f6792de0328a21045f",
+      "bytes": 290,
+      "status": 200
+    },
+    {
+      "digest": "sha256:e8934f487d198571ba72d347e50db4d1634e06e1f8e046c2e0d3fe26b756ac1a",
+      "bytes": 11972923,
+      "status": 200
+    },
+    {
+      "digest": "sha256:a47a0b3041e1eeaf2b0e1ce727d215cccd382ea1d541ddf637bd35d105d1cb50",
+      "bytes": 3236344,
+      "status": 200
+    },
+    {
+      "digest": "sha256:d2f62cf3ff9cfd23a6340f3577609118058128f2460725e2c19afb18772280d4",
+      "bytes": 9112483,
+      "status": 200
+    },
+    {
+      "digest": "sha256:faa835aeb4928055b3a157d69dd439d19733099d2d44014dbbaddbe8237cdc63",
+      "bytes": 3271409304,
+      "status": 200
+    },
+    {
+      "digest": "sha256:8fcb738714a019e02e5c13d124d1afdc06840152393ef5ae2a78083f3774e2eb",
+      "bytes": 349008181,
+      "status": 200
+    },
+    {
+      "digest": "sha256:4d7a7e905402da9c192ceca8f0540315fb69c6a22834edd1129a1f2cafa7ff71",
+      "bytes": 22421561,
+      "status": 200
+    },
+    {
+      "digest": "sha256:4e76e7f5bc58a42bf2df7afade650bb948804991c0eb6fee062bfca4d1477552",
+      "bytes": 434546,
+      "status": 200
+    },
+    {
+      "digest": "sha256:4f4fb700ef54461cfa02571ae0db9a0dc1e0cdb5577484a6d75e68dc38e8acc1",
+      "bytes": 32,
+      "status": 200
+    },
+    {
+      "digest": "sha256:8439dd1bf9ea867e27b7aa66f92c248f53ad52dc78568b0c956ede193a9ab6c5",
+      "bytes": 63574352,
+      "status": 200
+    },
+    {
+      "digest": "sha256:8943ef895ab76e8db55be05951901d3e024f5248351e49df82e39bbf4430b5d2",
+      "bytes": 2885,
+      "status": 200
+    },
+    {
+      "digest": "sha256:77e3955bf1eec2a8c613f177890fbddeb64a34b4defd98a18df40492e20142e1",
+      "bytes": 120877,
+      "status": 200
+    },
+    {
+      "digest": "sha256:608f65b9e7f30a26cb916782fca04ca8bfbd299bdc94c86cd9ff6d73fde6ffd5",
+      "bytes": 1263625,
+      "status": 200
+    },
+    {
+      "digest": "sha256:842e753bdc916212798af4c31e669d55ba99383adab46c615d1a2e028de92f8f",
+      "bytes": 15948995,
+      "status": 200
+    },
+    {
+      "digest": "sha256:a7b3d59e5051d12364a457ec0d74918a0288a6b7e6ec08d57a20b5f1efecb50b",
+      "bytes": 115300,
+      "status": 200
+    }
+  ],
+  "layer_count": 22,
+  "compressed_layer_bytes": 4329250904,
+  "date": "2026-10-11",
+  "qualified_docker_image_id": "sha256:b13fed6dd54051395f603409ada440c74afcbd5331810eee3acd62315d7787e3",
+  "clean_anonymous_controller_acquisition": "Downloaded",
+  "subsequent_controller_acquisition": "Reused",
+  "installed_entries_exact": 3118,
+  "required_notice_files": 15,
+  "final_package_version_id": 1369918807,
+  "final_tags": [
+    "disk"
+  ],
+  "final_visible_version_count": 1,
+  "superseded_versions_removed": [
+    1302351140,
+    1302351115,
+    1302351099
+  ],
+  "public_model_pack_release": "unpublished candidate; separate approval required"
+}

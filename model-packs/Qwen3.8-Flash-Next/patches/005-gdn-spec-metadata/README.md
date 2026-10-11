@@ -1,3 +1,5 @@
+> Historical Vanilla stage. Current Disk uses the cumulative source and exact native recipes in [../disk/](../disk/README.md). The old shipping identity and application instructions below describe Vanilla; they are not the current Disk build contract.
+
 # Final Astra GDN speculative metadata
 
 - **Purpose:** Final Astra GDN speculative metadata.

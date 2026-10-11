@@ -1,3 +1,5 @@
+> Historical Vanilla stage. Current Disk uses the cumulative source and exact native recipes in [../disk/](../disk/README.md). The old shipping identity and application instructions below describe Vanilla; they are not the current Disk build contract.
+
 # Qwen4Exp XPU backend gate
 
 - **Purpose:** Qwen4Exp XPU backend gate.

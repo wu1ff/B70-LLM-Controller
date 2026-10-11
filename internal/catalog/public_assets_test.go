@@ -126,9 +126,14 @@ func TestFlashNextSourceArchiveLoad(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	repeatPath := filepath.Join(t.TempDir(), "repeat-flashnext-source.tar.gz")
+	writePackArchive(t, packDirectory, repeatPath)
+	if fileDigest(t, archivePath) != fileDigest(t, repeatPath) {
+		t.Fatal("Flash-Next source archive generation is not deterministic")
+	}
 	server := archiveServer(t, archiveBytes)
 	defer server.Close()
-	entry := catalogEntry(server.URL, archiveBytes, "qwen38-flashnext-b70", "Qwen3.8-Flash-Next B70 Pack (Base / MTP3)", "1.0.2")
+	entry := catalogEntry(server.URL, archiveBytes, "qwen38-flashnext-b70", "Qwen3.8-Flash-Next B70 Pack (Base / MTP3)", "1.0.3")
 	client := &Client{HTTPClient: server.Client()}
 	acquired, err := client.Acquire(context.Background(), t.TempDir(), entry)
 	if err != nil {

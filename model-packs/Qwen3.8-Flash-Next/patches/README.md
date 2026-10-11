@@ -1,6 +1,18 @@
-# Flash-Next B70 runtime source patches
+# Flash-Next B70 cumulative Disk source
 
-These are the exact retained source deltas used by the published Qwen3.8-Flash-Next B70 runtime. The production image remains:
+The current distributed Disk runtime is `ghcr.io/wu1ff/qwen38-flashnext-b70:disk`, qualified RC Docker ID `sha256:b13fed6dd54051395f603409ada440c74afcbd5331810eee3acd62315d7787e3`, with verified immutable acquisition reference `ghcr.io/wu1ff/qwen38-flashnext-b70@sha256:b13fed6dd54051395f603409ada440c74afcbd5331810eee3acd62315d7787e3`. Base and MTP3 use this one GHCR version. The predecessor local `qwen38-flashnext:disk` and Vanilla source/image history are preserved for local recovery; the superseded Vanilla GHCR versions have been removed after replacement verification.
+
+[Disk](disk/README.md) is the complete accepted source/build export: vendor-to-Disk overlays, native sources/headers/dispatchers, Wulf's residency shim, SYCL-TLA, dependency locks, licenses, qualified Base/MTP3 receipts and the accepted installed checksum manifest. It includes Disk BF16 mmap/staging, conditional Base scheduling, corrected GDN partial verification, all three accepted MTP3 optimization rounds, guarded MoE and native tiled attention reduction. Historical Vanilla patches alone are insufficient.
+
+`disk/SHA256SUMS` checks the source package; root `SHA256SUMS` covers every other regular file below this directory, including that nested manifest. Final source is already patched; historical diffs document lineage and must not be reapplied. `disk/manifests/accepted.json` records 3,118 installed identities and `runtime-lock.json` locks the four native outputs.
+
+All 15 Intel compiler **package binaries are excluded** from this public export. Their exact hashes/acquisition location remain locked; the reproducible build wrapper accepts a separately obtained authorized cache. No checkpoint or accepted prebuilt native library/object is included. Licensing/provenance findings are recorded in [disk/NOTICE.md](disk/NOTICE.md); old permission/co-authorship assumptions are superseded by the completed source audit. The technical mechanisms and qualification bounds are in the existing root [recipe](../RUNTIME_RECIPE.md).
+
+---
+
+# Historical Vanilla 001–007 runtime source patches
+
+These retained deltas describe published Vanilla through pack1.0.2. Its GitHub release and source remain preserved. The former GHCR image below was intentionally superseded and cannot be downloaded there; rollback requires a retained local image:
 
 ```text
 ghcr.io/wu1ff/qwen38-flashnext-b70:1.0.0
@@ -9,7 +21,7 @@ sha256:85512b52c09fa660a2e7fe441417129e7c47fac727fd85f66ccea6b65e0a9122
 
 The vLLM base is the official `vllm/vllm-openai-xpu` v0.30.0 amd64 image at `sha256:e4446310b1d30015e8fdc1a0a2ef1669ac6bef857cbe772487571ed5c1a926a9` (`gced6857af`; retained pristine `image-source/vllm`). The native base is `vllm-xpu-kernels` 0.1.14.1 at commit `6d92b1bfbf32767ecda8e819613eb151e70030ad`. The runtime’s installed kernel package is 0.1.14.1 with torch 2.13.0+xpu.
 
-| Patch | Purpose | Category | Source base | Shipping |
+| Patch | Purpose | Category | Source base | Historical Vanilla shipping |
 | --- | --- | --- | --- | --- |
 | [001](001-qwen4exp-xpu-base/README.md) | Qwen4Exp XPU gate | platform | vLLM 0.30.0 XPU | Yes |
 | [002](002-pinned-host-ple/README.md) | External, two-slab pinned-host PLE | resource | vLLM 0.30.0 XPU after 001 | Yes |

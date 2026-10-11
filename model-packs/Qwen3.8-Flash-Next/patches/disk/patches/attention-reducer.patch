@@ -1,0 +1,71 @@
+--- original/csrc/xpu/attn/xe_2/kernel/paged_decode_kernel.hpp
++++ candidate/csrc/xpu/attn/xe_2/kernel/paged_decode_kernel.hpp
+@@ -528,8 +528,8 @@
+   }
+ };
+ 
+-template <class ProblemShape_, class TileScheduler_, class FMHAKernel_>
+-class ReduceSplitK {
++template <class ProblemShape_, class TileScheduler_, class FMHAKernel_, int OutputTiles>
++class B70ReduceSplitK {
+  public:
+   using ProblemShape = ProblemShape_;
+   using VariableLength = cutlass::fmha::collective::VariableLength;
+@@ -636,8 +636,10 @@
+   }
+ 
+   static dim3 get_grid_shape(Params const& params) {
+-    return TileScheduler::template get_grid_shape<SGPerWG::value>(
++    auto grid = TileScheduler::template get_grid_shape<SGPerWG::value>(
+         params.scheduler);
++    grid.y *= OutputTiles;
++    return grid;
+   }
+ 
+   static dim3 get_block_shape() {
+@@ -681,7 +683,9 @@
+ 
+     CUTLASS_PRAGMA_NO_UNROLL
+     for (; tile_scheduler.is_valid(); ++tile_scheduler) {
+-      auto [seq_idx, head_q, idx_b] = tile_scheduler.get_block_coord();
++      auto [seq_idx, head_tile, idx_b] = tile_scheduler.get_block_coord();
++      int head_q = head_tile / OutputTiles;
++      int value_tile = head_tile % OutputTiles;
+ 
+       // Skip prefill batches when is_prefill mask is provided
+       if (p.is_prefill != nullptr && p.is_prefill[idx_b]) continue;
+@@ -817,7 +821,8 @@
+       global_max_logits =
+           sycl::group_broadcast(get_work_group<1>(), global_max_logits, 0);
+ 
+-      for (int idx = thr_id; idx < s.head_size_vo;
++      for (int idx = value_tile * (s.head_size_vo / OutputTiles) + thr_id;
++           idx < (value_tile + 1) * (s.head_size_vo / OutputTiles);
+            idx += SGPerWG::value * intel::sg_size) {
+         ElementLSE acc = 0;
+         global_exp_sums = 0;
+--- original/csrc/xpu/attn/xe_2/paged_decode.hpp
++++ candidate/csrc/xpu/attn/xe_2/paged_decode.hpp
+@@ -479,7 +479,8 @@
+     typename GmemTiledCopyQ = void, /* void -> default block 2D */
+     typename GmemTiledCopyK = void,
+     typename GmemTiledCopyV = void,
+-    typename GmemTiledCopyO = void>
++    typename GmemTiledCopyO = void,
++    int ReduceTiles = 4>
+ struct PagedDecodeConfig {
+   static constexpr int SGTileQ =
+       get<0>(shape_div(TileShapeQK{}, shape(SubgroupLayoutQK{})))();
+@@ -561,10 +562,10 @@
+         CollectiveEpilogue,
+         Scheduler>;
+ 
+-    using ReduceSplitKernel = cutlass::fmha::kernel::ReduceSplitK<
++    using ReduceSplitKernel = cutlass::fmha::kernel::B70ReduceSplitK<
+         ProblemShapeType,
+         cutlass::fmha::kernel::XeReduceSplitKTileScheduler,
+-        FMHAKernel>;
++        FMHAKernel, ReduceTiles>;
+ 
+     DecodeKernelLauncher<FMHAKernel, ReduceSplitKernel, VarLen> launcher;
+ 

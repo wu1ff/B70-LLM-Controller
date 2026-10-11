@@ -1,0 +1,22 @@
+{
+  "cause": "attention snapshot overwrote accepted MoE guarded source during package assembly",
+  "overlaid_order_before": [
+    "gdn",
+    "moe_guard",
+    "attention_snapshot"
+  ],
+  "overlaid_order_corrected": [
+    "gdn",
+    "attention_snapshot",
+    "moe_guard"
+  ],
+  "guarded_source_sha256": "b0677d521128af5bd3e0e426c76fb066e68187bfb08c9f68ae99907ce771f9a0",
+  "unguarded_source_sha256": "0d9fa15216ed49a030f3f5a8f234a61034ced1373ebd97ad7727c910c7b7d875",
+  "corrected_library_sha256": "55636e569464e19b2c8820ad9c122a406bb5af9f8870a98aa7c9882da02868bc",
+  "prior_library_sha256": "2251e38184870539c9052eb7ca4fcf38a22ca32ff86651d1b58b6282a6a7fe05",
+  "all_elf_sections_and_device_modules_exact": true,
+  "object_exact": true,
+  "build_parent": "sha256:e4446310b1d30015e8fdc1a0a2ef1669ac6bef857cbe772487571ed5c1a926a9",
+  "compiler": "oneAPI 2026.0.0-947",
+  "prebuilt_binary_inputs": false
+}

@@ -1,0 +1,20 @@
+{
+  "vendor_image_id": "sha256:e4446310b1d30015e8fdc1a0a2ef1669ac6bef857cbe772487571ed5c1a926a9",
+  "vendor_index_digest": "sha256:fc0e112afb64e3a06fe8daff34652435822a629412f38efce8f0f67a46636b8d",
+  "accepted_image_id": "sha256:e6d5862d5db8753f436048b9e88ad818756ca883d7629653a664d1448a915b60",
+  "model": "devan-carlin/Qwen3.8-Flash-Next-W4A16",
+  "model_revision": "40b8f18df4d4a32cb6e687a51c78207e5e438522",
+  "model_pack_version": null,
+  "kernel_source_commit": "6d92b1bfbf32767ecda8e819613eb151e70030ad",
+  "sycl_tla_commit": "87f6850680a580654b9ea2c80dbc01aeb36ad231",
+  "compiler": "2026.0.0-947",
+  "native_payload": {
+    "/opt/b70-residency-shim/libl0_peer_residency_shim.so": "ae2c82f549d97393268cbd7b90dba7cf38fd00dbccae54f090b1a545e5613b3c",
+    "/opt/venv/lib/python3.12/site-packages/vllm_xpu_kernels/libgdn_index64.so": "e79c1108ceb865282f40cc9376999c140074ba0a3eec21b529927342e94de2dc",
+    "/opt/venv/lib/python3.12/site-packages/vllm_xpu_kernels/libmoe_remap_guard.so": "55636e569464e19b2c8820ad9c122a406bb5af9f8870a98aa7c9882da02868bc",
+    "/opt/venv/lib/python3.12/site-packages/vllm_xpu_kernels/libb70_attn_reduce.so": "ce5f80804d0aef575f4b888f83a87410e86879d34eeae49de09dd06a8d0743c5"
+  },
+  "runtime_image_name": "qwen38-flashnext:disk",
+  "source_state": "complete cumulative frozen source; historical patches already applied",
+  "compilation_equivalence": "installed payload hash comparison; no image/layer/filesystem bit identity claimed"
+}

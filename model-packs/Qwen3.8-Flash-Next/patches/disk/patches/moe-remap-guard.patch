@@ -1,0 +1,105 @@
+--- a/csrc/moe/remap_hidden_states.cpp
++++ b/csrc/moe/remap_hidden_states.cpp
+@@ -17,6 +17,7 @@
+       const int num_rows,
+       const int TopK,
+       const int local_experts_num,
++      const int total_experts_num,
+       sycl::local_accessor<int32_t, 1> local_counts)
+       : expert_map(expert_map),
+         rows_per_expert(rows_per_expert),
+@@ -26,6 +27,7 @@
+         num_rows(num_rows),
+         TopK(TopK),
+         local_experts_num(local_experts_num),
++        total_experts_num(total_experts_num),
+         local_counts(local_counts) {}
+ 
+   static constexpr int GroupWorkItem = 256;
+@@ -56,9 +58,14 @@
+       int global_expert_id =
+           is_topk_ids_int32 ? reinterpret_cast<int32_t*>(topk_ids)[global_id]
+                             : reinterpret_cast<int64_t*>(topk_ids)[global_id];
+-      int local_expert_id = global_expert_id;
+-      if (expert_map != nullptr) {
+-        local_expert_id = expert_map[global_expert_id];
++      // Router padding is -1. Never index the map with a sentinel or an
++      // out-of-range global id; also validate the mapped local index.
++      int local_expert_id = -1;
++      if (global_expert_id >= 0 && global_expert_id < total_experts_num) {
++        local_expert_id = expert_map != nullptr
++            ? expert_map[global_expert_id] : global_expert_id;
++        if (local_expert_id < 0 || local_expert_id >= local_experts_num)
++          local_expert_id = -1;
+       }
+ 
+       if (local_expert_id == -1) {
+@@ -99,9 +106,14 @@
+       int global_expert_id =
+           is_topk_ids_int32 ? reinterpret_cast<int32_t*>(topk_ids)[global_id]
+                             : reinterpret_cast<int64_t*>(topk_ids)[global_id];
+-      int local_expert_id = global_expert_id;
+-      if (expert_map != nullptr) {
+-        local_expert_id = expert_map[global_expert_id];
++      // Router padding is -1. Never index the map with a sentinel or an
++      // out-of-range global id; also validate the mapped local index.
++      int local_expert_id = -1;
++      if (global_expert_id >= 0 && global_expert_id < total_experts_num) {
++        local_expert_id = expert_map != nullptr
++            ? expert_map[global_expert_id] : global_expert_id;
++        if (local_expert_id < 0 || local_expert_id >= local_experts_num)
++          local_expert_id = -1;
+       }
+ 
+       if (local_expert_id != -1) {
+@@ -121,6 +133,7 @@
+   const int num_rows;
+   const int TopK;
+   const int local_experts_num;
++  const int total_experts_num;
+   sycl::local_accessor<int32_t, 1> local_counts;
+ };
+ 
+@@ -218,16 +231,15 @@
+       }
+     }
+ 
+-    if (expert_map != nullptr) {
+-#pragma unroll
+-      for (int i = 0; i < TopK; ++i) {
+-        local_expert_id[i] = expert_map[global_expert_id[i]];
+-      }
+-    } else {
+-#pragma unroll
+-      for (int i = 0; i < TopK; ++i) {
+-        local_expert_id[i] = global_expert_id[i];
+-      }
++#pragma unroll
++    for (int i = 0; i < TopK; ++i) {
++      const int global_id = global_expert_id[i];
++      int local_id = -1;
++      if (global_id >= 0 && global_id < total_experts_num) {
++        local_id = expert_map != nullptr ? expert_map[global_id] : global_id;
++        if (local_id < 0 || local_id >= local_experts_num) local_id = -1;
++      }
++      local_expert_id[i] = local_id;
+     }
+ 
+     int rows_offset[TopK];
+@@ -253,7 +265,7 @@
+     for (int i = 0; i < TopK; ++i) {
+       remapped_hidden_states_base[i] =
+           remapped_hidden_states +
+-          rows_offset[i] * static_cast<int64_t>(hidden_size) +
++          (rows_offset[i] >= 0 ? rows_offset[i] : 0) * static_cast<int64_t>(hidden_size) +
+           local_id * ElemsPerItem;
+     }
+ 
+@@ -382,6 +394,7 @@
+             num_rows,
+             TopK,
+             local_experts_num,
++            total_experts_num,
+             local_counts});
+   });
+ 

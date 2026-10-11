@@ -1,0 +1,120 @@
+--- a/vllm_xpu_kernels/fused_moe_interface.py
++++ b/vllm_xpu_kernels/fused_moe_interface.py
+@@ -1,5 +1,6 @@
+ # SPDX-License-Identifier: Apache-2.0
+ import os
++from pathlib import Path
+ from typing import Optional
+ 
+ import torch
+@@ -8,6 +9,8 @@
+     from . import _C  # noqa: F401
+     from . import _moe_C  # noqa: F401
+     from . import _xpu_C  # noqa: F401
++    # Bounds-checked remapping: router padding (-1) must not index expert_map.
++    torch.ops.load_library(str(Path(__file__).with_name("libmoe_remap_guard.so")))
+     FUSEDMOE_UNAVAILABLE_REASON = None
+     FUSEDMOE_AVAILABLE = True
+ except ImportError as e:
+@@ -392,7 +395,7 @@
+             dtype=torch.int32,
+             device=hidden_states.device)
+ 
+-        torch.ops._moe_C.remap_hidden_states(
++        torch.ops._moe_remap_guard.remap_hidden_states(
+             hidden_states=hidden_states,
+             hidden_states_scales=a1q_scale,
+             remapped_hidden_states=remapped_hidden_states,
+--- a/vllm/models/qwen4_exp/nvidia/ngram_embedding.py
++++ b/vllm/models/qwen4_exp/nvidia/ngram_embedding.py
+@@ -113,9 +113,10 @@
+     if conditional_cap < 0:
+         raise ValueError("B70_CONDITIONAL_PREFILL_TOKEN_CAP must be nonnegative")
+     if spec is not None:
+-        if (mbt != 256 or spec.method != "mtp"
++        permitted_mbt = (256, 1024) if os.environ.get("B70_PLE_MTP_PREFILL_1024") == "1" else (256,)
++        if (mbt not in permitted_mbt or spec.method != "mtp"
+             or spec.num_speculative_tokens != 3):
+-            raise ValueError("Disk BF16 MTP requires original MBT256/depth3 scheduling")
++            raise ValueError("Disk BF16 MTP requires depth3 and an approved prefill budget")
+         # The retained scheduler disables its gate for every speculative config.
+     elif mbt == 1024:
+         if conditional_cap != 256:
+--- a/vllm/models/qwen4_exp/nvidia/mtp.py
++++ b/vllm/models/qwen4_exp/nvidia/mtp.py
+@@ -440,6 +440,10 @@
+     ) -> torch.Tensor | None:
+         return self.logits_processor(self.lm_head, hidden_states)
+ 
++    def get_top_tokens(self, hidden_states: torch.Tensor) -> torch.Tensor:
++        """Exact greedy draft selection through the existing TP local reduction."""
++        return self.logits_processor.get_top_tokens(self.lm_head, hidden_states)
++
+     def load_weights(self, weights: Iterable[tuple[str, torch.Tensor]]) -> set[str]:
+         def remap_weight_names():
+             for name, weight in weights:
+--- a/vllm/v1/worker/gpu/spec_decode/autoregressive/speculator.py
++++ b/vllm/v1/worker/gpu/spec_decode/autoregressive/speculator.py
+@@ -1,6 +1,8 @@
+ # SPDX-License-Identifier: Apache-2.0
+ # SPDX-FileCopyrightText: Copyright contributors to the vLLM project
+ from typing import Any
++
++import os
+ 
+ import torch
+ import torch.nn as nn
+@@ -125,11 +127,26 @@
+             )
+ 
+     def init_cudagraph_manager(self, cudagraph_mode: CUDAGraphMode) -> None:
+-        # Initialize cudagraph manager for draft prefill (draft position 0).
++        # XPU's large breakable draft-prefill capture can fail while registering
++        # graph state. Keep target graphs and uniform draft FULL graphs; only
++        # true draft-prefill shapes fall back to the existing eager path.
++        prefill_mode = cudagraph_mode
++        if (
++            self.device.type == "xpu"
++            and os.environ.get("B70_MTP_DRAFT_PREFILL_EAGER") == "1"
++        ):
++            prefill_mode = (
++                CUDAGraphMode.FULL_DECODE_ONLY
++                if cudagraph_mode.decode_mode() == CUDAGraphMode.FULL
++                else CUDAGraphMode.NONE
++            )
++            logger.info_once(
++                "B70 MTP: eager draft prefill; uniform draft FULL graphs retained"
++            )
+         self.prefill_cudagraph_manager = SpeculatorCudaGraphManager(
+             self.vllm_config,
+             self.device,
+-            cudagraph_mode,
++            prefill_mode,
+             self.num_speculative_steps + 1,
+         )
+ 
+@@ -328,6 +345,24 @@
+                 mm_inputs=mm_inputs,
+             )
+         self.on_prefill_end(num_reqs)
++
++        # The first pass above must populate prompt KV. For wholly intermediate
++        # prefill, the later two proposals are never consumed by target verify:
++        # the following prompt pass overwrites their future KV positions.
++        # Keep final-prefill, mixed, PCP, other models/depths and QSA unchanged.
++        if (
++            os.environ.get("B70_MTP_SKIP_PREFILL_TAIL") == "1"
++            and not dummy_run
++            and self.model.__class__.__name__ == "Qwen4ExpMTP"
++            and self.num_speculative_steps == 3
++            and self.pcp_manager is None
++            and not getattr(self, "share_mtp_topk_indices", False)
++            and bool(((input_batch.num_computed_prefill_tokens_np
++                       + input_batch.num_scheduled_tokens)
++                      < input_batch.prefill_len_np).all())
++        ):
++            return self.draft_tokens[:num_reqs]
++
+ 
+         if self.num_speculative_steps == 1:
+             # Early exit.

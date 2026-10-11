@@ -1,0 +1,149 @@
+{
+  "source": "read-only existing model inventory; no pack version adopted",
+  "model": {
+    "id": "qwen38-flashnext-w4a16",
+    "name": "Qwen3.8-Flash-Next W4A16",
+    "kind": "target",
+    "repo": "devan-carlin/Qwen3.8-Flash-Next-W4A16",
+    "revision": "40b8f18df4d4a32cb6e687a51c78207e5e438522",
+    "gated": false,
+    "files": [
+      {
+        "path": ".gitattributes",
+        "size": 1635
+      },
+      {
+        "path": "LICENSE",
+        "size": 3235
+      },
+      {
+        "path": "README.md",
+        "size": 6393
+      },
+      {
+        "path": "chat_template.jinja",
+        "size": 9993
+      },
+      {
+        "path": "config.json",
+        "size": 5122
+      },
+      {
+        "path": "generation_config.json",
+        "size": 202
+      },
+      {
+        "path": "merges.txt",
+        "size": 3353259
+      },
+      {
+        "path": "model-00001.safetensors",
+        "size": 4877519352
+      },
+      {
+        "path": "model-00002.safetensors",
+        "size": 4714864048
+      },
+      {
+        "path": "model-00003.safetensors",
+        "size": 4301422032
+      },
+      {
+        "path": "model-00004.safetensors",
+        "size": 4335105768
+      },
+      {
+        "path": "model-00005.safetensors",
+        "size": 4877980264
+      },
+      {
+        "path": "model-00006.safetensors",
+        "size": 4429075824
+      },
+      {
+        "path": "model-00007.safetensors",
+        "size": 4297284456
+      },
+      {
+        "path": "model-00008.safetensors",
+        "size": 4341767576
+      },
+      {
+        "path": "model-00009.safetensors",
+        "size": 4303806816
+      },
+      {
+        "path": "model-00010.safetensors",
+        "size": 4307027200
+      },
+      {
+        "path": "model-00011.safetensors",
+        "size": 5141068776
+      },
+      {
+        "path": "model-00012.safetensors",
+        "size": 4676071736
+      },
+      {
+        "path": "model-00013.safetensors",
+        "size": 4416367136
+      },
+      {
+        "path": "model-00014.safetensors",
+        "size": 4337153456
+      },
+      {
+        "path": "model-00015.safetensors",
+        "size": 4301345176
+      },
+      {
+        "path": "model-00016.safetensors",
+        "size": 4301749520
+      },
+      {
+        "path": "model-00017.safetensors",
+        "size": 5435728168
+      },
+      {
+        "path": "model.safetensors.index.json",
+        "size": 22974018
+      },
+      {
+        "path": "ple_table_qwen4exp.pt",
+        "size": 102400493290
+      },
+      {
+        "path": "preprocessor_config.json",
+        "size": 390
+      },
+      {
+        "path": "tokenizer.json",
+        "size": 12809320
+      },
+      {
+        "path": "tokenizer_config.json",
+        "size": 17928
+      },
+      {
+        "path": "video_preprocessor_config.json",
+        "size": 385
+      },
+      {
+        "path": "vocab.json",
+        "size": 6722759
+      }
+    ],
+    "mount_path": "/models/devan-carlin__Qwen3.8-Flash-Next-W4A16",
+    "launch": {
+      "docker_args": [],
+      "environment": {},
+      "command_args": [
+        "/models/devan-carlin__Qwen3.8-Flash-Next-W4A16",
+        "--served-model-name",
+        "devan-carlin/Qwen3.8-Flash-Next-W4A16"
+      ]
+    }
+  },
+  "ple_identity": "Original BF16 checkpoint table, frozen revision; sizes are recorded, no new full table/weight hash scan performed",
+  "included_in_image": false
+}

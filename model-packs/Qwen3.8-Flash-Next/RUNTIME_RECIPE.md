@@ -1,3 +1,151 @@
+# Qwen3.8-Flash-Next on four B70s — current Disk runtime recipe
+
+2026-10-11, America/Phoenix. Pack **1.0.3** is the qualified Disk release, retaining the tool-choice-none fix. The corrected RC is published as GHCR `:disk`; the [public release](https://github.com/wu1ff/B70-LLM-Controller/releases/tag/qwen3.8-flash-next-v1.0.3) distributes the final model-pack archive, cumulative source/build export and SHA256 checksum. This section defines the current runtime; the complete Vanilla campaign below is preserved as dated history. Historical “final”, “shipping”, pinned-slab, MBT256, graph/performance and pending-APC statements apply to their recorded stages, not current Disk.
+
+## Current image and dependency identities
+
+| Item | Identity |
+| --- | --- |
+| Qualified RC local name | `qwen38-flashnext:disk-rc` |
+| Published GHCR tag | `ghcr.io/wu1ff/qwen38-flashnext-b70:disk` |
+| Qualified RC Docker `.Id` / verified GHCR platform manifest | `sha256:b13fed6dd54051395f603409ada440c74afcbd5331810eee3acd62315d7787e3` |
+| Verified immutable acquisition reference | `ghcr.io/wu1ff/qwen38-flashnext-b70@sha256:b13fed6dd54051395f603409ada440c74afcbd5331810eee3acd62315d7787e3` |
+| Preserved predecessor local name / ID | `qwen38-flashnext:disk` / `sha256:fad9d4cfae29a4fc3abd70e7339e4f2784c3589c988f7ca3f6751ffb46806316` |
+| Distinct RC OCI config digest | `sha256:2399885f6fbc59cdb602fe869350ddd80e085f62da25d55859d683b5e3450baf` |
+| Official vendor amd64 dependency | `sha256:e4446310b1d30015e8fdc1a0a2ef1669ac6bef857cbe772487571ed5c1a926a9` |
+| Official vendor multi-platform index | `sha256:fc0e112afb64e3a06fe8daff34652435822a629412f38efce8f0f67a46636b8d` |
+| Checkpoint revision | `devan-carlin/Qwen3.8-Flash-Next-W4A16@40b8f18df4d4a32cb6e687a51c78207e5e438522` |
+| Native kernel base | `vllm-xpu-kernels 0.1.14.1`, commit `6d92b1bfbf32767ecda8e819613eb151e70030ad` |
+| SYCL-TLA | `87f6850680a580654b9ea2c80dbc01aeb36ad231` |
+| Compiler | Intel oneAPI DPC++ `2026.0.0-947`; all 15 exact packages locked |
+| Framework | vendor Python3.12, vLLM0.30.0+xpu, Torch2.13.0+xpu, triton-xpu3.7.2, GCC13.3 |
+
+The Controller's existing `digest` means expected Docker `.Id`; its optional `registry` means an immutable acquisition reference. This release sets `registry` to the actual verified immutable GHCR reference following push, anonymous clean pull and Controller acquisition. Launching uses the verified ID, never a mutable tag. On this containerd image store `.Id` equals the local platform manifest; it is distinct from the config digest. A classic store may report a config digest and fail the existing contract. The remote manifest/config bytes match the RC, and all 22 layers and the clean pulled ID were verified.
+
+## Cumulative accepted implementation and native dependencies
+
+The distributed [Disk source directory](patches/disk/README.md) contains the final 20-file source/config overlay, complete native sources/headers/dispatchers, shim, dependency locks, upstream notices, historical diffs and the 3,118-entry accepted installed manifest. Source files are already patched. Historical Vanilla 001–007 alone cannot reproduce Disk; do not apply the latest optimization onto an incomplete parent or reapply diffs onto final sources.
+
+The implementation retains Vanilla's XPU Qwen4Exp gate, dense-QSA serving configuration, deterministic wide HC down-GEMM correction, graph stream correction, speculative/GDN metadata and peer residency policy. Disk adds BF16 mapped-table transport and ownership, conditional Base scheduling, corrected GDN partial-verification and shared Mamba metadata, followed by all three accepted optimization rounds:
+
+| Stage | Accepted behavior / local image identity |
+| --- | --- |
+| Consolidated Disk baseline | mmap/staging, scheduler, GDN/APC; `9277fa7cb868c5cf1209d555f78e3056df772c145d918ec4900f259e5d9e4fb1` |
+| Round 1 intermediate | corrected eager draft prefill and guarded native MoE; `b1944496d759faa1377b830c7b5f1c7a70c7ab256d5bb7d8f5270f6d0c1245a1` |
+| Round 1 final | accepted MBT1024, KV-only draft prefill, startup warmup; `0240ef70806268eeb73aa5aecc00a905e844e2c310a7c4e942f7c3fa46b7dc65` |
+| Round 2 final | fused live metadata and compact device 1/32/64 split plan; `40f663a776e195e72f8df33a533690872a0a6a7e40317b60db3f3c1f0080873e` |
+| Round 3 final | native four-way tiled attention reducer and CCL LL65536; `e6d5862d5db8753f436048b9e88ad818756ca883d7629653a664d1448a915b60` |
+| Independent package reconstruction | same accepted installed payload, normal serving entrypoint; `fad9d4cfae29a4fc3abd70e7339e4f2784c3589c988f7ca3f6751ffb46806316` |
+
+The native payload hashes are:
+
+| Installed library | SHA256 |
+| --- | --- |
+| `libgdn_index64.so` | `e79c1108ceb865282f40cc9376999c140074ba0a3eec21b529927342e94de2dc` |
+| `libmoe_remap_guard.so` | `55636e569464e19b2c8820ad9c122a406bb5af9f8870a98aa7c9882da02868bc` |
+| `libb70_attn_reduce.so` | `ce5f80804d0aef575f4b888f83a87410e86879d34eeae49de09dd06a8d0743c5` |
+| `libl0_peer_residency_shim.so` | `ae2c82f549d97393268cbd7b90dba7cf38fd00dbccae54f090b1a545e5613b3c` |
+
+The corrected GDN library supersedes the historical index64-only binary. The MoE guard checks global and mapped local expert IDs before offset/map access and avoids negative excluded-row pointers; valid-row arithmetic and atomic ordering are retained. During initial source packaging an attention snapshot overwrote the guarded remapper with pristine source. The final portable package restores the guard last and verifies its six direct inputs in `native/moe-inputs.sha256`. Independent reproduction then matched all native bytes, ELF sections and SPIR-V modules. Do not substitute the earlier failed package source.
+
+The native reducer is selected only for the qualified q4/single-logical-sequence/h6/kv1/d256/BF16/832-page shape and eligible contiguous strides. Unsupported shapes retain native fallback. Per-query 1/32/64 plans are generated fresh on device for each replay; the corrected compact list preserves short normalization. The reducer preserves per-coordinate accumulation and uses four 64-thread workgroups per head. Its ABI-compatible library is required when its gate selects it. Scratch is approximately 0.75MiB partials plus12KiB sums/maxima per eligible call/rank; this is not a whole-runtime residency estimate.
+
+## Reproducible source build
+
+Both Docker stages use the exact official vendor dependency, with no accepted, experimental or Vanilla parent. Vendor Torch/XPU/SYCL/Level Zero/XCCL/UCX libraries are inherited and locked in `manifests/vendor-python.json` and `vendor-dpkg.tsv`. Native source/base, compiler and SYCL-TLA inventories are retained beside them. The vendor runtime stack is not rebuilt.
+
+Acquire the pinned official vendor image or use its trusted saved archive:
+
+```bash
+docker pull --platform linux/amd64 vllm/vllm-openai-xpu@sha256:fc0e112afb64e3a06fe8daff34652435822a629412f38efce8f0f67a46636b8d
+docker image inspect --format '{{.Id}}' vllm/vllm-openai-xpu@sha256:fc0e112afb64e3a06fe8daff34652435822a629412f38efce8f0f67a46636b8d
+```
+
+Verify the expected vendor `.Id` above. Obtain the 15 exact Intel package filenames from the official pool recorded in `patches/disk/manifests/compiler-lock.json`, separately under their applicable terms. **Compiler binaries are excluded from this public source export**; the original local reproduction archive is not cleared for redistribution as a whole. The source-only wrapper takes an authorized cache and verifies every hash:
+
+```bash
+cd patches/disk
+sha256sum -c SHA256SUMS
+python3 build.py --compiler-dir /absolute/authorized/compiler-cache --tag qwen38-flashnext:disk-fresh-test --evidence /absolute/build-evidence
+python3 verify.py qwen38-flashnext:disk-fresh-test --output /absolute/build-evidence/recheck.json
+```
+
+The wrapper refuses existing tags and never overwrites qualified Disk. It materializes compiler bytes in a disposable context and runs `DOCKER_BUILDKIT=0 docker build --pull=false --no-cache --network=none`. Extraction remains `/toolchain/oneapi` and native sources `/build`; native scripts preserve C++20/O3/NDEBUG/SYCL spir64 flags, extensions, dispatchers, link libraries and rpath. Linux amd64, Python3.11+, Docker's available legacy builder and adequate compiler RAM/storage are required. No GPU, model, host compiler, resolver or network is used inside the build. Compiler/source build tools do not enter the final image.
+
+The original independent build and archive reimport matched **3,118/3,118** accepted installed entries, with zero missing/extra/nonmatching files. The inventory excludes bytecode and is not complete filesystem/layer/build-metadata identity. Rebuilt image IDs can differ. The source-only wrapper is checked without an unnecessary rebuild; its materialized Docker/native inputs must equal the accepted independent input manifest before a future build.
+
+The source export retains prominent Wulf modification comments on 21 changed upstream files. The wrapper now preserves all 15 Python comments in the runtime overlay and reconstructs only native compiler inputs inside its disposable build context. Qualified source/payload locks remain historical anchors; `verify.py` requires the notice-bearing sources and unchanged native/config files. The smaller `patches/disk/build-notice-image.py` recipe builds only the notice layer over the qualified image, without native compilation. Its reproducible candidate is `qwen38-flashnext:disk-rc`, `sha256:b13fed6dd54051395f603409ada440c74afcbd5331810eee3acd62315d7787e3`. [Disk license/source delivery](patches/disk/licenses/README.md) records the remaining delivery/recipient-term requirements. The corrected RC has now passed focused Base/MTP3 serving qualification and the authorized GHCR replacement; the original local parent remains preserved.
+
+## Verified GHCR replacement and model-pack release
+
+On 2026-10-11 the corrected linux/amd64 RC was pushed to the existing `ghcr.io/wu1ff/qwen38-flashnext-b70:disk` using `docker push --platform linux/amd64`. GHCR returned manifest `sha256:b13fed6dd54051395f603409ada440c74afcbd5331810eee3acd62315d7787e3`. Direct anonymous reads of tag and immutable manifest matched the local manifest byte-for-byte; config `sha256:2399885f6fbc59cdb602fe869350ddd80e085f62da25d55859d683b5e3450baf` also matched byte-for-byte. All 22 compressed layer descriptors were present with their exact sizes.
+
+An empty, separate containerd image store and anonymous Docker client exercised the unchanged Controller `runtime.AcquireOwned` path with the declared tag and ID initially missing. It pulled `ghcr.io/wu1ff/qwen38-flashnext-b70@sha256:b13fed6dd54051395f603409ada440c74afcbd5331810eee3acd62315d7787e3`, returned `Downloaded`, verified Docker `.Id` `sha256:b13fed6dd54051395f603409ada440c74afcbd5331810eee3acd62315d7787e3` and recorded ownership; subsequent acquisition returned `Reused`. The pulled configuration, uncompressed layer identities and complete installed payload matched the RC (3,118/3,118 entries and all 15 required Python modification notices). No serving test or restart was needed for registry verification.
+
+After all remote/pull/payload gates passed, only the three positively identified superseded Vanilla versions of this exact package were deleted: tagged index `85512b52…` (version 1302351140), its linux/amd64 manifest `761f2154…` (1302351115), and its attestation `cd591ee8…` (1302351099). Final GitHub package/version reads and anonymous registry tag reads show one current version `sha256:b13fed6dd54051395f603409ada440c74afcbd5331810eee3acd62315d7787e3` (1369918807), with the sole tag `disk`. The package was preserved. There is no second GHCR image for rollback.
+
+`runtime.image` is `ghcr.io/wu1ff/qwen38-flashnext-b70:disk`, `runtime.digest` remains the qualified RC Docker ID, and `runtime.registry` is the verified immutable reference. Original local Vanilla, predecessor Disk, archives, source history and the stopped recovery container remain retained. The running Controller-managed RC MTP3 container retains its ID, PID, start time and restart count. Verification-daemon initialization briefly removed the host Docker bridge; it was restored without changing or restarting the serving container, and local/LAN health returned HTTP 200.
+
+The final pack retains the verified runtime identity and all eight qualified launch configurations. Release archives use sorted file membership, regular mode0644, epoch timestamps, zero ownership and nameless gzip. The final archive is rebuilt from the public pack source, extracted and compared byte-for-byte, and checked by the actual Controller catalog/import and launch-rendering implementation. The release’s `SHA256SUMS` and public catalog identify those final bytes; earlier provisional checksums are superseded.
+
+The complete accepted Disk sources, native build recipes, dependency locks and prepared notices ship under `patches/disk/`. Historical source-delivery and recipient-term investigation records are preserved as dated evidence; this pack release does not rewrite them or third-party licenses. No image rebuild, registry republication or additional inference campaign is part of model-pack publication.
+
+## Disk BF16 PLE ownership and memory
+
+`Qwen4ExpPLEDiskBF16Embedding.load_mmap/prepare` maps the original table as protected CPU file-backed storage, gathers only TP-owned rows into bounded pinned host staging and uploads before forward/graph replay. `ModelState.prepare_inputs` supplies fresh ngram IDs and buffers before FULL replay. No whole-table pinned slabs or device-resident PLE weights are allocated. MBT1024 uses 5MiB/rank,20MiB/TP4 staging. BF16 precision, checkpoint hashes and original table are retained; no FP8/INT8 conversion or contributor NVMe reader ships.
+
+The map can populate a substantial reclaimable OS page cache. Staging size is not total host memory or a minimum-RAM guarantee. Runtime allocations, caches, checkpoint mapping and storage latency remain relevant. Idle Docker memory is not peak/endurance memory. Natural-cache qualification did not establish storage-cold or long-term memory behavior.
+
+## Exact Base and MTP3 contracts
+
+The authorities are distributed `patches/disk/profiles/base.json` and `mtp3.json`, retained byte-for-byte from the qualified package. The Controller maps their settings into existing runtime → model → mode → profile blocks; duplicate environment keys are rejected. The model declaration is identical to `manifests/external-model.json`, including all31 files/179841735233 bytes.
+
+Shared: one image, TP4+EP, BF16 W4A16, four slots, MBT1024, contexts32768/65536/131072/262144, `B70_PLE_DISK_BF16=1`, XPU graphs, spawn, FLAT and affinity0,1,2,3, CCL temporary buffers, offline/HF/cache settings, original shim preload, read-only `/dev/dri/by-path` and checkpoint binds. Vision limit is image2/video0. Keep tool/reasoning parser pair `qwen3_xml`/`qwen3`, automatic tool choice, graph metrics and `--exclude-tools-when-tool-choice-none`. APC and Mamba ALIGN/832-page behavior remain inherited defaults. There are no research mounts or developer-server flags.
+
+| Setting | Base | MTP3 |
+| --- | --- | --- |
+| Utilization | 0.85 | 0.91 |
+| Speculation | None | method=mtp,3 tokens,use_local_argmax_reduction=true |
+| Captures, FULL_AND_PIECEWISE | [1,2,4,8,256,512,1024] | [1,2,4,8,64,128,256,512,832,1024] |
+| Conditional scheduler | `B70_CONDITIONAL_PREFILL_TOKEN_CAP=256` | Absent |
+| Accepted MTP gates | Absent | `B70_MTP_SKIP_PREFILL_TAIL`, `B70_PLE_MTP_PREFILL_1024`, `B70_MTP_DRAFT_PREFILL_EAGER`, `B70_MTP_PREFILL_KV_ONLY`, `B70_XPU_POST_CAPTURE_WARMUP`, `B70_XPU_SPEC_SPLIT_PLAN`, `B70_XPU_SPEC_META_FUSED`, `B70_XPU_TILED_REDUCER` all1 |
+| CCL LL threshold override | Absent | `CCL_SYCL_ALLREDUCE_LL_THRESHOLD=65536` |
+
+Base's scheduler lowers the aggregate budget to256 when any running request reaches decode; otherwise it remains1024. The policy is disabled for speculation. MTP3 uses the fixed1024 policy. Context selection changes only `--max-model-len`; lifecycle name/labels/access/port are Controller-owned. The existing development validator checks all eight exact environments/semantic flags/mounts and can consume actual Controller-rendered Docker arguments.
+
+## Accepted qualification, tuning and limits
+
+Final reconstructed-image standalone qualification covered both normal-entrypoint modes at native context: health/stability/zero restarts, BF16 Disk PLE and shim, vision/tools/reasoning/none, exact mode-specific APC/ALIGN boundaries, mixed four-slot serving with no preemption, finite sampled logprobs, natural/tool/length termination, native262112+32 cold/APC with >260000 repeat hits, post-long short coding and first-token fingerprints, disconnect/reuse, and positive depth3 acceptance/native reducer mapping in MTP3. Readiness was274.46s Base/292.23s MTP3, n=1 each. These broad receipts describe the preserved predecessor; the corrected RC passed focused Controller Base/MTP3 qualification with readiness265.3s/294.4s, exact native mappings, deterministic completion, MTP3 streaming/stopping and depth3 acceptance. The comment-only equivalence retains the earlier broad qualification bounds.
+
+The README summarizes retained final-image n=1 natural coding rates (Base45.48–50.24tok/s; MTP3108.77–122.21tok/s across64K/160K cold/reused APC). Different outputs and small samples limit interpretation. Accepted combined GPU tuning preserved outputs in matched fixtures and improved warm generation about1.8–2.9%; repeat/trajectory caveats remain. The original long Three.js sessions are dated Round1/2 evidence, not final-image benchmarks. Active tuning concluded on diminishing measured return; this integration neither tunes nor repeats that campaign.
+
+Keep these concrete limits: synthetic startup-audit nonfinite cause remains unresolved in historical evidence; broader numerical/reduction-order equivalence is bounded by differential tests; natural model outputs can fail tasks; cache/first-use and storage-cold/endurance behavior vary; four-slot functional checks do not prove throughput/fairness; native262112+32 does not prove sustained ceiling-length generation. Lower contexts are exact render selections, without eight independent runtime qualification campaigns.
+
+Local qualification authorities in the development workspace are `runtime/rr-final-disk-qualification-20261010/REPORT.md`, `runtime/disk-package/evidence/native-moe-resolution/`, `DISK_MTP3_MODEL_PACK_INTEGRATION.md` and the accepted Round1/2/3 reports referenced there. Current integration evidence is consolidated under `runtime/rr-disk-modelpack-integration-20261011/`; `rr.md` reports actual managed lifecycle and final endpoint without duplicating raw receipts here.
+
+## Archive recovery and release boundary
+
+Original qualified package artifacts, retained in `runtime/disk-package/`:
+
+| Archive | Bytes / SHA256 |
+| --- | --- |
+| `qwen38-flashnext-disk.tar.zst` | 4306594130 / `4c4c9c177ded2cd09d49013aea83f821e6ba1dd1b371fec3143f9a4242aea2e6` |
+| `qwen38-flashnext-disk-source.tar.gz` | 602201848 / `e2bfcf65f30590039871228b9bc02803de0dfc835ca49fac3cde4d89649a738a` |
+
+The image archive carries alias `qwen38-flashnext:disk-reproduced-20261010`. Verify its hash, load with `zstd -dc qwen38-flashnext-disk.tar.zst | docker load`, inspect the imported ID and assign `qwen38-flashnext:disk` only if absent and the expected ID matches. Preserve existing aliases and Vanilla. The original source archive contains compiler binaries and is retained local build evidence; publish the prepared source-only model-pack archive instead unless package redistribution rights are established separately.
+
+For managed recovery, stop the active runtime through Runtime → Stop, then select the desired installed pack/mode and Start. Manual Vanilla rollback uses retained1.0.2 source pack and image `sha256:85512b52c09fa660a2e7fe441417129e7c47fac727fd85f66ccea6b65e0a9122`; import locally and choose its version-labelled target. Updates can retire older packs/unshared owned images, so save both before promotion. There is no automatic rollback or catalog downgrade.
+
+If managed Disk startup fails, retain logs/inspect/readiness evidence, stop the failed managed container, verify endpoint/GPU availability and use qualified `patches/disk/launch.py mtp3 --model-dir /absolute/checkpoint --port 8000 --execute` to restore packaged standalone serving where possible. This starts the normal qualified entrypoint on the immutable local image alias. Never substitute an experimental image silently.
+
+Provenance follows the completed contributor audit: no identifiable KaloyanNaumov/Lumnus executable source incorporated; historical research/configuration influence remains acknowledged. Preserve original messages/trailers as records without assigning them to new commits. Wulf owns the shim; no external permission blocker exists. The actual distributed vLLM/kernel/SYCL-TLA/vendor material keeps its notices; compiler binaries are excluded. The final public release and clean Controller acquisition record close [issue#9](https://github.com/wu1ff/B70-LLM-Controller/issues/9). Its historical discussion and individual PR#4–#8 dispositions remain preserved. The historical Vanilla1.0.2 source/release is retained; its retired GHCR image is unavailable, so recovery requires a saved local image.
+
+---
+
+# Historical Vanilla development and pack releases (v0.26 through provisional tool-choice fix)
+
+Everything below is retained campaign history. Its image identities, whole-table pinned PLE, graph policies, benchmarks, current/final labels, validators and pending investigations describe their original dates. The current Disk implementation and supported contract above supersede those operational instructions.
+
 # Qwen3.8-Flash-Next (Qwen4Exp) on Intel Arc Pro B70 — the v0.30 runtime recipe
 
 This is the technical history of the vLLM 0.30 runtime that serves Qwen3.8-Flash-Next
@@ -1583,3 +1731,13 @@ ladder law. Deferred as before: concurrency tuning, video, MTP1-as-pack-mode.
 The [published patch index](patches/README.md) now ships inside the model-pack archive with the exact retained vLLM, vllm-xpu-kernels, serving-packaging and B70 residency-shim source needed to account for the promoted runtime. The provenance chain is the pinned vLLM 0.30.0 XPU image (`sha256:e4446310…`) → base-c5 → full-c1 → hcsplit-c1 → astra-cumulative/mtp3-c1 → gdn-index64-c1 → the unchanged production packaging layer. The native patch targets vllm-xpu-kernels 0.1.14.1 commit `6d92b1bfbf32767ecda8e819613eb151e70030ad`. Each patch README identifies its source base, affected files, stage and retained authority; `patches/SHA256SUMS` records distributed bytes.
 
 Pack 1.0.2 changes only the pack version, documentation and source distribution. The image remains `ghcr.io/wu1ff/qwen38-flashnext-b70:1.0.0` (`sha256:85512b52c09fa660a2e7fe441417129e7c47fac727fd85f66ccea6b65e0a9122`). The model revision, modes, eight profile command lines, environment and mounts are identical to 1.0.1. The release archive includes `README.md`, `RUNTIME_RECIPE.md`, `pack.json` and `patches/**`.
+
+# Tool-choice semantic fix — pack 1.0.3 (2026-10-07)
+
+The shared runtime launch adds exactly one `--exclude-tools-when-tool-choice-none` argument for all eight Base/MTP3 profiles. The existing vLLM 0.30 renderer then excludes current tool definitions for `tool_choice:"none"`; historical assistant calls and tool results remain represented. Previously, the flag was disabled and none-mode prompts still advertised tools, allowing selected call XML to be generated before parser suppression.
+
+Temporary qualification at context 262144 retained every existing mode setting: Base utilization 0.85 with speculation off; MTP3 utilization 0.91 with exactly three speculative tokens. Both modes passed 20 byte-identical retained calculator none requests, with correct 396 answers, null calls, no selected call XML, finite logprobs and healthy immediate controls. Both also passed non-streaming/streaming none, automatic calls and tool-result continuations; default-to-auto, explicit auto, named and required choices; disabled/enabled thinking and supported low reasoning effort; tool history; and the existing red-circle vision smoke with tools present under none.
+
+Streaming selected-token audits use the existing `return_token_ids` response-metadata option where necessary to retain parser-buffered chunks. This adds no decoding constraint. Normal non-none prompts remain unchanged; none prompts match the corresponding tools-omitted forms, including reasoning prefixes and image placeholders.
+
+The image digest, model pin, source patch bundle, environment, mounts and all other serving arguments remain unchanged. This is a pack launch fix requiring a new pack archive/catalog version and runtime recreation after installation, with no vLLM/model/template patch or image rebuild. Qualification evidence is retained in the campaign workspace `runtime/rr-exclusion-qualification-20261007`; no prefill scheduling work was performed.

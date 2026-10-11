@@ -1,91 +1,94 @@
-# Qwen3.8-Flash-Next
+# Qwen3.8-Flash-Next — Disk
 
-This is the qualified Qwen3.8-Flash-Next (Qwen4Exp) pack I use with B70 LLM Controller. It contains one served checkpoint — weights, tokenizer, and the 102.4 GB PLE n-gram table together in a single pinned revision — a frozen unified runtime, and the exact B70 configurations that passed testing. Both modes, Base and MTP3, run on the same single runtime image and differ only by launch configuration.
+This pack serves Qwen3.8-Flash-Next W4A16 with B70 LLM Controller using one qualified Disk runtime image and separate Base and MTP3 modes. Version **1.0.3** promotes the qualified Disk runtime and cumulative source/build documentation. The image is available in the existing GHCR package under `:disk`; the [1.0.3 release](https://github.com/wu1ff/B70-LLM-Controller/releases/tag/qwen3.8-flash-next-v1.0.3) provides the complete model-pack archive and its SHA256 checksum.
 
-## Models
+## Supported configurations and features
 
-| Variant | Repository | Revision |
+| Checkpoint | Hardware | Context selections | Modes |
+| --- | --- | --- | --- |
+| `devan-carlin/Qwen3.8-Flash-Next-W4A16` | 4× Intel Arc Pro B70, TP4 + expert parallelism | 32768, 65536, 131072, 262144 | Base, MTP3 |
+
+All eight existing profile identities are retained. The native 262144 ceiling includes **input plus output**. Final packaged-image qualification covered both modes at native context, including 262112 input + 32 output; lower contexts are rendered ceilings and have not each received an independent serving campaign. TP1, TP2, MTP1 and video are not pack configurations.
+
+Image vision (at most two images per prompt), reasoning separation, OpenAI tools, automatic prefix caching and Mamba ALIGN remain supported. Automatic tool choice uses the in-image `qwen3_xml` parser with `qwen3` reasoning. `--exclude-tools-when-tool-choice-none` preserves the tool-choice fix: requests with `tool_choice:"none"` exclude tool definitions from the rendered prompt. Required and named tools, tool round trips, streaming, ordinary chat and reasoning were covered by retained qualification. Arbitrary schemas and model-generated code are not guaranteed correct.
+
+## Checkpoint, storage and host memory
+
+The ungated checkpoint is pinned to revision `40b8f18df4d4a32cb6e687a51c78207e5e438522`: 31 files, **179,841,735,233 bytes** total. This includes the original **102,400,493,290-byte BF16 PLE table**, integrated MTP tensors, tokenizer and vision configuration. Budget roughly 180 GB for the checkpoint plus image, caches and installation staging. No conversion or external assistant checkpoint is needed.
+
+Disk PLE maps the original BF16 table from the read-only checkpoint and gathers only TP-owned rows into bounded pinned staging before device execution. At MBT1024 that stage is **5 MiB per rank / 20 MiB across TP4**. It removes Vanilla's whole-table pinned slabs without changing PLE precision. File-backed page cache is reclaimable but can grow substantially; Disk still uses host memory for the runtime, weights, caches and mapped pages. No minimum-RAM or storage-cold endurance guarantee has been established. SSD/NVMe latency and OS cache history affect performance.
+
+The image's entrypoint builds `/work/flashnext-serve` using checkpoint symlinks and a baked dense-QSA config: the pinned config minus exactly five unsupported `text_config.indexer_*` keys. It leaves the mounted checkpoint intact. The B70 residency shim, XPU graphs, offline settings and caches under `/work` are part of the launch contract.
+
+## Base and MTP3
+
+| Setting | Base | MTP3 |
 | --- | --- | --- |
-| W4A16 | `devan-carlin/Qwen3.8-Flash-Next-W4A16` | `40b8f18df4d4a32cb6e687a51c78207e5e438522` |
+| GPU memory utilization | 0.85 | 0.91 |
+| Speculation | Off; drafter not loaded | Integrated MTP, exactly 3 tokens; local argmax reduction |
+| Batch-token budget / slots | 1024 / 4 | 1024 / 4 |
+| Prefill policy | Aggregate cap 256 when a request reaches decode | Fixed 1024; qualified draft-prefill gates |
+| FULL_AND_PIECEWISE captures | 1,2,4,8,256,512,1024 | 1,2,4,8,64,128,256,512,832,1024 |
 
-The repository is ungated and public. The pinned revision is 31 files, 179,841,735,233 bytes total (≈ 180 GB) — `ple_table_qwen4exp.pt` alone is 102,400,493,290 bytes and **is part of the revision**, so the download covers everything the runtime needs. `b70ctl` downloads the exact revision above and checks it against the 31-file inventory in `pack.json`; plan for the full ≈ 180 GB on first install.
+Base's conditional cap supports mixed prefill/decode scheduling. MTP3 retains the accepted eager/KV-only draft prefill, post-capture warmup, fused metadata, device split plan, native tiled reducer and 65536-byte CCL LL threshold. The exact environments and arguments are in `pack.json`; no performance tuning is required to select either mode.
 
-## Modes
+## Startup and retained performance
 
-- **Base** serves the checkpoint without speculative decoding (util 0.85). The MTP drafter never loads in this mode.
-- **MTP3** enables multi-token-prediction speculative decoding at exactly depth 3 (`{"method":"mtp","num_speculative_tokens":3}`, util 0.91): each proposal drafts exactly 3 tokens and the target verifies 4 rows. The mode display is `MTP3` — the depth is part of the contract; MTP1 exists in the runtime as a capability but is not a pack mode.
+Broad standalone qualification of the preserved Disk predecessor reached health in **274.46 seconds Base / 292.23 seconds MTP3**, once per mode. The corrected RC retains equivalent executable logic and native payload; its focused Controller qualification reached health in **265.3 seconds Base / 294.4 seconds MTP3** and passed completion, MTP3 streaming/stopping and native-library checks. Allow several minutes; compilation and cache history vary. Controller Start returns while the server is loading. Runtime shows Starting until `/health` succeeds; it provides no automatic startup timeout or rollback.
 
-Mode availability depends on card count and context; a mode only appears when that exact combination has a profile.
+Retained thinking-enabled FixedStepClock coding requests (seed57, temperature0.7/top_p0.95/top_k20, 21 functional checks) give these descriptive single-stream rates:
 
-## Hardware and context support
+| Prompt / cache | Base tok/s | MTP3 tok/s | Base / MTP3 TTFT seconds |
+| --- | ---: | ---: | --- |
+| 65845 / cold APC | 50.00 | 120.33 | 17.257 / 16.823 |
+| 65845 / reused APC | 50.24 | 122.21 | 0.317 / 0.476 |
+| 164149 / cold APC | 45.50 | 108.77 | 56.365 / 56.624 |
+| 164149 / reused APC | 45.48 | 111.12 | 0.692 / 1.112 |
 
-| Checkpoint | Cards / TP | Qualified contexts and modes |
-| --- | --- | --- |
-| W4A16 | 4 | 32K, 64K, 128K, 256K: Base, MTP3 |
+These are retained n=1 observations with differing output lengths/trajectories, not a universal speed claim or matched Base regression estimate. Cold APC means a fresh request cache namespace, with natural OS page-cache history. Four-slot mixed serving passed functional checks; throughput/fairness, sustained native-ceiling generation and storage-cold endurance remain unmeasured. Historical Vanilla BetterBench results are retained in the recipe and should not be treated as Disk measurements.
 
-TP4 on 4× Arc Pro B70 is the only topology this pack publishes. No sub-TP4 lane was ever qualified for this checkpoint (the W4A16 GEMM K≥6144 race is TP1/TP2-reachable), so no such profile exists.
+## Runtime identity and installation
 
-Context ladder law: each mode was qualified at its maximum context — 262144 — on the identical runtime contract, and that qualification covers every lower tier the pack publishes (32K/64K/128K are data-only context ceilings; they require no separate boot). The native `max_position_embeddings` of the checkpoint is 262,144.
-
-Only combinations that passed qualification are included. `b70ctl` reads the exact 8-profile matrix from `pack.json`, so unsupported combinations simply do not appear.
-
-## Hard runtime requirements (baked into the image)
-
-These are properties of the pinned runtime image, not options: pinned-host PLE table (2-slab UVA load, zero device residency — `PLE_TABLE_PATH` resolves into the read-only model mount), the B70 Level-Zero peer-residency shim (`LD_PRELOAD`), TP4 + expert parallelism, W4A16 bf16 serving, breakable FULL_AND_PIECEWISE XPU graphs `[1,2,4,8,256]` at `--max-num-batched-tokens 256` / `--max-num-seqs 4` (torch.compile mode NONE), automatic prefix caching ON with the ALIGN Mamba cache mode, and the dense-QSA serve configuration.
-
-Dense QSA is a correctness requirement for this checkpoint: the pinned config ships five `text_config.indexer_*` keys but the checkpoint contains no indexer weights, so the runtime image carries the patched serving config (the pinned config minus exactly those five keys, sha256 `91fa33ca…`) and its entrypoint rebuilds the serve directory inside the container at boot (`/work/flashnext-serve`) from the read-only Controller model mount. The mounted snapshot is never written.
-
-Vision is qualified (image modality, `{"image":2,"video":0}`); **video is not qualified** and stays at 0.
-
-## Tool calling (1.0.1)
-
-OpenAI-compatible automatic tool calling is part of the qualified launch contract (pack 1.0.1; the 1.0.0 pack omitted the flags and rejected `tool_choice:"auto"` with HTTP 400). The shared runtime layer of `pack.json` adds `--enable-auto-tool-choice --tool-call-parser qwen3_xml --reasoning-parser qwen3` — one set of flags inherited identically by Base and MTP3 and every profile; the runtime image is unchanged from 1.0.0 (same digest `85512b52…`, no rebuild, no new GHCR tag).
-
-Both parsers ship inside the pinned image, and the model's own chat template emits exactly the Qwen3 XML tool syntax the parser reads — no custom template, no other flags. What was tested and qualified at 262144 through the normal b70ctl path, on both Base and MTP3: `tools` + `tool_choice:"auto"` returning a valid OpenAI `tool_calls` structure (correct function name, JSON-exact arguments), tool-result round trip with the `tool` role, streaming tool calls, `tool_choice:"none"` returning plain text, and reasoning/content separation (vLLM 0.30 exposes the thinking under the message's `reasoning` field). Ordinary chat, vision, and prefix caching were regression-checked in the same smokes. Claim scope is the tested surface — a client-side calculator function schema; no claim about arbitrary tool schemas or structured outputs.
-
-## Performance
-
-Retained qualified results from the promoted unified runtime (BetterBench v0.6.0, 32K contract, temperature 0.7, single stream unless noted), not new measurements. Test host: 4× Intel Arc Pro B70 32 GB.
-
-| Quantity | Base | MTP3 |
-| --- | ---: | ---: |
-| Combined weighted decode | 58.34 tok/s | 119.86 tok/s |
-| Prefill @ ≈23.6K-token prompts | 2476 tok/s | 2290 tok/s |
-| TTFT p50 (shorts) | 107.5 ms | 123.0 ms |
-| Concurrency C4 aggregate | 183.7 tok/s | 138.3 tok/s |
-
-Where each mode wins: MTP3 wins every single-stream decode category (+69% to +155%) and C1/C2 aggregates (2.00×/1.82×); Base wins prefill throughput at every depth (+7.3–8.5%), TTFT at every depth/level, and C4 aggregate (+32.7%). The two modes are complementary rather than overlapping. Concurrency numbers are recorded envelope data only — concurrency tuning is explicitly deferred (the `max_num_seqs 4` contract is unchanged from qualification).
-
-## Runtime
-
-The pack uses this single qualified runtime — one image for all 8 profiles and both modes:
+The published GHCR tag is `ghcr.io/wu1ff/qwen38-flashnext-b70:disk`. The exact qualified RC Docker image ID is:
 
 ```text
-ghcr.io/wu1ff/qwen38-flashnext-b70@sha256:85512b52c09fa660a2e7fe441417129e7c47fac727fd85f66ccea6b65e0a9122
+sha256:b13fed6dd54051395f603409ada440c74afcbd5331810eee3acd62315d7787e3
 ```
 
-This is the 2026-09-27 packaging layer (serve preparator + patched config + entrypoint) on top of the unified runtime authority that serves Base (speculation off) and MTP3 (depth 3) from one image — including the GDN convolution state-index 64-bit correctness correction that fixed the deep-prefill DEVICE_LOST failure mode. No separate Base or MTP3 runtime image exists or is referenced.
+`pack.json` pins that ID in `runtime.digest` and uses the verified immutable acquisition reference in `runtime.registry`:
 
-If the image is missing, `b70ctl` pulls that immutable reference and verifies that Docker reports the expected image ID before offering any profile that uses it. On Docker daemons using the containerd image store, the image ID equals the registry manifest digest recorded in `pack.json`, and verification succeeds; a classic-graphdriver daemon reports the config digest instead, which would not match. This pack targets the containerd image-store daemon class, same as the existing packs.
+```text
+ghcr.io/wu1ff/qwen38-flashnext-b70@sha256:b13fed6dd54051395f603409ada440c74afcbd5331810eee3acd62315d7787e3
+```
 
-The runtime mounts the B70 devices (`/dev/dri`) plus one fixed read-only bind of `/dev/dri/by-path` so serving resolves cards by their stable device paths. That exact bind is the only host mount the pack is allowed to request; `b70ctl` rejects any other pack-controlled mount. All caches live inside the container (`/work/*`).
+The remote linux/amd64 manifest, config and all 22 layer descriptors match the qualified RC. An anonymous clean pull through Controller's unchanged `runtime.AcquireOwned` returned this exact Docker `.Id`; the pulled installed inventory matched all 3,118 entries, including all 15 corrected Python notices. The registry manifest happens to equal `.Id` on the supported containerd image store. The distinct OCI config digest is `sha256:2399885f6fbc59cdb602fe869350ddd80e085f62da25d55859d683b5e3450baf`; classic image stores can expose that config ID and fail the existing Controller identity contract. Controller launches by the verified ID.
 
-## Source patches (1.0.2)
+The existing GHCR package now exposes exactly one version with the sole tag `disk`. The superseded Vanilla `1.0.0` index, amd64 manifest and attestation were removed only after replacement verification. Original local Disk/Vanilla images and source history remain available for recovery; `qwen38-flashnext:disk` retains its predecessor identity and `qwen38-flashnext:disk-rc` retains the corrected RC.
 
-The pack now distributes the [exact source patches and build recipes](patches/README.md) behind the published Flash-Next B70 runtime. This is a source and provenance release: the production image remains `ghcr.io/wu1ff/qwen38-flashnext-b70:1.0.0` at digest `sha256:85512b52c09fa660a2e7fe441417129e7c47fac727fd85f66ccea6b65e0a9122`, and all eight profile launch settings remain those of pack 1.0.1.
+Use the real TUI menus:
 
-## Runtime recipe
+1. **Model Packs → Browse Available Packs**, select Flash-Next 1.0.3 and the W4A16 target, Continue and confirm installation. For a downloaded and extracted archive, **Import Local Pack** accepts its directory. Complete exact checkpoints and the qualified local image are reused; an absent runtime is acquired by the verified immutable registry reference and checked against its Docker ID. Import does not switch a running server.
+2. **Run Model**, choose the target (and version label if several versions are installed), four cards, a context, Base or MTP3, Local or LAN access, and port 8000. Select Start.
+3. **Runtime → Refresh / View Logs** to follow readiness. Use **Stop** before switching mode or context; the next Start replaces the stopped managed container. Exiting the TUI leaves the detached service running.
 
-For the runtime build history, compatibility work, qualified launch contract, and technical provenance, see [RUNTIME_RECIPE.md](RUNTIME_RECIPE.md).
+**Browse Available Packs** and Update are the normal distribution path. Verify the downloaded archive against the release’s `SHA256SUMS` when importing manually. There are no pack-management command-line subcommands in `b70ctl`.
 
-## Using the pack
+## Limitations and manual rollback
 
-Install from the public catalog via **Model Packs → Browse Available Packs**, or import this pack directory with **Model Packs → Import Local Pack** while working from the source tree. There is one target checkpoint; preparing it is the ≈ 180 GB download. Existing exact model revisions and the runtime are reused on update.
+Native context qualification used a 32-token output at the ceiling; sustained long generation there remains unmeasured. Retain the recipe's bounded numerical/reduction-order equivalence, first-use/cache effects, unresolved historical synthetic-startup-audit cause and model-output limitations. No broader topology, video, concurrency performance or minimum-RAM claim follows from these checks.
 
-Then open **Run Model**, choose the checkpoint, and select from the card, context, and mode values shown. Choose Local or LAN access, set the port, and start it. First boot takes roughly six minutes to readiness.
+Retain the older Vanilla **1.0.2 source pack/archive** and image before updating. A successful Controller update can retire older packs and unshared owned images; KeepModels only preserves checkpoints. To roll back, stop Disk in Runtime, **Import Local Pack** from the retained Vanilla directory, then choose its version-labelled target and the desired Base/MTP3 profile. Start and wait for health. Catalog browsing does not offer downgrades, and the Controller does not automatically roll back a later serving failure.
 
-`pack.json` is intentionally readable if you want to inspect all 8 profiles, the model file inventory, and launch data yourself.
+Vanilla recovery uses the retained **local** image `sha256:85512b52c09fa660a2e7fe441417129e7c47fac727fd85f66ccea6b65e0a9122` and saved 1.0.2 source/archive. Its former GHCR reference is retained only in dated history and is no longer a download or rollback source. Keep these local assets before any Controller update can retire unshared owned images.
 
-## Licenses
+For a failed managed Disk integration, the retained qualified standalone `launch.py` and prepared Base/MTP3 receipts offer recovery after freeing port 8000. See the existing [runtime recipe](RUNTIME_RECIPE.md) for build identities, archive checksums and recovery commands.
 
-The Controller's MIT license does not relicense the model weights, runtime components, or other third-party software. Check the upstream terms for each repository and component you use.
+## Sources, provenance and licenses
+
+[patches/README.md](patches/README.md) describes the cumulative accepted Disk source, native builds, dependency locks and checksums. Historical Vanilla 001–007 deltas remain labelled history. The public source export excludes Intel compiler package binaries; reproducible native builds require the exact locked packages to be obtained separately.
+
+No identifiable KaloyanNaumov/Lumnus executable source ships in Disk. Research and configuration influence remains acknowledged in the historical provenance records. Historical co-author trailers describe those records; they do not assign authorship to a new release. The residency shim is Wulf's own work.
+
+The Controller's MIT license does not relicense model weights or third-party runtime components. Preserve the actual vLLM/kernel Apache-2.0 notices, SYCL-TLA BSD and embedded third-party notices, and vendor/Torch notices carried with the distributed sources and image.
+
+The release preserves the original local qualified `:disk` image and uses the notice-corrected `:disk-rc` as GHCR `:disk`. Installed executable logic, native binaries and runtime configuration remain equivalent. The distributed licenses/notices and historical [source-delivery findings](patches/disk/licenses/README.md) are retained without changing third-party terms. The complete accepted Disk implementation and native build recipes ship inside the model-pack archive under `patches/disk/`; compiler packages and model weights are acquired separately. Earlier provisional 1.0.3 artifacts are historical evidence and are superseded by the published archive and release checksum. The historical [Vanilla 1.0.2 release](https://github.com/wu1ff/B70-LLM-Controller/releases/tag/qwen3.8-flash-next-v1.0.2) and source remain available, but its retired GHCR image cannot be pulled there.

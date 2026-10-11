@@ -1,0 +1,168 @@
+--- a/vllm/models/qwen4_exp/nvidia/mtp.py
++++ b/vllm/models/qwen4_exp/nvidia/mtp.py
+@@ -17,6 +17,7 @@
+ 
+ import regex as re
+ import torch
++from vllm.model_executor.layers.attention.attention import unified_kv_cache_update
+ from torch import nn
+ 
+ from vllm.config import VllmConfig, replace, set_current_vllm_config
+@@ -440,6 +441,61 @@
+     ) -> torch.Tensor | None:
+         return self.logits_processor(self.lm_head, hidden_states)
+ 
++    def supports_prompt_kv_only(self) -> bool:
++        """Whether intermediate draft prefill has only attention KV state."""
++        model = self.model
++        if len(model.layers) != 1:
++            return False
++        layer = model.layers[0]
++        if layer.ple is not None or layer.layer_type != "full_attention":
++            return False
++        attention = layer.self_attn
++        if not hasattr(attention, "_project_qkv_gate"):
++            return False
++        cache_layer = attention.attn
++        return (
++            not cache_layer.attn_backend.forward_includes_kv_cache_update
++            and cache_layer.kv_sharing_target_layer_name is None
++            and cache_layer.kv_cache.dtype == torch.bfloat16
++        )
++
++    def prefill_prompt_kv(
++        self,
++        input_ids: torch.Tensor,
++        positions: torch.Tensor,
++        hidden_states: torch.Tensor,
++    ) -> None:
++        """Populate one-layer draft KV without producing unused prompt logits.
++
++        The caller supplies the same shifted ids, target HC states, positions
++        and forward-context slot mappings as ordinary draft prefill. Attention
++        output, output projection, MoE and final mixing have no persistent state
++        needed by a later chunk. Only wholly non-final prefill may use this.
++        """
++        model = self.model
++        layer = model.layers[0]
++        attention = layer.self_attn
++        num_tokens = hidden_states.shape[0]
++        embeddings = model.embed_input_ids(input_ids)
++        embeddings = model.pre_fc_norm_embedding(embeddings)
++        embeddings = model.fc_embedding(embeddings)
++        hidden_states = hidden_states.view(
++            num_tokens, model.hc_count, model.hidden_size
++        )
++        hidden_states = model.pre_fc_norm_hidden(
++            hidden_states.flatten(-2)
++        ).view(num_tokens, model.hc_count, model.hidden_size)
++        hidden_states = model.fc_hidden(hidden_states).flatten(-2)
++        _, block_input, _ = layer.attn_hyper_connection.combine_and_mix(
++            hidden_states, embeddings, None
++        )
++        qkv, _ = attention.qkv_proj(block_input)
++        _, key, value, _ = attention._project_qkv_gate(qkv, positions)
++        cache_layer = attention.attn
++        key = key.view(-1, cache_layer.num_kv_heads, cache_layer.head_size)
++        value = value.view(-1, cache_layer.num_kv_heads, cache_layer.head_size_v)
++        unified_kv_cache_update(key, value, cache_layer.layer_name)
++
+     def get_top_tokens(self, hidden_states: torch.Tensor) -> torch.Tensor:
+         """Exact greedy draft selection through the existing TP local reduction."""
+         return self.logits_processor.get_top_tokens(self.lm_head, hidden_states)
+--- a/vllm/v1/worker/gpu/spec_decode/autoregressive/speculator.py
++++ b/vllm/v1/worker/gpu/spec_decode/autoregressive/speculator.py
+@@ -325,6 +325,46 @@
+         )
+ 
+         self._prepare_eplb_forward(num_tokens)
++
++        # During wholly intermediate prefill, the scheduler discards proposals.
++        # A one-layer Qwen MTP only needs its prompt KV, so skip the attention
++        # output, MoE, final mixing, vocabulary head and all proposal feedback.
++        # Final prefill, mixed batches, decode and unsupported modes retain the
++        # ordinary path. Capture/dummy runs continue to warm the complete model.
++        if (
++            os.environ.get("B70_MTP_PREFILL_KV_ONLY") == "1"
++            and not dummy_run
++            and self.model.__class__.__name__ == "Qwen4ExpMTP"
++            and self.num_speculative_steps == 3
++            and self.pcp_manager is None
++            and self.eplb_state is None
++            and mm_inputs is None
++            and not getattr(self, "share_mtp_topk_indices", False)
++            and self.vllm_config.parallel_config.pipeline_parallel_size == 1
++            and self.vllm_config.parallel_config.decode_context_parallel_size == 1
++            and prefill_batch_desc.cg_mode == CUDAGraphMode.NONE
++            and bool(((input_batch.num_computed_prefill_tokens_np
++                       + input_batch.num_scheduled_tokens)
++                      < input_batch.prefill_len_np).all())
++            and self.model.supports_prompt_kv_only()
++        ):
++            n = prefill_batch_desc.num_tokens
++            with set_forward_context(
++                attn_metadata,
++                self.vllm_config,
++                num_tokens=n,
++                cudagraph_runtime_mode=CUDAGraphMode.NONE,
++                num_tokens_across_dp=num_tokens_across_dp,
++                slot_mapping=slot_mappings,
++                batch_descriptor=BatchDescriptor(num_tokens=n),
++                is_padding=None,
++            ):
++                self.model.prefill_prompt_kv(
++                    self.input_buffers.input_ids[:n],
++                    self.input_buffers.positions[:n],
++                    self.hidden_states[:n],
++                )
++            return self.draft_tokens[:num_reqs]
+ 
+         self.on_prefill_begin(num_reqs)
+         if prefill_batch_desc.cg_mode == CUDAGraphMode.FULL:
+--- a/vllm/v1/worker/xpu_model_runner.py
++++ b/vllm/v1/worker/xpu_model_runner.py
+@@ -1,5 +1,7 @@
+ # SPDX-License-Identifier: Apache-2.0
+ # SPDX-FileCopyrightText: Copyright contributors to the vLLM project
++import os
++
+ from contextlib import contextmanager
+ from functools import partial
+ 
+@@ -39,6 +41,36 @@
+             super().__init__(vllm_config, device)
+ 
+ 
++    @torch.inference_mode()
++    def capture_model(self, *, profile_only: bool = False) -> int:
++        result = super().capture_model(profile_only=profile_only)
++        if (
++            not profile_only
++            and os.environ.get("B70_XPU_POST_CAPTURE_WARMUP") == "1"
++            and self.parallel_config.tensor_parallel_size > 1
++        ):
++            from vllm.distributed import get_tp_group
++            from vllm.logger import init_logger
++
++            # In the installed XCCL stack a large first eager all-reduce after
++            # graph capture can propagate recording state onto the caller's
++            # queue. A small post-capture collective avoids that transition.
++            # Initializing it before capture is insufficient (four-rank repro).
++            # This is startup-only and does not alter any model/request state.
++            stream = torch.xpu.current_stream(self.device)
++            if torch.xpu.is_current_stream_capturing():
++                raise RuntimeError("Post-capture warmup entered during capture")
++            warmup = torch.zeros(2560, dtype=torch.bfloat16, device=self.device)
++            torch.distributed.all_reduce(warmup, group=get_tp_group().device_group)
++            if torch.xpu.is_current_stream_capturing():
++                raise RuntimeError("XCCL warmup left the inference queue recording")
++            stream.synchronize()
++            init_logger(__name__).info(
++                "B70 XPU: post-capture eager collective warmup complete"
++            )
++        return result
++
++
+ @contextmanager
+ def _torch_cuda_wrapper():
+     # Replace cuda APIs with xpu APIs. Each callable gets its own functools.partial

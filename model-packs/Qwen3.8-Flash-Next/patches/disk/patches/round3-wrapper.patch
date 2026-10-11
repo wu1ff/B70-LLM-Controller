@@ -1,0 +1,39 @@
+--- starting/flash_attn_interface.py
++++ candidate/flash_attn_interface.py
+@@ -22,6 +22,7 @@
+ # missing-kernel fallback notice is emitted once per config rather
+ # than on every decode step.
+ _warned_missing_configs: set = set()
++_b70_tiled_reducer_loaded = False
+ 
+ # Speculative-decoding fast path.
+ #
+@@ -122,6 +123,28 @@
+         # Expand the block table so each pseudo-sequence points at its parent
+         # sequence's blocks.
+         block_table_spec = block_table.repeat_interleave(q_len, dim=0)
++
++    if (adaptive_splits
++            and os.environ.get("B70_XPU_TILED_REDUCER", "0") == "1"
++            and v.dtype == torch.bfloat16 and block_table_spec.dtype == torch.int32
++            and s_aux is None and softcap == 0.0
++            and tuple(window_size) == (-1, -1)
++            and (out is None or out.is_contiguous())):
++        # BF16 KV ignores the backend's descale tensors, exactly as the native
++        # paged decode dispatcher does; scales are consumed only for FP8 KV.
++        global _b70_tiled_reducer_loaded
++        if not _b70_tiled_reducer_loaded:
++            from pathlib import Path
++            torch.ops.load_library(str(Path(__file__).with_name("libb70_attn_reduce.so")))
++            _b70_tiled_reducer_loaded = True
++            print("B70 XPU tiled reducer: q4/h6/d256/page832, four output tiles; native fallback retained", flush=True)
++        if out is None:
++            out = torch.empty(q.shape, device=q.device, dtype=q.dtype)
++        torch.ops._b70_attn_reduce.forward(
++            q, k, v, out, cu_seqlens_q_spec, seqused_k_spec,
++            block_table_spec, split_plan, split_work,
++            softmax_scale, max_seqlen_k, 4)
++        return out
+ 
+     out, _ = torch.ops._vllm_fa2_C.varlen_fwd(
+         q,

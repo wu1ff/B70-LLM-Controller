@@ -1,0 +1,237 @@
+--- a/source/csrc/xpu/gdn_attn/causal_conv1d.hpp
++++ b/source/csrc/xpu/gdn_attn/causal_conv1d.hpp
+@@ -504,6 +504,7 @@
+       const T* conv_bias,
+       T* conv_states,
+       const int conv_states_stride_0,
++      const int* query_start_loc,
+       const int* token_indx,
+       const int* cache_indices,
+       const int cache_indices_stride_0,
+@@ -530,6 +531,7 @@
+         conv_bias(conv_bias),
+         conv_states(conv_states),
+         conv_states_stride_0(conv_states_stride_0),
++        query_start_loc(query_start_loc),
+         token_indx(token_indx),
+         cache_indices(cache_indices),
+         cache_indices_stride_0(cache_indices_stride_0),
+@@ -571,6 +573,11 @@
+       return;
+     }
+ 
++    // Packed query offsets describe actual tokens; cache width is capacity.
++    const int seq_start = query_start_loc[batch_id];
++    const int seq_len = query_start_loc[batch_id + 1] - seq_start;
++    if (seq_len == 0) return;  // graph-padded request, no state access
++
+     const int q_dim = head_k_dim;
+     const int k_dim = head_k_dim;
+     const int v_dim = head_v_dim * num_v_heads / num_k_heads;
+@@ -616,8 +623,8 @@
+     }
+ 
+     // -- b / a reorder (mixed_ba GLOBAL → b_out/a_out LOCAL) ----------------
+-    for (int t_local = 0; t_local < num_spec_tokens; ++t_local) {
+-      const int token_id_local = batch_id * num_spec_tokens + t_local;
++    for (int t_local = 0; t_local < seq_len; ++t_local) {
++      const int token_id_local = seq_start + t_local;
+       const int global_t = token_indx[token_id_local];
+       if constexpr (ReorderInput) {
+         if (qkvz_elems_id < num_v_heads) {
+@@ -654,8 +661,8 @@
+     if (is_z) {
+       int z_elems_id =
+           k_heads_id * z_dim + qkvz_dim_id - (q_dim + k_dim + v_dim);
+-      for (int t_local = 0; t_local < num_spec_tokens; ++t_local) {
+-        const int token_id_local = batch_id * num_spec_tokens + t_local;
++      for (int t_local = 0; t_local < seq_len; ++t_local) {
++        const int token_id_local = seq_start + t_local;
+         const int global_t = token_indx[token_id_local];
+ #pragma unroll
+         for (int e = 0; e < elems_per_item; ++e) {
+@@ -677,7 +684,9 @@
+     // Match the effective state length used by the CUDA/Triton path.  The
+     // leading stride may span interleaved states from multiple layers, so it
+     // cannot be used to recover this dimension.
+-    const int state_len = Width - 1 + (num_spec_tokens - 1);
++    // Match the retained Triton IS_VARLEN writeback: only history and
++    // actual inputs are valid. Prior selection still uses full capacity.
++    const int state_len = Width - 1 + (seq_len - 1);
+     const int state_id = cache_indices[batch_id * cache_indices_stride_0 + 0];
+     const bool has_conv_state = (state_id != pad_slot_id);
+     T* state_line_ptr = has_conv_state
+@@ -713,8 +722,8 @@
+       }
+     }
+ 
+-    for (int t_local = 0; t_local < num_spec_tokens; ++t_local) {
+-      const int token_id_local = batch_id * num_spec_tokens + t_local;
++    for (int t_local = 0; t_local < seq_len; ++t_local) {
++      const int token_id_local = seq_start + t_local;
+       const int global_t = token_indx[token_id_local];
+ 
+       // Shift window left by 1 (for t_local == 0 the trailing slot is fresh).
+@@ -794,7 +803,7 @@
+     // from row init_row+1, rows [hist_rows, state_len) = the K draft inputs.
+     // In-place left shift is safe since src row (init_row+1+j) >= dst row j.
+     if (Width > 1 && has_conv_state) {
+-      const int hist_rows = state_len - num_spec_tokens;
++      const int hist_rows = state_len - seq_len;
+       for (int j = 0; j < state_len; ++j) {
+         if (j < hist_rows) {
+           const int src_row = init_row + 1 + j;
+@@ -805,7 +814,7 @@
+           }
+         } else {
+           const int draft_t = j - hist_rows;
+-          const int token_id_local = batch_id * num_spec_tokens + draft_t;
++          const int token_id_local = seq_start + draft_t;
+           const int global_t = token_indx[token_id_local];
+ #pragma unroll
+           for (int e = 0; e < elems_per_item; ++e) {
+@@ -830,6 +839,7 @@
+   const T* conv_bias;
+   T* conv_states;
+   const int conv_states_stride_0;
++  const int* query_start_loc;
+   const int* token_indx;
+   const int* cache_indices;
+   const int cache_indices_stride_0;
+@@ -904,6 +914,7 @@
+           conv_bias,
+           conv_states,
+           conv_states_stride_0,
++          query_start_loc,
+           token_indx,
+           cache_indices,
+           cache_indices_stride_0,
+--- a/source/csrc/xpu/gdn_attn/gated_delta_rule.hpp
++++ b/source/csrc/xpu/gdn_attn/gated_delta_rule.hpp
+@@ -310,6 +310,7 @@
+       const T* dt_bias,
+       StateT* ssm_state,
+       const int ssm_state_stride_0,
++      const int* query_start_loc,
+       const int* token_indx,
+       const int* cache_indices,
+       const int cache_indices_stride_0,
+@@ -330,6 +331,7 @@
+         dt_bias(dt_bias),
+         ssm_state(ssm_state),
+         ssm_state_stride_0(ssm_state_stride_0),
++        query_start_loc(query_start_loc),
+         token_indx(token_indx),
+         cache_indices(cache_indices),
+         cache_indices_stride_0(cache_indices_stride_0),
+@@ -377,6 +379,10 @@
+       return;
+     }
+ 
++    const int seq_start = query_start_loc[batch_id];
++    const int seq_len = query_start_loc[batch_id + 1] - seq_start;
++    if (seq_len == 0) return;  // graph-padded request, no state access
++
+     const float scale = 1.0f / sycl::sqrt(float(head_k_dim));
+     float A_log_local = A_log[num_v_heads_id];
+     float dt_bias_local = dt_bias[num_v_heads_id];
+@@ -408,11 +414,9 @@
+     }
+ 
+     // -- Iterate over the num_spec_tokens tokens of this sequence -------------
+-    for (int t_local = 0; t_local < num_spec_tokens; ++t_local) {
+-      // Local token index inside q/k/v/b/a (which were sized
+-      // num_spec_decodes * num_spec_tokens and ordered by
+-      // spec_query_start_loc).
+-      const int t = batch_id * num_spec_tokens + t_local;
++    for (int t_local = 0; t_local < seq_len; ++t_local) {
++      // Local packed index in q/k/v/b/a, independent of state capacity.
++      const int t = seq_start + t_local;
+ 
+       float b_local = b[t * num_v_heads + num_v_heads_id];
+       float beta = act_sigmoid(b_local);
+@@ -537,6 +541,7 @@
+   const T* dt_bias;
+   StateT* ssm_state;
+   const int ssm_state_stride_0;
++  const int* query_start_loc;
+   const int* token_indx;
+   const int* cache_indices;
+   const int cache_indices_stride_0;
+@@ -616,6 +621,7 @@
+     const T* dt_bias,
+     StateT* ssm_state,
+     const int ssm_state_stride_0,
++    const int* query_start_loc,
+     const int* token_indx,
+     const int* cache_indices,
+     const int cache_indices_stride_0,
+@@ -641,6 +647,7 @@
+         dt_bias,
+         ssm_state,
+         ssm_state_stride_0,
++        query_start_loc,
+         token_indx,
+         cache_indices,
+         cache_indices_stride_0,
+@@ -737,6 +744,7 @@
+         reinterpret_cast<scalar_t*>(dt_bias.data_ptr()),             \
+         reinterpret_cast<state_scalar_t*>(ssm_state.data_ptr()),     \
+         ssm_state_stride_0,                                          \
++        reinterpret_cast<int*>(query_start_loc->data_ptr()),         \
+         token_indx.has_value()                                       \
+             ? reinterpret_cast<int*>(token_indx->data_ptr())         \
+             : nullptr,                                               \
+--- a/source/csrc/xpu/gdn_attn/gdn_attn_interface.cpp
++++ b/source/csrc/xpu/gdn_attn/gdn_attn_interface.cpp
+@@ -116,7 +116,11 @@
+       num_accepted_tokens.size(0) == num_spec_decodes,
+       "num_accepted_tokens size must be num_spec_decodes");
+ 
+-  TORCH_CHECK(spec_token == num_spec_decodes * (num_speculative_tokens + 1));
++  // Capacity is independent of the packed lengths in spec_query_start_loc.
++  // Offsets/token maps are produced by the length-aware metadata builder.
++  TORCH_CHECK(spec_token <= num_spec_decodes * (num_speculative_tokens + 1));
++  TORCH_CHECK(spec_token <= num_actual_tokens);
++  TORCH_CHECK(num_speculative_tokens >= 0);
+   TORCH_CHECK(spec_token > 0, "spec_token must be > 0 for causal_conv1d_spec");
+ 
+   TORCH_CHECK(
+--- a/overlay/vllm/v1/worker/gpu/model_states/mamba_hybrid.py
++++ b/overlay/vllm/v1/worker/gpu/model_states/mamba_hybrid.py
+@@ -275,13 +275,17 @@
+             # need the -1 sentinel rather than a raw zero draft count.
+             num_decode_draft_tokens_np = np.full(num_reqs, -1, dtype=np.int32)
+             num_draft_tokens_per_req = input_batch.num_draft_tokens_per_req
++            if num_draft_tokens_per_req is None:
++                num_draft_tokens_per_req = np.zeros(input_batch.num_reqs, dtype=np.int32)
+             if num_draft_tokens_per_req is not None:
+                 # A row is a spec-decode row only when its whole prompt is already
+                 # computed, i.e. exactly one non-draft (decode) token is scheduled.
+                 is_decode = (
+                     input_batch.num_scheduled_tokens == num_draft_tokens_per_req + 1
+                 )
+-                spec_decode_mask = (num_draft_tokens_per_req > 0) & is_decode
++                # Zero-draft decode also consumes the prior accepted state.
++                # Prompt/prefill rows retain the non-spec path.
++                spec_decode_mask = is_decode & ~input_batch.is_prefilling_np
+                 num_decode_draft_tokens_np[: input_batch.num_reqs] = np.where(
+                     spec_decode_mask, num_draft_tokens_per_req, -1
+                 )
+--- a/overlay/vllm/v1/attention/backends/gdn_attn.py
++++ b/overlay/vllm/v1/attention/backends/gdn_attn.py
+@@ -250,11 +250,9 @@
+         else:
+             spec_sequence_masks_cpu = num_decode_draft_tokens_cpu >= 0
+             num_spec_decodes = spec_sequence_masks_cpu.sum().item()
+-            if (
+-                num_spec_decodes == 0
+-                or num_decode_draft_tokens_cpu[spec_sequence_masks_cpu].sum().item()
+-                == 0
+-            ):
++            # A zero-draft decode has one real token and still selects a
++            # previous accepted state; it is not a zero-length padding row.
++            if num_spec_decodes == 0:
+                 num_spec_decodes = 0
+                 spec_sequence_masks = None
+                 spec_sequence_masks_cpu = None
