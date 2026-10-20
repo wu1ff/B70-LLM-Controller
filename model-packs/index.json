@@ -17,10 +17,10 @@
         },
         {
             "id": "qwen38-flashnext-b70",
-            "name": "Qwen3.8-Flash-Next B70 Pack (Base / MTP3)",
-            "version": "1.0.3",
-            "archive_url": "https://github.com/wu1ff/B70-LLM-Controller/releases/download/qwen3.8-flash-next-v1.0.3/qwen38-flashnext-b70-1.0.3.tar.gz",
-            "sha256": "sha256:9ece92a5c8e12dd9c94cd49bd77061e73933fd0c13d72db68a95c37f1f3523fe"
+            "name": "Qwen3.8-Flash-Next B70 Pack (Intel Dynamic MTP5)",
+            "version": "1.0.4",
+            "archive_url": "https://github.com/wu1ff/B70-LLM-Controller/releases/download/qwen3.8-flash-next-v1.0.4/qwen38-flashnext-b70-1.0.4.tar.gz",
+            "sha256": "sha256:845adf3a3c35193f18a3916bdccc33ae9e0d0c17340fb11a99883a313e291452"
         }
     ]
 }
