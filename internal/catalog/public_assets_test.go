@@ -133,7 +133,7 @@ func TestFlashNextSourceArchiveLoad(t *testing.T) {
 	}
 	server := archiveServer(t, archiveBytes)
 	defer server.Close()
-	entry := catalogEntry(server.URL, archiveBytes, "qwen38-flashnext-b70", "Qwen3.8-Flash-Next B70 Pack (Base / MTP3)", "1.0.3")
+	entry := catalogEntry(server.URL, archiveBytes, "qwen38-flashnext-b70", "Qwen3.8-Flash-Next B70 Pack (Intel Dynamic MTP5)", "1.0.4")
 	client := &Client{HTTPClient: server.Client()}
 	acquired, err := client.Acquire(context.Background(), t.TempDir(), entry)
 	if err != nil {

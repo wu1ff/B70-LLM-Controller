@@ -10,17 +10,16 @@ import (
 	"testing"
 )
 
-// Compare the published pack against the retained, qualified standalone
-// contracts. Context selection must change only the context ceiling.
+// Compare the published pack against its exact qualified standalone launch contract.
 func TestFlashNextDiskQualifiedProfiles(t *testing.T) {
 	root := filepath.Join("..", "..", "model-packs", "Qwen3.8-Flash-Next")
 	manifest, err := Load(root)
 	if err != nil {
 		t.Fatal(err)
 	}
-	digest := "sha256:b13fed6dd54051395f603409ada440c74afcbd5331810eee3acd62315d7787e3"
-	if manifest.Version != "1.0.3" || len(manifest.Runtimes) != 1 || len(manifest.Modes) != 2 || len(manifest.Profiles) != 8 {
-		t.Fatal("Disk release must retain one runtime, two modes and eight profiles")
+	digest := "sha256:dc25c8cd205a828ad4df3ae9aa3e9505f0a51550010ac9a115336473ca268086"
+	if manifest.Version != "1.0.4" || len(manifest.Runtimes) != 1 || len(manifest.Modes) != 1 || len(manifest.Profiles) != 1 {
+		t.Fatal("Intel release must retain one runtime and one qualified dynamic MTP5 profile")
 	}
 	runtime := manifest.Runtimes[0]
 	if runtime.Digest != digest || runtime.Registry != "ghcr.io/wu1ff/qwen38-flashnext-b70@"+digest || runtime.Image != "ghcr.io/wu1ff/qwen38-flashnext-b70:disk" {
@@ -29,10 +28,10 @@ func TestFlashNextDiskQualifiedProfiles(t *testing.T) {
 	seen := make(map[string]bool)
 	for _, profile := range manifest.Profiles {
 		t.Run(profile.ID, func(t *testing.T) {
-			if profile.Mode != "base" && profile.Mode != "mtp3" {
+			if profile.Mode != "mtp5-dynamic" {
 				t.Fatalf("unexpected mode %q", profile.Mode)
 			}
-			validContext := profile.Context == 32768 || profile.Context == 65536 || profile.Context == 131072 || profile.Context == 262144
+			validContext := profile.Context == 262144
 			wantID := fmt.Sprintf("w4a16-%s-tp4-%d", profile.Mode, profile.Context)
 			if !validContext || profile.ID != wantID || seen[wantID] || profile.Cards != 4 || profile.TensorParallel != 4 {
 				t.Fatalf("invalid or duplicate profile: %#v", profile)

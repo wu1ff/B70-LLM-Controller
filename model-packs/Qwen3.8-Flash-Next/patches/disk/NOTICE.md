@@ -7,10 +7,10 @@ Wulf changed the following upstream files for B70 Flash-Next Disk. Each distribu
 | Distributed modified files | Changes |
 | --- | --- |
 | `vllm/_xpu_ops.py`, `vllm/model_executor/layers/linear.py` | Native dispatch and XPU loading corrections |
-| `vllm/models/qwen4_exp/__init__.py`, `vllm/models/qwen4_exp/nvidia/hyperconnection.py`, `vllm/models/qwen4_exp/nvidia/model_state.py`, `vllm/models/qwen4_exp/nvidia/mtp.py`, `vllm/models/qwen4_exp/nvidia/ngram_embedding.py` | BF16 mapped PLE, hyperconnection and MTP integration |
+| `vllm/models/qwen4_exp/nvidia/model.py`, `vllm/models/qwen4_exp/__init__.py`, `vllm/models/qwen4_exp/nvidia/hyperconnection.py`, `vllm/models/qwen4_exp/nvidia/model_state.py`, `vllm/models/qwen4_exp/nvidia/mtp.py`, `vllm/models/qwen4_exp/nvidia/ngram_embedding.py` | BF16 mapped PLE, hyperconnection and MTP integration |
 | `vllm/v1/attention/backends/gdn_attn.py` | Corrected GDN and metadata dispatch |
 | `vllm/v1/core/sched/scheduler.py` | Conditional aggregate prefill budget |
-| `vllm/v1/worker/gpu/attn_utils.py`, `vllm/v1/worker/gpu/model_states/mamba_hybrid.py`, `vllm/v1/worker/gpu/spec_decode/autoregressive/speculator.py`, `vllm/v1/worker/xpu_model_runner.py` | APC/ALIGN, metadata and speculative staging |
+| `vllm/v1/worker/gpu/cudagraph_utils.py`, `vllm/v1/worker/gpu/attn_utils.py`, `vllm/v1/worker/gpu/model_states/mamba_hybrid.py`, `vllm/v1/worker/gpu/spec_decode/autoregressive/speculator.py`, `vllm/v1/worker/xpu_model_runner.py` | APC/ALIGN, metadata and speculative staging |
 | `vllm_xpu_kernels/flash_attn_interface.py`, `vllm_xpu_kernels/fused_moe_interface.py` | Attention reducer and guarded MoE dispatch |
 | `native/source/csrc/moe/remap_hidden_states.cpp` | Global/local expert bounds and excluded-row pointer guard |
 | `native/source/csrc/xpu/gdn_attn/causal_conv1d.hpp`, `native/source/csrc/xpu/gdn_attn/xe_2/chunk_causal_conv1d_xe2.hpp`, `native/source/csrc/xpu/gdn_attn/xe_2/chunk_causal_conv1d_tiled_xe2.hpp` | 64-bit indexing |
@@ -29,3 +29,9 @@ The B70 residency shim is Wulf's own work; no external shim permission is requir
 The completed contributor source audit found no identifiable KaloyanNaumov/Lumnus executable source incorporated in final Disk. Research and configuration influence remains acknowledged in provenance/. Historical commit messages and co-author trailers are preserved as historical records only; do not carry those trailers onto a new release commit as inferred co-authorship. PR #4 configuration direction informed four-slot conditional Base prefill; direct-pinned BF16 remained Speed research. INT8/NVMe, CPU-KV, API-default policy and alternate checkpoint implementations are excluded. Wulf's independent Disk mmap, scheduler, GDN, metadata, native and serving changes remain separately evidenced.
 
 Issue #3 and PRs #4–#8 have completed historical closeouts. Issue #9, https://github.com/wu1ff/B70-LLM-Controller/issues/9, remains for final release reconciliation; this task changes no GitHub state.
+
+## Intel dynamic MTP5 candidate, 2026-10-20
+
+Astra selected the Intel AutoRound loader changes, dynamic five/three verification schedule, single-query draft capture correction, q2/q4/q6/q8 attention dispatcher and split-major metadata scheduling. Wulf integrated these into the canonical source package with validated Intel safetensors PLE mapping and automatic dense serving preparation. The eight qualified Qwen frontend assets are packaged under the retained Qwen Community License 1.0; acquisition and runtime require only the Intel checkpoint at revision 4c67bf686b7f7fd386bae6b07ab59e8ff1d5b897. This records implementation work, without adding an external author, license grant or release co-author trailer.
+
+The earlier registry paragraph records the historical 1.0.3 publication. This 1.0.4 candidate is unpublished pending coordinator review. Inherited corresponding-source delivery, NumPy-bundled libgfortran identity and applicable Intel recipient-term arrangements retain the outstanding status documented in licenses/README.md.

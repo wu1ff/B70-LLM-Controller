@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Render Base/MTP3 launches; execute only with --execute."""
+"""Render the dynamic MTP5 launch; execute only with --execute."""
 import argparse,json,shlex,subprocess
 from pathlib import Path
-p=argparse.ArgumentParser();p.add_argument('mode',choices=['base','mtp3']);p.add_argument('--model-dir',required=True);p.add_argument('--port',type=int,default=18000);p.add_argument('--bind',default='127.0.0.1');p.add_argument('--name');p.add_argument('--image',default='qwen38-flashnext:disk');p.add_argument('--execute',action='store_true');a=p.parse_args()
+p=argparse.ArgumentParser();p.add_argument('mode',choices=['mtp5-dynamic']);p.add_argument('--model-dir',required=True);p.add_argument('--port',type=int,default=18000);p.add_argument('--bind',default='127.0.0.1');p.add_argument('--name');p.add_argument('--image',required=True);p.add_argument('--execute',action='store_true');a=p.parse_args()
 model=Path(a.model_dir).resolve();assert model.is_dir(),'Model directory missing'
 assert 1<=a.port<=65535
 s=json.loads((Path(__file__).resolve().parent/'profiles'/f'{a.mode}.json').read_text())

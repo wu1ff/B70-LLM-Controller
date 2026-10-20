@@ -1,0 +1,285 @@
+{
+  "benchmark": {
+    "combined": {
+      "decode": 120.3840769697534,
+      "itl_low1": null,
+      "ttft_p50": 107.5534069823334,
+      "update_p50": 26.818836413440295,
+      "update_p99": 28.90559296769788
+    },
+    "comparison_original_rc": {
+      "concurrency": [
+        {
+          "change_pct": 3.143809420172361,
+          "final": 116.7709858023418,
+          "level": 1,
+          "original": 113.21182188128908
+        },
+        {
+          "change_pct": 77.63923970017915,
+          "final": 180.3646014043398,
+          "level": 2,
+          "original": 101.53421153387086
+        },
+        {
+          "change_pct": 57.934363406660935,
+          "final": 242.62036425269454,
+          "level": 4,
+          "original": 153.62101003185603
+        }
+      ],
+      "weighted": {
+        "change_pct": 1.2389353737835673,
+        "final": 120.3840769697534,
+        "original": 118.91084840559039
+      }
+    },
+    "concurrency": [
+      {
+        "aggregate_tps": 116.7709858023418,
+        "decode_med": 137.9675110743242,
+        "level": 1,
+        "ok": 48,
+        "requests": 48,
+        "ttft_n": 48,
+        "ttft_p50": 105.38077197270468,
+        "ttft_p99": 121.75998941762373,
+        "ttft_p99_ok": false
+      },
+      {
+        "aggregate_tps": 180.3646014043398,
+        "decode_med": 101.13467368621654,
+        "level": 2,
+        "ok": 48,
+        "requests": 48,
+        "ttft_n": 48,
+        "ttft_p50": 173.81326900795102,
+        "ttft_p99": 190.9038467821665,
+        "ttft_p99_ok": false
+      },
+      {
+        "aggregate_tps": 242.62036425269454,
+        "decode_med": 73.59697241468416,
+        "level": 4,
+        "ok": 48,
+        "requests": 48,
+        "ttft_n": 48,
+        "ttft_p50": 201.17384241893888,
+        "ttft_p99": 257.7809802629055,
+        "ttft_p99_ok": false
+      }
+    ],
+    "corpus": "1.0",
+    "counts": {
+      "concurrency": {
+        "attempted_including_warmups": 144,
+        "failed_including_warmups": 0,
+        "measured_attempts": 144,
+        "measured_failed": 0,
+        "measured_success": 144,
+        "success_including_warmups": 144
+      },
+      "decode": {
+        "attempted_including_warmups": 184,
+        "failed_including_warmups": 0,
+        "measured_attempts": 160,
+        "measured_failed": 0,
+        "measured_success": 160,
+        "success_including_warmups": 184
+      },
+      "prefill": {
+        "attempted_including_warmups": 40,
+        "failed_including_warmups": 0,
+        "measured_attempts": 32,
+        "measured_failed": 0,
+        "measured_success": 32,
+        "success_including_warmups": 40
+      }
+    },
+    "version": "0.6.0"
+  },
+  "build": {
+    "all_native_outputs_identical": true,
+    "changed_build_inputs": [
+      "overlay/opt/venv/lib/python3.12/site-packages/vllm/v1/attention/backends/gdn_spec_metadata.py",
+      "overlay/opt/venv/lib/python3.12/site-packages/vllm/v1/attention/backends/gdn_spec_metadata_batched.py"
+    ],
+    "changed_installed_files": [
+      "/opt/venv/lib/python3.12/site-packages/vllm/v1/attention/backends/gdn_spec_metadata.py",
+      "/opt/venv/lib/python3.12/site-packages/vllm/v1/attention/backends/gdn_spec_metadata_batched.py"
+    ],
+    "installed_entries": 3130,
+    "passed": true
+  },
+  "cause": "The uniform GDN metadata guard required draft counts to equal the configured maximum five, so dynamic three-token verification fell back to per-builder staging.",
+  "change": "Accept actual uniform verification lengths within the allocated maximum; retain all reserved state columns and derive token-index extent from actual query length in both staging paths.",
+  "date": "2026-10-20",
+  "finite_concurrency": {
+    "cases": [
+      {
+        "finite_sampled_tokens": 128,
+        "level": 1,
+        "passed": true,
+        "slot": 0,
+        "usage": {
+          "completion_tokens": 128,
+          "completion_tokens_details": {
+            "reasoning_tokens": 128
+          },
+          "prompt_tokens": 72,
+          "prompt_tokens_details": null,
+          "total_tokens": 200
+        }
+      },
+      {
+        "finite_sampled_tokens": 128,
+        "level": 2,
+        "passed": true,
+        "slot": 0,
+        "usage": {
+          "completion_tokens": 128,
+          "completion_tokens_details": {
+            "reasoning_tokens": 128
+          },
+          "prompt_tokens": 72,
+          "prompt_tokens_details": null,
+          "total_tokens": 200
+        }
+      },
+      {
+        "finite_sampled_tokens": 256,
+        "level": 2,
+        "passed": true,
+        "slot": 1,
+        "usage": {
+          "completion_tokens": 256,
+          "completion_tokens_details": {
+            "reasoning_tokens": 256
+          },
+          "prompt_tokens": 72,
+          "prompt_tokens_details": null,
+          "total_tokens": 328
+        }
+      },
+      {
+        "finite_sampled_tokens": 128,
+        "level": 4,
+        "passed": true,
+        "slot": 0,
+        "usage": {
+          "completion_tokens": 128,
+          "completion_tokens_details": {
+            "reasoning_tokens": 128
+          },
+          "prompt_tokens": 72,
+          "prompt_tokens_details": null,
+          "total_tokens": 200
+        }
+      },
+      {
+        "finite_sampled_tokens": 256,
+        "level": 4,
+        "passed": true,
+        "slot": 1,
+        "usage": {
+          "completion_tokens": 256,
+          "completion_tokens_details": {
+            "reasoning_tokens": 256
+          },
+          "prompt_tokens": 72,
+          "prompt_tokens_details": null,
+          "total_tokens": 328
+        }
+      },
+      {
+        "finite_sampled_tokens": 384,
+        "level": 4,
+        "passed": true,
+        "slot": 2,
+        "usage": {
+          "completion_tokens": 384,
+          "completion_tokens_details": {
+            "reasoning_tokens": 384
+          },
+          "prompt_tokens": 72,
+          "prompt_tokens_details": null,
+          "total_tokens": 456
+        }
+      },
+      {
+        "finite_sampled_tokens": 512,
+        "level": 4,
+        "passed": true,
+        "slot": 3,
+        "usage": {
+          "completion_tokens": 512,
+          "completion_tokens_details": {
+            "reasoning_tokens": 512
+          },
+          "prompt_tokens": 72,
+          "prompt_tokens_details": null,
+          "total_tokens": 584
+        }
+      }
+    ],
+    "passed": true,
+    "scope": "Sampled outputs through varying C4 to C1 scheduled batches; all token and top-5 logprobs finite"
+  },
+  "guard_test": {
+    "passed": true,
+    "rejected_cases": 8,
+    "uniform_cases": 30
+  },
+  "image": {
+    "attestations": false,
+    "compressed_layer_bytes": 4336175540,
+    "config": "sha256:f113f2ca64fc403f85e453e8d74f8aa1f6d4447cb25c424b05a074f6411afa6e",
+    "image_manifest": "sha256:dc25c8cd205a828ad4df3ae9aa3e9505f0a51550010ac9a115336473ca268086",
+    "index": false,
+    "layers": 22,
+    "media_type": "application/vnd.oci.image.manifest.v1+json",
+    "native_rebuilt_from_canonical_source": true,
+    "native_reference_all_four_match": true,
+    "platform": "linux/amd64"
+  },
+  "metadata_test": {
+    "all_fields_equal_to_installed_fallback": true,
+    "cases": 150,
+    "final_image_repeated": true,
+    "groups": 3,
+    "paths": [
+      "per-builder",
+      "batched"
+    ]
+  },
+  "previous_qualification": "intel-dynamic-mtp5.json",
+  "previous_qualified_image": "sha256:92c8979746bde53c1975111d35ab87d16c606bf27743a794a4d36b8617a2cc6a",
+  "publication_performed": false,
+  "qualification": {
+    "ALIGN": true,
+    "clean_image_without_overrides": true,
+    "coding_after_restart": true,
+    "concurrent_tools": true,
+    "features": true,
+    "image": "sha256:dc25c8cd205a828ad4df3ae9aa3e9505f0a51550010ac9a115336473ca268086",
+    "metadata_equivalence": true,
+    "native_ceiling": true,
+    "native_outputs_unchanged": true,
+    "passed": true,
+    "profile": "w4a16-mtp5-dynamic-tp4-262144",
+    "restart": true,
+    "schedule_C1_C2_C3_C4": true
+  },
+  "unchanged": [
+    "Intel checkpoint/revision",
+    "five-token drafting",
+    "5/3/3/3 verification schedule",
+    "262144 context",
+    "vision/tools/reasoning",
+    "APC/ALIGN832",
+    "NVMe PLE",
+    "residency shim",
+    "serving argv/env/captures",
+    "all four native binaries"
+  ]
+}

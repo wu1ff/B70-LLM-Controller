@@ -73,3 +73,11 @@ The reduced INT8 research source has SHA256 `386f99189cae2054576688b946fe1b50db4
 The exact023 CPU-exercised output target-model source was `ff413ff88dd8830b5e147983b997f956ebfd446ddf57fdf0d10168fdfd75a5db`, from frozen `2d9d98054dfa4e2c2c434526ef6fbdceede06b35c38a8ea6dccb42161a666dfb`; no GPU/model qualification follows. Protocol020–022 were executed in memory against frozen protocol SHA256 `51fb06a943201ffdc0a0bbae44b79a996bdd6ae3373593a67666868d996451b2`; source shape checks do not qualify generated answers.
 
 Machine-readable [contributor-patch-ledger.json](contributor-patch-ledger.json) contains all immutable URLs, byte counts, original retained paths, current PR identities, final/frozen source maps and24-file complete offload-research output hashes. That output map is CPU research, not an adopted runtime.
+
+## Intel AutoRound dynamic MTP5 — 2026-10-20
+
+Canonical 1.0.4 integrates Astra’s selected Python/reducer/schedule work, validated Intel-only PLE mapping and the packaged qualified Qwen frontend while retaining GDN/MoE/residency protections. Two independent builds reproduce the final platform manifest. Exact selected-input hashes and final qualification scope are in [intel-dynamic-mtp5.json](intel-dynamic-mtp5.json); historical entries above remain historical. Publication is deferred pending coordinator review.
+
+## Dynamic GDN metadata correction — 2026-10-20
+
+Uniform three-draft verification had missed the maximum-depth-only GDN metadata path. The correction retains the allocation depth and all state columns while using actual query length for token extents. Both staging paths match the installed fallback in 150 XPU cases. The corrected image was rebuilt offline; only two installed Python files differ from the preserved RC. See [qualification and benchmark provenance](intel-dynamic-mtp5-concurrency.json). Drafting, serving flags, native binaries, PLE and residency behavior are unchanged.

@@ -19,7 +19,7 @@ No third-party permission or new release co-author trailer is needed for Wulf's 
 
 The original qualified image `sha256:fad9d4cfae29a4fc3abd70e7339e4f2784c3589c988f7ca3f6751ffb46806316` remains unchanged. The local `qwen38-flashnext:disk-rc` candidate is `sha256:b13fed6dd54051395f603409ada440c74afcbd5331810eee3acd62315d7787e3`. One added layer preserves the 15 required Python modification comments. Removing only each exact comment restores the qualified file bytes. Complete installed comparison, native hashes and image configuration prove equivalent executable logic and native behavior; Python source line numbers advance by one.
 
-`build-notice-image.py` reproduces this correction without compilation. `build.py` preserves runtime Python notices while reconstructing only native compiler inputs inside its temporary compiler context; the distributed native source retains all six notices. `verify.py` checks the exact notice-bearing payload against historical qualified locks. No source, installed-payload or profile qualification lock is repinned.
+The historical notice-only recipe reproduced this correction without compilation. `build.py` preserves runtime Python notices while reconstructing only native compiler inputs inside its temporary compiler context; the distributed native source retains all six notices. `verify.py` checks the exact notice-bearing payload against historical qualified locks. No source, installed-payload or profile qualification lock is repinned.
 
 ## Identified Ubuntu corresponding sources are available
 
@@ -59,3 +59,7 @@ The [installed Intel EULA](https://cdrdv2-public.intel.com/777700/intel-end-user
 ## Remaining publication work
 
 Prepare maintained companion source access and exact directions for the identified components; complete the NumPy-bundled libgfortran source identity; establish Intel recipient terms; then run the minimum focused serving checks on the corrected candidate during a later authorized maintenance window. Retain all existing upstream licenses/notices. No dependency upgrade/removal/replacement, additional contributor permission or full-stack requalification is implied. The source/compiler evidence and downloaded artifacts are together in the runtime release-preparation directory. No image promotion, registry login, push or public release occurred.
+
+## Current 1.0.4 source candidate
+
+The source candidate contains 19 notice-bearing modified upstream Python files, including model.py and cudagraph_utils.py, plus the retained six native notices. The qualified Qwen tokenizer, chat template, generation and processor assets accompany the Intel-derived serving configuration under external-model.txt. Runtime copies of that model license and the kernel Apache license are included with the frontend. Final source and installed-payload locks supersede the historical acceptance hashes; historical identity receipts remain in provenance. This update does not resolve the inherited source-delivery, bundled libgfortran or Intel recipient-term findings above.

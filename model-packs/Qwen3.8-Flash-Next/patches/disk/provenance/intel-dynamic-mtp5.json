@@ -1,0 +1,234 @@
+{
+  "checkpoint_all_files_verified": true,
+  "checkpoint_revision": "4c67bf686b7f7fd386bae6b07ab59e8ff1d5b897",
+  "date": "2026-10-20",
+  "frontend_qualified": {
+    "cases": [
+      {
+        "case": "system-developer",
+        "passed": true,
+        "usage": {
+          "completion_tokens": 7,
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "prompt_tokens": 47,
+          "prompt_tokens_details": null,
+          "total_tokens": 54
+        }
+      },
+      {
+        "case": "high-reasoning",
+        "passed": true,
+        "usage": {
+          "completion_tokens": 49,
+          "completion_tokens_details": {
+            "reasoning_tokens": 43
+          },
+          "prompt_tokens": 67,
+          "prompt_tokens_details": null,
+          "total_tokens": 116
+        }
+      }
+    ],
+    "passed": true
+  },
+  "historical_anchors": "historical-1.0.3.json",
+  "image": {
+    "attestations": false,
+    "compressed_layer_bytes": 4336175379,
+    "config": "sha256:e0940b0353767c2f71e0997283c52bf92781080c2d19d61af3a20e06caa1a847",
+    "image_manifest": "sha256:92c8979746bde53c1975111d35ab87d16c606bf27743a794a4d36b8617a2cc6a",
+    "index": false,
+    "layers": 22,
+    "media_type": "application/vnd.oci.image.manifest.v1+json",
+    "native_rebuilt_from_canonical_source": true,
+    "native_reference_all_four_match": true,
+    "platform": "linux/amd64",
+    "vendor_rootfs_prefix_unchanged": true
+  },
+  "native_inputs": "Only canonical source plus locked vendor/toolchain; no experimental/prebuilt native output used as input",
+  "pack_version": "1.0.4",
+  "publication": "deferred; inherited source-delivery/recipient-term findings remain as documented",
+  "qualification": {
+    "clean_install": true,
+    "coding_after_restart": true,
+    "concurrent_tools_after_restart": true,
+    "dynamic_schedule_C1_C2_C3_C4": true,
+    "finite_logprobs": true,
+    "functional_features": true,
+    "image": "sha256:92c8979746bde53c1975111d35ab87d16c606bf27743a794a4d36b8617a2cc6a",
+    "native_qualification": true,
+    "passed": true,
+    "profile": "w4a16-mtp5-dynamic-tp4-262144",
+    "restart": true
+  },
+  "reproducibility": {
+    "all_four_native_hashes_match_selected_reference": true,
+    "builds": [
+      "build4",
+      "build5"
+    ],
+    "execution": "sequential, independent --no-cache canonical builds; no shared in-progress vertex",
+    "exporter_fix": "unpack=false with timestamp normalization; runtime performs unpack on first use",
+    "identical_image_manifest": true,
+    "identical_native_and_overlay_inputs": true,
+    "image_manifest": "sha256:92c8979746bde53c1975111d35ab87d16c606bf27743a794a4d36b8617a2cc6a",
+    "input_entries": 223,
+    "installed_entries": 3130,
+    "passed": true,
+    "toolchain": "15 hash-locked oneAPI 2026.0.0-947 packages; pinned vendor image"
+  },
+  "retained_canonical_native_differences": [
+    "moe/remap_hidden_states.cpp",
+    "xpu/gdn_attn/gdn_attn_interface.cpp",
+    "xpu/gdn_attn/causal_conv1d.hpp",
+    "xpu/gdn_attn/gated_delta_rule.hpp"
+  ],
+  "sampled_logprobs": {
+    "finite": true,
+    "tokens": 3136
+  },
+  "schedule_qualified": {
+    "cases": [
+      {
+        "concurrency": 1,
+        "expected_verification_budget": 5,
+        "median_observed_budget": 5.0,
+        "passed": true,
+        "stable_intervals": 35,
+        "usage": [
+          {
+            "completion_tokens": 1024,
+            "completion_tokens_details": {
+              "reasoning_tokens": 0
+            },
+            "prompt_tokens": 32,
+            "prompt_tokens_details": null,
+            "total_tokens": 1056
+          }
+        ]
+      },
+      {
+        "concurrency": 2,
+        "expected_verification_budget": 3,
+        "median_observed_budget": 3.0,
+        "passed": true,
+        "stable_intervals": 84,
+        "usage": [
+          {
+            "completion_tokens": 1024,
+            "completion_tokens_details": {
+              "reasoning_tokens": 0
+            },
+            "prompt_tokens": 32,
+            "prompt_tokens_details": null,
+            "total_tokens": 1056
+          },
+          {
+            "completion_tokens": 1024,
+            "completion_tokens_details": {
+              "reasoning_tokens": 0
+            },
+            "prompt_tokens": 32,
+            "prompt_tokens_details": null,
+            "total_tokens": 1056
+          }
+        ]
+      },
+      {
+        "concurrency": 3,
+        "expected_verification_budget": 3,
+        "median_observed_budget": 3.0,
+        "passed": true,
+        "stable_intervals": 90,
+        "usage": [
+          {
+            "completion_tokens": 1024,
+            "completion_tokens_details": {
+              "reasoning_tokens": 0
+            },
+            "prompt_tokens": 32,
+            "prompt_tokens_details": null,
+            "total_tokens": 1056
+          },
+          {
+            "completion_tokens": 1024,
+            "completion_tokens_details": {
+              "reasoning_tokens": 0
+            },
+            "prompt_tokens": 32,
+            "prompt_tokens_details": null,
+            "total_tokens": 1056
+          },
+          {
+            "completion_tokens": 1024,
+            "completion_tokens_details": {
+              "reasoning_tokens": 0
+            },
+            "prompt_tokens": 32,
+            "prompt_tokens_details": null,
+            "total_tokens": 1056
+          }
+        ]
+      },
+      {
+        "concurrency": 4,
+        "expected_verification_budget": 3,
+        "median_observed_budget": 3.0,
+        "passed": true,
+        "stable_intervals": 98,
+        "usage": [
+          {
+            "completion_tokens": 1024,
+            "completion_tokens_details": {
+              "reasoning_tokens": 0
+            },
+            "prompt_tokens": 32,
+            "prompt_tokens_details": null,
+            "total_tokens": 1056
+          },
+          {
+            "completion_tokens": 1024,
+            "completion_tokens_details": {
+              "reasoning_tokens": 0
+            },
+            "prompt_tokens": 32,
+            "prompt_tokens_details": null,
+            "total_tokens": 1056
+          },
+          {
+            "completion_tokens": 1024,
+            "completion_tokens_details": {
+              "reasoning_tokens": 0
+            },
+            "prompt_tokens": 32,
+            "prompt_tokens_details": null,
+            "total_tokens": 1056
+          },
+          {
+            "completion_tokens": 1024,
+            "completion_tokens_details": {
+              "reasoning_tokens": 0
+            },
+            "prompt_tokens": 32,
+            "prompt_tokens_details": null,
+            "total_tokens": 1056
+          }
+        ]
+      }
+    ],
+    "method": "Prometheus draft-token/draft deltas in intervals with constant scheduled batch size; fixed output budget for observation only",
+    "passed": true
+  },
+  "selected_source_sha256": {
+    "opt/b70-flashnext/serve-config.json": "05633cfa9fede3b56d9aac375a6893172709f3fa154ffbe0f24893063e09e4bc",
+    "opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp/nvidia/model.py": "9b99b1323bbbfe92f679e64065180aa11fd5af19c4546d124b0e5ec42d087b8e",
+    "opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp/nvidia/mtp.py": "a6c532716812c38062745d057c8f8aa1f379c075e30ded0a31d00079572f25e3",
+    "opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp/nvidia/ngram_embedding.py": "532474f3ed80d2a51700a3db2a8ace7d2787fab21efbb2316b4461e66d4e1a1a",
+    "opt/venv/lib/python3.12/site-packages/vllm/v1/worker/gpu/cudagraph_utils.py": "b26dd05c81ca8a84170d811e89753c419beb91a3ab35093d86f6cb2721ba516e",
+    "opt/venv/lib/python3.12/site-packages/vllm/v1/worker/gpu/spec_decode/autoregressive/speculator.py": "e53e443835750dc9ee1e88f88745378b8997e43e50e7b6c89a5e0f2d7c6a208a",
+    "opt/venv/lib/python3.12/site-packages/vllm_xpu_kernels/flash_attn_interface.py": "7f2599695b0d422010c5dffb97d95b2ff9a8495bf846a06f2d34402221779cf7",
+    "opt/venv/lib/python3.12/site-packages/vllm_xpu_kernels/spec_metadata.py": "32b0ac190703d4c8f32d42045149c3cc4234c092808ab59285defaf16a73076a"
+  }
+}

@@ -1,34 +1,23 @@
-# Cumulative accepted Disk source
+# Flash-Next Disk source package
 
-This source-only export comes from the independently reproduced and qualified Disk package. It contains the final vendor-to-Disk overlays, complete native kernel sources/headers/dispatchers, Wulf's shim, exact native build recipes, SYCL-TLA archive, dependency locks, accepted 3,118-file installed manifest, licenses and historical provenance. No checkpoint, accepted native binary/object or Intel compiler package binary is distributed here.
+Pack 1.0.4 builds the Intel AutoRound dynamic MTP5 runtime from the pinned official vendor image and canonical sources. The only qualified serving contract is BF16 TP4+EP, four slots, 262144 context, with five verification tokens for one scheduled request and three for batches of two through four. The root pack README and recipe record final qualification and measurements.
 
-The original portable source archive also contained all 15 compiler packages for local offline reproduction. This public export deliberately excludes those binaries. Obtain the 15 **exact** filenames and SHA256s in `manifests/compiler-lock.json` from its recorded official Intel apt pool or an authorized local cache. Review the packages' applicable terms separately. Providing just an arbitrary installed compiler is insufficient.
+The source export contains cumulative Python overlays, complete native sources and guarded GDN/MoE dispatchers, Wulf's residency shim, build recipes, SYCL-TLA source, exact input/payload locks and licenses. It contains no checkpoint, experimental/prebuilt native outputs or compiler packages. Historical diffs under `patches/` must not be reapplied.
 
-With the pinned official vendor dependency already present, run from this directory:
+Obtain the 15 exact compiler packages in `manifests/compiler-lock.json` from its official Intel pool or an authorized cache. With the pinned vendor image available locally:
 
 ```bash
 sha256sum -c SHA256SUMS
-python3 build.py --compiler-dir /absolute/authorized/compiler-cache --tag qwen38-flashnext:disk-fresh-test --evidence /absolute/build-evidence
-python3 verify.py qwen38-flashnext:disk-fresh-test --output /absolute/build-evidence/recheck.json
+python3 build.py --compiler-dir /absolute/compiler-cache --tag qwen38-flashnext:independent-build --evidence /absolute/build-evidence
+python3 verify.py qwen38-flashnext:independent-build --output /absolute/build-evidence/recheck.json
 ```
 
-The wrapper checks every distributed source hash and all compiler hashes, then creates a disposable build context containing the compiler packages. The export carries Wulf modification comments on the 21 changed upstream source files. It validates qualified locks after removing only the notice for comparison and preserves all 15 Python notices in the runtime overlay. Only the six native compiler inputs are restored to qualified bytes inside the disposable compiler context, preserving native binary reproduction; their distributed sources retain the comments. `verify.py` requires the exact notice-bearing runtime sources and unchanged native/pristine/config payload. Historical installed/source locks remain qualification anchors.
+Builds use the locked vendor image in both stages, oneAPI 2026.0.0-947, vendor Python 3.12/Torch 2.13.0+xpu, GCC 13.3 and locked SYCL-TLA. The wrapper verifies every shipped file and compiler package before an offline, uncached BuildKit build. The fixed source-date epoch, timestamp-normalized single-platform export and explicit deferred unpack make the image reproducible. Docker must use its containerd image store. It verifies the exact final installed inventory afterward. Only native notice prefixes are stripped inside the disposable compiler context to preserve the established native compiler inputs; all distributed sources and runtime Python notices remain intact. Native compiler bytes have a separate explicit lock. Compiler packages stay outside the final stage.
 
-For the existing qualified local image, the smaller release correction needs no compiler or native rebuild:
+`manifests/accepted.json` is the final installed-file authority; `overlay.json`, `native-source.json` and `native-compiler.json` lock final inputs. Runtime/checkpoint and verified registry identities are in `runtime-lock.json` and `ghcr-release.json`. Earlier publication and implementation provenance remains historical evidence.
 
-```bash
-python3 build-notice-image.py --tag qwen38-flashnext:disk-rc --evidence /absolute/notice-build-evidence
-python3 verify.py qwen38-flashnext:disk-rc --output /absolute/notice-build-evidence/payload.json
-```
+The entrypoint prepares a dense serving view under writable `/work` from Intel revision `4c67bf686b7f7fd386bae6b07ab59e8ff1d5b897`, preserving all 2340 AutoRound exclusions and persistent hash buffers. It filters only the 128 PLE weight-index entries. The validated BF16 payload maps directly from Intel's PLE safetensor; no conversion, second table or old checkpoint is required. The eight packaged, qualified Qwen frontend files preserve the established tokenizer, developer/system, reasoning, tool and image behavior.
 
-This recipe checks the exact qualified parent, compares each of the 15 files against the source export, and adds their notice-bearing bytes in one layer. Original file/directory ownership, permissions and timestamps are preserved. A fixed creation timestamp supports independent builds without cache. The parent `:disk` tag is never overwritten. The release candidate is `sha256:b13fed6dd54051395f603409ada440c74afcbd5331810eee3acd62315d7787e3`; focused Base/MTP3 serving qualification and the authorized GHCR replacement are complete. It is published as `ghcr.io/wu1ff/qwen38-flashnext-b70:disk`; the original local parent remains preserved.
+Use root `pack.json` with Controller for managed installation and serving. `profiles/mtp5-dynamic.json` is the exact standalone contract; `launch.py mtp5-dynamic --model-dir /absolute/intel-snapshot --image <final-image> --port 8000` renders recovery argv. Add `--execute` to start it after freeing the GPUs and port.
 
-Docker and native inputs then match the accepted package; compiler extraction remains `/toolchain/oneapi`, source remains `/build`. It runs `DOCKER_BUILDKIT=0 docker build --pull=false --no-cache --network=none`. Both stages use official vendor image `sha256:e4446310b1d30015e8fdc1a0a2ef1669ac6bef857cbe772487571ed5c1a926a9`; see `manifests/vendor.json`. No accepted, experimental or Vanilla image is a build input. Only rebuilt native outputs and final source/config overlays enter the final runtime stage.
-
-Linux amd64, Python3.11+, Docker's available legacy builder, adequate compiler memory/storage and the exact vendor image are prerequisites. No GPU, model, host compiler, pip resolution or build-time network is required. Native tools remain oneAPI2026.0.0-947, vendor Python3.12/Torch2.13.0+xpu, GCC13.3 and locked SYCL-TLA. Do not reapply `patches/` historical diffs to these already-patched source files. The MoE guard is present in `native/source/csrc/moe/remap_hidden_states.cpp`; `native/moe-inputs.sha256` checks its six direct build inputs before compilation.
-
-The historical independent native build reproduced all 3,118 accepted installed hashes. Release preparation built only the notice layer. All 209 source-build inputs retain their qualified bytes except the 15 preserved Python comments; all native/compiler/dependency inputs match. The notice candidate has the exact 3,118-entry payload expected by `verify.py`. Complete filesystem, bytecode, ELF and configuration evidence is retained in the runtime release-preparation directory; no native rebuild or full serving requalification was run.
-
-`profiles/base.json` and `profiles/mtp3.json` preserve the exact qualified standalone launch authorities. They are receipts, not Controller schema. Use the root `pack.json` through the real b70ctl TUI for managed serving. `launch.py` renders a standalone recovery command; append `--execute` only after stopping the managed server, verifying all four GPUs and freeing the endpoint. It does not stop another server.
-
-[NOTICE.md](NOTICE.md) and [licenses/README.md](licenses/README.md) distinguish the candidate's corrected source notices from remaining source-delivery and Intel recipient-license requirements. Historical co-author messages are records only. The original local qualified `:disk` image remains unchanged. The notice-corrected RC is now the single verified GHCR `:disk` version; its manifest/config/layers, clean pulled Docker ID and Controller acquisition passed. The 1.0.3 public model-pack archive includes this complete accepted source/build export. The release checksum and catalog identify the final archive; previous provisional assets remain preserved as history.
+See [NOTICE.md](NOTICE.md) and [licenses/README.md](licenses/README.md). Retained inherited corresponding-source delivery, bundled libgfortran identity and Intel recipient-term findings remain outstanding; publication does not assert their completion.

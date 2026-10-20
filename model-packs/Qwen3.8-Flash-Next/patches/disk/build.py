@@ -13,28 +13,23 @@ def digest(path):
         return hashlib.file_digest(stream, 'sha256').hexdigest()
 
 def restore_qualified_sources(context):
-    """Reconstruct frozen build inputs in a disposable context, never the export.
-
-    Check historical locks after removing only the added notice for comparison.
-    Keep all Python notices in the runtime overlay. Only native compiler inputs
-    are reconstructed in this temporary context to preserve binary reproduction;
-    their notice-bearing source remains in the distributed source package.
-    """
-    locked = json.loads((ROOT / 'manifests/native-source.json').read_text())
-    locked.update({'overlay/' + name.lstrip('/'): item['sha256'] for name, item in
-                   json.loads((ROOT / 'manifests/overlay.json').read_text()).items()})
-    for name, expected in locked.items():
+    """Verify exact final sources and strip only native notice prefixes for ABI reproduction."""
+    for manifest in ('native-source.json', 'overlay.json'):
+        locked = json.loads((ROOT / 'manifests' / manifest).read_text())
+        if manifest == 'overlay.json':
+            locked = {v['package']: v['sha256'] for v in locked.values()}
+        for name, expected in locked.items():
+            if digest(context / name) != expected:
+                raise ValueError('Final source lock mismatch: ' + name)
+    compiled = json.loads((ROOT / 'manifests/native-compiler.json').read_text())
+    for name, expected in compiled.items():
         path = context / name
         data = path.read_bytes()
-        for prefix in (b'# ', b'// '):
-            notice = prefix + b'Modified by Wulf for B70 Flash-Next Disk; upstream terms are retained.\n'
-            if data.startswith(notice):
-                data = data[len(notice):]
-                if name.startswith('native/'):
-                    path.write_bytes(data)
-                break
+        notice = b'// Modified by Wulf for B70 Flash-Next Disk; upstream terms are retained.\n'
+        data = data.removeprefix(notice)
         if hashlib.sha256(data).hexdigest() != expected:
-            raise ValueError('Qualified source reconstruction mismatch: ' + name)
+            raise ValueError('Final compiler input mismatch: ' + name)
+        path.write_bytes(data)
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
@@ -66,6 +61,7 @@ def main():
             raise ValueError('Compiler package hash mismatch: ' + name)
     out = args.evidence.resolve()
     out.mkdir(parents=True, exist_ok=True)
+    (out / 'source-package.sha256').write_text((ROOT / 'SHA256SUMS').read_text())
     (out / 'vendor-image.json').write_text(json.dumps(dependency, indent=2) + '\n')
     # The compiler bytes enter a disposable local build context only, never the
     # distributed source tree or final runtime stage.
@@ -79,13 +75,13 @@ def main():
             shutil.copy2(args.compiler_dir / name, target / name)
         inputs = {str(p.relative_to(context)): digest(p) for p in context.rglob('*') if p.is_file() and (p.name in ('Dockerfile', '.dockerignore') or str(p.relative_to(context)).startswith(('native/', 'overlay/', 'dependencies/')))}
         (out / 'build-input-manifest.json').write_text(json.dumps(inputs, indent=2, sort_keys=True) + '\n')
-        command = ['docker', 'build', '--pull=false', '--no-cache', '--network=none', '-t', args.tag, str(context)]
+        command = ['docker', 'buildx', 'build', '--pull=false', '--no-cache', '--network=none', '--provenance=false', '--build-arg', 'SOURCE_DATE_EPOCH=1792512000', '--output', 'type=image,push=false,store=true,unpack=false,rewrite-timestamp=true', '-t', args.tag, str(context)]
         (out / 'build-command.json').write_text(json.dumps(command, indent=2) + '\n')
         environment = os.environ.copy()
-        environment['DOCKER_BUILDKIT'] = '0'
+        environment['DOCKER_BUILDKIT'] = '1'
         with (out / 'build.log').open('w') as log:
             result = subprocess.run(command, stdout=log, stderr=subprocess.STDOUT, env=environment)
-        (out / 'build-result.json').write_text(json.dumps({'exit_code': result.returncode, 'tag': args.tag, 'DOCKER_BUILDKIT': '0'}, indent=2) + '\n')
+        (out / 'build-result.json').write_text(json.dumps({'exit_code': result.returncode, 'tag': args.tag, 'DOCKER_BUILDKIT': '1'}, indent=2) + '\n')
         if result.returncode:
             raise SystemExit(result.returncode)
     rebuilt = inspect(args.tag)
