@@ -1,0 +1,111 @@
+--- a/vllm/models/qwen4_exp/nvidia/b70_target_graph.py
++++ b/vllm/models/qwen4_exp/nvidia/b70_target_graph.py
+@@ -112,28 +112,39 @@
+ 
+ 
+ def update(destination, source, seen):
+-    if id(destination) in seen:
+-        return
+-    seen.add(id(destination))
+-    if isinstance(destination, torch.Tensor):
+-        assert destination.shape == source.shape and destination.dtype == source.dtype
+-        destination.copy_(source)
+-    elif isinstance(destination, dict):
+-        assert destination.keys() == source.keys()
+-        for key in destination:
+-            update(destination[key], source[key], seen)
+-    elif dataclasses.is_dataclass(destination):
+-        for field in dataclasses.fields(destination):
+-            if field.name == "max_seq_len":
+-                assert getattr(source, field.name) <= destination.max_seq_len
+-                continue
+-            update(getattr(destination, field.name), getattr(source, field.name), seen)
+-    elif isinstance(destination, (tuple, list)):
+-        assert len(destination) == len(source)
+-        for a, b in zip(destination, source):
+-            update(a, b, seen)
+-    else:
+-        assert destination == source, (destination, source)
++    """Validate the schema, then submit required device copies together."""
++    destinations, sources = [], []
++    def visit(destination, source):
++        if id(destination) in seen:
++            return
++        seen.add(id(destination))
++        if isinstance(destination, torch.Tensor):
++            assert destination.shape == source.shape and destination.dtype == source.dtype
++            assert destination.device == source.device
++            if destination.device.type == "xpu":
++                destinations.append(destination)
++                sources.append(source)
++            else:
++                destination.copy_(source)
++        elif isinstance(destination, dict):
++            assert destination.keys() == source.keys()
++            for key in destination:
++                visit(destination[key], source[key])
++        elif dataclasses.is_dataclass(destination):
++            for field in dataclasses.fields(destination):
++                if field.name == "max_seq_len":
++                    assert getattr(source, field.name) <= destination.max_seq_len
++                    continue
++                visit(getattr(destination, field.name), getattr(source, field.name))
++        elif isinstance(destination, (tuple, list)):
++            assert len(destination) == len(source)
++            for a, b in zip(destination, source):
++                visit(a, b)
++        else:
++            assert destination == source, (destination, source)
++    visit(destination, source)
++    if destinations:
++        torch._foreach_copy_(destinations, sources)
+ 
+ 
+ @contextmanager
+@@ -183,7 +194,20 @@
+             self.fallback("disabled", key)
+             return eager(runner, batch, metadata, inputs)
+         context = get_forward_context()
+-        current = (inputs, metadata, context.slot_mapping, context.is_padding)
++        # The runner's forward context includes target AND draft metadata.
++        # Only bind consumers in this target model: draft softmax workspaces
++        # and mappings are neither inputs nor outputs of the target graph.
++        names = getattr(self, "target_context_names", None)
++        if names is None:
++            modules = set(runner.model.modules())
++            names = self.target_context_names = frozenset(
++                name for name, module in runner.vllm_config.compilation_config.static_forward_context.items()
++                if module in modules
++            )
++            assert names and all(name in names for name in metadata if name.startswith("language_model."))
++        target_metadata = {name: value for name, value in metadata.items() if name in names}
++        target_slots = {name: value for name, value in context.slot_mapping.items() if name in names}
++        current = (inputs, target_metadata, target_slots, context.is_padding)
+         entry = self.entries.get(key)
+         if entry is not None:
+             try:
+--- a/vllm_xpu_kernels/astra_ownership.py
++++ b/vllm_xpu_kernels/astra_ownership.py
+@@ -13,6 +13,7 @@
+ 
+ torch.ops.load_library(str(Path(__file__).with_name('libastra_groups.so')))
+ torch.ops.load_library(str(Path(__file__).with_name('libastra_batch.so')))
++torch.ops.load_library(str(Path(__file__).with_name('libbeyond_prefill.so')))
+ _prepared_layers = 0
+ 
+ 
+@@ -108,6 +109,14 @@
+             hidden, local.w13, local.gemm1_wei_scales,
+             local.w2, local.gemm2_wei_scales, ids, weights, module.ep_rank, output)
+         return
++    if 0 < hidden.shape[0] <= 1024:
++        # One input row per routed expert is shared by that expert's one or
++        # two owned groups. Gate/up coexecution writes only the activation.
++        # Keep C1 and C2-C4's specialized paths above; no extra collective.
++        torch.ops.astra_prefill2.forward(
++            hidden, local.w13, local.gemm1_wei_scales,
++            local.w2, local.gemm2_wei_scales, ids, weights, module.ep_rank, output)
++        return
+     # Each selected expert has one group here, plus a second for one rank.
+     # Expand to at most 20 local routes, not 50 global virtual-expert routes.
+     first = (module.ep_rank - ids.remainder(4)).remainder(4)

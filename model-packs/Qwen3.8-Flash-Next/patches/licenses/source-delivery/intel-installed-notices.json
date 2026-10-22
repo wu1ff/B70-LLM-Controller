@@ -1,0 +1,100 @@
+[
+  {
+    "dist": "intel-cmplr-lib-rt",
+    "path": "/opt/venv/lib/python3.12/site-packages/intel_cmplr_lib_rt-2026.1.1.dist-info/LICENSE.txt",
+    "bytes": 25224,
+    "prefix": "b'Intel End User License Agreement for Developer Tools (Version August 2'",
+    "sha256": "febfb69a5b058f55892dc7f341108a9ca29d50e9fe85723a57eebbb826436958"
+  },
+  {
+    "dist": "intel-cmplr-lib-ur",
+    "path": "/opt/venv/lib/python3.12/site-packages/intel_cmplr_lib_ur-2026.1.1.dist-info/LICENSE.txt",
+    "bytes": 25224,
+    "prefix": "b'Intel End User License Agreement for Developer Tools (Version August 2'",
+    "sha256": "febfb69a5b058f55892dc7f341108a9ca29d50e9fe85723a57eebbb826436958"
+  },
+  {
+    "dist": "intel-cmplr-lic-rt",
+    "path": "/opt/venv/licensing/compiler/Intel Developer Tools EULA",
+    "bytes": 25224,
+    "prefix": "b'Intel End User License Agreement for Developer Tools (Version August 2'",
+    "sha256": "febfb69a5b058f55892dc7f341108a9ca29d50e9fe85723a57eebbb826436958"
+  },
+  {
+    "dist": "intel-cmplr-lic-rt",
+    "path": "/opt/venv/lib/python3.12/site-packages/intel_cmplr_lic_rt-2026.1.1.dist-info/LICENSE.txt",
+    "bytes": 25224,
+    "prefix": "b'Intel End User License Agreement for Developer Tools (Version August 2'",
+    "sha256": "febfb69a5b058f55892dc7f341108a9ca29d50e9fe85723a57eebbb826436958"
+  },
+  {
+    "dist": "intel-opencl-rt",
+    "path": "/opt/venv/share/doc/opencl/licensing/EULA.txt",
+    "bytes": 25224,
+    "prefix": "b'Intel End User License Agreement for Developer Tools (Version August 2'",
+    "sha256": "febfb69a5b058f55892dc7f341108a9ca29d50e9fe85723a57eebbb826436958"
+  },
+  {
+    "dist": "intel-opencl-rt",
+    "path": "/opt/venv/share/doc/opencl/licensing/TBB_TPP.txt",
+    "bytes": 19503,
+    "prefix": "b'Intel(R) oneAPI Threading Building Blocks (oneTBB) Third Party Program'",
+    "sha256": "1f6de0bd498c04c9283c6306379e2db2492e1c4e7d2b248c8de0e8fe9124cd03"
+  },
+  {
+    "dist": "intel-opencl-rt",
+    "path": "/opt/venv/share/doc/opencl/licensing/third-party-programs.txt",
+    "bytes": 32294,
+    "prefix": "b'Intel(R) OpenCL CPU Runtime Third Party Programs File\\r\\n\\r\\nThis file is '",
+    "sha256": "253875045af2ca8674cbd46be377d9871554decde5733507f8e50ba81b979516"
+  },
+  {
+    "dist": "intel-opencl-rt",
+    "path": "/opt/venv/lib/python3.12/site-packages/intel_opencl_rt-2026.1.1.dist-info/LICENSE.txt",
+    "bytes": 25224,
+    "prefix": "b'Intel End User License Agreement for Developer Tools (Version August 2'",
+    "sha256": "febfb69a5b058f55892dc7f341108a9ca29d50e9fe85723a57eebbb826436958"
+  },
+  {
+    "dist": "intel-openmp",
+    "path": "/opt/venv/share/doc/compiler/licensing/openmp/third-party-programs.txt",
+    "bytes": 31578,
+    "prefix": "b'OpenMP Runtime library\\r\\n\\r\\nThis file is the \"third-party-programs.txt\" '",
+    "sha256": "f8ce918fe7311ce279e68380a2e233f8a42b1cd3dda8f4c48d6de97a0255c1d7"
+  },
+  {
+    "dist": "intel-openmp",
+    "path": "/opt/venv/lib/python3.12/site-packages/intel_openmp-2026.1.1.dist-info/LICENSE.txt",
+    "bytes": 25224,
+    "prefix": "b'Intel End User License Agreement for Developer Tools (Version August 2'",
+    "sha256": "febfb69a5b058f55892dc7f341108a9ca29d50e9fe85723a57eebbb826436958"
+  },
+  {
+    "dist": "intel-pti",
+    "path": "/opt/venv/share/doc/pti/LICENSE.txt",
+    "bytes": 1069,
+    "prefix": "b'MIT License\\n\\nCopyright (C) Intel Corporation\\n\\nPermission is hereby gra'",
+    "sha256": "7d52740ffc5194d8baaa65c30b138a6560e573e6cc87d8d7c1cc655018a1063a"
+  },
+  {
+    "dist": "intel-pti",
+    "path": "/opt/venv/share/doc/pti/third-party-programs.txt",
+    "bytes": 12218,
+    "prefix": "b'Third Party Programs File\\n\\nThis file contains the list of third party '",
+    "sha256": "4791973aea4bcbc435cb1db55641b5807f784f2e8f2339a3676b603a78137561"
+  },
+  {
+    "dist": "intel-pti",
+    "path": "/opt/venv/lib/python3.12/site-packages/intel_pti-1.1.0.dist-info/LICENSE.txt",
+    "bytes": 1193,
+    "prefix": "b'                                  MIT License\\n\\n                      C'",
+    "sha256": "109899f9ac952d27d6e7901723902ee04bb6cd4bbe0390da48a021c90a28f53c"
+  },
+  {
+    "dist": "intel-sycl-rt",
+    "path": "/opt/venv/lib/python3.12/site-packages/intel_sycl_rt-2026.1.1.dist-info/LICENSE.txt",
+    "bytes": 25224,
+    "prefix": "b'Intel End User License Agreement for Developer Tools (Version August 2'",
+    "sha256": "febfb69a5b058f55892dc7f341108a9ca29d50e9fe85723a57eebbb826436958"
+  }
+]

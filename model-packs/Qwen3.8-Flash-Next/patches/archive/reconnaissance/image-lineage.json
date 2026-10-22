@@ -1,0 +1,448 @@
+[
+  {
+    "tags": [
+      "qwen38-flashnext-dflash2:integrated-dev2",
+      "qwen38-flashnext-dflash2:integrated-serving-v1"
+    ],
+    "id": "sha256:6e2ab4e686680a5208ff0119c4637341cba81942bd39b6576ea14dc8f547b83b",
+    "layers": 47,
+    "accepted_layer_prefix": true
+  },
+  {
+    "tags": [
+      "qwen38-flashnext-dflash2:integrated-dev2",
+      "qwen38-flashnext-dflash2:integrated-serving-v1"
+    ],
+    "id": "sha256:6e2ab4e686680a5208ff0119c4637341cba81942bd39b6576ea14dc8f547b83b",
+    "layers": 47,
+    "accepted_layer_prefix": true
+  },
+  {
+    "tags": [
+      "qwen38-flashnext-dflash2:integrated-dev1"
+    ],
+    "id": "sha256:b983433996407ca5576f8e94bc1e3de6e15def96457d1a46a62f6f7dadd269fe",
+    "layers": 47,
+    "accepted_layer_prefix": false
+  },
+  {
+    "tags": [
+      "qwen38-flashnext-dflash2:long-prefill-v1"
+    ],
+    "id": "sha256:3759949f91996e86dd510310c623fef9933ae296ae3493778bf9698d4bb477f3",
+    "layers": 46,
+    "accepted_layer_prefix": true
+  },
+  {
+    "tags": [
+      "qwen38-flashnext-dflash2:prefill-v5"
+    ],
+    "id": "sha256:bf6311275b3de78a3328912c510b81f40729cf7fed79cb2ad901501d6ed18155",
+    "layers": 45,
+    "accepted_layer_prefix": true
+  },
+  {
+    "tags": [
+      "qwen38-flashnext-dflash2:prefill-v4"
+    ],
+    "id": "sha256:101bb58d6f680efe4651c6db45ace8a927e807548a9ab2aaf753134a2feb70f8",
+    "layers": 45,
+    "accepted_layer_prefix": false
+  },
+  {
+    "tags": [
+      "qwen38-flashnext-dflash2:prefill-v3"
+    ],
+    "id": "sha256:8fe3967d92812087979091310c6811f7c3244226d6e99ec2c7871f573d2a47ba",
+    "layers": 45,
+    "accepted_layer_prefix": false
+  },
+  {
+    "tags": [
+      "qwen38-flashnext-dflash2:prefill-v2"
+    ],
+    "id": "sha256:dc9ff11eae011f47575bd37ab1d530c0b22b3e4450a297267522dc4369d857a2",
+    "layers": 45,
+    "accepted_layer_prefix": false
+  },
+  {
+    "tags": [
+      "qwen38-flashnext-dflash2:prefill-v1"
+    ],
+    "id": "sha256:014ddbe6403f4d25a63385d3e406f9ba57d6624ec7a6c46e27114abb0b753d4f",
+    "layers": 45,
+    "accepted_layer_prefix": false
+  },
+  {
+    "tags": [
+      "qwen38-flashnext-dflash2:astra500-dominant-c1"
+    ],
+    "id": "sha256:66bb452059604056622794dbfc8950872bc73158b002b0b1d5b2ddecf95540ba",
+    "layers": 44,
+    "accepted_layer_prefix": true
+  },
+  {
+    "tags": [
+      "qwen38-flashnext-dflash2:astra500-consumers-prototype"
+    ],
+    "id": "sha256:1ec5537e555f7c54e5d90b50fe606a04b1d76abdb1b02de495bf47d08b3d5651",
+    "layers": 44,
+    "accepted_layer_prefix": false
+  },
+  {
+    "tags": [
+      "qwen38-flashnext-dflash2:astra500-beyond-c1"
+    ],
+    "id": "sha256:3ecda304cc071fe8d2f732b1bf59c0aa1cddd185087e0e92456a7a03a29f3d44",
+    "layers": 43,
+    "accepted_layer_prefix": true
+  },
+  {
+    "tags": [
+      "qwen38-flashnext-dflash2:astra500-ownership-c3"
+    ],
+    "id": "sha256:66d1efe15cbb5f9926f8c345be0d2aa5cb7f0cb2bc84a62d0cfdf197b0eee66e",
+    "layers": 42,
+    "accepted_layer_prefix": true
+  },
+  {
+    "tags": [
+      "qwen38-flashnext-dflash2:astra500-ownership-c2"
+    ],
+    "id": "sha256:75e1ee42ab7529ec99c1e4916c34b978ae09290170d0a5404777de4fa8203dc6",
+    "layers": 42,
+    "accepted_layer_prefix": false
+  },
+  {
+    "tags": [
+      "qwen38-flashnext-dflash2:astra500-ownership-c1"
+    ],
+    "id": "sha256:2dc91d379dac9dd5f100290230264024f9e39887bfbea6c9a3d13b3027a0929a",
+    "layers": 42,
+    "accepted_layer_prefix": false
+  },
+  {
+    "tags": [
+      "qwen38-flashnext-dflash2:astra500-cycle-c2"
+    ],
+    "id": "sha256:835b04441de031e3affd2ed5a899f0521adf0b438e37033ccbe46ef63ddb4604",
+    "layers": 41,
+    "accepted_layer_prefix": true
+  },
+  {
+    "tags": [
+      "qwen38-flashnext-dflash2:astra500-cycle-c1"
+    ],
+    "id": "sha256:6e2818832f82059b2b7b7d96530a808649f1a39abf3ed3d37eed3d252d6362e1",
+    "layers": 41,
+    "accepted_layer_prefix": false
+  },
+  {
+    "tags": [
+      "qwen38-flashnext-dflash2:astra500-cycle-hc1"
+    ],
+    "id": "sha256:0cf07ba46e02b55fb884662d959f7e96f5aa3b9c192576cd64d23a2ad0fae12e",
+    "layers": 41,
+    "accepted_layer_prefix": false
+  },
+  {
+    "tags": [
+      "qwen38-flashnext-dflash2:astra500-cycle-gdn2"
+    ],
+    "id": "sha256:151ebaed2af67d6c957e1837389227d41c7443a7f4554f225e0d44dc2b8af040",
+    "layers": 41,
+    "accepted_layer_prefix": false
+  },
+  {
+    "tags": [
+      "qwen38-flashnext-dflash2:astra500-cycle-gdn"
+    ],
+    "id": "sha256:fccafcbcbd2a6b58e4eadb2949e25a07008889ec1769e958937307946e012ae1",
+    "layers": 41,
+    "accepted_layer_prefix": false
+  },
+  {
+    "tags": [
+      "qwen38-flashnext-dflash2:astra500-structural-c2"
+    ],
+    "id": "sha256:9616d6f4dee8172ff971d8abe24803084709193b91064cf49be2da1c4ce4fde1",
+    "layers": 40,
+    "accepted_layer_prefix": true
+  },
+  {
+    "tags": [
+      "qwen38-flashnext-dflash2:astra500-structural-c1"
+    ],
+    "id": "sha256:cdde88ed2081da096b78577d935dcc5d40f1643831c70128d9d0431dcbdb7a52",
+    "layers": 40,
+    "accepted_layer_prefix": false
+  },
+  {
+    "tags": [
+      "qwen38-flashnext-dflash2:structural-builder"
+    ],
+    "id": "sha256:3ac4d8f9390b6bb5d88121abd2bfcb732a9a45d8ff5c430a01ff0d8b57f5ba02",
+    "layers": 22,
+    "accepted_layer_prefix": false
+  },
+  {
+    "tags": [
+      "qwen38-flashnext-dflash2:astra500-retained"
+    ],
+    "id": "sha256:5093aa9c408e78b9304c484b1ecbdacf9b4c6d9f1783628b5f9407b706621cf3",
+    "layers": 39,
+    "accepted_layer_prefix": true
+  },
+  {
+    "tags": [
+      "qwen38-flashnext-dflash2:astra500-c4"
+    ],
+    "id": "sha256:f964a38dd16ffd4d81fa8d5dd708f4db8e3ff2fd2f7edd7ac1e4549113c728eb",
+    "layers": 39,
+    "accepted_layer_prefix": false
+  },
+  {
+    "tags": [
+      "qwen38-flashnext-dflash2:astra500-c3"
+    ],
+    "id": "sha256:08b53405ef6ceed1b4694bb1246d3d7b9f92c2ff222228810911ff5c4b6e9dbb",
+    "layers": 39,
+    "accepted_layer_prefix": false
+  },
+  {
+    "tags": [
+      "qwen38-flashnext-dflash2:astra500-c2"
+    ],
+    "id": "sha256:44a2aca45b774e360989f83df11e7cd1a848058fced8a40caaa08d93d98d78af",
+    "layers": 39,
+    "accepted_layer_prefix": false
+  },
+  {
+    "tags": [
+      "qwen38-flashnext-dflash2:astra500-c1a"
+    ],
+    "id": "sha256:cbb7193d60c3b9df0871765ee8565662960de69b62393c3f5598b6c11094c630",
+    "layers": 39,
+    "accepted_layer_prefix": false
+  },
+  {
+    "tags": [
+      "qwen38-flashnext-dflash2:astra500-c1"
+    ],
+    "id": "sha256:87b6633ffbb915b0156b795368f9a150c90fb808ea6b90a100feca8b0dec8ded",
+    "layers": 39,
+    "accepted_layer_prefix": false
+  },
+  {
+    "tags": [
+      "qwen38-flashnext-dflash2:v032-mtp7-gap"
+    ],
+    "id": "sha256:3110747852ffc7ac086e2ed5f42abcd417a621441ef90fcc78c4a6413a68fc68",
+    "layers": 38,
+    "accepted_layer_prefix": true
+  },
+  {
+    "tags": [
+      "qwen38-flashnext-dflash2:v032-gap-attention-dev"
+    ],
+    "id": "sha256:7aca46ddd15dec33cfecb06b820982b0091f5510f89a986b4cfaea64e2933a2b",
+    "layers": 38,
+    "accepted_layer_prefix": false
+  },
+  {
+    "tags": [
+      "qwen38-flashnext-dflash2:v032-deep-seven-c1"
+    ],
+    "id": "sha256:355a16bf968fa67c67377999928dbd4023a5e0a838265808f9d6b7f34cbea2aa",
+    "layers": 37,
+    "accepted_layer_prefix": true
+  },
+  {
+    "tags": [
+      "qwen38-flashnext-dflash2:v032-deep-width-dev"
+    ],
+    "id": "sha256:cd3188315856997af482c409859d0b6d6ced7ee722ee3da48fd049ee91693167",
+    "layers": 38,
+    "accepted_layer_prefix": false
+  },
+  {
+    "tags": [
+      "qwen38-flashnext-dflash2:v032-deep-c1-dev"
+    ],
+    "id": "sha256:29d7d2cff88c3db081b1f2cd58458822d592c97b04533dc1d6ca2a36fa4bbbd5",
+    "layers": 37,
+    "accepted_layer_prefix": false
+  },
+  {
+    "tags": [
+      "qwen38-flashnext-dflash2:v032-fullwidth-c1"
+    ],
+    "id": "sha256:b4d60b500bea7953261ec3681bf81a5123609cb776eb86e0d72aa564bb61b7c7",
+    "layers": 36,
+    "accepted_layer_prefix": true
+  },
+  {
+    "tags": [
+      "qwen38-flashnext-dflash2:v032-phase4-c1",
+      "qwen38-flashnext-dflash2:v032-phase4-rebuilt"
+    ],
+    "id": "sha256:0a38dc123e0338fb58e3b462a7b3fd87448e7d8114529b3483aed588df0baee4",
+    "layers": 34,
+    "accepted_layer_prefix": true
+  },
+  {
+    "tags": [
+      "qwen38-flashnext-dflash2:v032-phase4-c1",
+      "qwen38-flashnext-dflash2:v032-phase4-rebuilt"
+    ],
+    "id": "sha256:0a38dc123e0338fb58e3b462a7b3fd87448e7d8114529b3483aed588df0baee4",
+    "layers": 34,
+    "accepted_layer_prefix": true
+  },
+  {
+    "tags": [
+      "qwen38-flashnext-dflash2:v032-phase3-c2",
+      "qwen38-flashnext-dflash2:v032-phase3-rebuilt",
+      "qwen38-flashnext-dflash2:v032-phase4-dev"
+    ],
+    "id": "sha256:f504015b3439b06279c318b10c49c49f45f759f383173096489efe72936453cb",
+    "layers": 30,
+    "accepted_layer_prefix": true
+  },
+  {
+    "tags": [
+      "qwen38-flashnext-dflash2:v032-phase3-c2",
+      "qwen38-flashnext-dflash2:v032-phase3-rebuilt",
+      "qwen38-flashnext-dflash2:v032-phase4-dev"
+    ],
+    "id": "sha256:f504015b3439b06279c318b10c49c49f45f759f383173096489efe72936453cb",
+    "layers": 30,
+    "accepted_layer_prefix": true
+  },
+  {
+    "tags": [
+      "qwen38-flashnext-dflash2:v032-phase3-c2",
+      "qwen38-flashnext-dflash2:v032-phase3-rebuilt",
+      "qwen38-flashnext-dflash2:v032-phase4-dev"
+    ],
+    "id": "sha256:f504015b3439b06279c318b10c49c49f45f759f383173096489efe72936453cb",
+    "layers": 30,
+    "accepted_layer_prefix": true
+  },
+  {
+    "tags": [
+      "qwen38-flashnext-dflash2:v032-phase3-c1"
+    ],
+    "id": "sha256:3376f8e3427aab03dff3135300cebe964e20ab135fbbcd9d1bfcdff9146c7349",
+    "layers": 29,
+    "accepted_layer_prefix": false
+  },
+  {
+    "tags": [
+      "qwen38-flashnext-dflash2:v032-phase2-c6",
+      "qwen38-flashnext-dflash2:v032-phase2-rebuilt"
+    ],
+    "id": "sha256:10c09fb2e17e2fb7f51e85a08b2a4ce26a33d5f71d81340bacfe5e173f76d21a",
+    "layers": 28,
+    "accepted_layer_prefix": true
+  },
+  {
+    "tags": [
+      "qwen38-flashnext-dflash2:v032-phase2-c6",
+      "qwen38-flashnext-dflash2:v032-phase2-rebuilt"
+    ],
+    "id": "sha256:10c09fb2e17e2fb7f51e85a08b2a4ce26a33d5f71d81340bacfe5e173f76d21a",
+    "layers": 28,
+    "accepted_layer_prefix": true
+  },
+  {
+    "tags": [
+      "qwen38-flashnext-dflash2:v032-phase2-c5"
+    ],
+    "id": "sha256:027a1498852066cd283a6c0f87edb0dc3a899bc627ee525280dab8533697eed0",
+    "layers": 28,
+    "accepted_layer_prefix": false
+  },
+  {
+    "tags": [
+      "qwen38-flashnext-dflash2:v032-phase2-c4"
+    ],
+    "id": "sha256:5c64a885b04eb22256660477b9768eed8ad0b9ad6ed5b0b011a48eb31af6a932",
+    "layers": 28,
+    "accepted_layer_prefix": false
+  },
+  {
+    "tags": [
+      "qwen38-flashnext-dflash2:v032-phase2-c3"
+    ],
+    "id": "sha256:91b9da1799148899225d6742848e6e87e89e47ed29539c3537e3856fe4b935db",
+    "layers": 28,
+    "accepted_layer_prefix": false
+  },
+  {
+    "tags": [
+      "qwen38-flashnext-dflash2:v032-phase2-c2"
+    ],
+    "id": "sha256:bba4a9833c3da3229bc392a8ab9ee10a4359c568fede867fb9c13678d8e3ae03",
+    "layers": 27,
+    "accepted_layer_prefix": false
+  },
+  {
+    "tags": [
+      "qwen38-flashnext-dflash2:v032-phase2-c1"
+    ],
+    "id": "sha256:220b55ce03399e9f3ffed280031d1bf062a4b092ee7aebc09e51dac67fe4c8e7",
+    "layers": 27,
+    "accepted_layer_prefix": false
+  },
+  {
+    "tags": [
+      "qwen38-flashnext-dflash2:v032-phase1-c5",
+      "qwen38-flashnext-dflash2:v032-phase1-rebuilt"
+    ],
+    "id": "sha256:63ce50ab426dae10d8ba8f2b25a3975d77c8819333d3972b97f1d641e9f8e003",
+    "layers": 26,
+    "accepted_layer_prefix": true
+  },
+  {
+    "tags": [
+      "qwen38-flashnext-dflash2:v032-phase1-c5",
+      "qwen38-flashnext-dflash2:v032-phase1-rebuilt"
+    ],
+    "id": "sha256:63ce50ab426dae10d8ba8f2b25a3975d77c8819333d3972b97f1d641e9f8e003",
+    "layers": 26,
+    "accepted_layer_prefix": true
+  },
+  {
+    "tags": [
+      "qwen38-flashnext-dflash2:v032-phase1-c4"
+    ],
+    "id": "sha256:7557cf1a3936a9a91a162ccb1577d77a3c2ae51cdaf6715b34445da7ba029c99",
+    "layers": 26,
+    "accepted_layer_prefix": false
+  },
+  {
+    "tags": [
+      "qwen38-flashnext-dflash2:v032-phase1-c3"
+    ],
+    "id": "sha256:1d7de07d3ae841d401bed0a5bbaafbd7d732db6221cc10ca5e39c4fcae50e742",
+    "layers": 25,
+    "accepted_layer_prefix": false
+  },
+  {
+    "tags": [
+      "qwen38-flashnext-dflash2:v032-phase1-c2"
+    ],
+    "id": "sha256:614214a222c7aa444a063baf83089fb78c0e7f1f06c2b2f589b053cf02de4fbc",
+    "layers": 25,
+    "accepted_layer_prefix": false
+  },
+  {
+    "tags": [
+      "qwen38-flashnext-dflash2:v032-phase1-c1"
+    ],
+    "id": "sha256:257e5857150caa4b2f971403dfa0c0168ef54b19b459fffaf1aa4ba67a1d8809",
+    "layers": 24,
+    "accepted_layer_prefix": false
+  }
+]

@@ -1,0 +1,238 @@
+{
+  "status": "Preserved upstream references; maintained adjacent delivery not yet staged",
+  "references": [
+    {
+      "record": "source-delivery/ubuntu-reconciliation.json",
+      "record_path": "/0/source_files/0",
+      "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/apt/2.8.3/apt_2.8.3.dsc",
+      "sha256": "1d41cd04115e1a79f0fa4d738e5c34603ae8a4f40122d8a18a622fd6d20a5523"
+    },
+    {
+      "record": "source-delivery/ubuntu-reconciliation.json",
+      "record_path": "/0/source_files/1",
+      "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/apt/2.8.3/apt_2.8.3.tar.xz",
+      "sha256": "088522b3613b28fdbcfa61f1f7e476bf6dc6b0120a8f74409e9527580c9f9d3b"
+    },
+    {
+      "record": "source-delivery/ubuntu-reconciliation.json",
+      "record_path": "/1/source_files/0",
+      "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/bash/5.2.21-2ubuntu4/bash_5.2.21-2ubuntu4.dsc",
+      "sha256": "d5a89c09f42c828d5e31dc3a1680882aa0ddaad5072963e563dec7dfc4919d33"
+    },
+    {
+      "record": "source-delivery/ubuntu-reconciliation.json",
+      "record_path": "/1/source_files/1",
+      "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/bash/5.2.21-2ubuntu4/bash_5.2.21-2ubuntu4.debian.tar.xz",
+      "sha256": "bdb10c18d167dda3b265cb3db75314d524edbf7794fed36f0fb0dcc32f5e6ac9"
+    },
+    {
+      "record": "source-delivery/ubuntu-reconciliation.json",
+      "record_path": "/1/source_files/2",
+      "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/bash/5.2.21-2ubuntu4/bash_5.2.21.orig.tar.xz",
+      "sha256": "ec21ab4efd6bd7a6e2802fbda622b81bfc43a8095d721234d4bf075797683014"
+    },
+    {
+      "record": "source-delivery/ubuntu-reconciliation.json",
+      "record_path": "/2/source_files/0",
+      "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/binutils/2.42-4ubuntu2.10/binutils_2.42-4ubuntu2.10.dsc",
+      "sha256": "a14a8e2efdb3566955476bccd2248cebed5cf2a2f5d28e223d08200ec1a18d75"
+    },
+    {
+      "record": "source-delivery/ubuntu-reconciliation.json",
+      "record_path": "/2/source_files/1",
+      "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/binutils/2.42-4ubuntu2.10/binutils_2.42-4ubuntu2.10.debian.tar.xz",
+      "sha256": "6acc777971890cb1efaeeb33a0a5358651c71067ced69dcfd59da7d0977f7530"
+    },
+    {
+      "record": "source-delivery/ubuntu-reconciliation.json",
+      "record_path": "/2/source_files/2",
+      "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/binutils/2.42-4ubuntu2.10/binutils_2.42.orig.tar.xz",
+      "sha256": "f6e4d41fd5fc778b06b7891457b3620da5ecea1006c6a4a41ae998109f85a800"
+    },
+    {
+      "record": "source-delivery/ubuntu-reconciliation.json",
+      "record_path": "/3/source_files/0",
+      "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/coreutils/9.4-3ubuntu6.3/coreutils_9.4-3ubuntu6.3.dsc",
+      "sha256": "419fea2f0fec8299d95cafb11425391fe45d60b30d052c7f1e3a162ea56a6653"
+    },
+    {
+      "record": "source-delivery/ubuntu-reconciliation.json",
+      "record_path": "/3/source_files/1",
+      "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/coreutils/9.4-3ubuntu6.3/coreutils_9.4-3ubuntu6.3.debian.tar.xz",
+      "sha256": "23eb9e94564e2451ea02a879daa0ee9ba8db3777e84e020fcd08d49aaebc57d4"
+    },
+    {
+      "record": "source-delivery/ubuntu-reconciliation.json",
+      "record_path": "/3/source_files/2",
+      "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/coreutils/9.4-3ubuntu6.3/coreutils_9.4.orig.tar.xz",
+      "sha256": "ea613a4cf44612326e917201bbbcdfbd301de21ffc3b59b6e5c07e040b275e52"
+    },
+    {
+      "record": "source-delivery/ubuntu-reconciliation.json",
+      "record_path": "/4/source_files/0",
+      "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/dpkg/1.22.6ubuntu6.6/dpkg_1.22.6ubuntu6.6.dsc",
+      "sha256": "5828d5dd77635c8bd0197116446bc64ec76913500affbcb42aaae1644acb749d"
+    },
+    {
+      "record": "source-delivery/ubuntu-reconciliation.json",
+      "record_path": "/4/source_files/1",
+      "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/dpkg/1.22.6ubuntu6.6/dpkg_1.22.6ubuntu6.6.tar.xz",
+      "sha256": "7048ee31e30066ae123cdcb891cfa1ad55b2f42a4e04fca2c5db41607ae25196"
+    },
+    {
+      "record": "source-delivery/ubuntu-reconciliation.json",
+      "record_path": "/5/source_files/0",
+      "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/ffmpeg/7:6.1.1-3ubuntu5/ffmpeg_6.1.1-3ubuntu5.dsc",
+      "sha256": "a10fbc05d525244502b2e66634ce1c0d8dd7e5d042a69ec4548dfa661f149774"
+    },
+    {
+      "record": "source-delivery/ubuntu-reconciliation.json",
+      "record_path": "/5/source_files/1",
+      "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/ffmpeg/7:6.1.1-3ubuntu5/ffmpeg_6.1.1-3ubuntu5.debian.tar.xz",
+      "sha256": "874b7862a84e2afa89a74b9c736e988858becb8f17c0b0e8f339a71cb2ddbff1"
+    },
+    {
+      "record": "source-delivery/ubuntu-reconciliation.json",
+      "record_path": "/5/source_files/2",
+      "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/ffmpeg/7:6.1.1-3ubuntu5/ffmpeg_6.1.1.orig.tar.xz.asc",
+      "sha256": "e1aa97244d6d61b508ae06a71c7b8362b3b1733459a3fc1f2efa5d85456135d3"
+    },
+    {
+      "record": "source-delivery/ubuntu-reconciliation.json",
+      "record_path": "/5/source_files/3",
+      "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/ffmpeg/7:6.1.1-3ubuntu5/ffmpeg_6.1.1.orig.tar.xz",
+      "sha256": "8684f4b00f94b85461884c3719382f1261f0d9eb3d59640a1f4ac0873616f968"
+    },
+    {
+      "record": "source-delivery/ubuntu-reconciliation.json",
+      "record_path": "/6/source_files/0",
+      "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/gcc-13/13.3.0-6ubuntu2~24.04.1/gcc-13_13.3.0-6ubuntu2~24.04.1.dsc",
+      "sha256": "86b4012c312ac13e3e092877719a62a5b5dbab082ae7e9680780a25c6a13ddc6"
+    },
+    {
+      "record": "source-delivery/ubuntu-reconciliation.json",
+      "record_path": "/6/source_files/1",
+      "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/gcc-13/13.3.0-6ubuntu2~24.04.1/gcc-13_13.3.0-6ubuntu2~24.04.1.debian.tar.xz",
+      "sha256": "5523658f272ad6d15a83b6e26d178fbd5cb7709ec7ce2ca52b0c843e19c228e3"
+    },
+    {
+      "record": "source-delivery/ubuntu-reconciliation.json",
+      "record_path": "/6/source_files/2",
+      "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/gcc-13/13.3.0-6ubuntu2~24.04.1/gcc-13_13.3.0.orig.tar.gz",
+      "sha256": "3b85d91bf38d1b858d9d01134f4046b3359731968ed4e6e912d29717a35d1a46"
+    },
+    {
+      "record": "source-delivery/ubuntu-reconciliation.json",
+      "record_path": "/7/source_files/0",
+      "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/gcc-14/14.2.0-4ubuntu2~24.04.1/gcc-14_14.2.0-4ubuntu2~24.04.1.dsc",
+      "sha256": "50950080874a6ec6780dd60c243e21d9cda9d736bb32bca98d16095d27cc01b5"
+    },
+    {
+      "record": "source-delivery/ubuntu-reconciliation.json",
+      "record_path": "/7/source_files/1",
+      "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/gcc-14/14.2.0-4ubuntu2~24.04.1/gcc-14_14.2.0-4ubuntu2~24.04.1.debian.tar.xz",
+      "sha256": "cfece214c2fb790ef5f3baffb9a53e40618e7ae12d053610b251e94d77d08ade"
+    },
+    {
+      "record": "source-delivery/ubuntu-reconciliation.json",
+      "record_path": "/7/source_files/2",
+      "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/gcc-14/14.2.0-4ubuntu2~24.04.1/gcc-14_14.2.0.orig.tar.gz",
+      "sha256": "768c314c11eeab56ccebb91eb42ec4a41122fa94f0d83400126401942622197b"
+    },
+    {
+      "record": "source-delivery/ubuntu-reconciliation.json",
+      "record_path": "/8/source_files/0",
+      "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/git/1:2.43.0-1ubuntu7.3/git_2.43.0-1ubuntu7.3.dsc",
+      "sha256": "1e3e5b83bf41318cc957a9e471ed82f8ca4d6befe91b008699959072c97430f4"
+    },
+    {
+      "record": "source-delivery/ubuntu-reconciliation.json",
+      "record_path": "/8/source_files/1",
+      "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/git/1:2.43.0-1ubuntu7.3/git_2.43.0-1ubuntu7.3.debian.tar.xz",
+      "sha256": "5bb363b59fda93816ec9ef34476e720b4f66f4b9947866bfaf414964be7dd4a7"
+    },
+    {
+      "record": "source-delivery/ubuntu-reconciliation.json",
+      "record_path": "/8/source_files/2",
+      "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/git/1:2.43.0-1ubuntu7.3/git_2.43.0.orig.tar.xz",
+      "sha256": "5446603e73d911781d259e565750dcd277a42836c8e392cac91cf137aa9b76ec"
+    },
+    {
+      "record": "source-delivery/ubuntu-reconciliation.json",
+      "record_path": "/9/source_files/0",
+      "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/glibc/2.39-0ubuntu8.9/glibc_2.39-0ubuntu8.9.dsc",
+      "sha256": "1b73a89e0910eb3e5920cde639ac7eb606256d8ee809688ff9b5912b67002711"
+    },
+    {
+      "record": "source-delivery/ubuntu-reconciliation.json",
+      "record_path": "/9/source_files/1",
+      "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/glibc/2.39-0ubuntu8.9/glibc_2.39-0ubuntu8.9.debian.tar.xz",
+      "sha256": "d6114f2302896a3c8612453e1bf1d0e61603e3029ba4a7c246fbb1ab4c48d2b0"
+    },
+    {
+      "record": "source-delivery/ubuntu-reconciliation.json",
+      "record_path": "/9/source_files/2",
+      "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/glibc/2.39-0ubuntu8.9/glibc_2.39.orig.tar.xz.asc",
+      "sha256": "2cce427ef7933c17379f5514e4f0ccf8dffae5bf8c72f0f7e0bf8b8401f34be5"
+    },
+    {
+      "record": "source-delivery/ubuntu-reconciliation.json",
+      "record_path": "/9/source_files/3",
+      "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/glibc/2.39-0ubuntu8.9/glibc_2.39.orig.tar.xz",
+      "sha256": "f77bd47cf8170c57365ae7bf86696c118adb3b120d3259c64c502d3dc1e2d926"
+    },
+    {
+      "record": "source-delivery/wheel-reconciliation.json",
+      "record_path": "/0/downloads/0",
+      "url": "https://files.pythonhosted.org/packages/76/21/7d2a95e4bba9dc13d043ee156a356c0a8f0c6309dff6b21b4d71a073b8a8/numpy-2.2.6.tar.gz",
+      "sha256": "e29554e2bef54a90aa5cc07da6ce955accb83f21ab5de01a62c8478897b264fd",
+      "filename": "numpy-2.2.6.tar.gz",
+      "kind": "sdist"
+    },
+    {
+      "record": "source-delivery/wheel-reconciliation.json",
+      "record_path": "/0/downloads/1",
+      "url": "https://files.pythonhosted.org/packages/8c/3d/1e1db36cfd41f895d266b103df00ca5b3cbe965184df824dec5c08c6b803/numpy-2.2.6-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+      "sha256": "fd83c01228a688733f1ded5201c678f0c53ecc1006ffbc404db9f7a899ac6249",
+      "filename": "numpy-2.2.6-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+      "kind": "bdist_wheel"
+    },
+    {
+      "record": "source-delivery/wheel-reconciliation.json",
+      "record_path": "/1/downloads/0",
+      "url": "https://files.pythonhosted.org/packages/ed/11/27cebce4a108f77afea7c80545115536b45e3f11ebfb914f638fdd9ba847/soxr-1.1.0.tar.gz",
+      "sha256": "9f228ae21c78fa9359ca98d8a5e8e91f30639e438e574133dace62c5b5309e44",
+      "filename": "soxr-1.1.0.tar.gz",
+      "kind": "sdist"
+    },
+    {
+      "record": "source-delivery/wheel-reconciliation.json",
+      "record_path": "/1/downloads/1",
+      "url": "https://files.pythonhosted.org/packages/5c/f1/0e55195893228609c9a08c3b13b7a83a46c3a992cd00d3304f0f320cfb07/soxr-1.1.0-cp312-abi3-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl",
+      "sha256": "3b033078e86f3c4a658e5697fac8995764fad9e799563616b630136b613167f1",
+      "filename": "soxr-1.1.0-cp312-abi3-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl",
+      "kind": "bdist_wheel"
+    },
+    {
+      "record": "source-delivery/wheel-reconciliation.json",
+      "record_path": "/2/downloads/0",
+      "url": "https://files.pythonhosted.org/packages/04/0b/3c9baedbdf613ecaa7aa07027780b8867f57b6293b6ee50de316c9f3222b/pyzmq-27.1.0.tar.gz",
+      "sha256": "ac0765e3d44455adb6ddbf4417dcce460fc40a05978c08efdf2948072f6db540",
+      "filename": "pyzmq-27.1.0.tar.gz",
+      "kind": "sdist"
+    },
+    {
+      "record": "source-delivery/wheel-reconciliation.json",
+      "record_path": "/2/downloads/1",
+      "url": "https://files.pythonhosted.org/packages/f8/9b/c108cdb55560eaf253f0cbdb61b29971e9fb34d9c3499b0e96e4e60ed8a5/pyzmq-27.1.0-cp312-abi3-manylinux_2_26_x86_64.manylinux_2_28_x86_64.whl",
+      "sha256": "43ad9a73e3da1fab5b0e7e13402f0b2fb934ae1c876c51d0afff0e7c052eca31",
+      "filename": "pyzmq-27.1.0-cp312-abi3-manylinux_2_26_x86_64.manylinux_2_28_x86_64.whl",
+      "kind": "bdist_wheel"
+    }
+  ],
+  "unresolved": [
+    "numpy-libgfortran",
+    "vendor-wheel-source",
+    "intel designation/recipient arrangements"
+  ]
+}

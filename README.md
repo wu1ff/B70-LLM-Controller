@@ -113,7 +113,7 @@ The `VERSION` file is the single version authority. Tags follow `v` + `VERSION` 
 
 - [Qwen3.8-27B](model-packs/Qwen3.8-27B/README.md) — standard and uncensored FP8 and INT4 checkpoints with Base, MTP1, and dFlash2 modes where each combination passed qualification.
 - [Qwen3.6-35B-A3B](model-packs/Qwen3.6-35B-A3B/README.md) — FP8 and INT4 checkpoints with Base and DFlash modes across the qualified one-, two-, and four-card profiles.
-- [Qwen3.8-Flash-Next](model-packs/Qwen3.8-Flash-Next/README.md) — the Flash-Next (Qwen4Exp) W4A16 checkpoint with its PLE table in one pinned revision, Base and MTP3 modes on a single unified runtime, TP4 with the 32K–256K context ladder.
+- [Qwen3.8-Flash-Next](model-packs/Qwen3.8-Flash-Next/README.md) — locally staged DFlash2 replacement: pinned Intel W4A16 target and external BF16 assistant, seven proposals, Disk PLE, TP4+EP and native 256K context. The public catalog still selects the preserved 1.0.4 release.
 
 Each pack pins its own exact model revisions, runtime image, context/card matrix, and launch settings. See the pack README for the full qualification matrix.
 

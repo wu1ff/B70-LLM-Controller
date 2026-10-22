@@ -1,0 +1,147 @@
+diff --git a/vllm/models/qwen4_exp/nvidia/b70_c1_graph.py b/vllm/models/qwen4_exp/nvidia/b70_c1_graph.py
+new file mode 100644
+index 0000000..285242f
+--- /dev/null
++++ b/vllm/models/qwen4_exp/nvidia/b70_c1_graph.py
+@@ -0,0 +1,54 @@
++# SPDX-License-Identifier: Apache-2.0
++"""C1 graphs for stateless HC math; communication and hybrid state stay eager."""
++
++import os
++import threading
++from contextlib import contextmanager
++
++import torch
++
++_scope = threading.local()
++
++
++@contextmanager
++def hc_graph_scope(width):
++    previous = getattr(_scope, "active", False)
++    _scope.active = width == 4 and os.getenv("VLLM_XPU_C1_HC_GRAPH", "1") == "1"
++    try:
++        yield
++    finally:
++        _scope.active = previous
++
++
++def replay_hc(module, name, forward, args):
++    """Return a fixed-address HC result, or use eager outside the C1 scope."""
++    if not getattr(_scope, "active", False) or torch.xpu.is_current_stream_capturing():
++        return forward(*args)
++    entries = getattr(module, "_c1_hc_graphs", None)
++    if entries is None:
++        entries = module._c1_hc_graphs = {}
++    signature = tuple(
++        (tuple(x.shape), x.dtype, x.device) if x is not None else None for x in args
++    )
++    entry = entries.get(name)
++    if entry is not None and entry["signature"] != signature:
++        return forward(*args)
++    if entry is None:
++        if not hasattr(_scope, "pool"):
++            _scope.pool = torch.xpu.graph_pool_handle()
++        inputs = tuple(x.clone() if x is not None else None for x in args)
++        # HC is stateless: warmup and capture cannot advance target caches.
++        forward(*inputs)
++        graph = torch.xpu.XPUGraph()
++        with torch.xpu.graph(graph, pool=_scope.pool):
++            output = forward(*inputs)
++        entry = entries[name] = dict(
++            signature=signature, inputs=inputs, output=output, graph=graph, replays=0
++        )
++    else:
++        for destination, source in zip(entry["inputs"], args):
++            if destination is not None:
++                destination.copy_(source)
++    entry["graph"].replay()
++    entry["replays"] += 1
++    return entry["output"]
+diff --git a/vllm/models/qwen4_exp/nvidia/b70_hyperconnection.py b/vllm/models/qwen4_exp/nvidia/b70_hyperconnection.py
+index fb04bef..c15f2bc 100644
+--- a/vllm/models/qwen4_exp/nvidia/b70_hyperconnection.py
++++ b/vllm/models/qwen4_exp/nvidia/b70_hyperconnection.py
+@@ -253,6 +253,15 @@ class GatedResidual(nn.Module):
+ 
+     def mix(
+         self, hidden_states: torch.Tensor
++    ) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor | None]:
++        if self._ordered_hc:
++            from .b70_c1_graph import replay_hc
++
++            return replay_hc(self, "mix", self._mix_eager, (hidden_states,))
++        return self._mix_eager(hidden_states)
++
++    def _mix_eager(
++        self, hidden_states: torch.Tensor
+     ) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor | None]:
+         xn = grouped_gemma_rmsnorm(
+             hidden_states,
+@@ -281,6 +290,25 @@ class GatedResidual(nn.Module):
+         hidden_states: torch.Tensor,
+         prev_block_output: torch.Tensor,
+         prev_injection: torch.Tensor | None,
++    ) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor | None]:
++        if self._ordered_hc:
++            from .b70_c1_graph import replay_hc
++
++            return replay_hc(
++                self,
++                "combine_and_mix",
++                self._combine_and_mix_eager,
++                (hidden_states, prev_block_output, prev_injection),
++            )
++        return self._combine_and_mix_eager(
++            hidden_states, prev_block_output, prev_injection
++        )
++
++    def _combine_and_mix_eager(
++        self,
++        hidden_states: torch.Tensor,
++        prev_block_output: torch.Tensor,
++        prev_injection: torch.Tensor | None,
+     ) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor | None]:
+         """Consume a pending combine, then prepare the next block input.
+ 
+diff --git a/vllm/models/qwen4_exp/nvidia/c1_verify.py b/vllm/models/qwen4_exp/nvidia/c1_verify.py
+index ee51e31..ec5782a 100644
+--- a/vllm/models/qwen4_exp/nvidia/c1_verify.py
++++ b/vllm/models/qwen4_exp/nvidia/c1_verify.py
+@@ -4,9 +4,12 @@
+ from contextlib import contextmanager
+ 
+ import torch
++import torch.distributed as dist
+ 
+ from vllm.distributed import get_tp_group
+ 
++from .b70_c1_graph import hc_graph_scope
++
+ 
+ def enabled(runner, batch) -> bool:
+     spec = runner.speculative_config
+@@ -39,7 +42,15 @@ def canonical_reductions(width):
+             and input_.ndim == 2
+             and input_.shape[0] == width
+         ):
+-            return torch.cat([original(row) for row in input_.split(1)], dim=0)
++            output = input_.clone()
++            # XCCL keeps each row's arithmetic, while grouping submission and
++            # completion. This collective remains outside every captured graph.
++            with dist._coalescing_manager(
++                group=comm.device_group, device=input_.device
++            ):
++                for row in output.split(1):
++                    dist.all_reduce(row, group=comm.device_group)
++            return output
+         return original(input_)
+ 
+     comm.all_reduce = reduce
+@@ -51,5 +62,5 @@ def canonical_reductions(width):
+ 
+ def verify(runner, batch, metadata, model_inputs):
+     """Run anchor plus proposals once and retain every native accepted prefix."""
+-    with canonical_reductions(batch.num_tokens):
++    with canonical_reductions(batch.num_tokens), hc_graph_scope(batch.num_tokens):
+         return runner.model(**model_inputs)

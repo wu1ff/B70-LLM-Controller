@@ -1,0 +1,22 @@
+[
+  {
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/runtime/work/astra500/structural-hc-native-layout-check.py",
+    "sha256": "3dbdf0eaec3b13b0bf709db6bada80fdf57c13986a771957e728625f63cab798"
+  },
+  {
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/runtime/work/astra500/structural-hc-wide-check.py",
+    "sha256": "b1fcd0c4126e6704defa987e0bd2a26d3b50171d73c6bb8cf689f8040bfcc194"
+  },
+  {
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/runtime/work/astra500/ownership-native/astra_ownership_v2.py",
+    "sha256": "839bec9e1ccc2c27cd9ad287a16fd69a8a44dd1215c0480baeae34013a71c1f7"
+  },
+  {
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/runtime/work/astra500/ownership-native/astra_ownership.py",
+    "sha256": "212df3b914c378b3bb2b0a71ca308c889264d38d7e98e1890ed17a353d4f44b5"
+  },
+  {
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/runtime/work/astra500/cycle-native/astra_greedy.py",
+    "sha256": "383eee474c15bff948179d8933c03fbf727b32f9c5473706e5c51c5a1988e163"
+  }
+]

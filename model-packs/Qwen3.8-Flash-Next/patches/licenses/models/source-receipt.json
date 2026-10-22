@@ -1,0 +1,20 @@
+[
+  {
+    "url": "https://huggingface.co/incoai/Qwen3.8-Flash-Next-DFlash2/resolve/a22a1744e85c17364dcc54a6a420af7135d4c7f6/README.md",
+    "bundle_path": "licenses/models/incoai-draft-model-card.md",
+    "sha256": "296dfce04d501f313f4223a4ab2378f198ecb860e3b24a4689e66aff651f0477",
+    "bytes": 5402
+  },
+  {
+    "url": "https://huggingface.co/incoai/Qwen3.8-Flash-Next-DFlash2/resolve/a22a1744e85c17364dcc54a6a420af7135d4c7f6/config.json",
+    "bundle_path": "production/model-metadata/draft/config.json",
+    "sha256": "2409575986f9ea24d455343eb469c0e6940def5edab1d1be503bb8eb4cc3b1b9",
+    "bytes": 1236
+  },
+  {
+    "url": "https://huggingface.co/Intel/Qwen3.8-Flash-Next-W4A16-AutoRound/resolve/4c67bf686b7f7fd386bae6b07ab59e8ff1d5b897/README.md",
+    "bundle_path": "licenses/models/intel-target-model-card.md",
+    "sha256": "00798492330afbb7285fd9c0deee4fc7ac01bbc197eb49d1d5c868ceafe54293",
+    "bytes": 2418
+  }
+]

@@ -1,0 +1,32 @@
+[
+  {
+    "id": "vendor-wheel-source",
+    "status": "OPEN",
+    "detail": "Stock vllm-xpu-kernels 0.1.15.4 source commit is unattested. Pinned vendor image is sufficient for custom overlay builds; a wholly source-built vendor stack is not established."
+  },
+  {
+    "id": "source-delivery",
+    "status": "OPEN",
+    "detail": "Actual accepted Ubuntu versions and wheel native hashes are reconciled in source-delivery/. Source assets/directions must be made available beside a future distributed image; this reconstruction bundle is not complete companion corresponding source for every inherited executable."
+  },
+  {
+    "id": "numpy-libgfortran",
+    "status": "OPEN",
+    "detail": "NumPy 2.2.6 bundled libgfortran exact source/build identity remains unresolved. Do not substitute Ubuntu GCC source or infer identity from SONAME."
+  },
+  {
+    "id": "intel-2026.1.1",
+    "status": "OPEN",
+    "detail": "Current notices and 2026.1.1 credist are retained. Incomplete designation coverage and executable recipient arrangement remain for final image distribution; no compiler binaries are exported."
+  },
+  {
+    "id": "changed-file-notices",
+    "status": "SOURCE_DERIVATIVES_STAGED; EXECUTABLE_INCORPORATION_OPEN",
+    "detail": "All 15 missing vLLM headers, kernel wrapper, three GDN conv headers and campaign custom source comments are staged in 57 comment-only derivatives with exact before/after hashes. Frozen accepted executable unchanged. Final source/archive notice review and executable incorporation remain open."
+  },
+  {
+    "id": "binary-and-image-build",
+    "status": "CUSTOM_BUILD_AND_LIVE_EQUIVALENCE_PASS",
+    "detail": "Phase 3: 12/12 native libraries byte-identical and all non-bytecode runtime files match. Phase 4: focused live equivalence PASS. OCI identity differs; inherited vendor stack not rebuilt from source. No Phase 5 rebuild."
+  }
+]

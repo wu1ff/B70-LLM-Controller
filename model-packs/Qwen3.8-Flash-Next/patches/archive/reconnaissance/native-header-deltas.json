@@ -1,0 +1,326 @@
+{
+  "build/native/source": [
+    {
+      "path": "csrc/xpu/gdn_attn/causal_conv1d.hpp",
+      "status": "modified",
+      "sha256": "e99b5de3a12e812be08e5e85bf0a2607cce866270114f2ed25ea4ba3ccd86aac"
+    },
+    {
+      "path": "csrc/xpu/gdn_attn/xe_2/chunk_causal_conv1d_tiled_xe2.hpp",
+      "status": "modified",
+      "sha256": "ee239ed0d9eb9af9c183c707262d97c617ff4b6ff10d22296c6fd924e0902a7b"
+    },
+    {
+      "path": "csrc/xpu/gdn_attn/xe_2/chunk_causal_conv1d_xe2.hpp",
+      "status": "modified",
+      "sha256": "bc643f91d2d5b8a5b0949c7c8acff4c551ce916c3ff77564e6644368aef6c001"
+    }
+  ],
+  "build/astra500-native/source": [
+    {
+      "path": "csrc/xpu/torch_bindings.cpp",
+      "status": "modified",
+      "sha256": "2dda9571c4a7b07c2e948a3a0815c2d19709cfd965e18d4e191b11ca037346c9"
+    },
+    {
+      "path": "csrc/xpu/ops.h",
+      "status": "modified",
+      "sha256": "db091cb118fa6f56d3858a3ac3fcf09330bc8ec111a601cf3449739b3030eeb2"
+    },
+    {
+      "path": "csrc/moe/torch_bindings.cpp",
+      "status": "modified",
+      "sha256": "45ae65521be53e48dbeb273e2a427267a7c8132c45d1699b4f4f9c8c902952dd"
+    },
+    {
+      "path": "csrc/moe/moe_router_decode.cpp",
+      "status": "added",
+      "sha256": "2a3cfb82e680e6eaffaf39ebf73bdacc571d8ed85851069bceb60f0e00619df2"
+    },
+    {
+      "path": "csrc/moe/moe_ops.h",
+      "status": "modified",
+      "sha256": "19e7e48850c82b415219bfee1786cbe873e1171cd622c1b34f635cad48a30aa2"
+    },
+    {
+      "path": "csrc/qwen38/int4_small_m.cpp",
+      "status": "added",
+      "sha256": "f080591720680e83052dddbe528c7c132c4b2e70c8c506a315971b38e915aa73"
+    },
+    {
+      "path": "csrc/qwen38/torch_bindings.cpp",
+      "status": "added",
+      "sha256": "15d1c8f3968c2a9698c51e8ec33045e5716684022674d7aefd2d5ad5e7e9b4a1"
+    },
+    {
+      "path": "csrc/qwen38/hc_norm_m1_manual.h",
+      "status": "added",
+      "sha256": "5c65e747c083eed280776b8b948c05d5897a06dc82bd558e1afa1a1e6a9e53ec"
+    },
+    {
+      "path": "csrc/qwen38/ple_bindings.cpp",
+      "status": "added",
+      "sha256": "16fa7b19dcc6f4e720ba1efdeda9883daf0f5e563151b029c4f6f6e5bc47372e"
+    },
+    {
+      "path": "csrc/qwen38/ngram.h",
+      "status": "added",
+      "sha256": "3b507d4240f1934009f65d16138a4608ed2a78d00cf9d837e17ee68e7457c084"
+    },
+    {
+      "path": "csrc/qwen38/gdn_sycl.h",
+      "status": "added",
+      "sha256": "35711029dd8835b5d22add42dbe95bf8d9e76269c39c94d8c43b1274a9df702d"
+    },
+    {
+      "path": "csrc/qwen38/qsa_sycl.h",
+      "status": "added",
+      "sha256": "9551b22ba3f622e9e53ecdb4ec872f766b7fca9326614f0dc33408068596e643"
+    },
+    {
+      "path": "csrc/qwen38/moe_sycl_workspace.h",
+      "status": "added",
+      "sha256": "712587e6350e0476ae1776c78f1b06cc53c59d882137c09734449f3c556c1b89"
+    },
+    {
+      "path": "csrc/qwen38/hc_sycl.h",
+      "status": "added",
+      "sha256": "d96938b93362f335f126f6dfe58793d082120f10476c532fcb4ac96b22efb262"
+    },
+    {
+      "path": "csrc/qwen38/hc_sycl_workspace.h",
+      "status": "added",
+      "sha256": "3c01be630a103ebc678164b3a801fd1e32b964f9826feb1daacf6ca191f5d83a"
+    },
+    {
+      "path": "csrc/qwen38/hc_sycl_workspace.cpp",
+      "status": "added",
+      "sha256": "454377ca44ebc757ad8fc98a42c1992bdb26310469a12676eca86a4348e4e86a"
+    },
+    {
+      "path": "csrc/qwen38/moe_sycl_prefill_torch.h",
+      "status": "added",
+      "sha256": "a4008d166ea374178cefe98821601927b6d41cc78865cb9cd756ff00aed668fd"
+    },
+    {
+      "path": "csrc/qwen38/moe_sycl_block.h",
+      "status": "added",
+      "sha256": "8b8c82d5a008f701bc9f7f4214ce23445bb0b582d36e15bb75d005d4f876e367"
+    },
+    {
+      "path": "csrc/qwen38/qsa_sycl_aux.h",
+      "status": "added",
+      "sha256": "f34c906901dba7c50e437cbd0945dd68e5e42fbdb66252b7ea6e5ab46b8cec19"
+    },
+    {
+      "path": "csrc/qwen38/gdn_sycl_projection.cpp",
+      "status": "added",
+      "sha256": "ff9b0395a378396d9f64be627ff724d6c22d70c723c0421957eef286c118048b"
+    },
+    {
+      "path": "csrc/qwen38/ngram.cpp",
+      "status": "added",
+      "sha256": "ba92e047e7007000fcbf091c07124d0d5def44237f3c2c3db8f908ece29b4a66"
+    },
+    {
+      "path": "csrc/qwen38/gdn_sycl_workspace.h",
+      "status": "added",
+      "sha256": "068112ac9341a684347e9ed812600342fe2b3d94c5b4ff4bdbad68af236c936a"
+    },
+    {
+      "path": "csrc/qwen38/ple_sycl.h",
+      "status": "added",
+      "sha256": "081580b683f572d46ab591bf6a2470a371f44646eb32158db6094ebed810f51c"
+    },
+    {
+      "path": "csrc/qwen38/tensor_binding.h",
+      "status": "added",
+      "sha256": "f9a298d7f96c41e260d419b1fb9906a73f00ea96cec761e8ce1f0fbce4b5cab5"
+    },
+    {
+      "path": "csrc/qwen38/gdn_sycl_projection.h",
+      "status": "added",
+      "sha256": "70ce27f98475b7d99413412d2a7ab64a55e2f6c6b6170c97a816487f8e7b7940"
+    },
+    {
+      "path": "csrc/qwen38/moe_sycl.cpp",
+      "status": "added",
+      "sha256": "1514ada9ba5eb18142f34d6a8c0866cc96f54633b96b51e7275fce27bc3df3da"
+    },
+    {
+      "path": "csrc/qwen38/gdn_sycl_workspace.cpp",
+      "status": "added",
+      "sha256": "7bc378c94b7f02bd935e91cd3c38ccd68bf070b823af05571102eaa166c446b5"
+    },
+    {
+      "path": "csrc/qwen38/moe_sycl_bindings.cpp",
+      "status": "added",
+      "sha256": "bb1e0796e6aacea53df4eca3187af9358d7fe4225b34cfd22db42676e4dd3c6b"
+    },
+    {
+      "path": "csrc/qwen38/qsa_sycl_owner.h",
+      "status": "added",
+      "sha256": "07edc6aa8f7727f58b6e5f2f48c73c32bf6c305057370d03504b3b14b2550522"
+    },
+    {
+      "path": "csrc/qwen38/int4.cpp",
+      "status": "added",
+      "sha256": "b4c6c0a7351e0a3fdaf029530e3f5ccd7d028566884e2922622c9f38f851dd78"
+    },
+    {
+      "path": "csrc/qwen38/qsa_sycl_aux.cpp",
+      "status": "added",
+      "sha256": "0d315f2d50aa14434295a2c093125faad6849756b2ea1ae1cab3be7b815cbad4"
+    },
+    {
+      "path": "csrc/qwen38/moe_sycl_prefill.cpp",
+      "status": "added",
+      "sha256": "e3c9b28fc05910ff154209e22ca2c773092e08b05a5dcd0303949ef6d76d94d4"
+    },
+    {
+      "path": "csrc/qwen38/moe_sycl.h",
+      "status": "added",
+      "sha256": "48e73bcbc00f01dcde3488d38b64804bbf7d1bc85ecd48f373c2febceea22c60"
+    },
+    {
+      "path": "csrc/qwen38/moe_sycl_workspace.cpp",
+      "status": "added",
+      "sha256": "d9e2075fae7df1fffaae15b1a92cd23e3d5f78ee9b7a8c3fdd0b8fac529eb3dc"
+    },
+    {
+      "path": "csrc/qwen38/hc_bindings.cpp",
+      "status": "added",
+      "sha256": "1a30fd8321833fd5bf739e003a62c9c315a8301022f076bcbeca98c67fb3f32d"
+    },
+    {
+      "path": "csrc/qwen38/hc_sycl.cpp",
+      "status": "added",
+      "sha256": "a1ca50b06e391a8d5e7b1a5657b3a01c1295f5022f3ec0553cdc7d552ea68c93"
+    },
+    {
+      "path": "csrc/qwen38/int4_small_m.h",
+      "status": "added",
+      "sha256": "2e9a27d43a3f5ee7017b3200c68789dd14efce1c6f4f208a1cf971d9f6bc0dfc"
+    },
+    {
+      "path": "csrc/qwen38/qsa_sycl.cpp",
+      "status": "added",
+      "sha256": "72a639380cf3fe94456259a2ea24bfb741cfafd786bf5e8f4aa8fe9e27e61172"
+    },
+    {
+      "path": "csrc/qwen38/ops.h",
+      "status": "added",
+      "sha256": "5426f5033146113eb0cbde3d24839425079fed7245ae5924cb0143204ebfb153"
+    },
+    {
+      "path": "csrc/qwen38/moe_sycl_prefill_torch.cpp",
+      "status": "added",
+      "sha256": "4cae55352b27946ca5db3af505646db7c8cf6c490570353d7fd99a351453cca3"
+    },
+    {
+      "path": "csrc/qwen38/gdn_bindings.cpp",
+      "status": "added",
+      "sha256": "a7c5c418b6f3a505d63884c0c483ca26ad0587c87649e33b4acdfb797bd371db"
+    },
+    {
+      "path": "csrc/qwen38/qsa_sycl_owner.cpp",
+      "status": "added",
+      "sha256": "00bae4e9d095fdd2e6ce383f661e3a2c0294e24db1e3361de96fce521010b9ca"
+    },
+    {
+      "path": "csrc/qwen38/hc_up_dpas_probe.cpp",
+      "status": "added",
+      "sha256": "3898abc4c633634cf10cdb5f74c5a8bfe5ef8cc5b80d660ae0a501ad1343804e"
+    },
+    {
+      "path": "csrc/qwen38/gdn_sycl.cpp",
+      "status": "added",
+      "sha256": "13edd1957b8439f0e18f5c00a2db87c784ec94c9ead0de10ec10abdca4112898"
+    },
+    {
+      "path": "csrc/qwen38/moe_sycl_prefill.h",
+      "status": "added",
+      "sha256": "cdeae0c9a90fe7478ca7809cef52a2d09519dbc584c3a776001e6a5313d6ca43"
+    },
+    {
+      "path": "csrc/qwen38/ple_sycl.cpp",
+      "status": "added",
+      "sha256": "37fb9603929f6bdaeef413b6d80f2175cbcaf2b57637f975e3d294caf0315cfe"
+    },
+    {
+      "path": "csrc/xpu/gemv/fp8_gemv_interface.h",
+      "status": "added",
+      "sha256": "092e6098fd7053d2a478e4ea446c47f4a20ae887799bd2bb501aeb467acf7e46"
+    },
+    {
+      "path": "csrc/xpu/sycl/qkv_split_norm_rope.cpp",
+      "status": "added",
+      "sha256": "9a3bffa2c43772e46b061580b9d6d0ca44ce23fc4c31cfafa7fe6b58f8adf8d4"
+    },
+    {
+      "path": "csrc/xpu/onednn/onednn_matmul.cpp",
+      "status": "modified",
+      "sha256": "079ee5c0a1dda1803c8d453fe91049ddc927be2884858cd95e97ffa93f0a30da"
+    },
+    {
+      "path": "csrc/xpu/grouped_gemm/moe_shared_fused_interface.cpp",
+      "status": "added",
+      "sha256": "5de2c99374efba686b558cdbf7ba61580de0c194fc4b03bb8c2337be08fb909c"
+    },
+    {
+      "path": "csrc/xpu/grouped_gemm/moe_shared_fused_interface.h",
+      "status": "added",
+      "sha256": "d6f4e101bc027661831a1ac15eb1a45757130cd28f977382bc9e9827d470c241"
+    },
+    {
+      "path": "csrc/xpu/custom_ar/custom_ar.cpp",
+      "status": "added",
+      "sha256": "9295dc3cd609092ec9e60c70fa087b6ce9fe67277b17101e6ad3c090441c532e"
+    },
+    {
+      "path": "csrc/xpu/grouped_gemm/xe_2/moe_shared_fused_decode_xe2.cpp",
+      "status": "added",
+      "sha256": "bab8460364570ea511cdcddf0eff7e33b23da3973515372bcb1ec82a9bf8dab0"
+    },
+    {
+      "path": "csrc/xpu/grouped_gemm/xe_2/moe_shared_fused_decode_xe2.h",
+      "status": "added",
+      "sha256": "14b3cc5f4f9441b67da5f38dad4277be08fe4b6b62edda1aad55804c2c907b8a"
+    },
+    {
+      "path": "csrc/xpu/attn/xe_2/paged_decode.hpp",
+      "status": "modified",
+      "sha256": "3f0dff71fa601195b4d4f7f0b762867e3ca92ad596cbdde55f3a8b30dbad7d1c"
+    },
+    {
+      "path": "csrc/xpu/attn/xe_2/collective/reduce_splitk_scheduler.hpp",
+      "status": "added",
+      "sha256": "52db2564aea47d232595c7e5936d90acca94c25c13c1c040b7d108b323ee44d2"
+    },
+    {
+      "path": "csrc/xpu/attn/xe_2/kernel/paged_decode_kernel.hpp",
+      "status": "modified",
+      "sha256": "835afa96310c0dbc53363b8df88b9db9d6b4185e77356f370769462a0d6f951b"
+    },
+    {
+      "path": "csrc/xpu/gemv/xe_2/fp8_gemv.hpp",
+      "status": "added",
+      "sha256": "827ba32973179c9154546b2370034e7b6c6c589e9108682d9670f5dbb812e60d"
+    },
+    {
+      "path": "csrc/xpu/gemv/xe_2/fp8_gemv_xe2.cpp",
+      "status": "added",
+      "sha256": "420a700aefce89a2e123c4687e2d1f2c52a17c496b1c03f3903f33c071946281"
+    },
+    {
+      "path": "csrc/xpu/gemv/xe_2/CMakeLists.txt",
+      "status": "added",
+      "sha256": "4fc2421990984c4e6ee5768e78b327f17115d3393c3953d7bff2d0661294f8db"
+    },
+    {
+      "path": "csrc/xpu/gemv/xe_2/norm_fp8_gemv_xe2.cpp",
+      "status": "added",
+      "sha256": "b9fcfa98587ecc20ebdbdc5717791206ea3510dd62519511aab0277ac7162003"
+    }
+  ]
+}

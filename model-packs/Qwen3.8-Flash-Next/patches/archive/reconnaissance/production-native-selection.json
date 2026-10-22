@@ -1,0 +1,197 @@
+[
+  {
+    "installed_library": "vllm_xpu_kernels/libgdn_index64.so",
+    "accepted_sha256": "3929e1a86c453dc0441ca1b015a0b18ecf11221def563da92c4b82afe83cc835",
+    "source_files": {
+      "build/native/gdn_index64.cpp": "8de6cea7fe553900c1c18d923a1f32b4ee1d42f3c6118cf93cac31e25b7add84",
+      "build/native/build.sh": "419c6746028d5c4dff704ae2b2108c8563a52b595c20b7a8e5f8ca94084271e2",
+      "build/Dockerfile.native": "2b997d25e2d476dfbe428043562543fc01f18dbc4057cfe7e1b69a18f66b3fcd"
+    },
+    "header_tree": "gdn-headers",
+    "sycl_tla_commit": null,
+    "retained_build_outputs": [
+      "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/native-out/libgdn_index64.so"
+    ]
+  },
+  {
+    "installed_library": "b70-residency-shim/libl0_peer_residency_shim.so",
+    "accepted_sha256": "ae2c82f549d97393268cbd7b90dba7cf38fd00dbccae54f090b1a545e5613b3c",
+    "source_files": {
+      "sources/release-1.0.4/native/l0_peer_residency_shim.c": "f79e1bbaa18a9c29ac621452dd091c6522f2802d96c51a95ca9cb63f1ee1f10c",
+      "build/Dockerfile": "d47ee4c4c5f5de59fa208266d7149995b3ec5fe2289ed752d59d1ceaf33ac7d0"
+    },
+    "header_tree": null,
+    "sycl_tla_commit": null,
+    "retained_build_outputs": []
+  },
+  {
+    "installed_library": "vllm_xpu_kernels/libastra_moe.so",
+    "accepted_sha256": "4cbc1d446e46cd1acf278bd3b887cb93518b97404516fb83be186e9a9cb3d9cf",
+    "source_files": {
+      "build/astra500-native/astra_moe.cpp": "38dd2f12da21a143a6cfa7050d630e460954cfa06499c672d7023b554cd08baf",
+      "build/astra500-native/build.sh": "8d77878d421d06705a50169f13adc3bbf4430759a0454d498cd83d45278316f9",
+      "build/Dockerfile.astra500-native": "91517e8602ee95761fe6611f0d1822972ac68eb08d51cc5354c36893de6c69ff"
+    },
+    "header_tree": "common-native-headers",
+    "sycl_tla_commit": "87f6850680a580654b9ea2c80dbc01aeb36ad231",
+    "retained_build_outputs": [
+      "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/astra500-c3-context/payload/vllm_xpu_kernels/libastra_moe.so",
+      "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/astra500-context/payload/vllm_xpu_kernels/libastra_moe.so",
+      "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/astra500-final-context/payload/vllm_xpu_kernels/libastra_moe.so",
+      "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/astra500-native-k-out/libastra_moe.so"
+    ]
+  },
+  {
+    "installed_library": "vllm_xpu_kernels/libastra_hc.so",
+    "accepted_sha256": "757dcc9a314cc76888c7e7d8fb53ceb90351198bb0793dc1ec6d87b7cbcad8ca",
+    "source_files": {
+      "build/astra500-structural-hc/astra_hc_v3.cpp": "6f03646101a9adb093b7846c394eb4af913496ed034357db0c5305d7ef215b5f",
+      "build/astra500-structural-hc/fused_hc_v3.hpp": "d207bf1399aaa3529fb71083561b18050a7250540ea091311210b0c44a761af9",
+      "build/astra500-structural-hc/build-v3.sh": "4c9122c3eaad899f56d0fdc7a467781d5146c218a5d476fd63feccbc34122050",
+      "build/Dockerfile.astra500-structural-hc-v3": "a5cfc2233b453027c675c2a8f6636003fcd4cca725504a06949860e1fd45eeb9"
+    },
+    "header_tree": "common-native-headers",
+    "sycl_tla_commit": "87f6850680a580654b9ea2c80dbc01aeb36ad231",
+    "retained_build_outputs": [
+      "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/astra500-structural-context/payload/vllm_xpu_kernels/libastra_hc.so",
+      "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/astra500-structural-hc/out/libastra_hc_v3.so"
+    ]
+  },
+  {
+    "installed_library": "vllm_xpu_kernels/libastra_direct.so",
+    "accepted_sha256": "1a7ce74e6dc26c64e92d88a4a0f69a62316f4b33ef39d9fac6f2b5c2f915134f",
+    "source_files": {
+      "build/astra500-structural-moe/astra_direct.cpp": "3949c45afcb72ef94ea51076038d4b05fd3ff604c3fd2679dac11bd1b60823b4",
+      "build/astra500-structural-moe/direct_gemm.hpp": "37b58dd9f567ef06df016df1e5a3247742ad4e8385edc2ed53a79940921d882e",
+      "build/astra500-structural-moe/build.sh": "c774c20c2baa71455831e7cd51f80f24e5eb84fdb1f926370dff1f2d26ac4d63",
+      "build/Dockerfile.astra500-structural-moe": "1e3c9d77238224809e8e7b84b48e7e00c8b8385496b4fd1063823d6ed1d2517b"
+    },
+    "header_tree": "common-native-headers",
+    "sycl_tla_commit": "87f6850680a580654b9ea2c80dbc01aeb36ad231",
+    "retained_build_outputs": [
+      "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/astra500-structural-c1-context/payload/vllm_xpu_kernels/libastra_direct.so",
+      "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/astra500-structural-context/payload/vllm_xpu_kernels/libastra_direct.so",
+      "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/astra500-structural-moe/out/libastra_direct_v2.so"
+    ]
+  },
+  {
+    "installed_library": "vllm_xpu_kernels/libastra_groups.so",
+    "accepted_sha256": "7eda4138454793a433e5a2d46b6b92467a4e6be83c55873a5584d70df76a7017",
+    "source_files": {
+      "build/astra500-ownership-groups/astra_direct.cpp": "b4dd8789ab0bd2b8f9fbc22809537f48c2f98a7feaaff0d3cbbc443176fbd637",
+      "build/astra500-ownership-groups/direct_gemm.hpp": "512417e6b0ba4e054cff6f2626da28d126c21534c7bbef3d55777e5d4494f25f",
+      "build/astra500-ownership-groups/ownership_remap.cpp": "ada545d108dbc5c709ba8ef44c931b41416b5a0011d950aadeeffeb0a6938c6f",
+      "build/astra500-ownership-groups/ownership_gather.cpp": "035f9952644e9dbe77b17e5c6ad6b519cf4d2601d2e334daa4cf8fe0725b9b1c",
+      "build/astra500-ownership-groups/build.sh": "dbdee0862d06fdc4d4bc6ddb9f5e9dd7e0b9ba6508b0fc7608e829d95369269d",
+      "build/Dockerfile.astra500-ownership-groups": "7492361b0b96b471fd7cc0768b1cfc4ac3d46c32b57e4bdbdf4c668d65fa1f64"
+    },
+    "header_tree": "common-native-headers",
+    "sycl_tla_commit": "87f6850680a580654b9ea2c80dbc01aeb36ad231",
+    "retained_build_outputs": [
+      "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/astra500-ownership-c2-context/payload/vllm_xpu_kernels/libastra_groups.so",
+      "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/astra500-ownership-c3-context/payload/vllm_xpu_kernels/libastra_groups.so",
+      "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/astra500-ownership-context/payload/vllm_xpu_kernels/libastra_groups.so",
+      "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/astra500-ownership-groups/out-v2/libastra_groups.so"
+    ]
+  },
+  {
+    "installed_library": "vllm_xpu_kernels/libastra_batch.so",
+    "accepted_sha256": "87ee25cdbad3d6877c4a0b2da2869cfd47736bd788c3b4280c81f7857cf66853",
+    "source_files": {
+      "build/astra500-ownership-batch/astra_batch.cpp": "edd368bf0203085ced760ec66d47071986a0d120c2a2e01128ff85f56ff0b8fb",
+      "build/astra500-ownership-batch/direct_gemm.hpp": "b29bf23c5e9d706d33b0e35bbd79fd922ade9b1b36eb5d5e42ae4f90dd78a167",
+      "build/astra500-ownership-batch/build.sh": "f50734ad6f6ce3a69e46513848c89657c22e4d1a9fbadb5190488bf1f12e0719",
+      "build/Dockerfile.astra500-ownership-batch": "d4f9b8d343f8250f49f62d1b66781b6a2a764ab0d7b2607a92bd7f6f5111a4dd"
+    },
+    "header_tree": "common-native-headers",
+    "sycl_tla_commit": "87f6850680a580654b9ea2c80dbc01aeb36ad231",
+    "retained_build_outputs": [
+      "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/astra500-ownership-batch/out/libastra_batch.so",
+      "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/astra500-ownership-c3-context/payload/vllm_xpu_kernels/libastra_batch.so"
+    ]
+  },
+  {
+    "installed_library": "vllm_xpu_kernels/libbeyond_prefill.so",
+    "accepted_sha256": "df9a6c12756afbfedb0bcc861a35edeb35f52ca1b3cc14406d6b6c19dc479ee4",
+    "source_files": {
+      "build/astra500-beyond-prefill/beyond_prefill.cpp": "465be5170d77338c4dec09508a319f0176cebbad34cd3f85a0b84f850d9b9477",
+      "build/astra500-beyond-prefill/direct_gemm_v2.hpp": "a723129d94d02a9aa0b7c36d0ac87d750d3622c6607c4346f823a4bccd37a688",
+      "build/astra500-beyond-prefill/build.sh": "c4809a5c927ca533eda3d5fd7d1e53e7b561165f8cb5443dd39eff637310c5ed",
+      "build/Dockerfile.astra500-beyond-prefill": "3b64e2abcaf816219febaf30daa9e16d11151e5a996ef8a2dd2b51f0c71ef413"
+    },
+    "header_tree": "common-native-headers",
+    "sycl_tla_commit": "87f6850680a580654b9ea2c80dbc01aeb36ad231",
+    "retained_build_outputs": [
+      "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/astra500-beyond-context/payload/vllm_xpu_kernels/libbeyond_prefill.so",
+      "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/astra500-beyond-prefill/out-v2/libbeyond_prefill.so",
+      "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/long-prefill-base/libbeyond_prefill.so"
+    ]
+  },
+  {
+    "installed_library": "vllm_xpu_kernels/libdominant_w4_layout.so",
+    "accepted_sha256": "c5a87cb0762f3ed85defa241f491bf480d46fdfd0d58fe9a535e43fde2aa3e0c",
+    "source_files": {
+      "build/astra500-dominant-native/w4_layout.cpp": "4bef7018a71ee1bcabb18f88e106a5730b4ea42253dc6cae13251a1da9003998",
+      "build/astra500-dominant-native/layout_gemm.hpp": "7d6ffb1eec6992f99238f5e8c380707605a961656c1d4134a4080e14aebc4a9b",
+      "build/astra500-dominant-native/build.sh": "fa59fb0a25137a424011e166518415921e0122516991deb6215188ede1f590d0",
+      "build/Dockerfile.astra500-dominant-native": "eb13dbf390100b829859deac5f8a828538a12ce9101f044bc1dddef50342a48a"
+    },
+    "header_tree": "common-native-headers",
+    "sycl_tla_commit": "87f6850680a580654b9ea2c80dbc01aeb36ad231",
+    "retained_build_outputs": [
+      "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/astra500-dominant-context/payload/vllm_xpu_kernels/libdominant_w4_layout.so",
+      "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/astra500-dominant-native/out-layout-fixed/libdominant_w4_layout.so"
+    ]
+  },
+  {
+    "installed_library": "vllm_xpu_kernels/libserving_prefill.so",
+    "accepted_sha256": "2e317686ebf346b0e0436f9740c06888b4a49a7706168a57c6b2aad83b8f2b6e",
+    "source_files": {
+      "build/prefill-native/prefill_small.cpp": "69ce2f7d226e106150d05894dc1c1d03ebacee503f6a65a225c5dfbe33605a82",
+      "build/prefill-native/direct_gemm_prefill.hpp": "c426cd3704f3c352c18c922ca5c1eea1946dbc720869e29837d776716f61ba0a",
+      "build/prefill-native/build.sh": "73b6a5784308382c21bc630613b7cb5447eefe08b788297ac02e3c82c49eb961",
+      "build/Dockerfile.prefill-native": "b4565305120d5cce923285087a2a5d5a18d8d09d8d2ca6995df69a4e0185b751"
+    },
+    "header_tree": "common-native-headers",
+    "sycl_tla_commit": "87f6850680a580654b9ea2c80dbc01aeb36ad231",
+    "retained_build_outputs": [
+      "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/prefill-native/out/libserving_prefill.so",
+      "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/prefill-v1/payload/vllm_xpu_kernels/libserving_prefill.so",
+      "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/prefill-v4/payload/vllm_xpu_kernels/libserving_prefill.so",
+      "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/prefill-v5/payload/vllm_xpu_kernels/libserving_prefill.so"
+    ]
+  },
+  {
+    "installed_library": "vllm_xpu_kernels/liblong_hc.so",
+    "accepted_sha256": "3f2c7cfdf1aa251e73a80a8244276a6138ab547af91b7e2927667a384751e2db",
+    "source_files": {
+      "build/long-hc-selected/hc.cpp": "3fbfd691fd2efffe69fb3d36b96c648abaccf27c4e57095d49537af06b77f969",
+      "build/long-hc-selected/hc_tile.hpp": "8c57f69658c0c7354f8bfd4241bd082373504af400bbccfd0b32a37351959f96",
+      "build/long-hc-selected/build.sh": "2805ddbb389f984df6c121dcc454f4c9268ec086773d0cb89acd4613fd83a7b9",
+      "build/Dockerfile.long-hc-selected": "a10150d8791e92e1117aceb53cba0079203d1e63db75ee5d6974a1212c5cb928"
+    },
+    "header_tree": "common-native-headers",
+    "sycl_tla_commit": "87f6850680a580654b9ea2c80dbc01aeb36ad231",
+    "retained_build_outputs": [
+      "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/long-hc-native/out/liblong_hc.so",
+      "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/long-hc-selected/out/liblong_hc.so",
+      "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/long-prefill-v1/payload/vllm_xpu_kernels/liblong_hc.so"
+    ]
+  },
+  {
+    "installed_library": "vllm_xpu_kernels/liblong_prefill_v3.so",
+    "accepted_sha256": "ebb747ad926bc866f473bb3a9bab34a7460bd1d526ed9c5b0954a7af7daceb1f",
+    "source_files": {
+      "build/long-prefill-native/prefill_small.cpp": "2166316cc51171535610f00201bb9d112eee4d5884af98b5b8cea1280d3dbb21",
+      "build/long-prefill-native/direct_gemm.hpp": "a4f7f6c04cdabc9d7a910b4372063bdadd5e1dd1dfb61fc5bd56e5548d6a46d4",
+      "build/long-prefill-native/build.sh": "1a40b7cf1d6dd3d0b4cecc459408b4fae54cce716328ccf1b665a0e4f45cb0aa",
+      "build/Dockerfile.long-prefill-native": "e83df07af663e9cbb62e9ecace1716cdfac4de5dc187cc0e5e24cd175d55fb4a"
+    },
+    "header_tree": "common-native-headers",
+    "sycl_tla_commit": "87f6850680a580654b9ea2c80dbc01aeb36ad231",
+    "retained_build_outputs": [
+      "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/long-prefill-native/out-v3/liblong_prefill_v3.so",
+      "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/long-prefill-v1/payload/vllm_xpu_kernels/liblong_prefill_v3.so"
+    ]
+  }
+]

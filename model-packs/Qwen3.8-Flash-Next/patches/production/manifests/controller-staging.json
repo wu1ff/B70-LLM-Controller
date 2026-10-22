@@ -1,0 +1,16 @@
+{
+  "status": "LOCAL_ONLY",
+  "version": "2.0.0-dev.1",
+  "proposed_public_pack_version": "2.0.0",
+  "version_reason": "Replacement of MTP5 with external DFlash2 assistant, new runtime and profile identifiers; maintainer must ratify before publication.",
+  "proposed_public_image": "ghcr.io/wu1ff/qwen38-flashnext-b70:dflash2",
+  "public_registry_digest": null,
+  "public_registry_available": false,
+  "accepted_local_image": "qwen38-flashnext-dflash2:integrated-serving-v1",
+  "accepted_local_id": "sha256:6e2ab4e686680a5208ff0119c4637341cba81942bd39b6576ea14dc8f547b83b",
+  "work_volume": "b70ctl-qwen38-flashnext-dflash2-work",
+  "launch_transport": "Controller bridge and published Local/LAN port; accepted campaign used host networking. No new launch boot performed.",
+  "source_archive_sha256": "b2c2d0ae12c229651c287d397b4e8f110b48399aa764228a6065c02bbe02445a",
+  "published_catalog": "Retains actual 1.0.4 URL and SHA256; no development entry is advertised.",
+  "controller_compatibility": "Requires this branch: installed b70ctl 1.0.1 rejects the explicit work-volume mount. Import retains only README.md and pack.json."
+}

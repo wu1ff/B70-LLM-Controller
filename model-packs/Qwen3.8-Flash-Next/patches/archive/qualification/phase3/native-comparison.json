@@ -1,0 +1,382 @@
+{
+  "libraries": [
+    {
+      "path": "vllm_xpu_kernels/libgdn_index64.so",
+      "sha256": {
+        "accepted": "3929e1a86c453dc0441ca1b015a0b18ecf11221def563da92c4b82afe83cc835",
+        "rebuilt": "3929e1a86c453dc0441ca1b015a0b18ecf11221def563da92c4b82afe83cc835"
+      },
+      "sha256_matches": true,
+      "elf_identity_exports_abi_match": true,
+      "build_ids": [],
+      "needed": [
+        "libtorch.so",
+        "libtorch_cpu.so",
+        "libtorch_xpu.so",
+        "libc10.so",
+        "libc10_xpu.so",
+        "libgdn_attn_kernels_xe_2.so",
+        "libsvml.so",
+        "libirng.so",
+        "libstdc++.so.6",
+        "libimf.so",
+        "libm.so.6",
+        "libgcc_s.so.1",
+        "libintlc.so.5",
+        "libsycl.so.9",
+        "libc.so.6"
+      ],
+      "load_paths": [
+        "$ORIGIN/../torch/lib:$ORIGIN"
+      ],
+      "compiler_comments": "String dump of section '.comment':\n  [     0]  GCC: (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\n  [    2d]  Intel(R) oneAPI DPC++/C++ Compiler 2026.1.1 (2026.1.1.20260724)\n\n",
+      "recipe": "native/native/build.sh",
+      "compiler": "OMIX icpx 2026.1.1.20260724"
+    },
+    {
+      "path": "b70-residency-shim/libl0_peer_residency_shim.so",
+      "sha256": {
+        "accepted": "ae2c82f549d97393268cbd7b90dba7cf38fd00dbccae54f090b1a545e5613b3c",
+        "rebuilt": "ae2c82f549d97393268cbd7b90dba7cf38fd00dbccae54f090b1a545e5613b3c"
+      },
+      "sha256_matches": true,
+      "elf_identity_exports_abi_match": true,
+      "build_ids": [
+        "8586cc1050298239bb439e45022432a4c9349227"
+      ],
+      "needed": [
+        "libze_loader.so.1",
+        "libc.so.6"
+      ],
+      "load_paths": [],
+      "compiler_comments": "String dump of section '.comment':\n  [     0]  GCC: (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\n\n",
+      "recipe": "build/Dockerfile.native:residency-shim",
+      "compiler": "vendor gcc"
+    },
+    {
+      "path": "vllm_xpu_kernels/libastra_moe.so",
+      "sha256": {
+        "accepted": "4cbc1d446e46cd1acf278bd3b887cb93518b97404516fb83be186e9a9cb3d9cf",
+        "rebuilt": "4cbc1d446e46cd1acf278bd3b887cb93518b97404516fb83be186e9a9cb3d9cf"
+      },
+      "sha256_matches": true,
+      "elf_identity_exports_abi_match": true,
+      "build_ids": [],
+      "needed": [
+        "libtorch.so",
+        "libtorch_cpu.so",
+        "libtorch_xpu.so",
+        "libc10.so",
+        "libc10_xpu.so",
+        "libsvml.so",
+        "libirng.so",
+        "libstdc++.so.6",
+        "libimf.so",
+        "libm.so.6",
+        "libgcc_s.so.1",
+        "libintlc.so.5",
+        "libsycl.so.9",
+        "libc.so.6"
+      ],
+      "load_paths": [
+        "$ORIGIN/../torch/lib:$ORIGIN"
+      ],
+      "compiler_comments": "String dump of section '.comment':\n  [     0]  GCC: (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\n  [    2d]  Intel(R) oneAPI DPC++/C++ Compiler 2026.1.1 (2026.1.1.20260724)\n\n",
+      "recipe": "native/astra500-native/build.sh",
+      "compiler": "OMIX icpx 2026.1.1.20260724"
+    },
+    {
+      "path": "vllm_xpu_kernels/libastra_hc.so",
+      "sha256": {
+        "accepted": "757dcc9a314cc76888c7e7d8fb53ceb90351198bb0793dc1ec6d87b7cbcad8ca",
+        "rebuilt": "757dcc9a314cc76888c7e7d8fb53ceb90351198bb0793dc1ec6d87b7cbcad8ca"
+      },
+      "sha256_matches": true,
+      "elf_identity_exports_abi_match": true,
+      "build_ids": [],
+      "needed": [
+        "libtorch.so",
+        "libtorch_cpu.so",
+        "libtorch_xpu.so",
+        "libc10.so",
+        "libc10_xpu.so",
+        "libsvml.so",
+        "libirng.so",
+        "libstdc++.so.6",
+        "libimf.so",
+        "libm.so.6",
+        "libgcc_s.so.1",
+        "libintlc.so.5",
+        "libsycl.so.9",
+        "libc.so.6"
+      ],
+      "load_paths": [
+        "$ORIGIN/../torch/lib:$ORIGIN"
+      ],
+      "compiler_comments": "String dump of section '.comment':\n  [     0]  GCC: (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\n  [    2d]  Intel(R) oneAPI DPC++/C++ Compiler 2026.1.1 (2026.1.1.20260724)\n\n",
+      "recipe": "native/astra500-structural-hc/build-v3.sh",
+      "compiler": "OMIX icpx 2026.1.1.20260724"
+    },
+    {
+      "path": "vllm_xpu_kernels/libastra_direct.so",
+      "sha256": {
+        "accepted": "1a7ce74e6dc26c64e92d88a4a0f69a62316f4b33ef39d9fac6f2b5c2f915134f",
+        "rebuilt": "1a7ce74e6dc26c64e92d88a4a0f69a62316f4b33ef39d9fac6f2b5c2f915134f"
+      },
+      "sha256_matches": true,
+      "elf_identity_exports_abi_match": true,
+      "build_ids": [],
+      "needed": [
+        "libtorch.so",
+        "libtorch_cpu.so",
+        "libtorch_xpu.so",
+        "libc10.so",
+        "libc10_xpu.so",
+        "libsvml.so",
+        "libirng.so",
+        "libstdc++.so.6",
+        "libimf.so",
+        "libm.so.6",
+        "libgcc_s.so.1",
+        "libintlc.so.5",
+        "libsycl.so.9",
+        "libc.so.6"
+      ],
+      "load_paths": [
+        "$ORIGIN/../torch/lib:$ORIGIN"
+      ],
+      "compiler_comments": "String dump of section '.comment':\n  [     0]  GCC: (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\n  [    2d]  Intel(R) oneAPI DPC++/C++ Compiler 2026.1.1 (2026.1.1.20260724)\n\n",
+      "recipe": "native/astra500-structural-moe/build.sh",
+      "compiler": "OMIX icpx 2026.1.1.20260724"
+    },
+    {
+      "path": "vllm_xpu_kernels/libastra_groups.so",
+      "sha256": {
+        "accepted": "7eda4138454793a433e5a2d46b6b92467a4e6be83c55873a5584d70df76a7017",
+        "rebuilt": "7eda4138454793a433e5a2d46b6b92467a4e6be83c55873a5584d70df76a7017"
+      },
+      "sha256_matches": true,
+      "elf_identity_exports_abi_match": true,
+      "build_ids": [],
+      "needed": [
+        "libtorch.so",
+        "libtorch_cpu.so",
+        "libtorch_xpu.so",
+        "libc10.so",
+        "libc10_xpu.so",
+        "libsvml.so",
+        "libirng.so",
+        "libstdc++.so.6",
+        "libimf.so",
+        "libm.so.6",
+        "libgcc_s.so.1",
+        "libintlc.so.5",
+        "libsycl.so.9",
+        "libc.so.6"
+      ],
+      "load_paths": [
+        "$ORIGIN/../torch/lib:$ORIGIN"
+      ],
+      "compiler_comments": "String dump of section '.comment':\n  [     0]  GCC: (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\n  [    2d]  Intel(R) oneAPI DPC++/C++ Compiler 2026.1.1 (2026.1.1.20260724)\n\n",
+      "recipe": "native/astra500-ownership-groups/build.sh",
+      "compiler": "OMIX icpx 2026.1.1.20260724"
+    },
+    {
+      "path": "vllm_xpu_kernels/libastra_batch.so",
+      "sha256": {
+        "accepted": "87ee25cdbad3d6877c4a0b2da2869cfd47736bd788c3b4280c81f7857cf66853",
+        "rebuilt": "87ee25cdbad3d6877c4a0b2da2869cfd47736bd788c3b4280c81f7857cf66853"
+      },
+      "sha256_matches": true,
+      "elf_identity_exports_abi_match": true,
+      "build_ids": [],
+      "needed": [
+        "libtorch.so",
+        "libtorch_cpu.so",
+        "libtorch_xpu.so",
+        "libc10.so",
+        "libc10_xpu.so",
+        "libsvml.so",
+        "libirng.so",
+        "libstdc++.so.6",
+        "libimf.so",
+        "libm.so.6",
+        "libgcc_s.so.1",
+        "libintlc.so.5",
+        "libsycl.so.9",
+        "libc.so.6"
+      ],
+      "load_paths": [
+        "$ORIGIN/../torch/lib:$ORIGIN"
+      ],
+      "compiler_comments": "String dump of section '.comment':\n  [     0]  GCC: (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\n  [    2d]  Intel(R) oneAPI DPC++/C++ Compiler 2026.1.1 (2026.1.1.20260724)\n\n",
+      "recipe": "native/astra500-ownership-batch/build.sh",
+      "compiler": "OMIX icpx 2026.1.1.20260724"
+    },
+    {
+      "path": "vllm_xpu_kernels/libbeyond_prefill.so",
+      "sha256": {
+        "accepted": "df9a6c12756afbfedb0bcc861a35edeb35f52ca1b3cc14406d6b6c19dc479ee4",
+        "rebuilt": "df9a6c12756afbfedb0bcc861a35edeb35f52ca1b3cc14406d6b6c19dc479ee4"
+      },
+      "sha256_matches": true,
+      "elf_identity_exports_abi_match": true,
+      "build_ids": [],
+      "needed": [
+        "libtorch.so",
+        "libtorch_cpu.so",
+        "libtorch_xpu.so",
+        "libc10.so",
+        "libc10_xpu.so",
+        "libsvml.so",
+        "libirng.so",
+        "libstdc++.so.6",
+        "libimf.so",
+        "libm.so.6",
+        "libgcc_s.so.1",
+        "libintlc.so.5",
+        "libsycl.so.9",
+        "libc.so.6"
+      ],
+      "load_paths": [
+        "$ORIGIN/../torch/lib:$ORIGIN"
+      ],
+      "compiler_comments": "String dump of section '.comment':\n  [     0]  GCC: (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\n  [    2d]  Intel(R) oneAPI DPC++/C++ Compiler 2026.1.1 (2026.1.1.20260724)\n\n",
+      "recipe": "native/astra500-beyond-prefill/build.sh",
+      "compiler": "OMIX icpx 2026.1.1.20260724"
+    },
+    {
+      "path": "vllm_xpu_kernels/libdominant_w4_layout.so",
+      "sha256": {
+        "accepted": "c5a87cb0762f3ed85defa241f491bf480d46fdfd0d58fe9a535e43fde2aa3e0c",
+        "rebuilt": "c5a87cb0762f3ed85defa241f491bf480d46fdfd0d58fe9a535e43fde2aa3e0c"
+      },
+      "sha256_matches": true,
+      "elf_identity_exports_abi_match": true,
+      "build_ids": [],
+      "needed": [
+        "libtorch.so",
+        "libtorch_cpu.so",
+        "libtorch_xpu.so",
+        "libc10.so",
+        "libc10_xpu.so",
+        "libsvml.so",
+        "libirng.so",
+        "libstdc++.so.6",
+        "libimf.so",
+        "libm.so.6",
+        "libgcc_s.so.1",
+        "libintlc.so.5",
+        "libsycl.so.9",
+        "libc.so.6"
+      ],
+      "load_paths": [
+        "$ORIGIN/../torch/lib:$ORIGIN"
+      ],
+      "compiler_comments": "String dump of section '.comment':\n  [     0]  GCC: (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\n  [    2d]  Intel(R) oneAPI DPC++/C++ Compiler 2026.1.1 (2026.1.1.20260724)\n\n",
+      "recipe": "native/astra500-dominant-native/build.sh",
+      "compiler": "OMIX icpx 2026.1.1.20260724"
+    },
+    {
+      "path": "vllm_xpu_kernels/libserving_prefill.so",
+      "sha256": {
+        "accepted": "2e317686ebf346b0e0436f9740c06888b4a49a7706168a57c6b2aad83b8f2b6e",
+        "rebuilt": "2e317686ebf346b0e0436f9740c06888b4a49a7706168a57c6b2aad83b8f2b6e"
+      },
+      "sha256_matches": true,
+      "elf_identity_exports_abi_match": true,
+      "build_ids": [],
+      "needed": [
+        "libtorch.so",
+        "libtorch_cpu.so",
+        "libtorch_xpu.so",
+        "libc10.so",
+        "libc10_xpu.so",
+        "libsvml.so",
+        "libirng.so",
+        "libstdc++.so.6",
+        "libimf.so",
+        "libm.so.6",
+        "libgcc_s.so.1",
+        "libintlc.so.5",
+        "libsycl.so.9",
+        "libc.so.6"
+      ],
+      "load_paths": [
+        "$ORIGIN/../torch/lib:$ORIGIN"
+      ],
+      "compiler_comments": "String dump of section '.comment':\n  [     0]  GCC: (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\n  [    2d]  Intel(R) oneAPI DPC++/C++ Compiler 2026.1.1 (2026.1.1.20260724)\n\n",
+      "recipe": "native/prefill-native/build.sh",
+      "compiler": "OMIX icpx 2026.1.1.20260724"
+    },
+    {
+      "path": "vllm_xpu_kernels/liblong_hc.so",
+      "sha256": {
+        "accepted": "3f2c7cfdf1aa251e73a80a8244276a6138ab547af91b7e2927667a384751e2db",
+        "rebuilt": "3f2c7cfdf1aa251e73a80a8244276a6138ab547af91b7e2927667a384751e2db"
+      },
+      "sha256_matches": true,
+      "elf_identity_exports_abi_match": true,
+      "build_ids": [],
+      "needed": [
+        "libtorch.so",
+        "libtorch_cpu.so",
+        "libtorch_xpu.so",
+        "libc10.so",
+        "libc10_xpu.so",
+        "libsvml.so",
+        "libirng.so",
+        "libstdc++.so.6",
+        "libimf.so",
+        "libm.so.6",
+        "libgcc_s.so.1",
+        "libintlc.so.5",
+        "libsycl.so.9",
+        "libc.so.6"
+      ],
+      "load_paths": [
+        "$ORIGIN/../torch/lib:$ORIGIN"
+      ],
+      "compiler_comments": "String dump of section '.comment':\n  [     0]  GCC: (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\n  [    2d]  Intel(R) oneAPI DPC++/C++ Compiler 2026.1.1 (2026.1.1.20260724)\n\n",
+      "recipe": "native/long-hc-selected/build.sh",
+      "compiler": "OMIX icpx 2026.1.1.20260724"
+    },
+    {
+      "path": "vllm_xpu_kernels/liblong_prefill_v3.so",
+      "sha256": {
+        "accepted": "ebb747ad926bc866f473bb3a9bab34a7460bd1d526ed9c5b0954a7af7daceb1f",
+        "rebuilt": "ebb747ad926bc866f473bb3a9bab34a7460bd1d526ed9c5b0954a7af7daceb1f"
+      },
+      "sha256_matches": true,
+      "elf_identity_exports_abi_match": true,
+      "build_ids": [],
+      "needed": [
+        "libtorch.so",
+        "libtorch_cpu.so",
+        "libtorch_xpu.so",
+        "libc10.so",
+        "libc10_xpu.so",
+        "libsvml.so",
+        "libirng.so",
+        "libstdc++.so.6",
+        "libimf.so",
+        "libm.so.6",
+        "libgcc_s.so.1",
+        "libintlc.so.5",
+        "libsycl.so.9",
+        "libc.so.6"
+      ],
+      "load_paths": [
+        "$ORIGIN/../torch/lib:$ORIGIN"
+      ],
+      "compiler_comments": "String dump of section '.comment':\n  [     0]  GCC: (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\n  [    2d]  Intel(R) oneAPI DPC++/C++ Compiler 2026.1.1 (2026.1.1.20260724)\n\n",
+      "recipe": "native/long-prefill-native/build.sh",
+      "compiler": "OMIX icpx 2026.1.1.20260724"
+    }
+  ],
+  "all_twelve_byte_identical": true,
+  "all_elf_comparisons_identical": true,
+  "nondeterminism_observed": false,
+  "build_cache": "disabled with --no-cache",
+  "accepted_artifact_use": "comparison only; never an input to native/runtime builds"
+}

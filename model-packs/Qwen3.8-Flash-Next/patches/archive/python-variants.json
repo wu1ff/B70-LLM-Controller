@@ -1,0 +1,962 @@
+[
+  {
+    "bundle_path": "archive/objects/8bcc88090f65aa3bf68910dcf99beccee61228f62158fc12a3148d8eb0d3f6de",
+    "bytes": 1870,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/models/qwen4_exp/nvidia/b70_c1_graph.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/astra500-base/payload/vllm/models/qwen4_exp/nvidia/b70_c1_graph.py",
+    "sha256": "8bcc88090f65aa3bf68910dcf99beccee61228f62158fc12a3148d8eb0d3f6de"
+  },
+  {
+    "bundle_path": "archive/objects/c63f717e56fa077b80ef9fb016900b8ae57f8016b43a8352b6776c560d01243d",
+    "bytes": 16038,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/models/qwen4_exp/nvidia/b70_disk.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/astra500-base/payload/vllm/models/qwen4_exp/nvidia/b70_disk.py",
+    "sha256": "c63f717e56fa077b80ef9fb016900b8ae57f8016b43a8352b6776c560d01243d"
+  },
+  {
+    "bundle_path": "archive/objects/e711cf4a18aadcecb9bc76296cc8dd80b380ba3d6eb0637f6ba2b4e7aab5e8b6",
+    "bytes": 4232,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/models/qwen4_exp/nvidia/b70_hc_gemm.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/astra500-base/payload/vllm/models/qwen4_exp/nvidia/b70_hc_gemm.py",
+    "sha256": "e711cf4a18aadcecb9bc76296cc8dd80b380ba3d6eb0637f6ba2b4e7aab5e8b6"
+  },
+  {
+    "bundle_path": "archive/objects/bae40a838960c1ba7ef4a0c7b6f23982921661c0c827c37970235ad3414edabc",
+    "bytes": 13932,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/models/qwen4_exp/nvidia/b70_hyperconnection.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/astra500-base/payload/vllm/models/qwen4_exp/nvidia/b70_hyperconnection.py",
+    "sha256": "bae40a838960c1ba7ef4a0c7b6f23982921661c0c827c37970235ad3414edabc"
+  },
+  {
+    "bundle_path": "archive/objects/3ce19296978ca9f265802d01e6c814824375f2a3eefcd50329d270d2e11ac312",
+    "bytes": 2269,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/models/qwen4_exp/nvidia/b70_target_attention.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/astra500-base/payload/vllm/models/qwen4_exp/nvidia/b70_target_attention.py",
+    "sha256": "3ce19296978ca9f265802d01e6c814824375f2a3eefcd50329d270d2e11ac312"
+  },
+  {
+    "bundle_path": "archive/objects/c53baec9f2892fd32a30346a7b66eb0cc835ccfecbdde03e43f834bca11b0c85",
+    "bytes": 8671,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/models/qwen4_exp/nvidia/b70_target_graph.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/astra500-base/payload/vllm/models/qwen4_exp/nvidia/b70_target_graph.py",
+    "sha256": "c53baec9f2892fd32a30346a7b66eb0cc835ccfecbdde03e43f834bca11b0c85"
+  },
+  {
+    "bundle_path": "archive/objects/8dc55fc24395c15119a4e0a367b90b227a51be52a0f46dd6f71da9836ff22981",
+    "bytes": 2704,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/models/qwen4_exp/nvidia/c1_verify.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/astra500-base/payload/vllm/models/qwen4_exp/nvidia/c1_verify.py",
+    "sha256": "8dc55fc24395c15119a4e0a367b90b227a51be52a0f46dd6f71da9836ff22981"
+  },
+  {
+    "bundle_path": "archive/objects/097e75bf3e65c79cab61cf3312b884c28a58bb7cce51a533a117396c2633a7b1",
+    "bytes": 108692,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/v1/worker/gpu/model_runner.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/astra500-base/payload/vllm/v1/worker/gpu/model_runner.py",
+    "sha256": "097e75bf3e65c79cab61cf3312b884c28a58bb7cce51a533a117396c2633a7b1"
+  },
+  {
+    "bundle_path": "archive/objects/048f2265e8e70a77bd0de30aa7a5a5f1f1431fd6387a9bd21da4e1e3817ceb5f",
+    "bytes": 18418,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm_xpu_kernels/fused_moe_interface.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/astra500-base/payload/vllm_xpu_kernels/fused_moe_interface.py",
+    "sha256": "048f2265e8e70a77bd0de30aa7a5a5f1f1431fd6387a9bd21da4e1e3817ceb5f"
+  },
+  {
+    "bundle_path": "archive/objects/98fe5e7b44c7e8868991bfacdf6298431b6af68872b124d375b84465fddd2fdd",
+    "bytes": 7600,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm_xpu_kernels/astra_ownership.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/astra500-beyond-context/payload/vllm_xpu_kernels/astra_ownership.py",
+    "sha256": "98fe5e7b44c7e8868991bfacdf6298431b6af68872b124d375b84465fddd2fdd"
+  },
+  {
+    "bundle_path": "archive/objects/18518136fac6c45e80a434ff7486da9c647ae388472f724d37db0f1722b3eadd",
+    "bytes": 16056,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/models/qwen4_exp/nvidia/b70_disk.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/astra500-c3-context/payload/vllm/models/qwen4_exp/nvidia/b70_disk.py",
+    "sha256": "18518136fac6c45e80a434ff7486da9c647ae388472f724d37db0f1722b3eadd"
+  },
+  {
+    "bundle_path": "archive/objects/cdc8bddedbe8fbfdffd15412c049b18ba9de2c3a670fb6f7125eed7c5830386d",
+    "bytes": 5418,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/models/qwen4_exp/nvidia/b70_hc_gemm.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/astra500-c3-context/payload/vllm/models/qwen4_exp/nvidia/b70_hc_gemm.py",
+    "sha256": "cdc8bddedbe8fbfdffd15412c049b18ba9de2c3a670fb6f7125eed7c5830386d"
+  },
+  {
+    "bundle_path": "archive/objects/5f21aa96b71065901296a80f67436697b95e29cc926c9ce606258cc5f80dce9c",
+    "bytes": 9517,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/models/qwen4_exp/nvidia/b70_target_graph.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/astra500-c3-context/payload/vllm/models/qwen4_exp/nvidia/b70_target_graph.py",
+    "sha256": "5f21aa96b71065901296a80f67436697b95e29cc926c9ce606258cc5f80dce9c"
+  },
+  {
+    "bundle_path": "archive/objects/596539bdc9f19dbcc9eada694c155e0344404b22acb67bc58b98f6d3c7d70df6",
+    "bytes": 18406,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm_xpu_kernels/fused_moe_interface.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/astra500-c3-context/payload/vllm_xpu_kernels/fused_moe_interface.py",
+    "sha256": "596539bdc9f19dbcc9eada694c155e0344404b22acb67bc58b98f6d3c7d70df6"
+  },
+  {
+    "bundle_path": "archive/objects/af066341297b621e468e8fe137647c6d75025fd1f9c50b97c9cbb115da02f23e",
+    "bytes": 7828,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm_xpu_kernels/astra_ownership.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/astra500-consumers-context/payload/vllm_xpu_kernels/astra_ownership.py",
+    "sha256": "af066341297b621e468e8fe137647c6d75025fd1f9c50b97c9cbb115da02f23e"
+  },
+  {
+    "bundle_path": "archive/objects/2d9f7c3579aa88fb9a60f3facaa1b2d6b465fa26afc3f6aac838ea91f7ae50ac",
+    "bytes": 16078,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/models/qwen4_exp/nvidia/b70_disk.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/astra500-context/payload/vllm/models/qwen4_exp/nvidia/b70_disk.py",
+    "sha256": "2d9f7c3579aa88fb9a60f3facaa1b2d6b465fa26afc3f6aac838ea91f7ae50ac"
+  },
+  {
+    "bundle_path": "archive/objects/cdc8bddedbe8fbfdffd15412c049b18ba9de2c3a670fb6f7125eed7c5830386d",
+    "bytes": 5418,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/models/qwen4_exp/nvidia/b70_hc_gemm.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/astra500-context/payload/vllm/models/qwen4_exp/nvidia/b70_hc_gemm.py",
+    "sha256": "cdc8bddedbe8fbfdffd15412c049b18ba9de2c3a670fb6f7125eed7c5830386d"
+  },
+  {
+    "bundle_path": "archive/objects/5f21aa96b71065901296a80f67436697b95e29cc926c9ce606258cc5f80dce9c",
+    "bytes": 9517,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/models/qwen4_exp/nvidia/b70_target_graph.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/astra500-context/payload/vllm/models/qwen4_exp/nvidia/b70_target_graph.py",
+    "sha256": "5f21aa96b71065901296a80f67436697b95e29cc926c9ce606258cc5f80dce9c"
+  },
+  {
+    "bundle_path": "archive/objects/2258c92fb0876610e2452d55a63d5f8c7d60554f627e2740aaccce7a81a795f6",
+    "bytes": 162171,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/v1/core/sched/scheduler.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/astra500-context/payload/vllm/v1/core/sched/scheduler.py",
+    "sha256": "2258c92fb0876610e2452d55a63d5f8c7d60554f627e2740aaccce7a81a795f6"
+  },
+  {
+    "bundle_path": "archive/objects/596539bdc9f19dbcc9eada694c155e0344404b22acb67bc58b98f6d3c7d70df6",
+    "bytes": 18406,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm_xpu_kernels/fused_moe_interface.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/astra500-context/payload/vllm_xpu_kernels/fused_moe_interface.py",
+    "sha256": "596539bdc9f19dbcc9eada694c155e0344404b22acb67bc58b98f6d3c7d70df6"
+  },
+  {
+    "bundle_path": "archive/objects/743c3842612876a2ccf13bf51b58a8252059dc7b906eb748d62a8b193b19a817",
+    "bytes": 78761,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/model_executor/layers/mamba/gdn/qwen_gdn_linear_attn.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/astra500-cycle-context/payload/vllm/model_executor/layers/mamba/gdn/qwen_gdn_linear_attn.py",
+    "sha256": "743c3842612876a2ccf13bf51b58a8252059dc7b906eb748d62a8b193b19a817"
+  },
+  {
+    "bundle_path": "archive/objects/1022a5a10c6014b9f0d6ea24ba7ceba040c390a893915c740bd28e37b4231218",
+    "bytes": 3227,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/v1/worker/gpu/astra_greedy.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/astra500-cycle-greedy-c1-context/payload/vllm/v1/worker/gpu/astra_greedy.py",
+    "sha256": "1022a5a10c6014b9f0d6ea24ba7ceba040c390a893915c740bd28e37b4231218"
+  },
+  {
+    "bundle_path": "archive/objects/cf3653a27c311bdc6dd0d60ba51759b6f2c019476776dd71bb31b79db8df8a9c",
+    "bytes": 4212,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/v1/worker/gpu/astra_greedy.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/astra500-cycle-greedy-guard-context/payload/vllm/v1/worker/gpu/astra_greedy.py",
+    "sha256": "cf3653a27c311bdc6dd0d60ba51759b6f2c019476776dd71bb31b79db8df8a9c"
+  },
+  {
+    "bundle_path": "archive/objects/0b6ce1f00ff18d8de1d8cf2bc3e9e6f39982308917d61eefd86d0d3f01ec6874",
+    "bytes": 14776,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/models/qwen4_exp/nvidia/b70_hyperconnection.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/astra500-cycle-hc-context/payload/vllm/models/qwen4_exp/nvidia/b70_hyperconnection.py",
+    "sha256": "0b6ce1f00ff18d8de1d8cf2bc3e9e6f39982308917d61eefd86d0d3f01ec6874"
+  },
+  {
+    "bundle_path": "archive/objects/cdc8bddedbe8fbfdffd15412c049b18ba9de2c3a670fb6f7125eed7c5830386d",
+    "bytes": 5418,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/models/qwen4_exp/nvidia/b70_hc_gemm.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/astra500-cycle-source/vllm/models/qwen4_exp/nvidia/b70_hc_gemm.py",
+    "sha256": "cdc8bddedbe8fbfdffd15412c049b18ba9de2c3a670fb6f7125eed7c5830386d"
+  },
+  {
+    "bundle_path": "archive/objects/5f21aa96b71065901296a80f67436697b95e29cc926c9ce606258cc5f80dce9c",
+    "bytes": 9517,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/models/qwen4_exp/nvidia/b70_target_graph.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/astra500-cycle-source/vllm/models/qwen4_exp/nvidia/b70_target_graph.py",
+    "sha256": "5f21aa96b71065901296a80f67436697b95e29cc926c9ce606258cc5f80dce9c"
+  },
+  {
+    "bundle_path": "archive/objects/097e75bf3e65c79cab61cf3312b884c28a58bb7cce51a533a117396c2633a7b1",
+    "bytes": 108692,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/v1/worker/gpu/model_runner.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/astra500-cycle-source/vllm/v1/worker/gpu/model_runner.py",
+    "sha256": "097e75bf3e65c79cab61cf3312b884c28a58bb7cce51a533a117396c2633a7b1"
+  },
+  {
+    "bundle_path": "archive/objects/0edc747aba8d545b9280f553595a95e841d6179a4b2cc0cf8c379326b8183728",
+    "bytes": 7688,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm_xpu_kernels/astra_ownership.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/astra500-dominant-context/payload/vllm_xpu_kernels/astra_ownership.py",
+    "sha256": "0edc747aba8d545b9280f553595a95e841d6179a4b2cc0cf8c379326b8183728"
+  },
+  {
+    "bundle_path": "archive/objects/cdc8bddedbe8fbfdffd15412c049b18ba9de2c3a670fb6f7125eed7c5830386d",
+    "bytes": 5418,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/models/qwen4_exp/nvidia/b70_hc_gemm.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/astra500-final-context/payload/vllm/models/qwen4_exp/nvidia/b70_hc_gemm.py",
+    "sha256": "cdc8bddedbe8fbfdffd15412c049b18ba9de2c3a670fb6f7125eed7c5830386d"
+  },
+  {
+    "bundle_path": "archive/objects/5f21aa96b71065901296a80f67436697b95e29cc926c9ce606258cc5f80dce9c",
+    "bytes": 9517,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/models/qwen4_exp/nvidia/b70_target_graph.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/astra500-final-context/payload/vllm/models/qwen4_exp/nvidia/b70_target_graph.py",
+    "sha256": "5f21aa96b71065901296a80f67436697b95e29cc926c9ce606258cc5f80dce9c"
+  },
+  {
+    "bundle_path": "archive/objects/596539bdc9f19dbcc9eada694c155e0344404b22acb67bc58b98f6d3c7d70df6",
+    "bytes": 18406,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm_xpu_kernels/fused_moe_interface.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/astra500-final-context/payload/vllm_xpu_kernels/fused_moe_interface.py",
+    "sha256": "596539bdc9f19dbcc9eada694c155e0344404b22acb67bc58b98f6d3c7d70df6"
+  },
+  {
+    "bundle_path": "archive/objects/35ffe861150240919aa3d9aadfce60987ac5456bed7b85d6534b2fab0e5ce2af",
+    "bytes": 6904,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm_xpu_kernels/astra_ownership.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/astra500-ownership-c2-context/payload/vllm_xpu_kernels/astra_ownership.py",
+    "sha256": "35ffe861150240919aa3d9aadfce60987ac5456bed7b85d6534b2fab0e5ce2af"
+  },
+  {
+    "bundle_path": "archive/objects/42633145bdddc278203e01737b3c9a8c314d2a9a8389d7f49d8af71e7b6c8743",
+    "bytes": 7062,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm_xpu_kernels/astra_ownership.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/astra500-ownership-c3-context/payload/vllm_xpu_kernels/astra_ownership.py",
+    "sha256": "42633145bdddc278203e01737b3c9a8c314d2a9a8389d7f49d8af71e7b6c8743"
+  },
+  {
+    "bundle_path": "archive/objects/76c9a354ac8482f477232315e9c355e3696e80c0ee07698469cf75bde9b22776",
+    "bytes": 6525,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm_xpu_kernels/astra_ownership.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/astra500-ownership-context/payload/vllm_xpu_kernels/astra_ownership.py",
+    "sha256": "76c9a354ac8482f477232315e9c355e3696e80c0ee07698469cf75bde9b22776"
+  },
+  {
+    "bundle_path": "archive/objects/2dbc7655668f9d86b03d35b81e8837bd9c3efe844f254473ce56d4c3d5506859",
+    "bytes": 18587,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm_xpu_kernels/fused_moe_interface.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/astra500-ownership-patch-base/vllm_xpu_kernels/fused_moe_interface.py",
+    "sha256": "2dbc7655668f9d86b03d35b81e8837bd9c3efe844f254473ce56d4c3d5506859"
+  },
+  {
+    "bundle_path": "archive/objects/b65eef37516a00b44c7242d1c679735e5751db08fb4237cd675e99bf1bf61c2a",
+    "bytes": 14692,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/models/qwen4_exp/nvidia/b70_hyperconnection.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/astra500-structural-c1-context/payload/vllm/models/qwen4_exp/nvidia/b70_hyperconnection.py",
+    "sha256": "b65eef37516a00b44c7242d1c679735e5751db08fb4237cd675e99bf1bf61c2a"
+  },
+  {
+    "bundle_path": "archive/objects/3e7a6184aea28f8d79d444af5280396e903340ab9485cf22780f87dd4fa74c46",
+    "bytes": 1771,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm_xpu_kernels/astra_structural.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/astra500-structural-c1-context/payload/vllm_xpu_kernels/astra_structural.py",
+    "sha256": "3e7a6184aea28f8d79d444af5280396e903340ab9485cf22780f87dd4fa74c46"
+  },
+  {
+    "bundle_path": "archive/objects/2dbc7655668f9d86b03d35b81e8837bd9c3efe844f254473ce56d4c3d5506859",
+    "bytes": 18587,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm_xpu_kernels/fused_moe_interface.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/astra500-structural-c1-context/payload/vllm_xpu_kernels/fused_moe_interface.py",
+    "sha256": "2dbc7655668f9d86b03d35b81e8837bd9c3efe844f254473ce56d4c3d5506859"
+  },
+  {
+    "bundle_path": "archive/objects/2dbc7655668f9d86b03d35b81e8837bd9c3efe844f254473ce56d4c3d5506859",
+    "bytes": 18587,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm_xpu_kernels/fused_moe_interface.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/astra500-structural-context/payload/vllm_xpu_kernels/fused_moe_interface.py",
+    "sha256": "2dbc7655668f9d86b03d35b81e8837bd9c3efe844f254473ce56d4c3d5506859"
+  },
+  {
+    "bundle_path": "archive/objects/215368e3bfd130b5246d9a2c3797cd8a73f4ff618818fa6e58b662d71b9b16da",
+    "bytes": 1865,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/models/qwen4_exp/nvidia/b70_hc_gemm.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/deep-c1-base/vllm/models/qwen4_exp/nvidia/b70_hc_gemm.py",
+    "sha256": "215368e3bfd130b5246d9a2c3797cd8a73f4ff618818fa6e58b662d71b9b16da"
+  },
+  {
+    "bundle_path": "archive/objects/38e0741773d2b60446f2565afa03c5aadbe5c46fece44848d76affaab8311b60",
+    "bytes": 7584,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/models/qwen4_exp/nvidia/b70_target_graph.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/deep-c1-base/vllm/models/qwen4_exp/nvidia/b70_target_graph.py",
+    "sha256": "38e0741773d2b60446f2565afa03c5aadbe5c46fece44848d76affaab8311b60"
+  },
+  {
+    "bundle_path": "archive/objects/e711cf4a18aadcecb9bc76296cc8dd80b380ba3d6eb0637f6ba2b4e7aab5e8b6",
+    "bytes": 4232,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/models/qwen4_exp/nvidia/b70_hc_gemm.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/deep-c1-context/payload/vllm/models/qwen4_exp/nvidia/b70_hc_gemm.py",
+    "sha256": "e711cf4a18aadcecb9bc76296cc8dd80b380ba3d6eb0637f6ba2b4e7aab5e8b6"
+  },
+  {
+    "bundle_path": "archive/objects/ee7fa4ec89615bd52d03aa6d7f63cd2efb53d85e69a3477660cba085ac0ad28f",
+    "bytes": 8337,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/models/qwen4_exp/nvidia/b70_target_graph.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/deep-c1-context/payload/vllm/models/qwen4_exp/nvidia/b70_target_graph.py",
+    "sha256": "ee7fa4ec89615bd52d03aa6d7f63cd2efb53d85e69a3477660cba085ac0ad28f"
+  },
+  {
+    "bundle_path": "archive/objects/e0851ada14696c81a0192ace7320003cc7761e267195886b2d56a13cac2188f4",
+    "bytes": 8425,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/models/qwen4_exp/nvidia/b70_target_graph.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/deep-width-context/payload/vllm/models/qwen4_exp/nvidia/b70_target_graph.py",
+    "sha256": "e0851ada14696c81a0192ace7320003cc7761e267195886b2d56a13cac2188f4"
+  },
+  {
+    "bundle_path": "archive/objects/5012f8fbc3c9f0e69995c391e1631d1254c6e04563668ad7c3834f6315fb1c32",
+    "bytes": 2712,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/models/qwen4_exp/nvidia/c1_verify.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/deep-width-context/payload/vllm/models/qwen4_exp/nvidia/c1_verify.py",
+    "sha256": "5012f8fbc3c9f0e69995c391e1631d1254c6e04563668ad7c3834f6315fb1c32"
+  },
+  {
+    "bundle_path": "archive/objects/8bcc88090f65aa3bf68910dcf99beccee61228f62158fc12a3148d8eb0d3f6de",
+    "bytes": 1870,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/models/qwen4_exp/nvidia/b70_c1_graph.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/fullwidth-base/vllm/models/qwen4_exp/nvidia/b70_c1_graph.py",
+    "sha256": "8bcc88090f65aa3bf68910dcf99beccee61228f62158fc12a3148d8eb0d3f6de"
+  },
+  {
+    "bundle_path": "archive/objects/c63f717e56fa077b80ef9fb016900b8ae57f8016b43a8352b6776c560d01243d",
+    "bytes": 16038,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/models/qwen4_exp/nvidia/b70_disk.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/fullwidth-base/vllm/models/qwen4_exp/nvidia/b70_disk.py",
+    "sha256": "c63f717e56fa077b80ef9fb016900b8ae57f8016b43a8352b6776c560d01243d"
+  },
+  {
+    "bundle_path": "archive/objects/71039561b1715b41890911ede1172ae390578dea6272f811a54b9b67e76ffd94",
+    "bytes": 14411,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/models/qwen4_exp/nvidia/b70_hyperconnection.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/fullwidth-base/vllm/models/qwen4_exp/nvidia/b70_hyperconnection.py",
+    "sha256": "71039561b1715b41890911ede1172ae390578dea6272f811a54b9b67e76ffd94"
+  },
+  {
+    "bundle_path": "archive/objects/38e0741773d2b60446f2565afa03c5aadbe5c46fece44848d76affaab8311b60",
+    "bytes": 7584,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/models/qwen4_exp/nvidia/b70_target_graph.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/fullwidth-base/vllm/models/qwen4_exp/nvidia/b70_target_graph.py",
+    "sha256": "38e0741773d2b60446f2565afa03c5aadbe5c46fece44848d76affaab8311b60"
+  },
+  {
+    "bundle_path": "archive/objects/8dc55fc24395c15119a4e0a367b90b227a51be52a0f46dd6f71da9836ff22981",
+    "bytes": 2704,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/models/qwen4_exp/nvidia/c1_verify.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/fullwidth-base/vllm/models/qwen4_exp/nvidia/c1_verify.py",
+    "sha256": "8dc55fc24395c15119a4e0a367b90b227a51be52a0f46dd6f71da9836ff22981"
+  },
+  {
+    "bundle_path": "archive/objects/8bcc88090f65aa3bf68910dcf99beccee61228f62158fc12a3148d8eb0d3f6de",
+    "bytes": 1870,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/models/qwen4_exp/nvidia/b70_c1_graph.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/fullwidth-context/payload/vllm/models/qwen4_exp/nvidia/b70_c1_graph.py",
+    "sha256": "8bcc88090f65aa3bf68910dcf99beccee61228f62158fc12a3148d8eb0d3f6de"
+  },
+  {
+    "bundle_path": "archive/objects/c63f717e56fa077b80ef9fb016900b8ae57f8016b43a8352b6776c560d01243d",
+    "bytes": 16038,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/models/qwen4_exp/nvidia/b70_disk.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/fullwidth-context/payload/vllm/models/qwen4_exp/nvidia/b70_disk.py",
+    "sha256": "c63f717e56fa077b80ef9fb016900b8ae57f8016b43a8352b6776c560d01243d"
+  },
+  {
+    "bundle_path": "archive/objects/38e0741773d2b60446f2565afa03c5aadbe5c46fece44848d76affaab8311b60",
+    "bytes": 7584,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/models/qwen4_exp/nvidia/b70_target_graph.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/fullwidth-context/payload/vllm/models/qwen4_exp/nvidia/b70_target_graph.py",
+    "sha256": "38e0741773d2b60446f2565afa03c5aadbe5c46fece44848d76affaab8311b60"
+  },
+  {
+    "bundle_path": "archive/objects/8dc55fc24395c15119a4e0a367b90b227a51be52a0f46dd6f71da9836ff22981",
+    "bytes": 2704,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/models/qwen4_exp/nvidia/c1_verify.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/fullwidth-context/payload/vllm/models/qwen4_exp/nvidia/c1_verify.py",
+    "sha256": "8dc55fc24395c15119a4e0a367b90b227a51be52a0f46dd6f71da9836ff22981"
+  },
+  {
+    "bundle_path": "archive/objects/798cd2b5645c899fcd41d7fde3dbbd048b25f691b78880d42fd34d3868838bd3",
+    "bytes": 16263,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/models/qwen4_exp/nvidia/b70_disk.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/integrated-v1/payload/vllm/models/qwen4_exp/nvidia/b70_disk.py",
+    "sha256": "798cd2b5645c899fcd41d7fde3dbbd048b25f691b78880d42fd34d3868838bd3"
+  },
+  {
+    "bundle_path": "archive/objects/8b2fa63e34ae9cd19f8a8a6315dbec2e38d0d8fd4db657a275cdbe1e55f96bee",
+    "bytes": 6925,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/models/qwen4_exp/nvidia/b70_hc_gemm.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/integrated-v1/payload/vllm/models/qwen4_exp/nvidia/b70_hc_gemm.py",
+    "sha256": "8b2fa63e34ae9cd19f8a8a6315dbec2e38d0d8fd4db657a275cdbe1e55f96bee"
+  },
+  {
+    "bundle_path": "archive/objects/33e207c44f5b546ef727d5f861dfacf0bef7e3bfb583ab0fbbf15f0a306a8826",
+    "bytes": 8639,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm_xpu_kernels/astra_ownership.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/integrated-v1/payload/vllm_xpu_kernels/astra_ownership.py",
+    "sha256": "33e207c44f5b546ef727d5f861dfacf0bef7e3bfb583ab0fbbf15f0a306a8826"
+  },
+  {
+    "bundle_path": "archive/objects/be09193a4a4970003a7ad8185f2e6cca6df0541967ef453a7e554a62996a50fd",
+    "bytes": 47406,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/_xpu_ops.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/mtp7-gap-base/vllm/_xpu_ops.py",
+    "sha256": "be09193a4a4970003a7ad8185f2e6cca6df0541967ef453a7e554a62996a50fd"
+  },
+  {
+    "bundle_path": "archive/objects/ee7fa4ec89615bd52d03aa6d7f63cd2efb53d85e69a3477660cba085ac0ad28f",
+    "bytes": 8337,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/models/qwen4_exp/nvidia/b70_target_graph.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/mtp7-gap-base/vllm/models/qwen4_exp/nvidia/b70_target_graph.py",
+    "sha256": "ee7fa4ec89615bd52d03aa6d7f63cd2efb53d85e69a3477660cba085ac0ad28f"
+  },
+  {
+    "bundle_path": "archive/objects/3ce19296978ca9f265802d01e6c814824375f2a3eefcd50329d270d2e11ac312",
+    "bytes": 2269,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/models/qwen4_exp/nvidia/b70_target_attention.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/mtp7-gap-context/payload/vllm/models/qwen4_exp/nvidia/b70_target_attention.py",
+    "sha256": "3ce19296978ca9f265802d01e6c814824375f2a3eefcd50329d270d2e11ac312"
+  },
+  {
+    "bundle_path": "archive/objects/c53baec9f2892fd32a30346a7b66eb0cc835ccfecbdde03e43f834bca11b0c85",
+    "bytes": 8671,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/models/qwen4_exp/nvidia/b70_target_graph.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/mtp7-gap-context/payload/vllm/models/qwen4_exp/nvidia/b70_target_graph.py",
+    "sha256": "c53baec9f2892fd32a30346a7b66eb0cc835ccfecbdde03e43f834bca11b0c85"
+  },
+  {
+    "bundle_path": "archive/objects/3ce19296978ca9f265802d01e6c814824375f2a3eefcd50329d270d2e11ac312",
+    "bytes": 2269,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/models/qwen4_exp/nvidia/b70_target_attention.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/mtp7-gap-reproduction/vllm/models/qwen4_exp/nvidia/b70_target_attention.py",
+    "sha256": "3ce19296978ca9f265802d01e6c814824375f2a3eefcd50329d270d2e11ac312"
+  },
+  {
+    "bundle_path": "archive/objects/c53baec9f2892fd32a30346a7b66eb0cc835ccfecbdde03e43f834bca11b0c85",
+    "bytes": 8671,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/models/qwen4_exp/nvidia/b70_target_graph.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/mtp7-gap-reproduction/vllm/models/qwen4_exp/nvidia/b70_target_graph.py",
+    "sha256": "c53baec9f2892fd32a30346a7b66eb0cc835ccfecbdde03e43f834bca11b0c85"
+  },
+  {
+    "bundle_path": "archive/objects/be09193a4a4970003a7ad8185f2e6cca6df0541967ef453a7e554a62996a50fd",
+    "bytes": 47406,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/_xpu_ops.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/phase2-reproduction/vllm/_xpu_ops.py",
+    "sha256": "be09193a4a4970003a7ad8185f2e6cca6df0541967ef453a7e554a62996a50fd"
+  },
+  {
+    "bundle_path": "archive/objects/2681d140001b41b163de78a73bf27e09a44dfcd7b88f9c3e2c04a7b04029b602",
+    "bytes": 49428,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/model_executor/models/config.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/phase2-reproduction/vllm/model_executor/models/config.py",
+    "sha256": "2681d140001b41b163de78a73bf27e09a44dfcd7b88f9c3e2c04a7b04029b602"
+  },
+  {
+    "bundle_path": "archive/objects/9d094134302e53ea5db27e5615459287b64916dcc06e857a7fe224e1efa194b8",
+    "bytes": 15949,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/models/qwen4_exp/nvidia/b70_disk.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/phase2-reproduction/vllm/models/qwen4_exp/nvidia/b70_disk.py",
+    "sha256": "9d094134302e53ea5db27e5615459287b64916dcc06e857a7fe224e1efa194b8"
+  },
+  {
+    "bundle_path": "archive/objects/215368e3bfd130b5246d9a2c3797cd8a73f4ff618818fa6e58b662d71b9b16da",
+    "bytes": 1865,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/models/qwen4_exp/nvidia/b70_hc_gemm.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/phase2-reproduction/vllm/models/qwen4_exp/nvidia/b70_hc_gemm.py",
+    "sha256": "215368e3bfd130b5246d9a2c3797cd8a73f4ff618818fa6e58b662d71b9b16da"
+  },
+  {
+    "bundle_path": "archive/objects/77713a7b963e676c2eb2701c0a84662248d8db34515495086bd8d6cf4bb62cdc",
+    "bytes": 12961,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/models/qwen4_exp/nvidia/b70_hyperconnection.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/phase2-reproduction/vllm/models/qwen4_exp/nvidia/b70_hyperconnection.py",
+    "sha256": "77713a7b963e676c2eb2701c0a84662248d8db34515495086bd8d6cf4bb62cdc"
+  },
+  {
+    "bundle_path": "archive/objects/43cac6ce830c8fcc252a60f197bf72585f7580ca92813f05d3b5d1639a4dfaf5",
+    "bytes": 8494,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/models/qwen4_exp/nvidia/c1_verify.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/phase2-reproduction/vllm/models/qwen4_exp/nvidia/c1_verify.py",
+    "sha256": "43cac6ce830c8fcc252a60f197bf72585f7580ca92813f05d3b5d1639a4dfaf5"
+  },
+  {
+    "bundle_path": "archive/objects/097e75bf3e65c79cab61cf3312b884c28a58bb7cce51a533a117396c2633a7b1",
+    "bytes": 108692,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/v1/worker/gpu/model_runner.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/phase2-reproduction/vllm/v1/worker/gpu/model_runner.py",
+    "sha256": "097e75bf3e65c79cab61cf3312b884c28a58bb7cce51a533a117396c2633a7b1"
+  },
+  {
+    "bundle_path": "archive/objects/2681d140001b41b163de78a73bf27e09a44dfcd7b88f9c3e2c04a7b04029b602",
+    "bytes": 49428,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/model_executor/models/config.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/phase3-context/sources/vllm/vllm/model_executor/models/config.py",
+    "sha256": "2681d140001b41b163de78a73bf27e09a44dfcd7b88f9c3e2c04a7b04029b602"
+  },
+  {
+    "bundle_path": "archive/objects/9d094134302e53ea5db27e5615459287b64916dcc06e857a7fe224e1efa194b8",
+    "bytes": 15949,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/models/qwen4_exp/nvidia/b70_disk.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/phase3-context/sources/vllm/vllm/models/qwen4_exp/nvidia/b70_disk.py",
+    "sha256": "9d094134302e53ea5db27e5615459287b64916dcc06e857a7fe224e1efa194b8"
+  },
+  {
+    "bundle_path": "archive/objects/e711cf4a18aadcecb9bc76296cc8dd80b380ba3d6eb0637f6ba2b4e7aab5e8b6",
+    "bytes": 4232,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/models/qwen4_exp/nvidia/b70_hc_gemm.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/phase3-context/sources/vllm/vllm/models/qwen4_exp/nvidia/b70_hc_gemm.py",
+    "sha256": "e711cf4a18aadcecb9bc76296cc8dd80b380ba3d6eb0637f6ba2b4e7aab5e8b6"
+  },
+  {
+    "bundle_path": "archive/objects/77713a7b963e676c2eb2701c0a84662248d8db34515495086bd8d6cf4bb62cdc",
+    "bytes": 12961,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/models/qwen4_exp/nvidia/b70_hyperconnection.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/phase3-context/sources/vllm/vllm/models/qwen4_exp/nvidia/b70_hyperconnection.py",
+    "sha256": "77713a7b963e676c2eb2701c0a84662248d8db34515495086bd8d6cf4bb62cdc"
+  },
+  {
+    "bundle_path": "archive/objects/79708f7964f602d2eccf6ffead136714af6b66941bcde300b91d3caa037c4598",
+    "bytes": 1728,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/models/qwen4_exp/nvidia/c1_verify.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/phase3-context/sources/vllm/vllm/models/qwen4_exp/nvidia/c1_verify.py",
+    "sha256": "79708f7964f602d2eccf6ffead136714af6b66941bcde300b91d3caa037c4598"
+  },
+  {
+    "bundle_path": "archive/objects/097e75bf3e65c79cab61cf3312b884c28a58bb7cce51a533a117396c2633a7b1",
+    "bytes": 108692,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/v1/worker/gpu/model_runner.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/phase3-context/sources/vllm/vllm/v1/worker/gpu/model_runner.py",
+    "sha256": "097e75bf3e65c79cab61cf3312b884c28a58bb7cce51a533a117396c2633a7b1"
+  },
+  {
+    "bundle_path": "archive/objects/be09193a4a4970003a7ad8185f2e6cca6df0541967ef453a7e554a62996a50fd",
+    "bytes": 47406,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/_xpu_ops.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/phase3-reproduction/vllm/_xpu_ops.py",
+    "sha256": "be09193a4a4970003a7ad8185f2e6cca6df0541967ef453a7e554a62996a50fd"
+  },
+  {
+    "bundle_path": "archive/objects/2681d140001b41b163de78a73bf27e09a44dfcd7b88f9c3e2c04a7b04029b602",
+    "bytes": 49428,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/model_executor/models/config.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/phase3-reproduction/vllm/model_executor/models/config.py",
+    "sha256": "2681d140001b41b163de78a73bf27e09a44dfcd7b88f9c3e2c04a7b04029b602"
+  },
+  {
+    "bundle_path": "archive/objects/9d094134302e53ea5db27e5615459287b64916dcc06e857a7fe224e1efa194b8",
+    "bytes": 15949,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/models/qwen4_exp/nvidia/b70_disk.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/phase3-reproduction/vllm/models/qwen4_exp/nvidia/b70_disk.py",
+    "sha256": "9d094134302e53ea5db27e5615459287b64916dcc06e857a7fe224e1efa194b8"
+  },
+  {
+    "bundle_path": "archive/objects/215368e3bfd130b5246d9a2c3797cd8a73f4ff618818fa6e58b662d71b9b16da",
+    "bytes": 1865,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/models/qwen4_exp/nvidia/b70_hc_gemm.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/phase3-reproduction/vllm/models/qwen4_exp/nvidia/b70_hc_gemm.py",
+    "sha256": "215368e3bfd130b5246d9a2c3797cd8a73f4ff618818fa6e58b662d71b9b16da"
+  },
+  {
+    "bundle_path": "archive/objects/77713a7b963e676c2eb2701c0a84662248d8db34515495086bd8d6cf4bb62cdc",
+    "bytes": 12961,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/models/qwen4_exp/nvidia/b70_hyperconnection.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/phase3-reproduction/vllm/models/qwen4_exp/nvidia/b70_hyperconnection.py",
+    "sha256": "77713a7b963e676c2eb2701c0a84662248d8db34515495086bd8d6cf4bb62cdc"
+  },
+  {
+    "bundle_path": "archive/objects/79708f7964f602d2eccf6ffead136714af6b66941bcde300b91d3caa037c4598",
+    "bytes": 1728,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/models/qwen4_exp/nvidia/c1_verify.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/phase3-reproduction/vllm/models/qwen4_exp/nvidia/c1_verify.py",
+    "sha256": "79708f7964f602d2eccf6ffead136714af6b66941bcde300b91d3caa037c4598"
+  },
+  {
+    "bundle_path": "archive/objects/097e75bf3e65c79cab61cf3312b884c28a58bb7cce51a533a117396c2633a7b1",
+    "bytes": 108692,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/v1/worker/gpu/model_runner.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/phase3-reproduction/vllm/v1/worker/gpu/model_runner.py",
+    "sha256": "097e75bf3e65c79cab61cf3312b884c28a58bb7cce51a533a117396c2633a7b1"
+  },
+  {
+    "bundle_path": "archive/objects/aadb423846c41df9aa1e9a311f9799938e8df2fc7492fd570efcd5fbc0143244",
+    "bytes": 1865,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/models/qwen4_exp/nvidia/b70_c1_graph.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/phase4-context/sources/vllm/vllm/models/qwen4_exp/nvidia/b70_c1_graph.py",
+    "sha256": "aadb423846c41df9aa1e9a311f9799938e8df2fc7492fd570efcd5fbc0143244"
+  },
+  {
+    "bundle_path": "archive/objects/bae40a838960c1ba7ef4a0c7b6f23982921661c0c827c37970235ad3414edabc",
+    "bytes": 13932,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/models/qwen4_exp/nvidia/b70_hyperconnection.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/phase4-context/sources/vllm/vllm/models/qwen4_exp/nvidia/b70_hyperconnection.py",
+    "sha256": "bae40a838960c1ba7ef4a0c7b6f23982921661c0c827c37970235ad3414edabc"
+  },
+  {
+    "bundle_path": "archive/objects/cef9665deecc5234195da1d409e8c17333efdfcb820d46cedc60cfed67fa7f9e",
+    "bytes": 2207,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/models/qwen4_exp/nvidia/c1_verify.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/phase4-context/sources/vllm/vllm/models/qwen4_exp/nvidia/c1_verify.py",
+    "sha256": "cef9665deecc5234195da1d409e8c17333efdfcb820d46cedc60cfed67fa7f9e"
+  },
+  {
+    "bundle_path": "archive/objects/aadb423846c41df9aa1e9a311f9799938e8df2fc7492fd570efcd5fbc0143244",
+    "bytes": 1865,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/models/qwen4_exp/nvidia/b70_c1_graph.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/phase4-patch-base/vllm/models/qwen4_exp/nvidia/b70_c1_graph.py",
+    "sha256": "aadb423846c41df9aa1e9a311f9799938e8df2fc7492fd570efcd5fbc0143244"
+  },
+  {
+    "bundle_path": "archive/objects/bae40a838960c1ba7ef4a0c7b6f23982921661c0c827c37970235ad3414edabc",
+    "bytes": 13932,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/models/qwen4_exp/nvidia/b70_hyperconnection.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/phase4-patch-base/vllm/models/qwen4_exp/nvidia/b70_hyperconnection.py",
+    "sha256": "bae40a838960c1ba7ef4a0c7b6f23982921661c0c827c37970235ad3414edabc"
+  },
+  {
+    "bundle_path": "archive/objects/cef9665deecc5234195da1d409e8c17333efdfcb820d46cedc60cfed67fa7f9e",
+    "bytes": 2207,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/models/qwen4_exp/nvidia/c1_verify.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/phase4-patch-base/vllm/models/qwen4_exp/nvidia/c1_verify.py",
+    "sha256": "cef9665deecc5234195da1d409e8c17333efdfcb820d46cedc60cfed67fa7f9e"
+  },
+  {
+    "bundle_path": "archive/objects/aadb423846c41df9aa1e9a311f9799938e8df2fc7492fd570efcd5fbc0143244",
+    "bytes": 1865,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/models/qwen4_exp/nvidia/b70_c1_graph.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/phase4-patch-corrected/vllm/models/qwen4_exp/nvidia/b70_c1_graph.py",
+    "sha256": "aadb423846c41df9aa1e9a311f9799938e8df2fc7492fd570efcd5fbc0143244"
+  },
+  {
+    "bundle_path": "archive/objects/bae40a838960c1ba7ef4a0c7b6f23982921661c0c827c37970235ad3414edabc",
+    "bytes": 13932,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/models/qwen4_exp/nvidia/b70_hyperconnection.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/phase4-patch-corrected/vllm/models/qwen4_exp/nvidia/b70_hyperconnection.py",
+    "sha256": "bae40a838960c1ba7ef4a0c7b6f23982921661c0c827c37970235ad3414edabc"
+  },
+  {
+    "bundle_path": "archive/objects/cef9665deecc5234195da1d409e8c17333efdfcb820d46cedc60cfed67fa7f9e",
+    "bytes": 2207,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/models/qwen4_exp/nvidia/c1_verify.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/phase4-patch-corrected/vllm/models/qwen4_exp/nvidia/c1_verify.py",
+    "sha256": "cef9665deecc5234195da1d409e8c17333efdfcb820d46cedc60cfed67fa7f9e"
+  },
+  {
+    "bundle_path": "archive/objects/be09193a4a4970003a7ad8185f2e6cca6df0541967ef453a7e554a62996a50fd",
+    "bytes": 47406,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/_xpu_ops.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/phase4-reproduction/vllm/_xpu_ops.py",
+    "sha256": "be09193a4a4970003a7ad8185f2e6cca6df0541967ef453a7e554a62996a50fd"
+  },
+  {
+    "bundle_path": "archive/objects/2681d140001b41b163de78a73bf27e09a44dfcd7b88f9c3e2c04a7b04029b602",
+    "bytes": 49428,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/model_executor/models/config.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/phase4-reproduction/vllm/model_executor/models/config.py",
+    "sha256": "2681d140001b41b163de78a73bf27e09a44dfcd7b88f9c3e2c04a7b04029b602"
+  },
+  {
+    "bundle_path": "archive/objects/aadb423846c41df9aa1e9a311f9799938e8df2fc7492fd570efcd5fbc0143244",
+    "bytes": 1865,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/models/qwen4_exp/nvidia/b70_c1_graph.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/phase4-reproduction/vllm/models/qwen4_exp/nvidia/b70_c1_graph.py",
+    "sha256": "aadb423846c41df9aa1e9a311f9799938e8df2fc7492fd570efcd5fbc0143244"
+  },
+  {
+    "bundle_path": "archive/objects/9d094134302e53ea5db27e5615459287b64916dcc06e857a7fe224e1efa194b8",
+    "bytes": 15949,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/models/qwen4_exp/nvidia/b70_disk.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/phase4-reproduction/vllm/models/qwen4_exp/nvidia/b70_disk.py",
+    "sha256": "9d094134302e53ea5db27e5615459287b64916dcc06e857a7fe224e1efa194b8"
+  },
+  {
+    "bundle_path": "archive/objects/215368e3bfd130b5246d9a2c3797cd8a73f4ff618818fa6e58b662d71b9b16da",
+    "bytes": 1865,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/models/qwen4_exp/nvidia/b70_hc_gemm.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/phase4-reproduction/vllm/models/qwen4_exp/nvidia/b70_hc_gemm.py",
+    "sha256": "215368e3bfd130b5246d9a2c3797cd8a73f4ff618818fa6e58b662d71b9b16da"
+  },
+  {
+    "bundle_path": "archive/objects/bae40a838960c1ba7ef4a0c7b6f23982921661c0c827c37970235ad3414edabc",
+    "bytes": 13932,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/models/qwen4_exp/nvidia/b70_hyperconnection.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/phase4-reproduction/vllm/models/qwen4_exp/nvidia/b70_hyperconnection.py",
+    "sha256": "bae40a838960c1ba7ef4a0c7b6f23982921661c0c827c37970235ad3414edabc"
+  },
+  {
+    "bundle_path": "archive/objects/cef9665deecc5234195da1d409e8c17333efdfcb820d46cedc60cfed67fa7f9e",
+    "bytes": 2207,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/models/qwen4_exp/nvidia/c1_verify.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/phase4-reproduction/vllm/models/qwen4_exp/nvidia/c1_verify.py",
+    "sha256": "cef9665deecc5234195da1d409e8c17333efdfcb820d46cedc60cfed67fa7f9e"
+  },
+  {
+    "bundle_path": "archive/objects/097e75bf3e65c79cab61cf3312b884c28a58bb7cce51a533a117396c2633a7b1",
+    "bytes": 108692,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/v1/worker/gpu/model_runner.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/phase4-reproduction/vllm/v1/worker/gpu/model_runner.py",
+    "sha256": "097e75bf3e65c79cab61cf3312b884c28a58bb7cce51a533a117396c2633a7b1"
+  },
+  {
+    "bundle_path": "archive/objects/8bcc88090f65aa3bf68910dcf99beccee61228f62158fc12a3148d8eb0d3f6de",
+    "bytes": 1870,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/models/qwen4_exp/nvidia/b70_c1_graph.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/prefill-base/vllm/models/qwen4_exp/nvidia/b70_c1_graph.py",
+    "sha256": "8bcc88090f65aa3bf68910dcf99beccee61228f62158fc12a3148d8eb0d3f6de"
+  },
+  {
+    "bundle_path": "archive/objects/cdc8bddedbe8fbfdffd15412c049b18ba9de2c3a670fb6f7125eed7c5830386d",
+    "bytes": 5418,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/models/qwen4_exp/nvidia/b70_hc_gemm.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/prefill-base/vllm/models/qwen4_exp/nvidia/b70_hc_gemm.py",
+    "sha256": "cdc8bddedbe8fbfdffd15412c049b18ba9de2c3a670fb6f7125eed7c5830386d"
+  },
+  {
+    "bundle_path": "archive/objects/0edc747aba8d545b9280f553595a95e841d6179a4b2cc0cf8c379326b8183728",
+    "bytes": 7688,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm_xpu_kernels/astra_ownership.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/prefill-base/vllm_xpu_kernels/astra_ownership.py",
+    "sha256": "0edc747aba8d545b9280f553595a95e841d6179a4b2cc0cf8c379326b8183728"
+  },
+  {
+    "bundle_path": "archive/objects/e3b1ad3c4725a85cdaf62a6eea38739663db22aca85affeebceb3858cdad6d9a",
+    "bytes": 5598,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/models/qwen4_exp/nvidia/b70_hc_gemm.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/prefill-v1/payload/vllm/models/qwen4_exp/nvidia/b70_hc_gemm.py",
+    "sha256": "e3b1ad3c4725a85cdaf62a6eea38739663db22aca85affeebceb3858cdad6d9a"
+  },
+  {
+    "bundle_path": "archive/objects/1830bdda4c3cc282f7b24d7330b2f9ee5d303d394d929a62b3243ab753cc204b",
+    "bytes": 8078,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm_xpu_kernels/astra_ownership.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/prefill-v1/payload/vllm_xpu_kernels/astra_ownership.py",
+    "sha256": "1830bdda4c3cc282f7b24d7330b2f9ee5d303d394d929a62b3243ab753cc204b"
+  },
+  {
+    "bundle_path": "archive/objects/e3b1ad3c4725a85cdaf62a6eea38739663db22aca85affeebceb3858cdad6d9a",
+    "bytes": 5598,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/models/qwen4_exp/nvidia/b70_hc_gemm.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/prefill-v2/payload/vllm/models/qwen4_exp/nvidia/b70_hc_gemm.py",
+    "sha256": "e3b1ad3c4725a85cdaf62a6eea38739663db22aca85affeebceb3858cdad6d9a"
+  },
+  {
+    "bundle_path": "archive/objects/c607df3f5bbf0e66a50ef6260958d1042f6a25c309ee1ce3d7811351b6fe1f1d",
+    "bytes": 4183,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/models/qwen4_exp/nvidia/b70_prefill_hc.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/prefill-v2/payload/vllm/models/qwen4_exp/nvidia/b70_prefill_hc.py",
+    "sha256": "c607df3f5bbf0e66a50ef6260958d1042f6a25c309ee1ce3d7811351b6fe1f1d"
+  },
+  {
+    "bundle_path": "archive/objects/1830bdda4c3cc282f7b24d7330b2f9ee5d303d394d929a62b3243ab753cc204b",
+    "bytes": 8078,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm_xpu_kernels/astra_ownership.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/prefill-v2/payload/vllm_xpu_kernels/astra_ownership.py",
+    "sha256": "1830bdda4c3cc282f7b24d7330b2f9ee5d303d394d929a62b3243ab753cc204b"
+  },
+  {
+    "bundle_path": "archive/objects/e3b1ad3c4725a85cdaf62a6eea38739663db22aca85affeebceb3858cdad6d9a",
+    "bytes": 5598,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/models/qwen4_exp/nvidia/b70_hc_gemm.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/prefill-v3/payload/vllm/models/qwen4_exp/nvidia/b70_hc_gemm.py",
+    "sha256": "e3b1ad3c4725a85cdaf62a6eea38739663db22aca85affeebceb3858cdad6d9a"
+  },
+  {
+    "bundle_path": "archive/objects/9f4b33b0b6ea7fe7bd68bbac629e5862ec3c8e682ca40d304bba35811079753b",
+    "bytes": 4148,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/models/qwen4_exp/nvidia/b70_prefill_hc.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/prefill-v3/payload/vllm/models/qwen4_exp/nvidia/b70_prefill_hc.py",
+    "sha256": "9f4b33b0b6ea7fe7bd68bbac629e5862ec3c8e682ca40d304bba35811079753b"
+  },
+  {
+    "bundle_path": "archive/objects/1830bdda4c3cc282f7b24d7330b2f9ee5d303d394d929a62b3243ab753cc204b",
+    "bytes": 8078,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm_xpu_kernels/astra_ownership.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/prefill-v3/payload/vllm_xpu_kernels/astra_ownership.py",
+    "sha256": "1830bdda4c3cc282f7b24d7330b2f9ee5d303d394d929a62b3243ab753cc204b"
+  },
+  {
+    "bundle_path": "archive/objects/e3b1ad3c4725a85cdaf62a6eea38739663db22aca85affeebceb3858cdad6d9a",
+    "bytes": 5598,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/models/qwen4_exp/nvidia/b70_hc_gemm.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/prefill-v4/payload/vllm/models/qwen4_exp/nvidia/b70_hc_gemm.py",
+    "sha256": "e3b1ad3c4725a85cdaf62a6eea38739663db22aca85affeebceb3858cdad6d9a"
+  },
+  {
+    "bundle_path": "archive/objects/c9e8bb14dce2fef155e1fa8918b806d930ac57098350c92a2f410baa87dff098",
+    "bytes": 3480,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/models/qwen4_exp/nvidia/b70_prefill_hc.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/prefill-v4/payload/vllm/models/qwen4_exp/nvidia/b70_prefill_hc.py",
+    "sha256": "c9e8bb14dce2fef155e1fa8918b806d930ac57098350c92a2f410baa87dff098"
+  },
+  {
+    "bundle_path": "archive/objects/5d22502310567a729bace2001855acd18f1727d18110ef06337b76df5d052d58",
+    "bytes": 163132,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/v1/core/sched/scheduler.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/prefill-v4/payload/vllm/v1/core/sched/scheduler.py",
+    "sha256": "5d22502310567a729bace2001855acd18f1727d18110ef06337b76df5d052d58"
+  },
+  {
+    "bundle_path": "archive/objects/1830bdda4c3cc282f7b24d7330b2f9ee5d303d394d929a62b3243ab753cc204b",
+    "bytes": 8078,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm_xpu_kernels/astra_ownership.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/prefill-v4/payload/vllm_xpu_kernels/astra_ownership.py",
+    "sha256": "1830bdda4c3cc282f7b24d7330b2f9ee5d303d394d929a62b3243ab753cc204b"
+  },
+  {
+    "bundle_path": "archive/objects/e3b1ad3c4725a85cdaf62a6eea38739663db22aca85affeebceb3858cdad6d9a",
+    "bytes": 5598,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/models/qwen4_exp/nvidia/b70_hc_gemm.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/prefill-v5/payload/vllm/models/qwen4_exp/nvidia/b70_hc_gemm.py",
+    "sha256": "e3b1ad3c4725a85cdaf62a6eea38739663db22aca85affeebceb3858cdad6d9a"
+  },
+  {
+    "bundle_path": "archive/objects/1830bdda4c3cc282f7b24d7330b2f9ee5d303d394d929a62b3243ab753cc204b",
+    "bytes": 8078,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm_xpu_kernels/astra_ownership.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/prefill-v5/payload/vllm_xpu_kernels/astra_ownership.py",
+    "sha256": "1830bdda4c3cc282f7b24d7330b2f9ee5d303d394d929a62b3243ab753cc204b"
+  },
+  {
+    "bundle_path": "archive/objects/be09193a4a4970003a7ad8185f2e6cca6df0541967ef453a7e554a62996a50fd",
+    "bytes": 47406,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/_xpu_ops.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/reproduction-source/vllm/_xpu_ops.py",
+    "sha256": "be09193a4a4970003a7ad8185f2e6cca6df0541967ef453a7e554a62996a50fd"
+  },
+  {
+    "bundle_path": "archive/objects/9fff61b49ef3272f6791977ee82134db4b44ace49ce4dd43814a4749e85ba11a",
+    "bytes": 15157,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/models/qwen4_exp/nvidia/b70_disk.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/reproduction-source/vllm/models/qwen4_exp/nvidia/b70_disk.py",
+    "sha256": "9fff61b49ef3272f6791977ee82134db4b44ace49ce4dd43814a4749e85ba11a"
+  },
+  {
+    "bundle_path": "archive/objects/8ae478aaafd1eac92e8f0e29f2300ac4f1db6cb3f9b505800cb47de17d413add",
+    "bytes": 12274,
+    "disposition": "historical/intermediate; never installed by production recipes",
+    "implementation_path": "vllm/models/qwen4_exp/nvidia/b70_hyperconnection.py",
+    "path": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/build/reproduction-source/vllm/models/qwen4_exp/nvidia/b70_hyperconnection.py",
+    "sha256": "8ae478aaafd1eac92e8f0e29f2300ac4f1db6cb3f9b505800cb47de17d413add"
+  }
+]

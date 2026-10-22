@@ -1,0 +1,5 @@
+FROM qwen38-flashnext-dflash2:structural-builder AS native
+COPY . /build/
+RUN bash /build/build.sh
+FROM scratch AS export
+COPY --from=native /build/libbeyond_prefill.so /libbeyond_prefill.so

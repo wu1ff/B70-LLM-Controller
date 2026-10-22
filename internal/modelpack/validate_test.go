@@ -91,11 +91,20 @@ func TestLoadValidatesLaunchBlocksAndControllerFlags(t *testing.T) {
 	})
 }
 
-func TestLoadAllowsOnlyFixedDeviceBind(t *testing.T) {
+func TestLoadAllowsOnlyFixedRuntimeMounts(t *testing.T) {
 	t.Run("exact fixed bind", func(t *testing.T) {
 		dir := t.TempDir()
 		manifest := validManifest()
 		manifest.Runtimes[0].Launch.DockerArgs = fixedDeviceBind[:]
+		writePack(t, dir, manifest)
+		if _, err := Load(dir); err != nil {
+			t.Fatal(err)
+		}
+	})
+	t.Run("exact persistent DFlash work volume", func(t *testing.T) {
+		dir := t.TempDir()
+		manifest := validManifest()
+		manifest.Runtimes[0].Launch.DockerArgs = append(append([]string{}, fixedDeviceBind[:]...), fixedDFlashWorkVolume[:]...)
 		writePack(t, dir, manifest)
 		if _, err := Load(dir); err != nil {
 			t.Fatal(err)
@@ -114,6 +123,10 @@ func TestLoadAllowsOnlyFixedDeviceBind(t *testing.T) {
 		{"reordered fields", []string{"--mount", "type=bind,readonly,source=/dev/dri/by-path,target=/dev/dri/by-path"}},
 		{"extra field", []string{"--mount", "type=bind,source=/dev/dri/by-path,target=/dev/dri/by-path,readonly,consistency=delegated"}},
 		{"volume flag", []string{"--volume", "/dev/dri/by-path:/dev/dri/by-path:ro"}},
+		{"different work volume", []string{"--mount", "type=volume,source=other,target=/work"}},
+		{"work host bind", []string{"--mount", "type=bind,source=/tmp/work,target=/work"}},
+		{"different work target", []string{"--mount", "type=volume,source=b70ctl-qwen38-flashnext-dflash2-work,target=/models"}},
+		{"work volume extra field", []string{"--mount", "type=volume,source=b70ctl-qwen38-flashnext-dflash2-work,target=/work,readonly"}},
 	}
 	for _, test := range rejected {
 		t.Run(test.name, func(t *testing.T) {

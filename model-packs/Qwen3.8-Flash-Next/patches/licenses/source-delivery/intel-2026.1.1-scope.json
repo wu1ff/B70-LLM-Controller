@@ -1,0 +1,481 @@
+{
+  "scope": "Installed Intel wheel ELF/library paths. Headers are locked in accepted-dependency-files.json; this is not an exhaustive executable audit.",
+  "credist": "accepted-vendor/opt/venv/share/doc/compiler/credist.txt",
+  "compiler_credist": "compiler-input/opt/intel/oneapi/compiler/2026.1/share/doc/compiler/credist.txt",
+  "files": [
+    {
+      "distribution": "intel-cmplr-lib-rt",
+      "version": "2026.1.1",
+      "path": "/opt/venv/lib/icx-lto.so",
+      "bytes": 88692744,
+      "sha256": "9c032ef858f0cf1efcfdcee21747bd5db1f675bcd1db8e74067e79b90fe156ce",
+      "basename_in_current_credist": false
+    },
+    {
+      "distribution": "intel-cmplr-lib-rt",
+      "version": "2026.1.1",
+      "path": "/opt/venv/lib/libimf.so",
+      "bytes": 4865192,
+      "sha256": "67a4b6c27002f59f26c411f4ec384300d781365af19d6a2eb9f0dd94d2a0f470",
+      "basename_in_current_credist": false
+    },
+    {
+      "distribution": "intel-cmplr-lib-rt",
+      "version": "2026.1.1",
+      "path": "/opt/venv/lib/libintlc.so",
+      "bytes": 21,
+      "sha256": "0c04d3b61ba90894ab860f1c76bf38fedb24fdede5adbd667ac3140bd288e9e0",
+      "basename_in_current_credist": false
+    },
+    {
+      "distribution": "intel-cmplr-lib-rt",
+      "version": "2026.1.1",
+      "path": "/opt/venv/lib/libintlc.so.5",
+      "bytes": 415824,
+      "sha256": "612ab119242ccda945de6eb354369b5bee6a158bc9724e4da5e466cb0ad630db",
+      "basename_in_current_credist": false
+    },
+    {
+      "distribution": "intel-cmplr-lib-rt",
+      "version": "2026.1.1",
+      "path": "/opt/venv/lib/libirc.so",
+      "bytes": 414584,
+      "sha256": "cbe470862894afba8b467c6a46ecda00dee5e20920a7143316fa73d6aa898f88",
+      "basename_in_current_credist": false
+    },
+    {
+      "distribution": "intel-cmplr-lib-rt",
+      "version": "2026.1.1",
+      "path": "/opt/venv/lib/libirng.so",
+      "bytes": 1100272,
+      "sha256": "2cd4057ba6bcd9235685597098c3bdc9811e1de0a457f7a0a2aa47ce691995c7",
+      "basename_in_current_credist": false
+    },
+    {
+      "distribution": "intel-cmplr-lib-rt",
+      "version": "2026.1.1",
+      "path": "/opt/venv/lib/libqkmalloc.so",
+      "bytes": 595120,
+      "sha256": "ae9cab245ad593ebc22324b5f25c8621e6153fa2dcfa9259b2cba9047bcbb31f",
+      "basename_in_current_credist": false
+    },
+    {
+      "distribution": "intel-cmplr-lib-rt",
+      "version": "2026.1.1",
+      "path": "/opt/venv/lib/libsvml.so",
+      "bytes": 28103240,
+      "sha256": "a6dbbc425c8270c3485e40ef0924ef38ed89ced4026056fd3f1f529774c4f86c",
+      "basename_in_current_credist": false
+    },
+    {
+      "distribution": "intel-cmplr-lib-rt",
+      "version": "2026.1.1",
+      "path": "/opt/venv/lib/libxptifw.so",
+      "bytes": 121960,
+      "sha256": "8c304378408f79a9bed4a079200a783918e69b76e504e678b6b105eb918655b2",
+      "basename_in_current_credist": false
+    },
+    {
+      "distribution": "intel-cmplr-lib-rt",
+      "version": "2026.1.1",
+      "path": "/opt/venv/lib/libze_trace_collector.so",
+      "bytes": 61704,
+      "sha256": "f391adde549a8f57ad6949eaf4b19489f53325e307474e9234f09282cfdde973",
+      "basename_in_current_credist": false
+    },
+    {
+      "distribution": "intel-cmplr-lib-ur",
+      "version": "2026.1.1",
+      "path": "/opt/venv/lib/libur_adapter_level_zero.so",
+      "bytes": 4173744,
+      "sha256": "ec3e2a2672db65f99c0d55b233f42602a8415ab19c177c4330f2e5ed5a78eedf",
+      "basename_in_current_credist": false
+    },
+    {
+      "distribution": "intel-cmplr-lib-ur",
+      "version": "2026.1.1",
+      "path": "/opt/venv/lib/libur_adapter_level_zero.so.0",
+      "bytes": 4173744,
+      "sha256": "ec3e2a2672db65f99c0d55b233f42602a8415ab19c177c4330f2e5ed5a78eedf",
+      "basename_in_current_credist": false
+    },
+    {
+      "distribution": "intel-cmplr-lib-ur",
+      "version": "2026.1.1",
+      "path": "/opt/venv/lib/libur_adapter_level_zero.so.0.12.0",
+      "bytes": 4173744,
+      "sha256": "ec3e2a2672db65f99c0d55b233f42602a8415ab19c177c4330f2e5ed5a78eedf",
+      "basename_in_current_credist": false
+    },
+    {
+      "distribution": "intel-cmplr-lib-ur",
+      "version": "2026.1.1",
+      "path": "/opt/venv/lib/libur_adapter_level_zero_v2.so",
+      "bytes": 4025040,
+      "sha256": "bfdc0f26bf88bd0bccd66fc25302a4b22559f8fe30e499be18529be3ed610e60",
+      "basename_in_current_credist": false
+    },
+    {
+      "distribution": "intel-cmplr-lib-ur",
+      "version": "2026.1.1",
+      "path": "/opt/venv/lib/libur_adapter_level_zero_v2.so.0",
+      "bytes": 4025040,
+      "sha256": "bfdc0f26bf88bd0bccd66fc25302a4b22559f8fe30e499be18529be3ed610e60",
+      "basename_in_current_credist": false
+    },
+    {
+      "distribution": "intel-cmplr-lib-ur",
+      "version": "2026.1.1",
+      "path": "/opt/venv/lib/libur_adapter_level_zero_v2.so.0.12.0",
+      "bytes": 4025040,
+      "sha256": "bfdc0f26bf88bd0bccd66fc25302a4b22559f8fe30e499be18529be3ed610e60",
+      "basename_in_current_credist": false
+    },
+    {
+      "distribution": "intel-cmplr-lib-ur",
+      "version": "2026.1.1",
+      "path": "/opt/venv/lib/libur_adapter_opencl.so",
+      "bytes": 2226272,
+      "sha256": "5dd9e522fd81bc99112dcd716ef61353eaf79721c5ba7d9f71827d7f0ff51daf",
+      "basename_in_current_credist": false
+    },
+    {
+      "distribution": "intel-cmplr-lib-ur",
+      "version": "2026.1.1",
+      "path": "/opt/venv/lib/libur_adapter_opencl.so.0",
+      "bytes": 2226272,
+      "sha256": "5dd9e522fd81bc99112dcd716ef61353eaf79721c5ba7d9f71827d7f0ff51daf",
+      "basename_in_current_credist": false
+    },
+    {
+      "distribution": "intel-cmplr-lib-ur",
+      "version": "2026.1.1",
+      "path": "/opt/venv/lib/libur_adapter_opencl.so.0.12.0",
+      "bytes": 2226272,
+      "sha256": "5dd9e522fd81bc99112dcd716ef61353eaf79721c5ba7d9f71827d7f0ff51daf",
+      "basename_in_current_credist": false
+    },
+    {
+      "distribution": "intel-cmplr-lib-ur",
+      "version": "2026.1.1",
+      "path": "/opt/venv/lib/libur_loader.so",
+      "bytes": 25026736,
+      "sha256": "5338c03524f6d3fdd7d6067e5a3f84315e36e11fe1f526d5bbd02d0c88f82a32",
+      "basename_in_current_credist": false
+    },
+    {
+      "distribution": "intel-cmplr-lib-ur",
+      "version": "2026.1.1",
+      "path": "/opt/venv/lib/libur_loader.so.0",
+      "bytes": 25026736,
+      "sha256": "5338c03524f6d3fdd7d6067e5a3f84315e36e11fe1f526d5bbd02d0c88f82a32",
+      "basename_in_current_credist": false
+    },
+    {
+      "distribution": "intel-cmplr-lib-ur",
+      "version": "2026.1.1",
+      "path": "/opt/venv/lib/libur_loader.so.0.12.0",
+      "bytes": 25026736,
+      "sha256": "5338c03524f6d3fdd7d6067e5a3f84315e36e11fe1f526d5bbd02d0c88f82a32",
+      "basename_in_current_credist": false
+    },
+    {
+      "distribution": "intel-opencl-rt",
+      "version": "2026.1.1",
+      "path": "/opt/venv/lib/libOpenCL.so",
+      "bytes": 94848,
+      "sha256": "4d7dc0d09f8623a02ecf5cd06c21790f8ec2f8f971bad1a45c10c158079b1028",
+      "basename_in_current_credist": true
+    },
+    {
+      "distribution": "intel-opencl-rt",
+      "version": "2026.1.1",
+      "path": "/opt/venv/lib/libOpenCL.so.1",
+      "bytes": 94848,
+      "sha256": "4d7dc0d09f8623a02ecf5cd06c21790f8ec2f8f971bad1a45c10c158079b1028",
+      "basename_in_current_credist": true
+    },
+    {
+      "distribution": "intel-opencl-rt",
+      "version": "2026.1.1",
+      "path": "/opt/venv/lib/libOpenCL.so.1.0.0",
+      "bytes": 94848,
+      "sha256": "4d7dc0d09f8623a02ecf5cd06c21790f8ec2f8f971bad1a45c10c158079b1028",
+      "basename_in_current_credist": true
+    },
+    {
+      "distribution": "intel-opencl-rt",
+      "version": "2026.1.1",
+      "path": "/opt/venv/lib/libcommon_clang.so",
+      "bytes": 177783552,
+      "sha256": "85abc2912a25e4bc0f1b81d799c652f8cb811cd3c45bedb950612bdba5025a11",
+      "basename_in_current_credist": true
+    },
+    {
+      "distribution": "intel-opencl-rt",
+      "version": "2026.1.1",
+      "path": "/opt/venv/lib/libcommon_clang.so.2026.21.7.0",
+      "bytes": 177783552,
+      "sha256": "85abc2912a25e4bc0f1b81d799c652f8cb811cd3c45bedb950612bdba5025a11",
+      "basename_in_current_credist": true
+    },
+    {
+      "distribution": "intel-opencl-rt",
+      "version": "2026.1.1",
+      "path": "/opt/venv/lib/libintelocl.so",
+      "bytes": 97820240,
+      "sha256": "a0f0c583fd76d17c2cf3b549bc26e9796eb4c799ae8f39893bd089c988a57809",
+      "basename_in_current_credist": true
+    },
+    {
+      "distribution": "intel-opencl-rt",
+      "version": "2026.1.1",
+      "path": "/opt/venv/lib/libintelocl.so-gdb.py",
+      "bytes": 4955,
+      "sha256": "25d4f17140e82df6f77f2bb7009283a9ecf499bd9e1ea859168bf44f0b414162",
+      "basename_in_current_credist": true
+    },
+    {
+      "distribution": "intel-opencl-rt",
+      "version": "2026.1.1",
+      "path": "/opt/venv/lib/libintelocl.so.2026.21.7.0",
+      "bytes": 97820240,
+      "sha256": "a0f0c583fd76d17c2cf3b549bc26e9796eb4c799ae8f39893bd089c988a57809",
+      "basename_in_current_credist": true
+    },
+    {
+      "distribution": "intel-opencl-rt",
+      "version": "2026.1.1",
+      "path": "/opt/venv/lib/libocl_svml_e9.so",
+      "bytes": 5240600,
+      "sha256": "9f1631fb3c2855d8f6153cd625fa7ed5624324d22ee708d05f8ec0ee34a8338d",
+      "basename_in_current_credist": true
+    },
+    {
+      "distribution": "intel-opencl-rt",
+      "version": "2026.1.1",
+      "path": "/opt/venv/lib/libocl_svml_h8.so",
+      "bytes": 5798008,
+      "sha256": "36f04642471dc4081cb9ffea19ee0214be1946dfbb52fb4360992a8a8022c8cb",
+      "basename_in_current_credist": true
+    },
+    {
+      "distribution": "intel-opencl-rt",
+      "version": "2026.1.1",
+      "path": "/opt/venv/lib/libocl_svml_l9.so",
+      "bytes": 4942352,
+      "sha256": "5cad95278bc8d2da91d8c2ed64eb28d5bd63510dc6081521615c4e6d3ec131ad",
+      "basename_in_current_credist": true
+    },
+    {
+      "distribution": "intel-opencl-rt",
+      "version": "2026.1.1",
+      "path": "/opt/venv/lib/libocl_svml_z0.so",
+      "bytes": 4919024,
+      "sha256": "679ff53bed1ad15ad4db355e8d6ea1b334620431ce360bf056c89ddc242feda5",
+      "basename_in_current_credist": true
+    },
+    {
+      "distribution": "intel-opencl-rt",
+      "version": "2026.1.1",
+      "path": "/opt/venv/lib/libocl_svml_z1.so",
+      "bytes": 5745144,
+      "sha256": "982eac79c0fd32723dd35d795c5d41e536625961276a6c87225056dbcdaf50aa",
+      "basename_in_current_credist": true
+    },
+    {
+      "distribution": "intel-openmp",
+      "version": "2026.1.1",
+      "path": "/opt/venv/lib/libarcher.so",
+      "bytes": 1153336,
+      "sha256": "41c1429db35e648880a5d474706b6b3cff0c9297d9120ac717b96200b111dad3",
+      "basename_in_current_credist": true
+    },
+    {
+      "distribution": "intel-openmp",
+      "version": "2026.1.1",
+      "path": "/opt/venv/lib/libiomp5.so",
+      "bytes": 2763824,
+      "sha256": "19cd02fbb18d948db4c4936afc5e07929ef16d676f72d0e76e9e853e665b5146",
+      "basename_in_current_credist": true
+    },
+    {
+      "distribution": "intel-openmp",
+      "version": "2026.1.1",
+      "path": "/opt/venv/lib/libiomp5_db.so",
+      "bytes": 848520,
+      "sha256": "ffad7ca98b75dd5d5332188dc3ef673860c8c6fca167c4043a894e5b15a7b848",
+      "basename_in_current_credist": true
+    },
+    {
+      "distribution": "intel-openmp",
+      "version": "2026.1.1",
+      "path": "/opt/venv/lib/libiompstubs5.so",
+      "bytes": 220712,
+      "sha256": "5d144648a0f5cad44843f1967d7b3d45308a674a127f09301b2480507a8607f9",
+      "basename_in_current_credist": true
+    },
+    {
+      "distribution": "intel-openmp",
+      "version": "2026.1.1",
+      "path": "/opt/venv/lib/libomptarget.so",
+      "bytes": 131853752,
+      "sha256": "ac96e25bd76f09b363e710d0e806a136ffac882e7fe492e851b1ff63400b584a",
+      "basename_in_current_credist": true
+    },
+    {
+      "distribution": "intel-openmp",
+      "version": "2026.1.1",
+      "path": "/opt/venv/lib/libomptarget.sycl.wrap.so",
+      "bytes": 73880,
+      "sha256": "c5d4daf348d8b6cb7af4c1d67dce88f230b2e6fd324e29b97abd7b21855631fd",
+      "basename_in_current_credist": true
+    },
+    {
+      "distribution": "intel-pti",
+      "version": "1.1.0",
+      "path": "/opt/venv/lib/libpti_view.so",
+      "bytes": 976112,
+      "sha256": "effd5b24d9971c53faf14f7ad1b8bd9c6db04e86530128c40e4338310a68009b",
+      "basename_in_current_credist": false
+    },
+    {
+      "distribution": "intel-pti",
+      "version": "1.1.0",
+      "path": "/opt/venv/lib/libpti_view.so.1",
+      "bytes": 976112,
+      "sha256": "effd5b24d9971c53faf14f7ad1b8bd9c6db04e86530128c40e4338310a68009b",
+      "basename_in_current_credist": false
+    },
+    {
+      "distribution": "intel-pti",
+      "version": "1.1.0",
+      "path": "/opt/venv/lib/libpti_view.so.1.1.0",
+      "bytes": 976112,
+      "sha256": "effd5b24d9971c53faf14f7ad1b8bd9c6db04e86530128c40e4338310a68009b",
+      "basename_in_current_credist": false
+    },
+    {
+      "distribution": "intel-pti",
+      "version": "1.1.0",
+      "path": "/opt/venv/lib/pti/libpti.so",
+      "bytes": 2598112,
+      "sha256": "0aa1424886e59a0cfc6808a4316471a28e7679b82c03c9e6cc895c0d072df46b",
+      "basename_in_current_credist": false
+    },
+    {
+      "distribution": "intel-sycl-rt",
+      "version": "2026.1.1",
+      "path": "/opt/venv/lib/libpstloffload.so",
+      "bytes": 431232,
+      "sha256": "e4bd266de083541a29260fb2e799e2c25fb9d67ec0b9d4e2155f7c28de2708a0",
+      "basename_in_current_credist": false
+    },
+    {
+      "distribution": "intel-sycl-rt",
+      "version": "2026.1.1",
+      "path": "/opt/venv/lib/libpstloffload.so.1",
+      "bytes": 431232,
+      "sha256": "e4bd266de083541a29260fb2e799e2c25fb9d67ec0b9d4e2155f7c28de2708a0",
+      "basename_in_current_credist": false
+    },
+    {
+      "distribution": "intel-sycl-rt",
+      "version": "2026.1.1",
+      "path": "/opt/venv/lib/libpstloffload.so.1.0.0",
+      "bytes": 431232,
+      "sha256": "e4bd266de083541a29260fb2e799e2c25fb9d67ec0b9d4e2155f7c28de2708a0",
+      "basename_in_current_credist": false
+    },
+    {
+      "distribution": "intel-sycl-rt",
+      "version": "2026.1.1",
+      "path": "/opt/venv/lib/libsycl-jit.so",
+      "bytes": 186032928,
+      "sha256": "ab15f77f9974133aee6a67f633b7d9ab79505a248313ec070376508e44b916d0",
+      "basename_in_current_credist": false
+    },
+    {
+      "distribution": "intel-sycl-rt",
+      "version": "2026.1.1",
+      "path": "/opt/venv/lib/libsycl-jit.so.22.1",
+      "bytes": 186032928,
+      "sha256": "ab15f77f9974133aee6a67f633b7d9ab79505a248313ec070376508e44b916d0",
+      "basename_in_current_credist": false
+    },
+    {
+      "distribution": "intel-sycl-rt",
+      "version": "2026.1.1",
+      "path": "/opt/venv/lib/libsycl-preview.so",
+      "bytes": 11686856,
+      "sha256": "fe21f8ac4328893bea5a2df960a5973782dd789db98e1cda82cf669015ae937d",
+      "basename_in_current_credist": false
+    },
+    {
+      "distribution": "intel-sycl-rt",
+      "version": "2026.1.1",
+      "path": "/opt/venv/lib/libsycl-preview.so.9",
+      "bytes": 11686856,
+      "sha256": "fe21f8ac4328893bea5a2df960a5973782dd789db98e1cda82cf669015ae937d",
+      "basename_in_current_credist": false
+    },
+    {
+      "distribution": "intel-sycl-rt",
+      "version": "2026.1.1",
+      "path": "/opt/venv/lib/libsycl-preview.so.9.0.0",
+      "bytes": 11686856,
+      "sha256": "fe21f8ac4328893bea5a2df960a5973782dd789db98e1cda82cf669015ae937d",
+      "basename_in_current_credist": false
+    },
+    {
+      "distribution": "intel-sycl-rt",
+      "version": "2026.1.1",
+      "path": "/opt/venv/lib/libsycl-preview.so.9.0.0-gdb.py",
+      "bytes": 44304,
+      "sha256": "4bfb57a88ec08eb72744776dd35d95d1bc7cadbaec64789c672c18822e5b4d39",
+      "basename_in_current_credist": false
+    },
+    {
+      "distribution": "intel-sycl-rt",
+      "version": "2026.1.1",
+      "path": "/opt/venv/lib/libsycl.so",
+      "bytes": 11686656,
+      "sha256": "d769a71f2c71530e59a5ba22831ec5a82edcde718076d2663772255498c8e053",
+      "basename_in_current_credist": false
+    },
+    {
+      "distribution": "intel-sycl-rt",
+      "version": "2026.1.1",
+      "path": "/opt/venv/lib/libsycl.so.9",
+      "bytes": 11686656,
+      "sha256": "d769a71f2c71530e59a5ba22831ec5a82edcde718076d2663772255498c8e053",
+      "basename_in_current_credist": false
+    },
+    {
+      "distribution": "intel-sycl-rt",
+      "version": "2026.1.1",
+      "path": "/opt/venv/lib/libsycl.so.9.0.0",
+      "bytes": 11686656,
+      "sha256": "d769a71f2c71530e59a5ba22831ec5a82edcde718076d2663772255498c8e053",
+      "basename_in_current_credist": false
+    },
+    {
+      "distribution": "intel-sycl-rt",
+      "version": "2026.1.1",
+      "path": "/opt/venv/lib/libsycl.so.9.0.0-gdb.py",
+      "bytes": 44304,
+      "sha256": "4bfb57a88ec08eb72744776dd35d95d1bc7cadbaec64789c672c18822e5b4d39",
+      "basename_in_current_credist": false
+    },
+    {
+      "distribution": "intel-sycl-rt",
+      "version": "2026.1.1",
+      "path": "/opt/venv/lib/libsycl_ur_trace_collector.so",
+      "bytes": 265776,
+      "sha256": "b8bbd405279de1a6c0eeb27b0bcd7541bbb53412b5d40342d17d35ca3bf257f0",
+      "basename_in_current_credist": false
+    }
+  ],
+  "designation_status": "Partial basename coverage only; not a byte identity/designation clearance. Current list does not name all SYCL/UR files.",
+  "recipient_terms_status": "Unresolved for final executable distribution; historical 2026.0 clearance is not applied."
+}

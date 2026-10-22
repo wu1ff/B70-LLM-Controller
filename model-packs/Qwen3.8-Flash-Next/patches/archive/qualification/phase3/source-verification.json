@@ -1,0 +1,159 @@
+{
+  "source_verification": "PASS",
+  "bundle_files_verified": 2638,
+  "baseline_files": 3302,
+  "patches": [
+    {
+      "order": 1,
+      "patch": "target-v032.patch",
+      "strip": 1,
+      "status": "PASS"
+    },
+    {
+      "order": 2,
+      "patch": "dflash2-v032.patch",
+      "strip": 1,
+      "status": "PASS"
+    },
+    {
+      "order": 3,
+      "patch": "verify-c1-v032.patch",
+      "strip": 1,
+      "status": "PASS"
+    },
+    {
+      "order": 4,
+      "patch": "perf-c1-v032.patch",
+      "strip": 1,
+      "status": "PASS"
+    },
+    {
+      "order": 5,
+      "patch": "fullwidth-c1-v032.patch",
+      "strip": 1,
+      "status": "PASS"
+    },
+    {
+      "order": 6,
+      "patch": "deep-c1-v032.patch",
+      "strip": 1,
+      "status": "PASS"
+    },
+    {
+      "order": 7,
+      "patch": "mtp7-gap-v032.patch",
+      "strip": 1,
+      "status": "PASS"
+    },
+    {
+      "order": 8,
+      "patch": "astra500-v032.patch",
+      "strip": 1,
+      "status": "PASS"
+    },
+    {
+      "order": 9,
+      "patch": "astra500-structural.patch",
+      "strip": 1,
+      "status": "PASS"
+    },
+    {
+      "order": 10,
+      "patch": "astra500-cycle.patch",
+      "strip": 1,
+      "status": "PASS"
+    },
+    {
+      "order": 11,
+      "patch": "astra500-ownership.patch",
+      "strip": 1,
+      "status": "PASS"
+    },
+    {
+      "order": 12,
+      "patch": "astra500-beyond.patch",
+      "strip": 1,
+      "status": "PASS"
+    },
+    {
+      "order": 13,
+      "patch": "astra500-dominant.patch",
+      "strip": 3,
+      "status": "PASS"
+    },
+    {
+      "order": 14,
+      "patch": "prefill-serving.patch",
+      "strip": 1,
+      "status": "PASS"
+    },
+    {
+      "order": 15,
+      "patch": "long-prefill.patch",
+      "strip": 1,
+      "status": "PASS"
+    },
+    {
+      "order": 16,
+      "patch": "integrated-serving.patch",
+      "strip": 1,
+      "status": "PASS"
+    }
+  ],
+  "accepted_python_files": 2664,
+  "accepted_overlay_files": 33,
+  "accepted_package_data_files": 654,
+  "dependency_trees": {
+    "common-native-headers": 238,
+    "gdn-headers": 184,
+    "sycl-tla": 5703
+  },
+  "native_libraries": 12,
+  "native_source_recipe_entries": 34,
+  "accepted_support_files": 13,
+  "accepted_baked_helper_files": 110,
+  "archive_patch_paths": 97,
+  "archive_native_build_paths": 113,
+  "archive_python_variant_paths": 120,
+  "staging": "/tmp/dflash2-phase3-independent-vwpo8_wa/source",
+  "native_compilation": "NOT RUN",
+  "binary_reproducibility": "NOT PROVED",
+  "full_image_build": "NOT RUN",
+  "external_build_inputs": {
+    "compiler": "intel/omix@sha256:59cef13f8e87275846cc08e01d32b49082694a5c01d842d2e845552cbc8c199f",
+    "vendor": "vllm/vllm-openai-xpu@sha256:9dd913e9036633d55ace17265cbfc29f48b9b85fe4bc8b129debcf7e1b269ce7"
+  },
+  "external_build_input_availability": "NOT CHECKED by offline source verifier; native build preflight requires both pinned images locally.",
+  "unresolved_findings": [
+    {
+      "id": "vendor-wheel-source",
+      "status": "OPEN",
+      "detail": "Stock vllm-xpu-kernels 0.1.15.4 source commit is unattested. Pinned vendor image is sufficient for custom overlay builds; a wholly source-built vendor stack is not established."
+    },
+    {
+      "id": "source-delivery",
+      "status": "OPEN",
+      "detail": "Actual accepted Ubuntu versions and wheel native hashes are reconciled in source-delivery/. Source assets/directions must be made available beside a future distributed image; this reconstruction bundle is not complete companion corresponding source for every inherited executable."
+    },
+    {
+      "id": "numpy-libgfortran",
+      "status": "OPEN",
+      "detail": "NumPy 2.2.6 bundled libgfortran exact source/build identity remains unresolved. Do not substitute Ubuntu GCC source or infer identity from SONAME."
+    },
+    {
+      "id": "intel-2026.1.1",
+      "status": "OPEN",
+      "detail": "Current notices and 2026.1.1 credist are retained. Incomplete designation coverage and executable recipient arrangement remain for final image distribution; no compiler binaries are exported."
+    },
+    {
+      "id": "changed-file-notices",
+      "status": "OPEN",
+      "detail": "Accepted exact source lacks prominent modification headers in multiple upstream files. Per-file review is retained; any notice-only distribution revision must have separate hashes and must not be relabeled accepted bytes."
+    },
+    {
+      "id": "binary-and-image-build",
+      "status": "NOT_PROVED",
+      "detail": "Twelve native recipes are provided but not independently compiled here. Full-image/test-layer/OCI reconstruction and independent binary comparison remain."
+    }
+  ]
+}

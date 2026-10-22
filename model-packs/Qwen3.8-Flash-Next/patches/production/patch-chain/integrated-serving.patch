@@ -1,0 +1,90 @@
+--- a/vllm/v1/worker/gpu_worker.py
++++ b/vllm/v1/worker/gpu_worker.py
+@@ -1073,6 +1073,10 @@
+ 
+             trigger_inductor_lazy_init(self.device)
+ 
++        if self.device.type == "xpu" and self.use_v2_model_runner:
++            from vllm.v1.worker.gpu.sample.xpu_filter_warmup import warmup_filter
++            warmup_filter(self.model_runner)
++
+         # All warmup is done — start monitoring for unexpected JIT
+         # compilations that would cause latency spikes during inference.
+         self._maybe_activate_jit_monitor()
+--- a/vllm/v1/core/sched/scheduler.py
++++ b/vllm/v1/core/sched/scheduler.py
+@@ -900,6 +900,7 @@
+         if not preempted_reqs and self._pause_state != PauseState.PAUSED_ALL:
+             step_skipped_waiting: deque[Request] = deque()
+             step_skipped_kv_holding: deque[Request] = deque()
++            alignment_reserved_slot = 0
+ 
+             def skip_request(from_queue: RequestQueue) -> None:
+                 request_to_skip = from_queue.pop_request()
+@@ -920,7 +921,7 @@
+                 # Paused streaming sessions (WAITING_FOR_STREAMING_REQ) are not
+                 # in `running` but still hold a model-runner request slot.
+                 num_running = len(self.running) + self.num_waiting_for_streaming_input
+-                if num_running >= self.max_num_active_reqs:
++                if num_running >= self.max_num_active_reqs - alignment_reserved_slot:
+                     break
+ 
+                 request = request_queue.peek_request()
+@@ -1178,6 +1179,17 @@
+                             num_external_computed_tokens,
+                         )
+                         if num_new_tokens == 0:
++                            # An aligned chunk cannot use the remaining budget.
++                            # Reuse the skipped-request queue and keep a slot for
++                            # its first request when its next chunk can fit.
++                            if (
++                                num_scheduled_tokens
++                                and num_running < self.max_num_active_reqs - 1
++                                and not self._holds_kv_blocks(request)
++                            ):
++                                alignment_reserved_slot = 1
++                                skip_request(request_queue)
++                                continue
+                             break
+                         if (
+                             pad_spec_decode
+--- /dev/null
++++ b/vllm/v1/worker/gpu/sample/xpu_filter_warmup.py
+@@ -0,0 +1,26 @@
++"""Bounded initialized warmup for the XPU DFlash2 sampling filter."""
++import time
++import torch
++from vllm.logger import init_logger
++
++@torch.inference_mode()
++def warmup_filter(runner):
++    spec = runner.speculative_config
++    if (spec is None or spec.method != "dflash"
++        or runner.model_config.hf_text_config.model_type != "qwen4_exp_text"):
++        return
++    from vllm.v1.sample.ops.topk_topp_triton import apply_top_k_top_p_triton
++    started = time.perf_counter()
++    before = torch.xpu.memory_allocated()
++    # Dedicated initialized tensors; no live request, KV, RNG or sampler state.
++    logits = torch.arange(runner.vocab_size, device=runner.device,
++                          dtype=torch.float32).unsqueeze(0) / runner.vocab_size
++    k = torch.full((1,), 20, device=runner.device, dtype=torch.int32)
++    p = torch.full((1,), .95, device=runner.device, dtype=torch.float32)
++    for topk, topp in ((k, p), (k, None), (None, p)):
++        apply_top_k_top_p_triton(logits.clone(), topk, topp)
++    torch.xpu.synchronize()
++    del logits, k, p
++    init_logger(__name__).info(
++        "Initialized XPU filter warmup: %.3f s, retained tensor bytes=%d",
++        time.perf_counter() - started, torch.xpu.memory_allocated() - before)
+--- a/vllm/v1/sample/ops/topk_topp_triton.py
++++ b/vllm/v1/sample/ops/topk_topp_triton.py
+@@ -103,7 +103,7 @@
+     return min_larger, num_min_larger
+ 
+ 
+-@triton.jit(do_not_specialize_on_alignment=["BATCH_SIZE"])
++@triton.jit(do_not_specialize=["BATCH_SIZE"])
+ def _topk_topp_kernel(
+     LOGITS,
+     LOGITS_STRIDE_0,

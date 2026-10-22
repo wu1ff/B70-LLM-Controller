@@ -1,0 +1,5119 @@
+[
+  {
+    "distribution": "intel-cmplr-lib-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/icx-lto.so",
+    "bytes": 88692744,
+    "sha256": "9c032ef858f0cf1efcfdcee21747bd5db1f675bcd1db8e74067e79b90fe156ce"
+  },
+  {
+    "distribution": "intel-cmplr-lib-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/libimf.so",
+    "bytes": 4865192,
+    "sha256": "67a4b6c27002f59f26c411f4ec384300d781365af19d6a2eb9f0dd94d2a0f470"
+  },
+  {
+    "distribution": "intel-cmplr-lib-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/libintlc.so",
+    "bytes": 21,
+    "sha256": "0c04d3b61ba90894ab860f1c76bf38fedb24fdede5adbd667ac3140bd288e9e0"
+  },
+  {
+    "distribution": "intel-cmplr-lib-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/libintlc.so.5",
+    "bytes": 415824,
+    "sha256": "612ab119242ccda945de6eb354369b5bee6a158bc9724e4da5e466cb0ad630db"
+  },
+  {
+    "distribution": "intel-cmplr-lib-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/libirc.so",
+    "bytes": 414584,
+    "sha256": "cbe470862894afba8b467c6a46ecda00dee5e20920a7143316fa73d6aa898f88"
+  },
+  {
+    "distribution": "intel-cmplr-lib-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/libirng.so",
+    "bytes": 1100272,
+    "sha256": "2cd4057ba6bcd9235685597098c3bdc9811e1de0a457f7a0a2aa47ce691995c7"
+  },
+  {
+    "distribution": "intel-cmplr-lib-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/libqkmalloc.so",
+    "bytes": 595120,
+    "sha256": "ae9cab245ad593ebc22324b5f25c8621e6153fa2dcfa9259b2cba9047bcbb31f"
+  },
+  {
+    "distribution": "intel-cmplr-lib-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/libsvml.so",
+    "bytes": 28103240,
+    "sha256": "a6dbbc425c8270c3485e40ef0924ef38ed89ced4026056fd3f1f529774c4f86c"
+  },
+  {
+    "distribution": "intel-cmplr-lib-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/libxptifw.so",
+    "bytes": 121960,
+    "sha256": "8c304378408f79a9bed4a079200a783918e69b76e504e678b6b105eb918655b2"
+  },
+  {
+    "distribution": "intel-cmplr-lib-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/libze_trace_collector.so",
+    "bytes": 61704,
+    "sha256": "f391adde549a8f57ad6949eaf4b19489f53325e307474e9234f09282cfdde973"
+  },
+  {
+    "distribution": "intel-cmplr-lib-ur",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/libur_adapter_level_zero.so",
+    "bytes": 4173744,
+    "sha256": "ec3e2a2672db65f99c0d55b233f42602a8415ab19c177c4330f2e5ed5a78eedf"
+  },
+  {
+    "distribution": "intel-cmplr-lib-ur",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/libur_adapter_level_zero.so.0",
+    "bytes": 4173744,
+    "sha256": "ec3e2a2672db65f99c0d55b233f42602a8415ab19c177c4330f2e5ed5a78eedf"
+  },
+  {
+    "distribution": "intel-cmplr-lib-ur",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/libur_adapter_level_zero.so.0.12.0",
+    "bytes": 4173744,
+    "sha256": "ec3e2a2672db65f99c0d55b233f42602a8415ab19c177c4330f2e5ed5a78eedf"
+  },
+  {
+    "distribution": "intel-cmplr-lib-ur",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/libur_adapter_level_zero_v2.so",
+    "bytes": 4025040,
+    "sha256": "bfdc0f26bf88bd0bccd66fc25302a4b22559f8fe30e499be18529be3ed610e60"
+  },
+  {
+    "distribution": "intel-cmplr-lib-ur",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/libur_adapter_level_zero_v2.so.0",
+    "bytes": 4025040,
+    "sha256": "bfdc0f26bf88bd0bccd66fc25302a4b22559f8fe30e499be18529be3ed610e60"
+  },
+  {
+    "distribution": "intel-cmplr-lib-ur",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/libur_adapter_level_zero_v2.so.0.12.0",
+    "bytes": 4025040,
+    "sha256": "bfdc0f26bf88bd0bccd66fc25302a4b22559f8fe30e499be18529be3ed610e60"
+  },
+  {
+    "distribution": "intel-cmplr-lib-ur",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/libur_adapter_opencl.so",
+    "bytes": 2226272,
+    "sha256": "5dd9e522fd81bc99112dcd716ef61353eaf79721c5ba7d9f71827d7f0ff51daf"
+  },
+  {
+    "distribution": "intel-cmplr-lib-ur",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/libur_adapter_opencl.so.0",
+    "bytes": 2226272,
+    "sha256": "5dd9e522fd81bc99112dcd716ef61353eaf79721c5ba7d9f71827d7f0ff51daf"
+  },
+  {
+    "distribution": "intel-cmplr-lib-ur",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/libur_adapter_opencl.so.0.12.0",
+    "bytes": 2226272,
+    "sha256": "5dd9e522fd81bc99112dcd716ef61353eaf79721c5ba7d9f71827d7f0ff51daf"
+  },
+  {
+    "distribution": "intel-cmplr-lib-ur",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/libur_loader.so",
+    "bytes": 25026736,
+    "sha256": "5338c03524f6d3fdd7d6067e5a3f84315e36e11fe1f526d5bbd02d0c88f82a32"
+  },
+  {
+    "distribution": "intel-cmplr-lib-ur",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/libur_loader.so.0",
+    "bytes": 25026736,
+    "sha256": "5338c03524f6d3fdd7d6067e5a3f84315e36e11fe1f526d5bbd02d0c88f82a32"
+  },
+  {
+    "distribution": "intel-cmplr-lib-ur",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/libur_loader.so.0.12.0",
+    "bytes": 25026736,
+    "sha256": "5338c03524f6d3fdd7d6067e5a3f84315e36e11fe1f526d5bbd02d0c88f82a32"
+  },
+  {
+    "distribution": "intel-opencl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/libOpenCL.so",
+    "bytes": 94848,
+    "sha256": "4d7dc0d09f8623a02ecf5cd06c21790f8ec2f8f971bad1a45c10c158079b1028"
+  },
+  {
+    "distribution": "intel-opencl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/libOpenCL.so.1",
+    "bytes": 94848,
+    "sha256": "4d7dc0d09f8623a02ecf5cd06c21790f8ec2f8f971bad1a45c10c158079b1028"
+  },
+  {
+    "distribution": "intel-opencl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/libOpenCL.so.1.0.0",
+    "bytes": 94848,
+    "sha256": "4d7dc0d09f8623a02ecf5cd06c21790f8ec2f8f971bad1a45c10c158079b1028"
+  },
+  {
+    "distribution": "intel-opencl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/libcommon_clang.so",
+    "bytes": 177783552,
+    "sha256": "85abc2912a25e4bc0f1b81d799c652f8cb811cd3c45bedb950612bdba5025a11"
+  },
+  {
+    "distribution": "intel-opencl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/libcommon_clang.so.2026.21.7.0",
+    "bytes": 177783552,
+    "sha256": "85abc2912a25e4bc0f1b81d799c652f8cb811cd3c45bedb950612bdba5025a11"
+  },
+  {
+    "distribution": "intel-opencl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/libintelocl.so",
+    "bytes": 97820240,
+    "sha256": "a0f0c583fd76d17c2cf3b549bc26e9796eb4c799ae8f39893bd089c988a57809"
+  },
+  {
+    "distribution": "intel-opencl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/libintelocl.so-gdb.py",
+    "bytes": 4955,
+    "sha256": "25d4f17140e82df6f77f2bb7009283a9ecf499bd9e1ea859168bf44f0b414162"
+  },
+  {
+    "distribution": "intel-opencl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/libintelocl.so.2026.21.7.0",
+    "bytes": 97820240,
+    "sha256": "a0f0c583fd76d17c2cf3b549bc26e9796eb4c799ae8f39893bd089c988a57809"
+  },
+  {
+    "distribution": "intel-opencl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/libocl_svml_e9.so",
+    "bytes": 5240600,
+    "sha256": "9f1631fb3c2855d8f6153cd625fa7ed5624324d22ee708d05f8ec0ee34a8338d"
+  },
+  {
+    "distribution": "intel-opencl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/libocl_svml_h8.so",
+    "bytes": 5798008,
+    "sha256": "36f04642471dc4081cb9ffea19ee0214be1946dfbb52fb4360992a8a8022c8cb"
+  },
+  {
+    "distribution": "intel-opencl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/libocl_svml_l9.so",
+    "bytes": 4942352,
+    "sha256": "5cad95278bc8d2da91d8c2ed64eb28d5bd63510dc6081521615c4e6d3ec131ad"
+  },
+  {
+    "distribution": "intel-opencl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/libocl_svml_z0.so",
+    "bytes": 4919024,
+    "sha256": "679ff53bed1ad15ad4db355e8d6ea1b334620431ce360bf056c89ddc242feda5"
+  },
+  {
+    "distribution": "intel-opencl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/libocl_svml_z1.so",
+    "bytes": 5745144,
+    "sha256": "982eac79c0fd32723dd35d795c5d41e536625961276a6c87225056dbcdaf50aa"
+  },
+  {
+    "distribution": "intel-openmp",
+    "version": "2026.1.1",
+    "path": "/opt/venv/opt/compiler/include/omp-tools.h",
+    "bytes": 53383,
+    "sha256": "88e8a10d7d89f8dd2f60071aeb0fb5783d93296f6db2cd89829892051d35846b"
+  },
+  {
+    "distribution": "intel-openmp",
+    "version": "2026.1.1",
+    "path": "/opt/venv/opt/compiler/include/omp.h",
+    "bytes": 31757,
+    "sha256": "efbc54869d0fe3a0cac057f86bb272a570387382db02de0009dc4d08c3958c15"
+  },
+  {
+    "distribution": "intel-openmp",
+    "version": "2026.1.1",
+    "path": "/opt/venv/opt/compiler/include/omp_lib.h",
+    "bytes": 62950,
+    "sha256": "12a83b3580ffca4371ef133edc88f79bfd045d269c06ad4851f2f174bc759187"
+  },
+  {
+    "distribution": "intel-openmp",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/libarcher.so",
+    "bytes": 1153336,
+    "sha256": "41c1429db35e648880a5d474706b6b3cff0c9297d9120ac717b96200b111dad3"
+  },
+  {
+    "distribution": "intel-openmp",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/libiomp5.so",
+    "bytes": 2763824,
+    "sha256": "19cd02fbb18d948db4c4936afc5e07929ef16d676f72d0e76e9e853e665b5146"
+  },
+  {
+    "distribution": "intel-openmp",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/libiomp5_db.so",
+    "bytes": 848520,
+    "sha256": "ffad7ca98b75dd5d5332188dc3ef673860c8c6fca167c4043a894e5b15a7b848"
+  },
+  {
+    "distribution": "intel-openmp",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/libiompstubs5.so",
+    "bytes": 220712,
+    "sha256": "5d144648a0f5cad44843f1967d7b3d45308a674a127f09301b2480507a8607f9"
+  },
+  {
+    "distribution": "intel-openmp",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/libomptarget.so",
+    "bytes": 131853752,
+    "sha256": "ac96e25bd76f09b363e710d0e806a136ffac882e7fe492e851b1ff63400b584a"
+  },
+  {
+    "distribution": "intel-openmp",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/libomptarget.sycl.wrap.so",
+    "bytes": 73880,
+    "sha256": "c5d4daf348d8b6cb7af4c1d67dce88f230b2e6fd324e29b97abd7b21855631fd"
+  },
+  {
+    "distribution": "intel-pti",
+    "version": "1.1.0",
+    "path": "/opt/venv/lib/libpti_view.so",
+    "bytes": 976112,
+    "sha256": "effd5b24d9971c53faf14f7ad1b8bd9c6db04e86530128c40e4338310a68009b"
+  },
+  {
+    "distribution": "intel-pti",
+    "version": "1.1.0",
+    "path": "/opt/venv/lib/libpti_view.so.1",
+    "bytes": 976112,
+    "sha256": "effd5b24d9971c53faf14f7ad1b8bd9c6db04e86530128c40e4338310a68009b"
+  },
+  {
+    "distribution": "intel-pti",
+    "version": "1.1.0",
+    "path": "/opt/venv/lib/libpti_view.so.1.1.0",
+    "bytes": 976112,
+    "sha256": "effd5b24d9971c53faf14f7ad1b8bd9c6db04e86530128c40e4338310a68009b"
+  },
+  {
+    "distribution": "intel-pti",
+    "version": "1.1.0",
+    "path": "/opt/venv/lib/pti/libpti.so",
+    "bytes": 2598112,
+    "sha256": "0aa1424886e59a0cfc6808a4316471a28e7679b82c03c9e6cc895c0d072df46b"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/std/experimental/simd.hpp",
+    "bytes": 67749,
+    "sha256": "c9278ca6d477a51137caf350a7acb0d27d0dcc10e450c999e6cdcbed93477161"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/__spirv/spirv_ops.hpp",
+    "bytes": 48478,
+    "sha256": "9b6b95aad06ec394c772adc628bdb6c812dc2d71ea7d5da65c23eb1b81bd8ce3"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/__spirv/spirv_types.hpp",
+    "bytes": 5891,
+    "sha256": "b41a5f15ea10cd50f8a85ab9b29dd35d474a08dee30fa4bc272271b878b583a9"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/__spirv/spirv_vars.hpp",
+    "bytes": 4247,
+    "sha256": "b6b10a40f11e241fd62c9b90c8aaac8847b885298b581bab3b02b534b140da7a"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/access/access.hpp",
+    "bytes": 8443,
+    "sha256": "bcb6cc020254a505c2a5ec5481bbbae44be9964bf42e150b663ad215c310cf0f"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/accessor.hpp",
+    "bytes": 121379,
+    "sha256": "62e4eb71c18c87ac9ccee7e8d4d8c05276edb313bc3a2c4b45969f30b8977a74"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/accessor_image.hpp",
+    "bytes": 49111,
+    "sha256": "54b6aa75995347a20f7c8f57ce1428591969a7606aa1f9860b7607aa4ca78270"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/aliases.hpp",
+    "bytes": 8076,
+    "sha256": "b7339db39e3234ca06be4610c31ad620e09e2f1122784a9c63b0dab6cb8a9d8f"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/aspects.hpp",
+    "bytes": 1741,
+    "sha256": "79f5eea217d18f7186f811bd2bd6a4729bc7877923e3cc69c1d191dab3c44278"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/async_handler.hpp",
+    "bytes": 614,
+    "sha256": "7ef62535ddaef52da11f5ad5b5d3a72d5261bcf452f869e2baeaf753b7fdd249"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/atomic.hpp",
+    "bytes": 13801,
+    "sha256": "7b15b599478b3feb76b41be96d7f3266d3e1f4ef81b508521a5f99d671fdc074"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/atomic_fence.hpp",
+    "bytes": 1680,
+    "sha256": "ca51c358ffc12f4dbdbd5188f7f72cccf724a34edbdec01c91e9e6796baf934c"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/atomic_ref.hpp",
+    "bytes": 29093,
+    "sha256": "fe72d27b47d1c95fdeade0ae867362ae69c3c0a92509f1ee07b399071c20b54c"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/backend.hpp",
+    "bytes": 17195,
+    "sha256": "9cd1f90ee9e8847cad017c821a53a7ebf0b28590d0add44141b5e0234ce9b748"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/backend/cuda.hpp",
+    "bytes": 704,
+    "sha256": "6f59e49a4a13bde4d5451cdf35842ce8678bad9e51fc5ef27a22828e9cf929ac"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/backend/level_zero.hpp",
+    "bytes": 799,
+    "sha256": "615d9949ff6c83759bccaa9bf5ffd5bbbed72b6dc6ed3ac7adbc64f383a7ddc5"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/backend/opencl.hpp",
+    "bytes": 1513,
+    "sha256": "b7617d410f071f42511326cc1f1d5fb2d594e82f10d61e409c887fc2b373c3eb"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/backend_types.hpp",
+    "bytes": 2465,
+    "sha256": "57c5ecc8108b0a64099225c5536c78a7af6d93b8a3bb6b253052f96aaae87bbf"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/bit_cast.hpp",
+    "bytes": 2097,
+    "sha256": "aebc72243de220cae034f929564591eae7319c211d8313a977648a44e8e03fb0"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/buffer.hpp",
+    "bytes": 37083,
+    "sha256": "348b24647bbabfeb81dd24925e7db07a05541b2d84028d34d6a7f2732afdb96e"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/builtins.hpp",
+    "bytes": 3939,
+    "sha256": "c70ff2cfd7a2998f35cc91a793119dee89a93523bc2e7312aeb2d27cf203fcbc"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/builtins_esimd.hpp",
+    "bytes": 1888,
+    "sha256": "718c898e58bfcf77f80639e5f609b773504178b6b1da272de946adfc6a1cd361"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/context.hpp",
+    "bytes": 11236,
+    "sha256": "d459d8db092beea09411a32f25b46c745a4d4a59dd60e21265df28dc15dae1a4"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/define_vendors.hpp",
+    "bytes": 453,
+    "sha256": "5bf78332abd3f97562667167f7afc1a8dace1f547c1ca56fef54b42ee1c5dd61"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/detail/accessor_iterator.hpp",
+    "bytes": 12257,
+    "sha256": "339d8861c844c19f04557ce6e1f827461801e6176abb99c3f86f40e61fe0356e"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/detail/address_space_cast.hpp",
+    "bytes": 3946,
+    "sha256": "63870635394e2f53643b16f192a42f3aca9bd0b478315b00b9fd0f5699deba84"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/detail/aligned_allocator.hpp",
+    "bytes": 4635,
+    "sha256": "e66337393813f201de56959d7b9804c45b4e4f10a32cc32a053914d0fc990ec1"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/detail/array.hpp",
+    "bytes": 4344,
+    "sha256": "161df5066bffa758ecece535e89434bda2b4cdea3f8236b843895a2608ce9a8e"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/detail/backend_traits.hpp",
+    "bytes": 1187,
+    "sha256": "248c8d663ff1372dbb72f1d219ad9b8600a52dbf325dd520d117835adc3378f2"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/detail/backend_traits_cuda.hpp",
+    "bytes": 3392,
+    "sha256": "5054ae09b7c23d523e5885f327055e87bacb4ff70f4e50f8c06392c48b72d6ad"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/detail/backend_traits_hip.hpp",
+    "bytes": 3739,
+    "sha256": "6c03ee8af41ac3d380f05050cd6edf999aef0c8bec2ca864924165a387175ab3"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/detail/backend_traits_level_zero.hpp",
+    "bytes": 8239,
+    "sha256": "3307be81e73cdc1dd6149bac1a4b9e351f74641130aa6a4d720330f65c496711"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/detail/backend_traits_opencl.hpp",
+    "bytes": 5778,
+    "sha256": "2315bf32bb8a7d3051d0d5851b140512ec4c5e4d50bc4fa80df936b2ae718df0"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/detail/builtins/builtins.hpp",
+    "bytes": 13006,
+    "sha256": "3bec5edf9fa43cd5486c4e1cc532888d93ed9c790a52a80c73f2e0b517d5ab74"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/detail/builtins/helper_macros.hpp",
+    "bytes": 14966,
+    "sha256": "af2e90287018c12b144da5bf458fd947871d44931671282746dbdb77dae153da"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/detail/cg_types.hpp",
+    "bytes": 8414,
+    "sha256": "6b7c51a86cbbf62eec87033c9e295c269830b6f86576733c3063169f60f42af9"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/detail/cl.h",
+    "bytes": 734,
+    "sha256": "e7846f83f64f95df8b48f829577eb0189597e9f19378ef45215c12ebe9b485a3"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/detail/common.hpp",
+    "bytes": 14502,
+    "sha256": "33675fded790466d75a600f7027d19a1736561e95f2f2c17257b9c82f7a1e1a3"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/detail/compile_time_kernel_info.hpp",
+    "bytes": 3844,
+    "sha256": "7eb86890e00a63c4be8300952fd6ecef8f6982e9bc6f95b965e4df2e9cb7c588"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/detail/core.hpp",
+    "bytes": 1155,
+    "sha256": "2384f07f1af93928fdbd209f159fb63c4c5ad578c6c0fec5a360e8f6ff801ce8"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/detail/defines.hpp",
+    "bytes": 2311,
+    "sha256": "03eeceb0b7de545e6e5fd266e2c3a4743c6cf81119679ee6325abe65838cb41a"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/detail/defines_elementary.hpp",
+    "bytes": 4884,
+    "sha256": "721119566d07d119d2c3dea639b870d456af331118671fcc901c97cb54e03d61"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/detail/device_filter.hpp",
+    "bytes": 2873,
+    "sha256": "186471b86430e6964e4a264c828009054d88a51a205ccfb0b7527a62c0ce7f03"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/detail/device_global_map.hpp",
+    "bytes": 679,
+    "sha256": "9e277bfa05a61b776777965e03610cb7b748ba96129e9bc1588a0751e184aba9"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/detail/export.hpp",
+    "bytes": 1243,
+    "sha256": "f1a18f6723b9666e42aa6a1d1fcb7ef418fb72b356e3f5e51658d1b72345d37a"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/detail/fwd/accessor.hpp",
+    "bytes": 1541,
+    "sha256": "af61f2d3541cf5c8360f48a86fb70dacdb2f015a4fac567be0cb29d3489b5f49"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/detail/fwd/half.hpp",
+    "bytes": 1939,
+    "sha256": "af96671ff37165d404abba62f4ed4a578fc69ad39ef976aa29ce1622d17d3956"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/detail/fwd/multi_ptr.hpp",
+    "bytes": 839,
+    "sha256": "5a561663ea9264457adfcb1509c8f86b54cfc1b1ceb9e3edc85e3d004bdd0e04"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/detail/generic_type_traits.hpp",
+    "bytes": 9683,
+    "sha256": "4238226a7dd1f6e5cd96f0869db73e056f739bd86e74859dcbadc5c7c02e3912"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/detail/get_device_kernel_info.hpp",
+    "bytes": 1891,
+    "sha256": "78ab4ff0ea0bf89d68cab40ad849b8f51a035945830d819aa3a91adb57b8ea8e"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/detail/get_kernel_info_impl.hpp",
+    "bytes": 1297,
+    "sha256": "3cf52b84b527ccc8965e147c9e0ed6082d618e5e6ec9d544f222fd0c4f50e3db"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/detail/group_sort_impl.hpp",
+    "bytes": 29807,
+    "sha256": "439f7ade46f4b439bede26d8ca5a749fe6de111f228d994df0ffc247034a5757"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/detail/handler_proxy.hpp",
+    "bytes": 1436,
+    "sha256": "131c98562514376cda398c94eec46a82e58fa499be5c157400d524e1fde57588"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/detail/helpers.hpp",
+    "bytes": 9614,
+    "sha256": "492d671f0be1697649be080325007ad0b5b5e815246cc9e27a6a23163d16d3c2"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/detail/host_profiling_info.hpp",
+    "bytes": 1316,
+    "sha256": "424dbd9f5a715446047bca06083b143ed0f9133b008c1faf08a1b8b1e606abe7"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/detail/id_queries_fit_in_int.hpp",
+    "bytes": 5606,
+    "sha256": "be8044482ef675589bbb920bbb3df4b64501ba6a655f8b9aa4f8638e8714a441"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/detail/image_accessor_util.hpp",
+    "bytes": 47188,
+    "sha256": "baf18affa2081ce9bfce51812ca9f9e9497da22955ab7037099da1ed0130bd32"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/detail/image_ocl_types.hpp",
+    "bytes": 17120,
+    "sha256": "e98f86d24c09c0385f4c37563f9055dda13db74913bf8222b37c637d3fec2cab"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/detail/impl_utils.hpp",
+    "bytes": 2376,
+    "sha256": "76617802f9e901c8d330666a934f5948805f42824fb3d0b19d834bfd6b2acedf"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/detail/info_desc_helpers.hpp",
+    "bytes": 6889,
+    "sha256": "476fb1f96baec3a2e4f8599743a753e1edbf34a3b5120ec7d030aecc3e4e4c60"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/detail/iostream_proxy.hpp",
+    "bytes": 1247,
+    "sha256": "5ea273c180bb5534b4ad963411045dc85701a731c43208bda7caa3cba197b854"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/detail/is_device_copyable.hpp",
+    "bytes": 6288,
+    "sha256": "b1ddc69fa387ce017277a063a40e06a340b95baa6d23e9eb12b4e0b24fe5af64"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/detail/item_base.hpp",
+    "bytes": 2109,
+    "sha256": "d606768792a7d9f1580f80e3ce30a87518318d4c51895ab070919fdea55cb807"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/detail/kernel_desc.hpp",
+    "bytes": 7614,
+    "sha256": "3048bdb889ee124c48ba9224af668d253120485080c084092bbf372ac14315c0"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/detail/kernel_global_info.hpp",
+    "bytes": 863,
+    "sha256": "9c8d58068dd34fac338df3042b0d7dde49a68f3076f83abde6fd8ca2e1541135"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/detail/kernel_launch_helper.hpp",
+    "bytes": 16834,
+    "sha256": "5b88a138ac82687c66073e460018b102ff1c40d17d3d53205f7acd53de6246d2"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/detail/key_value_iterator.hpp",
+    "bytes": 2899,
+    "sha256": "f00494103db0e8e7a1cf6159296869ba218372711c52bb738c9d11a853d7a5e8"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/detail/locked.hpp",
+    "bytes": 1041,
+    "sha256": "39b9a4b44d0226aead1ccd2322e379e344efdaa25a03e9601276ce11b59d874e"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/detail/memcpy.hpp",
+    "bytes": 1123,
+    "sha256": "79d98688c76a4687955c08f77100cc8932a3c5149502c79da5ce3e6f38c03659"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/detail/named_swizzles_mixin.hpp",
+    "bytes": 63264,
+    "sha256": "a40d1de3b55ab6f18084891529b703fcfba569d1d88e9d01748096915c234373"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/detail/nd_range_view.hpp",
+    "bytes": 1739,
+    "sha256": "86719220e768baf2c7ef720ca4c329ede43e498ad8a110a2d7329a4cb10a6ebe"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/detail/optional.hpp",
+    "bytes": 5224,
+    "sha256": "8107f90bd1fd86ba97baaab21e849a0ac93b3d0b858e500ea126d10f732c6433"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/detail/os_util.hpp",
+    "bytes": 4446,
+    "sha256": "123fd6a51d2ae2d0fe034f35bc4c6b0e2103b7443ac7ff36b9c497b3a6c18ce1"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/detail/owner_less_base.hpp",
+    "bytes": 2136,
+    "sha256": "828442427b52f1701bd36f226def4c008b8ad654570e441e8463fd35cda04b5e"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/detail/property_helper.hpp",
+    "bytes": 3379,
+    "sha256": "c468f0907470fde25512e9dcdf8db3b53c8dea1a9711f017f10d1f7213544a39"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/detail/property_list_base.hpp",
+    "bytes": 4996,
+    "sha256": "efb196ba128e5aa42c09f16d87bae1005725021462dff131fc181bc0f32198ac"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/detail/range_rounding.hpp",
+    "bytes": 10667,
+    "sha256": "d3d910f472676c052b1fb7614df0e7d466a130d166be702b914d2bbb94eafec1"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/detail/reduction_forward.hpp",
+    "bytes": 3244,
+    "sha256": "92e0c9c852314c3c04b49b7ea495d0a96816c861feb0f5efe27433e0dfcc8957"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/detail/spec_const_integration.hpp",
+    "bytes": 887,
+    "sha256": "e3c28e5e6394392d9c49f77e8553755b5df5f275cdcad90e75084347fca29df4"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/detail/spinlock.hpp",
+    "bytes": 1380,
+    "sha256": "039cb3cf474900cea69c3631c52f610527eac08172f19576cb7da5d2c8d352d3"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/detail/spirv.hpp",
+    "bytes": 61105,
+    "sha256": "b0eb9a8249d700768ebc66fee692eae8eea66c5293280f8fdafb25d9f0e188fc"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/detail/stl_type_traits.hpp",
+    "bytes": 1808,
+    "sha256": "90bbcfcf6c99b440580ffe4cec83948f705cd32b7a36733dfae13301c16da4ad"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/detail/string.hpp",
+    "bytes": 1964,
+    "sha256": "8680e912cc30a8c50a772e366d31ee5bbfe4b6c03203227dcdff86368b1d1012"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/detail/string_view.hpp",
+    "bytes": 1905,
+    "sha256": "fe0fbb4d0d0f18dfd1143f768244ba7c76c0e48faffbf822da0b83e698e5941f"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/detail/sycl_local_mem_builtins.hpp",
+    "bytes": 1091,
+    "sha256": "18c81059be75edd3d62719f6c08cdb450f1f1e430447eeef063c58623b99f6b0"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/detail/sycl_mem_obj_allocator.hpp",
+    "bytes": 2927,
+    "sha256": "07e7b0f587b4144deb03275aa72de60a9b595e2fec474ad1a108a0393e4b15f4"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/detail/tuple.hpp",
+    "bytes": 6658,
+    "sha256": "d188c8fec82bb6948b80334ae12bcf6ce7b0596262fb3e551ac992178ad483e9"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/detail/type_traits.hpp",
+    "bytes": 14293,
+    "sha256": "38286408a20a44c20462508630a1abff993100e437e9c329eb4336b2846083e8"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/detail/type_traits/vec_marray_traits.hpp",
+    "bytes": 6217,
+    "sha256": "8621d317abb628028f8f0b6929679965519cc4ea979a81f8c5ea732041982376"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/detail/ur.hpp",
+    "bytes": 5832,
+    "sha256": "b792856048dbd400a49c426160c94f4b9823a2d356deaed78dc8f4223aa8beef"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/detail/usm_impl.hpp",
+    "bytes": 1008,
+    "sha256": "b0b36c69e393ee4c06d3d69a9578e6a0e4b2db51d33f104d9a39e96ff73768d3"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/detail/util.hpp",
+    "bytes": 3925,
+    "sha256": "44d28e69973ebce48b493011928b5b52131676c53f74f553e913c969eae4796c"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/detail/vector_arith.hpp",
+    "bytes": 35412,
+    "sha256": "87387c1a46d3ad93038403b4a72fe7d91a73f1342f63f017d14aae0e7bd9c2ec"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/detail/vector_convert.hpp",
+    "bytes": 45583,
+    "sha256": "6654a09c23ce01f3972b667ddda199d8a1e943e80a010f7aa61872b4eba0dc9b"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/device.hpp",
+    "bytes": 16258,
+    "sha256": "b71c35b2e557a11630e404dd890d2970b86ea74e19d34e96889e46c927bc2e76"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/device_aspect_macros.hpp",
+    "bytes": 30002,
+    "sha256": "a22deaddd1c9aced87419a676823d334693b296da1f46d2bc13310037de8dfac"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/device_aspect_traits.hpp",
+    "bytes": 3855,
+    "sha256": "9e39bda56a7c269746e50c6787fa52bb8a95bd51bdc824ad9097c05eec703c30"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/device_event.hpp",
+    "bytes": 1209,
+    "sha256": "df69955f206380e2ee40a3640f98517d1a480a55c761fd0ea39d4f133c1bacc4"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/device_selector.hpp",
+    "bytes": 4809,
+    "sha256": "2d81041ad396c0bbd5215ba4cb3685039468f72b5bef02bb4554d82df09b7c49"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/event.hpp",
+    "bytes": 5239,
+    "sha256": "0ead90840a20664f68b860ab1b1543d2fc74f6afbfc1acd15d4d6d092968cb31"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/exception.hpp",
+    "bytes": 5560,
+    "sha256": "d8a9c362c09c4757a765bf09377120aed6f56b4ae75828d689f9e5248975ce65"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/exception_list.hpp",
+    "bytes": 2145,
+    "sha256": "b257bc10c38690e68013c0d6a1c3f47f1517d74d6ebde09ec34509d3a90c2db8"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/intel/esimd.hpp",
+    "bytes": 4929,
+    "sha256": "d790d8214dd2930010334871c6b206ab040c4d1907b7fdfbbe7c54530b9a51e2"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/intel/esimd/alt_ui.hpp",
+    "bytes": 2779,
+    "sha256": "fa13273a3866b441c73db95f721a3bbb4f305a0de0c1ed3ab75ea39dd405fc0f"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/intel/esimd/common.hpp",
+    "bytes": 22369,
+    "sha256": "68a2e3ca70eb549218f383530a76b163839efab22ac23cc423e303e5b8e632a5"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/intel/esimd/detail/bfloat16_type_traits.hpp",
+    "bytes": 3358,
+    "sha256": "a1bc99d1d91c7d192e37d7b158999cccd90801680dd74f8024cd5baf23518ec6"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/intel/esimd/detail/defines_elementary.hpp",
+    "bytes": 2780,
+    "sha256": "50badac071a49749eac155784387809d69672bd3431dcaa58b400ed7d5289656"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/intel/esimd/detail/elem_type_traits.hpp",
+    "bytes": 23520,
+    "sha256": "ed3233442fdc233ed039a3d5e61bdcdf08b4ad4719d70694373632e600e30838"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/intel/esimd/detail/half_type_traits.hpp",
+    "bytes": 3750,
+    "sha256": "b3a27ed1c86764a84c58b84b69c231b0c668a13050069a422358a39ba9efbc86"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/intel/esimd/detail/intrin.hpp",
+    "bytes": 11908,
+    "sha256": "312d77e0c5c78d587ac235e27e146d885d14e65a588a19e4b60a6ae44605face"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/intel/esimd/detail/math_intrin.hpp",
+    "bytes": 14295,
+    "sha256": "6cfff600ae656b3b02fb3d0f581e80be702e74b390000eb094a1bf5e83364810"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/intel/esimd/detail/memory_intrin.hpp",
+    "bytes": 52067,
+    "sha256": "82c6dd5fee6d7567abd16fce0810d8d01388401b5019e0b5e59155bc4882d69d"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/intel/esimd/detail/operators.hpp",
+    "bytes": 31843,
+    "sha256": "23c547906f18f55a56b079f9ac85a70250033b70fdb1ed00a65014aa15e09b75"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/intel/esimd/detail/region.hpp",
+    "bytes": 4481,
+    "sha256": "9ca0b14b10b5efea01016196f0dfeb5532c6d6dcbe307857a22784320dfd0bb3"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/intel/esimd/detail/simd_mask_impl.hpp",
+    "bytes": 6162,
+    "sha256": "0e064899d118f7729066c0637d60814984586246b8933c5567a32258ccfdb373"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/intel/esimd/detail/simd_obj_impl.hpp",
+    "bytes": 52640,
+    "sha256": "1f954a6d2ee98cdc42f8adb086b12aaaee968b22a1f4b53d97391aefd2851df5"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/intel/esimd/detail/simd_view_impl.hpp",
+    "bytes": 25982,
+    "sha256": "a95a18a0cb33480ccad592139b626f47622d46d899b6e6113e38104abbbe2c0d"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/intel/esimd/detail/sycl_util.hpp",
+    "bytes": 5197,
+    "sha256": "f1140ddf1b5f0dcb021c0536ec1b57157d8ab888985cb32c3c2d961b1b4aea86"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/intel/esimd/detail/tfloat32_type_traits.hpp",
+    "bytes": 2570,
+    "sha256": "e7b9d65f485f621a45bf0b56380013c9a2d261ef5d246189492178d13159de17"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/intel/esimd/detail/type_format.hpp",
+    "bytes": 3408,
+    "sha256": "101c12371e4ce14acf8c290da771eed356c00849701248427131eff84f85c043"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/intel/esimd/detail/types.hpp",
+    "bytes": 13674,
+    "sha256": "7759a60deafe9142d1ae4d26e136eceb2efb07d2f23e418836220d8a15588826"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/intel/esimd/detail/types_elementary.hpp",
+    "bytes": 4455,
+    "sha256": "595f2b92b7d2bd38a43bb453bd32ca3440acf42df74a63071c1032fd6a80c557"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/intel/esimd/detail/util.hpp",
+    "bytes": 9922,
+    "sha256": "ddaf5d4119ef6d218605a83a8f093ca627ee77c7e6b7858e015c371d151cb5cd"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/intel/esimd/math.hpp",
+    "bytes": 83254,
+    "sha256": "23833952532c32e1e55e15c73ea3b276cd41394c56b8dd41e22585c696743067"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/intel/esimd/memory.hpp",
+    "bytes": 733681,
+    "sha256": "51a46326063e0a22fb09aff143a79135cd63111aefab42d74894971c5bef5c4f"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/intel/esimd/memory_properties.hpp",
+    "bytes": 14935,
+    "sha256": "3d179fe45202c08851847d30602dbbe2931c748283212c53ecbf0a22bce69f32"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/intel/esimd/native/common.hpp",
+    "bytes": 2213,
+    "sha256": "71b73605b52099f31da58d70e8e37a7e30807831f6e01ec11a34a6c7fbba6ab8"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/intel/esimd/simd.hpp",
+    "bytes": 7986,
+    "sha256": "cb67ffc456e3f42ba5164831b279fa54b4d84f9bd3d98bb2af5145612b91f462"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/intel/esimd/simd_view.hpp",
+    "bytes": 9531,
+    "sha256": "d14a84a7c802a96a29c4e70f2badb0ae3ab02274efd475439f3376b8e652e2c1"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/intel/esimd/xmx/common.hpp",
+    "bytes": 2390,
+    "sha256": "1d9b4a11ba072ee9fc4aa5b847f916f02d696c193d1fc3e950124f2689d337c2"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/intel/esimd/xmx/dpas.hpp",
+    "bytes": 16917,
+    "sha256": "624af78f61deb6b9591904b908e05cb13bbf6e8a8b64e380df09b29c83054c5a"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/intel/experimental/cache_control_properties.hpp",
+    "bytes": 8659,
+    "sha256": "e77df8f38e41f5793b15edb31fa6c185dfa03e88da17da2788ec6c470b586e27"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/intel/experimental/detail/misc_intrin.hpp",
+    "bytes": 955,
+    "sha256": "b44cd7fff0417e493a35a73843b6e516bc74e42c950638b901c2d8258addbfc1"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/intel/experimental/esimd/common.hpp",
+    "bytes": 2999,
+    "sha256": "d5956973abfe8fc370fc1c70cdd9a3d1efd46f2476463916d1873a64537cb9f6"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/intel/experimental/esimd/detail/math_intrin.hpp",
+    "bytes": 6062,
+    "sha256": "862bdfa14bcd2ea339cb6e69841683c2289da61e8ecc7d2fdb909e93edc05590"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/intel/experimental/esimd/detail/memory_intrin.hpp",
+    "bytes": 8107,
+    "sha256": "cca5506fd1056344a6c49a696c005083c7a81d19fb09e296ae11db9f42d7d013"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/intel/experimental/esimd/detail/util.hpp",
+    "bytes": 2734,
+    "sha256": "3bdd4c443763e186e6484b504b5c2b584afa100bd9da173ef5bd171ad91605a2"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/intel/experimental/esimd/math.hpp",
+    "bytes": 27735,
+    "sha256": "44b302f26eaafc0946570ffb6f839b43c71e7ddbb0dba0370c4b69c380899394"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/intel/experimental/esimd/memory.hpp",
+    "bytes": 121510,
+    "sha256": "d4303020df2e134a389146300a1fbf5382ba90c0c2cf6aca093d123a95290b38"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/intel/experimental/esimd/tfloat32.hpp",
+    "bytes": 1916,
+    "sha256": "f029a6e52f8d7c11e787bbbce16cb80214921b3981f0ae0ad473412495def0be"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/intel/experimental/fp_control_kernel_properties.hpp",
+    "bytes": 5102,
+    "sha256": "10a5af3012fa0e628d4cca34b0698b2df4a3d6d4a360f5d50c05061213288119"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/intel/experimental/grf_size_properties.hpp",
+    "bytes": 3225,
+    "sha256": "99f3deaeb889a5757ae36785d4394b946b9f73ab522e93042c84fc7ba6021a57"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/intel/experimental/kernel_execution_properties.hpp",
+    "bytes": 1834,
+    "sha256": "a6bef97a6d0abf3e545a1c71c2eb5200fc26f0af5ecb0d0db32f3133e3a450dd"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/intel/experimental/usm_properties.hpp",
+    "bytes": 1133,
+    "sha256": "77813a4bdd360b0a4e8de77243287715fb5cf012bdfe4871930beed1a817dee3"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/intel/math.hpp",
+    "bytes": 98107,
+    "sha256": "40d4ea16c9956fa2214a722af5c2b35dee7f9a76db63540fca7ab40c8a6a7153"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/intel/math/imf_fp_conversions.hpp",
+    "bytes": 46719,
+    "sha256": "6d14d9c87e982b30c6b41bc51fc70509cfab9118b088cb5f41713ce82c82d818"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/intel/math/imf_half_trivial.hpp",
+    "bytes": 9493,
+    "sha256": "947c2bbba5a795b7a30a5def56c65f679ae97c0bb951b5875d49150c067906ab"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/intel/math/imf_integer_utils.hpp",
+    "bytes": 8025,
+    "sha256": "b65fef779b3f4fb619903c8ec1353a72b01344dae183632e6aee540610b6009d"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/intel/math/imf_rounding_math.hpp",
+    "bytes": 12567,
+    "sha256": "426272a71d61c2032aef48887f145fc3cab0b3cc9140debf34e344f89372a14c"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/intel/math/imf_simd.hpp",
+    "bytes": 41614,
+    "sha256": "38ebc4e0fe17a93107dc0d9df0d4bb1a0f3bf3dd65b9cb44820b475caa936807"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/accessor_property_list.hpp",
+    "bytes": 10268,
+    "sha256": "371f315ac95a1401a5f031b4f3b5cb0be2acac3afca3cc6650b30a7b7a3d6c11"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/backend/hip.hpp",
+    "bytes": 1791,
+    "sha256": "df78d95082754638030b64d77ce1a8f48c28747e4f7f6fc5981a4d6ea59e0e77"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/backend/level_zero.hpp",
+    "bytes": 11637,
+    "sha256": "30f86adea4a4be42714a6bef7b637b5a305afcb272cfcc31ad2547c6dd13de4b"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/backend/level_zero_ownership.hpp",
+    "bytes": 756,
+    "sha256": "082d86b5b159c4f17eb62ef549fd3d6afbbacfa80e7e3fe9b31958c2e3bd9080"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/bf16_storage_builtins.hpp",
+    "bytes": 2424,
+    "sha256": "f0dd5767e82b534b21b3484ab3101aabb55756e5275346e1b8fffc5ed2d50a6c"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/bfloat16.hpp",
+    "bytes": 27719,
+    "sha256": "58f1114c0406b00ab7661fd4051165e97bb418158571656383799e675f3e1051"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/bindless_images.hpp",
+    "bytes": 97332,
+    "sha256": "50be3f267f07f01b95e8e2fcd5a4b386bb7147e181c981ca7279731880d035a2"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/bindless_images_descriptor.hpp",
+    "bytes": 7952,
+    "sha256": "35a158a2e2c90033eea331fedc492ea7f3806e0304796b03c25fe7b479412fa4"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/bindless_images_interop.hpp",
+    "bytes": 1912,
+    "sha256": "b7b9f51fa0bd8af8f2c64d3ddaa698439793a94c5411b7b4fd56844f80d0aecb"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/bindless_images_mem_handle.hpp",
+    "bytes": 734,
+    "sha256": "7b7f3678d7cf4c4027744966680036719afa7f78dd8afa10e2603d4126f757fb"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/bindless_images_memory.hpp",
+    "bytes": 3585,
+    "sha256": "23a90baa2b734d4514a4ab908939b7a01184527e47b518b50b2860edb819d9fb"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/bindless_images_sampler.hpp",
+    "bytes": 4042,
+    "sha256": "a36b67edb511c62eeb605f3bc3a698eb86cadb565662a462cee3df08ae6ab62a"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/device_global/device_global.hpp",
+    "bytes": 11731,
+    "sha256": "8c30cc019cea0c5b7fdf952ab15ce84524a1c2fcc3453bf252bf7fa393ae2d90"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/device_global/properties.hpp",
+    "bytes": 3345,
+    "sha256": "02e5eb84893de80f62e13904dd7d99978db0eb7b4c8d8b530dc7260d7b0d137e"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/dot_product.hpp",
+    "bytes": 2276,
+    "sha256": "a8fe523e41b263e4c7ddb8b296ef06c24b7672e87658115bad430ed391d94e93"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/experimental/address_cast.hpp",
+    "bytes": 2404,
+    "sha256": "54722f6cb487d55e8b2a0793da2cb146369badffd743d42077f37f5d5e1c9d49"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/experimental/alloca.hpp",
+    "bytes": 3262,
+    "sha256": "a70d928bbcca7d8271e82fd7c94b53beb017d8c71708052cfcfa7db33cdb0507"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/experimental/annotated_ptr/annotated_ptr.hpp",
+    "bytes": 17701,
+    "sha256": "fe527ddb23451145d0897162786e32cbab52a93a9f18b9b82170dd0858f9cb23"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/experimental/annotated_ptr/annotated_ptr_properties.hpp",
+    "bytes": 2075,
+    "sha256": "dc574835a59fd219f89813782b8447f7f4fb756ff257bc64786155047f590173"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/experimental/annotated_usm/alloc_base.hpp",
+    "bytes": 11760,
+    "sha256": "c889e21b640eed5e1f98ea9030f82641dd5a76d61ac04b1f3b0d21c3e70bd36b"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/experimental/annotated_usm/alloc_device.hpp",
+    "bytes": 7040,
+    "sha256": "60218abfa496f0c8d974f9ff8c59f9449e20804a845a9c2dd3fe4be95f77406f"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/experimental/annotated_usm/alloc_host.hpp",
+    "bytes": 6563,
+    "sha256": "497c303340ea7611a06e456f8b8e6129b23d939bcd2ada8770d667015ea94964"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/experimental/annotated_usm/alloc_shared.hpp",
+    "bytes": 6960,
+    "sha256": "4dfdd9d212785a6c132576406ee7333f82452219043f3f68d4c0dbebf12e9347"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/experimental/annotated_usm/alloc_util.hpp",
+    "bytes": 7468,
+    "sha256": "825aa4292a70e72c0d15a8258bc9cd3c65f12f4445c948133390e6967f69e94d"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/experimental/annotated_usm/dealloc.hpp",
+    "bytes": 1021,
+    "sha256": "5175198b5a4d22b51e78a29bea76fb04ea806c671c44c32417ad0fcbddf31abe"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/experimental/async_alloc/async_alloc.hpp",
+    "bytes": 3493,
+    "sha256": "85336d35a03023b2dcdb2ac5edb220d1cb62dc8d704b38b010fc4b23aaaa378a"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/experimental/async_alloc/memory_pool.hpp",
+    "bytes": 3680,
+    "sha256": "66361c3cc034d06e89f27c88fe84fb4703acbc8cbc8c4d0b573321e30c244cfa"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/experimental/async_alloc/memory_pool_properties.hpp",
+    "bytes": 2584,
+    "sha256": "b243726af171dc482378c68747f2cae6aae0a4253bed6143da8a9007b06b13ab"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/experimental/auto_local_range.hpp",
+    "bytes": 899,
+    "sha256": "d805dbf2e8cbb3a819cd2f41be116c438ded8943d1e7e4e1f1546aa918ee418f"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/experimental/backend/backend_traits_cuda.hpp",
+    "bytes": 3933,
+    "sha256": "200c95cdea517474504e1df90ff259bf4f2ec0066fa899d3b3846d2d99522079"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/experimental/backend/cuda.hpp",
+    "bytes": 3599,
+    "sha256": "4d3bf058c36bf510a5902a08f0afab69a32bca8ecb355a94a918582596007316"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/experimental/bfloat16_math.hpp",
+    "bytes": 19498,
+    "sha256": "e00ee8e12cf95a41316acb25168200180569bfc1d5f7d08c00af5ee035c62460"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/experimental/builtins.hpp",
+    "bytes": 7141,
+    "sha256": "9942a7eb5d35705bc30b0affdaf60bd832fd9bc8f325a495f80f381722e4ddb7"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/experimental/chunk.hpp",
+    "bytes": 7126,
+    "sha256": "3fd41a723bb10fe205ae813d31fc7948d8dbcecb300d04c046ad6b2c297ca199"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/experimental/clock.hpp",
+    "bytes": 2159,
+    "sha256": "87a7095fa126a5dfa2f2c3a1c6f26c862282d7e3a85545183588994f6a20309e"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/experimental/cluster_group_prop.hpp",
+    "bytes": 2471,
+    "sha256": "50b0954716a0c952f74fec3d8617571a59010152fd40752fa44fe5c8e957c2ae"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/experimental/common_annotated_properties/properties.hpp",
+    "bytes": 4138,
+    "sha256": "a39c062f35971a49f43e38043fb9858c4c0937985f3b0c72d32ce0b4ea8ece6a"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/experimental/complex/complex.hpp",
+    "bytes": 520,
+    "sha256": "d3078cbee7ce5a15c45d7bd2813265095b95700ad113c936e2a7d42cc980cdc7"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/experimental/complex/detail/common.hpp",
+    "bytes": 2017,
+    "sha256": "6a46346629e10853e844114e0b09e9fb3c59ffb081470930d216aac4b3c4f86b"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/experimental/complex/detail/complex.hpp",
+    "bytes": 13445,
+    "sha256": "dbe8bcbe071265398138c2f98ed8a9cf96232522eceb210eead3751e731f04f9"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/experimental/complex/detail/complex_math.hpp",
+    "bytes": 21286,
+    "sha256": "938ac330cb4761c311f5eaba97fc7c2e17ecc417076a536d282be2803125a3ea"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/experimental/composite_device.hpp",
+    "bytes": 648,
+    "sha256": "c9b014f49202e9f3b083c41e718a46c9d94cf66247239f97a8047ab15be70e9c"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/experimental/cuda/barrier.hpp",
+    "bytes": 4138,
+    "sha256": "11bed6a433c222b6279675b6e5c7a1e99206f3ff69ab0e25cb9df21c521b811a"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/experimental/cuda/builtins.hpp",
+    "bytes": 17918,
+    "sha256": "cf6fc386e952ff2c0d57aba43a6b012559445c7d759d4c33dc4c66d2bfc2bdff"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/experimental/cuda/masked_shuffles.hpp",
+    "bytes": 3829,
+    "sha256": "077132ce42ed445fd1c0747fd44c7723eccc78a7e3abb969c944fa1b1850982c"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/experimental/cuda/non_uniform_algorithms.hpp",
+    "bytes": 9654,
+    "sha256": "0c10ba5269d72274cd8ff413f18bfb50fa7fc6152d2a3dd7da84b5c0623bba37"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/experimental/current_device.hpp",
+    "bytes": 1650,
+    "sha256": "2959a53ed5d0afb5ad608bdac53ee236473dfc3fc9a79d4d720801ebd94af090"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/experimental/detail/invoke_simd_types.hpp",
+    "bytes": 1814,
+    "sha256": "103dbb55336a067f514b69385e80ec6e7af17772198e97558f59accea3f248a9"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/experimental/detail/properties/graph_properties.hpp",
+    "bytes": 3726,
+    "sha256": "8f26053c224a4b5e4b265014d106a5fe08b3b49621262d1f4f774a2c8726ad00"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/experimental/device_architecture.hpp",
+    "bytes": 49897,
+    "sha256": "98ac328d35992ff8df2e22181c8d9205e3937c24a8f861ee6f3759e5b9c6f4f1"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/experimental/enqueue_functions.hpp",
+    "bytes": 24808,
+    "sha256": "d772f09a9a9f0a0791c4d33e430bf809c7fbe8a86d0b04e3fa0765909ba56612"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/experimental/enqueue_types.hpp",
+    "bytes": 1015,
+    "sha256": "f884e13a787d1ca5ae67560d1011a3e0190c4d06561aa33b03a6773a4f315d8b"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/experimental/event_mode_property.hpp",
+    "bytes": 1063,
+    "sha256": "abeee97e9778425b052a0428fd11c155e59d8f2aad839fd3b57f12f7c5257a07"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/experimental/forward_progress.hpp",
+    "bytes": 762,
+    "sha256": "72aec94e4932dc6f00849af5b0711d61a0a537c65c69786fe284f7e3810b6120"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/experimental/fragment.hpp",
+    "bytes": 6415,
+    "sha256": "d0eaf3a3c24d00cc29f600f74bc37c34b7b470c4e09c2b2287792b8e5910d537"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/experimental/free_function_traits.hpp",
+    "bytes": 2633,
+    "sha256": "0e2cf1750c2e0967c4835150bc5c37a170165fb011975bfcf20b6f4e19083971"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/experimental/graph.hpp",
+    "bytes": 578,
+    "sha256": "f7a91295612dab140b9b30a87875deaed39667ecda72562fa20070b6e54774e0"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/experimental/graph/command_graph.hpp",
+    "bytes": 5528,
+    "sha256": "c7406f99f309f237bac7bf7a5577b71ebd378a06a739ed6cc21cc6c743e76fd7"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/experimental/graph/common.hpp",
+    "bytes": 815,
+    "sha256": "0de5fc20d4622dc13f4e14f038d310f3f3725a77cb5e5210b0b1bc9e8b0560b6"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/experimental/graph/dynamic.hpp",
+    "bytes": 10115,
+    "sha256": "5ba436beedf7800ad649da15980449d6a999831e0638bbc2da01ad5b62bbe028"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/experimental/graph/executable_graph.hpp",
+    "bytes": 3140,
+    "sha256": "34fd24537768454444734a5e6a05e21028815f69cc193e78aa997772c3c20653"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/experimental/graph/modifiable_graph.hpp",
+    "bytes": 8632,
+    "sha256": "f16acf95fa54d45947700f4ece19f2cad81dc35ebcc38d8ef356f5f706a7b3de"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/experimental/graph/node.hpp",
+    "bytes": 3330,
+    "sha256": "f02511e4eabc0a7d8e6f9e28437568aa310bf684c411cc333e16958d4d0ba369"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/experimental/group_helpers_sorters.hpp",
+    "bytes": 19507,
+    "sha256": "bb03fc210fe5d121bbcf9c8898f47b07258c2ca600132554232b3adc09c250c9"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/experimental/group_load_store.hpp",
+    "bytes": 23078,
+    "sha256": "899b9ca27df42120f4a1d7ac7f841fc112a017dc0b988ee2e12ff08f3a34ea04"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/experimental/group_sort.hpp",
+    "bytes": 13303,
+    "sha256": "5f2eee857b98f714aeb5594bf13c428042144de090ef7c6b68b10eb0cf5e3552"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/experimental/invoke_simd.hpp",
+    "bytes": 19982,
+    "sha256": "73e7c9935032ddfbad7d4b7bdf7c38a8bf9e62a019526970b2e9c0e2cbd0709d"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/experimental/ipc_memory.hpp",
+    "bytes": 3779,
+    "sha256": "fe1e5607e35558a122d42a430fdec63964f033a12afd8d50800eb64b7c9c721c"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/experimental/non_uniform_groups.hpp",
+    "bytes": 1911,
+    "sha256": "1c3a54ad9e2771f400f64cf8e4e05010880915bb1658fe3b006fff13ca19176a"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/experimental/prefetch.hpp",
+    "bytes": 13130,
+    "sha256": "faf6aaf731e4af867f4a54159cd2e332693eb7bac9753126d90c6d7fd3d33bc9"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/experimental/profiling_tag.hpp",
+    "bytes": 1550,
+    "sha256": "8bf94c6e3c5006bdacd042c78293894823170cbd7db3930c7448c2124a9a8bd3"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/experimental/raw_kernel_arg.hpp",
+    "bytes": 955,
+    "sha256": "87fa8bb34332423ca4af08eb4af08e191f32b08b5a844e1fce8d3a22002dbf88"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/experimental/reduction_properties.hpp",
+    "bytes": 7457,
+    "sha256": "91913f0d0e514835fed735e53ba3b829a2550402f5eb57f50e67c325aef6ff44"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/experimental/root_group.hpp",
+    "bytes": 3926,
+    "sha256": "aff8ddb708ff14b87cbc33eb61e3a3470af046a2522973e2d4165a64db411765"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/experimental/syclbin_kernel_bundle.hpp",
+    "bytes": 6336,
+    "sha256": "21d1c1dd6f7298204a3b223080a569842168a26fa805be2fd10e6cefa8b0379c"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/experimental/syclbin_properties.hpp",
+    "bytes": 1085,
+    "sha256": "8f74384065844ae8d05fe71e426877c123bc8ea3db43fd385d83da6a8b95acb3"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/experimental/tangle.hpp",
+    "bytes": 4739,
+    "sha256": "3a0863b17b214d6c59fb67bd23fd1a4911e4802759b6439cbba3ad7d0f6bda4f"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/experimental/uniform.hpp",
+    "bytes": 4035,
+    "sha256": "00dfdd6b512641bb838ffc0610ba50eb2187454b4a1733d2e36f8352d99ffa52"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/experimental/use_root_sync_prop.hpp",
+    "bytes": 949,
+    "sha256": "8f623a3d66abd9e9470aae2d07b3017d6bb26418374672cbf7c0bcb6e59713fa"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/experimental/user_defined_reductions.hpp",
+    "bytes": 5377,
+    "sha256": "7a00e1a49a83676133251a0b24d90ab0d6f7bfcc40c205e0b3d247876418f9d4"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/experimental/virtual_functions.hpp",
+    "bytes": 3941,
+    "sha256": "14b7e8ab97cb83b3056f3fbecd16d8f2feaec64614d2b105daa7f3c480242d25"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/experimental/work_group_memory.hpp",
+    "bytes": 4705,
+    "sha256": "720f9cebfe84c793748b0b4ee1b3d4ff1b6b85f7d75a065b57840a1875e72e96"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/filter_selector.hpp",
+    "bytes": 2111,
+    "sha256": "8243a15b5c302a96956eb0edbb0e18b66f2baa72a2bf8cd175ce062163c549d8"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/free_function_queries.hpp",
+    "bytes": 3360,
+    "sha256": "4bcd5cec7c294cf9ecf0fe066623cda2bdcaa73ecc18f7ff597aa8ba8eb73a70"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/functional.hpp",
+    "bytes": 4382,
+    "sha256": "44e37999146fdcb1267d0adaf799b59be4c8c203885c240bd175d713cde62715"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/get_kernel_info.hpp",
+    "bytes": 4679,
+    "sha256": "9d9ddcfb24c4abb1a2a4ef7b1cadc10aa705fa24e5ac1f6545115940f699b8a5"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/group_local_memory.hpp",
+    "bytes": 2796,
+    "sha256": "e27178fd78ec4ae144303f553bbff215c15245d07eaba0604c98e05b9551d120"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/interop_common.hpp",
+    "bytes": 737,
+    "sha256": "2cb205727278c777421b7049a3c6bcb10db3e9f31f454772ad936e99cea1c067"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/kernel_properties/properties.hpp",
+    "bytes": 19949,
+    "sha256": "6e953d188d1e1e0ca872ee70e7e1911dde459a32272d7951f7b11f7a36e10f8b"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/matrix/matrix-hip.hpp",
+    "bytes": 16594,
+    "sha256": "b6000966d5603f74212559819cfe6a5da8bb4497e36aa02a70f4e02cec0f7160"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/matrix/matrix-intel.hpp",
+    "bytes": 40744,
+    "sha256": "a8836d2b8b2ba1c023aeec96fbadb82bee054af5a5b427887b90969509cd06de"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/matrix/matrix-tensorcores.hpp",
+    "bytes": 31532,
+    "sha256": "64ccc129fd4ffb31accd9461f2344c6bd827eadec508bd15f5c97bde842d4167"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/matrix/matrix-unified-utils.hpp",
+    "bytes": 4458,
+    "sha256": "c8e428024901d3529a45b6659b62e964c80a16c8fa54683487d137433a9e4832"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/matrix/matrix-unified.hpp",
+    "bytes": 23601,
+    "sha256": "fce8a8847f92568004c150e49d0125ff649288806a5e72f1bc32e9d5fed38dbc"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/matrix/matrix.hpp",
+    "bytes": 821,
+    "sha256": "c298993bfc66b10f3204723c20afe960e07313b51add9ab28f549653dbde4da7"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/matrix/query-types.hpp",
+    "bytes": 3396,
+    "sha256": "aeb1a24055343c7fd8df62470f945f8318306496e33fcc429c092a295931e219"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/matrix/static-query-use.hpp",
+    "bytes": 36220,
+    "sha256": "a48cd577e4938f67dfbee0046f2fd9034432f1528f7f6e685f54433ff980a8f1"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/matrix/utils.hpp",
+    "bytes": 1067,
+    "sha256": "4f02f0f570cf645f5abf46e3f64330102f4e2ae54b30a6c7f847d3131531934e"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/memcpy2d.hpp",
+    "bytes": 11661,
+    "sha256": "b25ae5020eaa261830d81b1cd7ef81df0e682c47aa02960c0cbfc0031e16e8b3"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/memory_export.hpp",
+    "bytes": 5341,
+    "sha256": "d443a2424ac346ac2011e04d279b422e6337878162a7ce11ad5fab18e8b1af29"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/owner_less.hpp",
+    "bytes": 5797,
+    "sha256": "ac184974652f7e941fe92a8b5e04c118667f0b6ed18038e003fc408c36aeee89"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/properties/properties.hpp",
+    "bytes": 16237,
+    "sha256": "e17ff86d3bc64874574edb39bef14b57390bb8c0f426271c804e19f47674f205"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/properties/property.hpp",
+    "bytes": 10442,
+    "sha256": "5a8e1fe0fbcfab44cd54fef552f7d4cfcdcfc03efa00bb2f42d5550e84a55646"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/properties/property_utils.hpp",
+    "bytes": 7357,
+    "sha256": "47bfe85e9fc8987d0eb55fa00f6877a35f8b05e3ecd5d790d49cc20d947e4275"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/properties/property_value.hpp",
+    "bytes": 2911,
+    "sha256": "dc863dad43d62f983ad7d533d2a6e5dd38b4befa74f31e4be108bb45ec2ddb96"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/sub_group.hpp",
+    "bytes": 1983,
+    "sha256": "9b907ba653c689acae32476f0b34c39e2e49c1c0eeb5f610acb9b217cccdc0a2"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/sub_group_mask.hpp",
+    "bytes": 11639,
+    "sha256": "b2517a34958e255ea2ab382791136a16967b88275e98045921e58aafdc9e5d3d"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/virtual_mem/physical_mem.hpp",
+    "bytes": 2146,
+    "sha256": "3669a72d1ff6e6a4571b160dc09b818b028095c7b368ca73e90f0974d0a4b375"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/virtual_mem/virtual_mem.hpp",
+    "bytes": 2152,
+    "sha256": "18b1cffc3a8990162ab017d2e5a969beb025c16088328f7eef8b481947b08a2e"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/weak_object.hpp",
+    "bytes": 11352,
+    "sha256": "bfcaef4646bc58d09ef4ac1719983ce229766bead1d35fe318c61883198ab7d4"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/weak_object_base.hpp",
+    "bytes": 3109,
+    "sha256": "79977b68677d969688e6d3e1190e8a1706ad758a51bf1665ad9eacc7b877128b"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/work_group_scratch_memory.hpp",
+    "bytes": 1828,
+    "sha256": "8b1b2555f65cd5567ba7d2cf7a80cdb46b2e3016e17671938923009b938a4ade"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/ext/oneapi/work_group_static.hpp",
+    "bytes": 2087,
+    "sha256": "5013752159d9a4d1abf6d7eb9f90737bffe64e77184531cc48bcbf91c6f52acf"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/feature_test.hpp",
+    "bytes": 5070,
+    "sha256": "647eff1ee0d44b2959c8ab767c9d18ded49fdab58f4f9370e1f1f86ce241c9ad"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/functional.hpp",
+    "bytes": 2187,
+    "sha256": "32f1127d7689703c80f66d630e5593fa489c22119291e01e18f87f39bb6bbb16"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/group.hpp",
+    "bytes": 31592,
+    "sha256": "313b0009dff120a60466d21a2041d31fae162916c1b30bbfed5db57a2fc5a326"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/group_algorithm.hpp",
+    "bytes": 42568,
+    "sha256": "728525a097704c6d61d75b7e588be9e735c2dac724da3bab16dec4b15d7ff416"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/group_barrier.hpp",
+    "bytes": 1368,
+    "sha256": "84ee59544e3c8483ab37ca63c467467dc76926074c99b3d88064aff7bfa74fba"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/h_item.hpp",
+    "bytes": 4483,
+    "sha256": "0a56a812530659a386e574a40ef2b73a9943c35c9d2517fac9ae0d4159dc0188"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/half_type.hpp",
+    "bytes": 26629,
+    "sha256": "6321bb1d428814c964685275374204f0eae94f7153bbcd38a4bb071b7d177fce"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/handler.hpp",
+    "bytes": 139077,
+    "sha256": "6f7f525a4982f3c6ba520a53a3c5b785befb115ce328945b44c1e995566f663a"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/id.hpp",
+    "bytes": 14728,
+    "sha256": "0f1981fc41adc1a456ca6bb0a16b3b15db675b12dd309c6016a97a5bc5fd72fb"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/image.hpp",
+    "bytes": 47236,
+    "sha256": "280ee21bda7e0feb9a1e700812d3c4f838a40715df65159057107db5f729ae4e"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/info/info_desc.hpp",
+    "bytes": 9754,
+    "sha256": "94639e1eab7dfc5f9d10bbc078d51132e39e831fe5648a62e89ccbe461575dc7"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/interop_handle.hpp",
+    "bytes": 10670,
+    "sha256": "a655414d647d5b7c92f87f8bb1c21ed19d80f7cb47c9f1552aee3a6963aaea1c"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/item.hpp",
+    "bytes": 4353,
+    "sha256": "be13edb240d6a6134fb908ff474349f3a6e687b7aaf656c88bc200a905703665"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/kernel.hpp",
+    "bytes": 10162,
+    "sha256": "bbb3528fcee0e6b2d2538c5591fe6b0c36ab24b33e08bb7ee7cd04604b69a029"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/kernel_bundle.hpp",
+    "bytes": 51248,
+    "sha256": "878180926500b2f25b6547268a3d86ffac3a46db66ee95835ce0aa6a73f662cf"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/kernel_bundle_enums.hpp",
+    "bytes": 1125,
+    "sha256": "77753e563201359c55507a22aa3af1e4db60555b514bb12fa45263611f85b5d4"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/kernel_handler.hpp",
+    "bytes": 3275,
+    "sha256": "b7354e8b8a7f14e680afdafdebc5f6f0d5aa0f67f9f2e920dd4b846addd21359"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/khr/dynamic_addrspace_cast.hpp",
+    "bytes": 1268,
+    "sha256": "4ee752d6abeb45bba5055e1ecd9e32f1f18bac99219f2f911f915334a879032d"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/khr/free_function_commands.hpp",
+    "bytes": 22973,
+    "sha256": "864a3c7b3500e438b85a46cbbeb3607589c8c36d8b137d53f1721b015b2ed060"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/khr/group_interface.hpp",
+    "bytes": 8338,
+    "sha256": "95b28cf7dc187741a7e087f8fce1748c00f2b2adc46a931c9947759537c9b35a"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/khr/includes/accessor.hpp",
+    "bytes": 538,
+    "sha256": "d2e7dc5b3bb1329b1243f8a79ccff558528220bd30a582bfe238cb1604f8d9cd"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/khr/includes/atomic.hpp",
+    "bytes": 567,
+    "sha256": "4a0990a9bf8a32a68f0ca48ed5c456e29d18a66092eedb7c0d8533d8823f0bf5"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/khr/includes/backend.hpp",
+    "bytes": 534,
+    "sha256": "8e7739de9a6b75a6b677f7825ceed7eb8f11bcc6e73cc72334a88c772d016378"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/khr/includes/bit.hpp",
+    "bytes": 523,
+    "sha256": "a1ee91ba2bb68707a0226d9930d693f841c5549716984ceb3c90a0f8a2ed9166"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/khr/includes/buffer.hpp",
+    "bytes": 530,
+    "sha256": "e0aa85bc7471471710f4fc3163052babc83cef53fc446a711c54320151b57336"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/khr/includes/byte.hpp",
+    "bytes": 525,
+    "sha256": "01a7de0f70be1a32b2ca957ef971623f1e68071ee86098e86c72c5cc44fbabfe"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/khr/includes/context.hpp",
+    "bytes": 534,
+    "sha256": "bdf8bc92161869db4dfc329ebdbb7b80e181c4db8589878e8eda72e69412e8b7"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/khr/includes/device.hpp",
+    "bytes": 558,
+    "sha256": "b42cff5d70cebe37c9b6348dcd83dbef570fafadc630363ff0bcd50ab3fc643c"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/khr/includes/event.hpp",
+    "bytes": 526,
+    "sha256": "0a404c2f8f76d0817a2a7ca50b2e64bb3aa11cac2040b90a2e53e2b93da9e5e4"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/khr/includes/exception.hpp",
+    "bytes": 577,
+    "sha256": "1333c284887ce96ca404f91dc0b0d4be9d2f3f3a6b53c5c1edbd735e31c665c7"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/khr/includes/functional.hpp",
+    "bytes": 546,
+    "sha256": "8ad49c33d558e9391a22c56e55c42ed9bf326df6937847ebbee1ac68e9abf73c"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/khr/includes/group_algorithms.hpp",
+    "bytes": 569,
+    "sha256": "6f864bee3e8542de2a004249b35a107f2488b98d8672555ed8deee2eec4aff11"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/khr/includes/groups.hpp",
+    "bytes": 629,
+    "sha256": "e089a55e69e7baa5fadd761d50c10b79007f020fb60d2e3fd56bc37aeaa18b7e"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/khr/includes/half.hpp",
+    "bytes": 527,
+    "sha256": "ad0d711ae325b0147a95146f1e450e56d98449163125df40065d5a0803f8969b"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/khr/includes/handler.hpp",
+    "bytes": 534,
+    "sha256": "d2ca83ac98a9e2e33494d4ea094a3b7c44d6ba5ae2d457e013b7ef756c203a09"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/khr/includes/hierarchical_parallelism.hpp",
+    "bytes": 610,
+    "sha256": "424d5c9d5e83b33f835f9ccb2a7b502f19e170efc41451c0dedd1a08db3bfdea"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/khr/includes/images.hpp",
+    "bytes": 609,
+    "sha256": "1ec46527629afeb7e9d2601b44eee6acac2d61820856ec9d5fb49bb292ebf416"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/khr/includes/index_space.hpp",
+    "bytes": 649,
+    "sha256": "49ced9538759cc3204e8e532c7a4bfbe38601996be8a9c3a906226589a00b345"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/khr/includes/interop_handle.hpp",
+    "bytes": 562,
+    "sha256": "5ec79f972c4e8770c5d77af021658db827638cf70ac95b3657282865abf5c47e"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/khr/includes/kernel_bundle.hpp",
+    "bytes": 623,
+    "sha256": "d7c45886c66b331e734d18d43f9c7893777702ef1440e2f6b387978d96a1abe4"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/khr/includes/kernel_handler.hpp",
+    "bytes": 562,
+    "sha256": "061a847198e9938acf29cee08ab51513d83b0becece33d1fbbf246568d3858e4"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/khr/includes/marray.hpp",
+    "bytes": 530,
+    "sha256": "aa579a8355971ec9b2f7d08feb51a0776021d2b80745143c1f899302b90d1b5c"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/khr/includes/math.hpp",
+    "bytes": 526,
+    "sha256": "6fbc5cab8010d94121ee973b1e0a227ec9bbff3ec095721b563b8cc927101b1b"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/khr/includes/multi_ptr.hpp",
+    "bytes": 542,
+    "sha256": "3502d4bfb129acb4c103137f55f187c4e4f571a3b9f82064045f5fdd8127f47f"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/khr/includes/platform.hpp",
+    "bytes": 538,
+    "sha256": "eaa3b2f8a5e4f498cbd72a81fd537ab3fdf5aba14f897e7593b57175a68fe3c6"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/khr/includes/property_list.hpp",
+    "bytes": 558,
+    "sha256": "07f5b1c728501728913d48d2ed5d8b5b0512f3d3c9773e6da89f3d233a2b2165"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/khr/includes/queue.hpp",
+    "bytes": 574,
+    "sha256": "6ab05cefd01fa0205fbdf912bc14bb5e9fb509e09c96b8368f327d105cb48360"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/khr/includes/reduction.hpp",
+    "bytes": 594,
+    "sha256": "c13c9eb4b1e8c83fb782a041274650a273d3ae2ef099da65e5c619ff89d2fc69"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/khr/includes/span.hpp",
+    "bytes": 527,
+    "sha256": "6ab243e3715b10bc16aa9b0fedb5643563a802e6c981003ba5c47f1595984abc"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/khr/includes/stream.hpp",
+    "bytes": 530,
+    "sha256": "6cecef5857216d3d8eea241e225477c9644fa9beede6e192d9b53580bdfe5eb0"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/khr/includes/type_traits.hpp",
+    "bytes": 559,
+    "sha256": "f1aea674ff5ce770cfdd8bb76b1521aa6479764a17622c114265d6439ed2068e"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/khr/includes/usm.hpp",
+    "bytes": 556,
+    "sha256": "47badc770a04d3e881f6a4591f5ef610c38866962efbd72b509605a7da0d661a"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/khr/includes/vec.hpp",
+    "bytes": 521,
+    "sha256": "8b6660ce9edab4e922e62bd81f2ef04e0fb04b1ceb29e09cc6cce996ecbef872"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/khr/includes/version.hpp",
+    "bytes": 1425,
+    "sha256": "aabc01c1803efb019144d0e0f78282fa9302983330637699b147ffee83d7efd6"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/khr/static_addrspace_cast.hpp",
+    "bytes": 1264,
+    "sha256": "40ccbc16885f777fcfbe9a47ab3cea7d272b1f722d9b25cfb92a18e28200576a"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/khr/work_item_queries.hpp",
+    "bytes": 963,
+    "sha256": "73c83ccde1eb296a22aba1f8e977cba0b8470448b9eb58948863e6f9c572bac4"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/known_identity.hpp",
+    "bytes": 18060,
+    "sha256": "212da10f1f78815ee6880b4086dd2c71fc356c99b0da9f2625f226a67f5c56f5"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/marray.hpp",
+    "bytes": 20776,
+    "sha256": "031ed9942a9c87334b1d95ce217d832ab31238c900285765c429982323fb9aa1"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/memory_enums.hpp",
+    "bytes": 3032,
+    "sha256": "168ca09fac1b8bd42e164b76f56868efaaa62dbcfffdef1f1de6fa25666b6faa"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/multi_ptr.hpp",
+    "bytes": 66000,
+    "sha256": "18c222b1bdc30fb6ca3642b561397030b9a6f32b4e0fea337096bd1232109dd5"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/nd_item.hpp",
+    "bytes": 24185,
+    "sha256": "106fd073ea68952397977e545f8e192af209e0ea6fa6f553fd395d4e17176e25"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/nd_range.hpp",
+    "bytes": 2657,
+    "sha256": "d5bedc957baf0f27d4d3a93fb505663934515cf46307ae9cf29e29bd5240d4af"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/platform.hpp",
+    "bytes": 8080,
+    "sha256": "f0f5e30ce31deeacb398f200ef28f3b255e199f485a9b1e5a84468b047ab4873"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/pointers.hpp",
+    "bytes": 3146,
+    "sha256": "5003f9a279f153113d8cef426658d60dd0eec5cc1f0935ad4e41ce6990adbb1f"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/properties/accessor_properties.hpp",
+    "bytes": 6971,
+    "sha256": "7a5c1383ae65f6435835d997241f5b9a331099299e030dbe0450fe39ec34e535"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/properties/all_properties.hpp",
+    "bytes": 632,
+    "sha256": "038f21c2b657b2f741eb928ba5e9180ca4a1f6f649f3718b4e30c87404570416"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/properties/buffer_properties.hpp",
+    "bytes": 2426,
+    "sha256": "0160bf2c5efda3360cf100c400d5e052b1e3a542b1090d0c35ff12d284a79538"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/properties/image_properties.hpp",
+    "bytes": 3620,
+    "sha256": "1a1c0fc2dde77314562a7b67ff648fea9d0941ade689d8cf7765029691445140"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/properties/property_traits.hpp",
+    "bytes": 1198,
+    "sha256": "aef294b57e8d94100f2b7967faa7a1cad999164a3afeab512ec507fa472588d2"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/properties/queue_properties.hpp",
+    "bytes": 2615,
+    "sha256": "19377e14ba0c5704b4de949ce1b04d536e012c43e625fba3270a0b53e20d27e4"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/properties/reduction_properties.hpp",
+    "bytes": 968,
+    "sha256": "23f9841230859adac0cbe427167a1f3656aeef4e55ea717740c2ebd33f87151f"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/property_list.hpp",
+    "bytes": 3133,
+    "sha256": "fb7a75b88c36f982010b56633e9cba8aa364fa9ec35bfb9e51620ea3a66e665c"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/property_list_conversion.hpp",
+    "bytes": 959,
+    "sha256": "9d947873e6c25b88f484f0f955aa5ad4f84e195e3ed5d0a1e2440302c29b3e1a"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/queue.hpp",
+    "bytes": 207862,
+    "sha256": "0622f98f295615a75222e3daf5030d9340f26336e6971ad9360c2baf9cf9f93c"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/range.hpp",
+    "bytes": 10167,
+    "sha256": "1d4413417d3239bcec8986b6f4b17f38851ea4de93525b2ee06ec89a4d1bffe1"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/reduction.hpp",
+    "bytes": 122574,
+    "sha256": "72aa509401eb2205cad1948c5fea1939fcbaf271feea5deeb100fe0ef10f95b7"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/sampler.hpp",
+    "bytes": 4346,
+    "sha256": "2485ed99cfe1f7c7f06851434af52a4cc566daa4f56a80fb8b8c1fbdb493261d"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/specialization_id.hpp",
+    "bytes": 1343,
+    "sha256": "71c95ecf890359b9eb0a2be469139cb7b09bb491185ece34ade7cfe69aca42b0"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/stl_wrappers/__sycl_cmath_wrapper_impl.hpp",
+    "bytes": 17259,
+    "sha256": "cd638fe2f242f1c415ca5a78d4e2d0322adf576eae6d853c4f0bf246f2a662ac"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/stl_wrappers/__sycl_complex_impl.hpp",
+    "bytes": 32560,
+    "sha256": "f594307c14bd953e6cc34a828ad5af83be45eeff03e193e3ec52e080969a7868"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/stl_wrappers/assert.h",
+    "bytes": 2023,
+    "sha256": "f619895f6831215c8023ee3807f9d3f6f0f6da90e3b48a373efef90174a0e9df"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/stl_wrappers/corecrt.h",
+    "bytes": 2097,
+    "sha256": "ffdd5966acc12f114d81a1b19c131ee6d0bdeea84e868ffb8e2f8dec7dc0b774"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/stl_wrappers/crtdbg.h",
+    "bytes": 1745,
+    "sha256": "84dc959ab1d10abfd5d5756e76edbd8fa9129d1966e0b871e14c7c4db26733e8"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/stream.hpp",
+    "bytes": 44187,
+    "sha256": "89fa7b205162d18f67eb96d688d27d98d911b632b6e7faecc384c32adcc6adf5"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/sub_group.hpp",
+    "bytes": 26179,
+    "sha256": "1b7e98b4ff4ad134be5d4b43b67cfa058b17494ccb26a11be93af1c6450fbf87"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/sycl.hpp",
+    "bytes": 7181,
+    "sha256": "559aa856d25bcd3b0309740b5c19f6613134192c90b2028ff88bd4c68d73d516"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/sycl_span.hpp",
+    "bytes": 23611,
+    "sha256": "bfdc98505ba315d30b8db817c8ad1dc6803c3b212732b7a3a1732c00fd3d9782"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/usm.hpp",
+    "bytes": 17554,
+    "sha256": "9851865bd769358ec5971f573b2f81cdab0dd8b7c27fdcab2eac5d1768865ebc"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/usm/usm_allocator.hpp",
+    "bytes": 4787,
+    "sha256": "7d1ec015c9a9b04f55bcd22d1669965e16931aecc8a7325da2a83e6cf0468e51"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/usm/usm_enums.hpp",
+    "bytes": 567,
+    "sha256": "1a98854e27aeb47b2e8d3ec818ae6e3221a730ae4ed0300696e07eaf1c6dcf2a"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/usm/usm_pointer_info.hpp",
+    "bytes": 1425,
+    "sha256": "0e5c427512d0a8045371df8c0ac1418b7f38dafa1e17e6b502af70a591d199e2"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/vector.hpp",
+    "bytes": 59891,
+    "sha256": "041342ea4c883d19e7cc9212ce56ae7e05cd6e0ec5b68bb365eecf36eeda560d"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/sycl/version.hpp",
+    "bytes": 513,
+    "sha256": "8fb6a5e1311c095c939082ccd719bbc6d0b87ef6c3d690b2b50ab8dfbb8a6472"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/unified-runtime/ur_api.h",
+    "bytes": 731273,
+    "sha256": "4d53fe6809494c21b5a1ccf6d8ed5ba9b2fa3b55027888c2cc2f4ad0d691bbd4"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/unified-runtime/ur_ddi.h",
+    "bytes": 116915,
+    "sha256": "71b834b951a76ebaa66c2b8dbd17cf35f37d468f68582b5453f3bb535b33b7d7"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/unified-runtime/ur_print.h",
+    "bytes": 180938,
+    "sha256": "d7adcefe6e9a0fddf711885fd7fc52de5e9806bf3bc752716a9c6bf19a894a1a"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/unified-runtime/ur_print.hpp",
+    "bytes": 641967,
+    "sha256": "8f6570e8836181a02881c7ca4f44f8dfb3be118badbff4028aaba2e8dc0906f7"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/xpti/xpti_data_types.h",
+    "bytes": 65013,
+    "sha256": "30864a096077d2e131b10616c179b17d59f20b86e1755bab0e7a6a3c17e0e4e9"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/xpti/xpti_trace_framework.h",
+    "bytes": 54229,
+    "sha256": "bd60ef720459eba0c30fec499c178accd3e731dd4aea6cea6d002bfa532a6d09"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/include/xpti/xpti_trace_framework.hpp",
+    "bytes": 71124,
+    "sha256": "bba82fbd179bd2018d6f4e44cf7fde35c74f41d3f8ba4b7b48e0de2919bd9e27"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/opt/compiler/include/bfp754.h",
+    "bytes": 87786,
+    "sha256": "efefaa5365e29d0f36f2c29bf0114707213cbc670a1d29c87f0407d63d6a0cc4"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/opt/compiler/include/bfp754_conf.h",
+    "bytes": 2412,
+    "sha256": "3c3b3800ce963905abe4f637d7e93491cebc24fc3737043fc36f3ee2826e47bd"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/opt/compiler/include/bfp754_functionnames.h",
+    "bytes": 34250,
+    "sha256": "23ff3d6db2e395b995c872e5dd1082bba07db0d4b68af03291d7ecbbaf89b027"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/opt/compiler/include/bfp754_macros.h",
+    "bytes": 8919,
+    "sha256": "7d76c0694e92b756d69de3c4044724ff32931b82c167963a0cc21a7a75aef2e0"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/opt/compiler/include/bfp754_types.h",
+    "bytes": 5206,
+    "sha256": "e6de894552d6602ab5f54e9e535e5d7a9246da5cf7242daa9ac656675befd172"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/opt/compiler/include/complex.h",
+    "bytes": 14432,
+    "sha256": "4471d49c75b1f197d05c5658318fab881083787d6f349178fe7ee1d304f90b8f"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/opt/compiler/include/dvec.h",
+    "bytes": 200246,
+    "sha256": "8e2c516e9498fa37922362f88923e945a22bc1415e87b050959c9c2eb965211d"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/opt/compiler/include/fenv.h",
+    "bytes": 11228,
+    "sha256": "901b711668d8196599149f430ebdd1d2f4f28d288ee1bd4acb75e39b2b7235ab"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/opt/compiler/include/float.h",
+    "bytes": 21072,
+    "sha256": "7f847f8ebf190370d58d09e59beed286baa9aadd5b55d8f4f77fd879d3ceeeb1"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/opt/compiler/include/fvec.h",
+    "bytes": 22843,
+    "sha256": "b6e38866666a052229c6d9dde249c7552b097937b6d1bc9832cf19c85e2c1048"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/opt/compiler/include/hvec.h",
+    "bytes": 48093,
+    "sha256": "396097fb324a6619adb479030d2c52b662f4dd924e486b38b59cc4d0a50e3273"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/opt/compiler/include/ivec.h",
+    "bytes": 34968,
+    "sha256": "1a47976297956b2c02aaecd879cab00c5331e8475966c4c75e7a045d84ad0734"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/opt/compiler/include/limits.h",
+    "bytes": 4458,
+    "sha256": "e0ee482619d4ffa2b1a95a5f77609628e62cb64fe534282cb922aa0ef21063c3"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/opt/compiler/include/math.h",
+    "bytes": 67893,
+    "sha256": "6c115bb57f3d261607db2ee7683106175cf980af499ac08a357e010ed14dc2d6"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/opt/compiler/include/math_common_define.h",
+    "bytes": 2912,
+    "sha256": "14d0b3cecf24bab48da3699b1e7edaf3ccac907849f9b367b4c4c4c03bd6de4b"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/opt/compiler/include/math_common_undefine.h",
+    "bytes": 804,
+    "sha256": "d6d3041b01e103e86f69b9aaa3262040fa52c4a34ebb9b2b22edbc26755001d0"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/opt/compiler/include/mathimf.h",
+    "bytes": 23078,
+    "sha256": "72055ef1b1e34a1c15697825f6a253045cb7481c720d28b8c65966e4c0f11409"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/opt/compiler/include/sse2mmx.h",
+    "bytes": 27943,
+    "sha256": "022e550b77c34d708453db7318d0eb22c24fc7f5c60d625ddd19b8a4483d3922"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/opt/compiler/include/svrng.h",
+    "bytes": 57497,
+    "sha256": "4b1f79b6ddf3d42871f32e1ddbc38ee6b3993f1eb9c7a5bb8e1cf249b3a50204"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/opt/compiler/include/vec_complex.h",
+    "bytes": 32101,
+    "sha256": "68812561309ac95842f41b28800137388f6a16a2f8f8d5fc40e29f3eadda9f84"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/__clang_cuda_math.h",
+    "bytes": 16602,
+    "sha256": "debe73cf7191627b94fea9e1bfe13a4318b1616fed38b2e94f5eefe2a8637c72"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/__clang_cuda_texture_intrinsics.h",
+    "bytes": 56680,
+    "sha256": "e604b253b318f47af11948a80b4dccda365fc159556cd90efc4db933c6e00b1c"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/__clang_hip_cmath.h",
+    "bytes": 27196,
+    "sha256": "4440ee301c9f961ae884099a1757ecbdf22aa0508fb1f01b5a9d4bc43f822609"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/__clang_hip_libdevice_declares.h",
+    "bytes": 20133,
+    "sha256": "022bc74b3650f97d44d5aa61365f95d4d67c6908c333c82b35388ab4b2207728"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/__clang_hip_math.h",
+    "bytes": 37308,
+    "sha256": "614c85f5b9a79a99c812d065e43d66d81d33e69ff68016e97af45688bf649681"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/__clang_hip_runtime_wrapper.h",
+    "bytes": 5281,
+    "sha256": "175fe84e6724a18de62ca8bb299f9fe7a9961a8a8ca095d03f79d94140f9f5c3"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/__clang_hip_stdlib.h",
+    "bytes": 1223,
+    "sha256": "d9a92fd8cb4712d4bf51082cf094cd6ea83d00974ecb7471dc421574693e0398"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/__clang_spirv_builtins.h",
+    "bytes": 10084,
+    "sha256": "662d5c923e00244449fd2df1bf9de04ef06fdd5bc900a069e9e925c3c56ba99f"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/__float_float.h",
+    "bytes": 5890,
+    "sha256": "bde8d423099e3bba501018bdde141cf2edea549ba528733d43dc534694181935"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/__float_header_macro.h",
+    "bytes": 449,
+    "sha256": "7ee2302b023d41fd787a326059980800594c6e2cbac134b3167947d0025a72d7"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/__float_infinity_nan.h",
+    "bytes": 613,
+    "sha256": "544272ca97c2ba51fd362d5f35c8d7287e57001e9a8f29d51896b82be253ef72"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/__stdarg___gnuc_va_list.h",
+    "bytes": 467,
+    "sha256": "feca975bfdfb254d17458a8e3d51f8ad6d9bdc9fd6287727f0f8b2fb81fcb0b0"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/__stdarg___va_copy.h",
+    "bytes": 445,
+    "sha256": "f0a8d3c963338173f2d57b2cbc209dde38c90536107b15eb0cf78166d4caee1f"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/__stdarg_header_macro.h",
+    "bytes": 417,
+    "sha256": "7b3fbcc442af2508f36bb2dc98d9ad2b8a1f5c0f5333394fb2159c8bd5ecd5b8"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/__stdarg_va_arg.h",
+    "bytes": 771,
+    "sha256": "274c75a1db86f649439aa3bcc1dead4170725e6f803925c3fc38a2e93307afdc"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/__stdarg_va_copy.h",
+    "bytes": 451,
+    "sha256": "bb195f56cb08d4cee6a60bd9f62f34466e8ac4f89f6fed043b044cb2f7ead010"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/__stdarg_va_list.h",
+    "bytes": 448,
+    "sha256": "81c3055f7033e26e7f53705653bc9d69b5202f25c2692e03b3a4f77ff44a7d76"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/__stddef_header_macro.h",
+    "bytes": 417,
+    "sha256": "4cf46e8fbb809df048eecbbd63686fa741da27afa8db4245bd1f61c1fb1611dc"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/__stddef_max_align_t.h",
+    "bytes": 857,
+    "sha256": "3c1e4de47f4f06b35e2c5890d670052e84f716760505ff51b022fc8b21a9400f"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/__stddef_null.h",
+    "bytes": 875,
+    "sha256": "b1d71b08563ab3d2c22a1e4f8ddf4d9a1111c89e9404b859a45c307e8ebc6c69"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/__stddef_nullptr_t.h",
+    "bytes": 958,
+    "sha256": "898b4465c5d3040d27e760e82983a751b1b0cae23ba280b18a1b81451841f9eb"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/__stddef_offsetof.h",
+    "bytes": 708,
+    "sha256": "e5f0f4ff8ff5fc6a1cc8b535f5065f1728eadd2bf1e1401f021f803ec7b4222f"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/__stddef_ptrdiff_t.h",
+    "bytes": 717,
+    "sha256": "b4178a57f3711b7013cba747a72a2f178c29fa9364e77d75b2159754072ced43"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/__stddef_rsize_t.h",
+    "bytes": 710,
+    "sha256": "132339d4f07e852bf2d879bc91c4ccdfcf08c581c7c97f6f3794510e0bdda7bd"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/__stddef_size_t.h",
+    "bytes": 708,
+    "sha256": "d86ddc0238da09b385846ebef814ffc50a44e40cf85d4e3793f485952b7e73ad"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/__stddef_unreachable.h",
+    "bytes": 735,
+    "sha256": "bba07c327f8168f37b266a19aed625e0fa633a25cabef4f54f21faf3df5522b8"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/__stddef_wchar_t.h",
+    "bytes": 853,
+    "sha256": "1900d4998aef3698b06399ed686db0c21e26509b08638a25734fb97ae89b1001"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/__stddef_wint_t.h",
+    "bytes": 443,
+    "sha256": "f2ededa38c5454397242aceaefa65b42b292a1b3cc258e7ca6e216f146e51f0d"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/__wmmintrin_aes.h",
+    "bytes": 5269,
+    "sha256": "c72344a1e5874d3af7049ecdccae91304cc5c2b619776947434e49904f5f03a1"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/__wmmintrin_pclmul.h",
+    "bytes": 2036,
+    "sha256": "0492aed7e0731e9d5d83bca76ef338223d3ae9c89d38f7600b7294465b6ebfdc"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/adcintrin.h",
+    "bytes": 5565,
+    "sha256": "7a0a9ab238134ffeb5b05fe55dfd34daf00e372fc091761dbcaa07c4db044330"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/adxintrin.h",
+    "bytes": 3447,
+    "sha256": "760d3d2d4fe278dd7e044a21bb60fdce73d7f1de2f896446c258bda0d78639b6"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/amdgpuintrin.h",
+    "bytes": 7483,
+    "sha256": "489ff6bea426cd08250bc89620f88539d6c1d0677951fc6e377ecdd40dbc09e4"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/ammintrin.h",
+    "bytes": 7739,
+    "sha256": "4d5751058e2630a390ce53cbc8d360d794ca71acbf49eb85f177313c884dc2a6"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/amo.h",
+    "bytes": 3986,
+    "sha256": "2c2abe549bec846227458bbae97695f0bcdfde4f0c98cd54be34e44dd86b41a1"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/amxavx512intrin.h",
+    "bytes": 19744,
+    "sha256": "e2c26602264dbb4d986aecb218ef83f38146b37f4db1d67caba8a63831ee00fe"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/amxcomplexintrin.h",
+    "bytes": 6933,
+    "sha256": "854a29cd9aedf345c308f171a0680d039f386763ea9558e3723d31cf6a63ea78"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/amxfp16intrin.h",
+    "bytes": 3327,
+    "sha256": "018df703a69c14621c56bf3af142a607fcd30fd25e295bd71ace5e9728cbe0c9"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/amxfp8intrin.h",
+    "bytes": 8839,
+    "sha256": "7d4f7e3fd5bcf9f131fca2ef14935f894bdc9fa25dc042608f1cb1c3e3e03c46"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/amxintrin.h",
+    "bytes": 19521,
+    "sha256": "a664e3d63b6235e50e155a074f855d785e021ad67124ae98a8352c86afda9296"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/amxmovrsintrin.h",
+    "bytes": 2290,
+    "sha256": "ffa67cf3cacdcbcbb35864a8bfac382ae7e107b5f2fbc489ffd2899e761bf23a"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/amxtf32intrin.h",
+    "bytes": 3562,
+    "sha256": "2f849389dc399c714cc1ff591f4d40c25533361bb0b06a0b98209789f15c95b2"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/andes_vector.h",
+    "bytes": 518,
+    "sha256": "88bf955d581629f0292b576c4194decfa6b9053b11f5b8a12197f12defad3a6a"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/arm_neon_sve_bridge.h",
+    "bytes": 9708,
+    "sha256": "9a0e636549d26df39bec2dfcb9eb1110744972ede03bab2a52187e1b7d87bfee"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/avx10_2_512bf16intrin.h",
+    "bytes": 23626,
+    "sha256": "c3bfbf68f84861b2ef67cb4a154b7882bc1b968ea17bb055b4908d11d64355aa"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/avx10_2_512convertintrin.h",
+    "bytes": 13192,
+    "sha256": "910acdec723fe34139460488db629e61899b9e3396ce44bb4c45522ca081dd8c"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/avx10_2_512minmaxintrin.h",
+    "bytes": 7526,
+    "sha256": "ea0a028278b5e4dd92904163f308949efa38683d07d851d8f6a7ac27506d3674"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/avx10_2_512niintrin.h",
+    "bytes": 14039,
+    "sha256": "fdda2e6dae76e9f31c2aa96268dc7a3df3099e9685d052ecac008786e8c20c49"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/avx10_2_512satcvtdsintrin.h",
+    "bytes": 13799,
+    "sha256": "407a200eab44f68521e636731b9c60d88571f689af033b6251aebb060c125b3b"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/avx10_2_512satcvtintrin.h",
+    "bytes": 16999,
+    "sha256": "48da2c9ecc5da4b6e45b477eb0bc5610a0e83dbaf898645930b6cdf7d8019fd8"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/avx10_2bf16intrin.h",
+    "bytes": 45094,
+    "sha256": "930cb095842ee86c7a8c28529725657395b5a21fe7de7a5dfdf28fe53becbdf1"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/avx10_2convertintrin.h",
+    "bytes": 108821,
+    "sha256": "80b4fb17b526faf764cbab8fc63e916f8ff88228e3d8e7b162660a4d9b0ae4b8"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/avx10_2copyintrin.h",
+    "bytes": 2410,
+    "sha256": "c059458894d9805bd0a0da75abf0f1c75236f890493943e71afcd3c5adb470c6"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/avx10_2minmaxintrin.h",
+    "bytes": 13680,
+    "sha256": "8dd2ed560b396551209a54f156403e68aa32715f23e81966b584ce140653fef1"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/avx10_2niintrin.h",
+    "bytes": 17003,
+    "sha256": "e34fb0de0ae71437816c94b43a8eb1074ae05cad17ea3c4915efb4a2a1e59d91"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/avx10_2satcvtdsintrin.h",
+    "bytes": 15253,
+    "sha256": "72ff874496106d3d75fd26e2507f4fb48d202a7dbd4e92e7c8a84bc0ce9c5307"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/avx10_2satcvtintrin.h",
+    "bytes": 18140,
+    "sha256": "2c5fd665f81bae335372b5a968b7dcd2ca2ef66af778a1a40e42242e943c9374"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/avx2intrin.h",
+    "bytes": 195009,
+    "sha256": "d4b2ba6858fb0a494631ea244ef4d68da8bce85413446dc300563edf6f2b5e79"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/avx512bf16intrin.h",
+    "bytes": 11835,
+    "sha256": "3cf77a22387686bbb73b10d00f328d36c04927dc376df14ec5c99d281e132eeb"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/avx512bitalgintrin.h",
+    "bytes": 2718,
+    "sha256": "ac4564bab0e8f1bbbf758763f75593f83e1fa9cdebbc8a9ce8832d880a7ed53b"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/avx512bwintrin.h",
+    "bytes": 80260,
+    "sha256": "98bedbfe4195c9c23093986a8f6fc3bdb8b7feba8572f29a3f726f6020d10feb"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/avx512cdintrin.h",
+    "bytes": 4265,
+    "sha256": "02d96dc57a9709ba35c0ee30df0914b88058ded21cdb96681cd7459492df9466"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/avx512dqintrin.h",
+    "bytes": 61823,
+    "sha256": "e0157b6048ac6b5e0b4e8230242a5f491b046ffc14147f64297e325acdfe7f05"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/avx512fintrin.h",
+    "bytes": 392903,
+    "sha256": "0b7ff6670e7a0a2f2e9cec2b862ee32ccb389e020bc2f774a13da71baec90f22"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/avx512fp16intrin.h",
+    "bytes": 160257,
+    "sha256": "6dc0aea0ac346ac4dfe8ab14e014942c512a3e40ccc3d9ffeb314b34c85e1f9d"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/avx512ifmaintrin.h",
+    "bytes": 2677,
+    "sha256": "1fad43d75be37bf73179b30e919a418b7dce3d5c480c47aa49b22076e8df4d94"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/avx512ifmavlintrin.h",
+    "bytes": 6754,
+    "sha256": "9c944f854baad19aa8652a893fe4440dc7ba60394296954d8a06658f05862fe0"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/avx512vbmi2intrin.h",
+    "bytes": 14069,
+    "sha256": "343edec6402438c40b96575293aeef0e43677d530523654d7543fc781f0a2b78"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/avx512vbmiintrin.h",
+    "bytes": 4071,
+    "sha256": "25ba7ee0a739ffae91b3979d0fac305d98c305a63af4b04e0663d3ed49c52459"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/avx512vbmivlintrin.h",
+    "bytes": 8518,
+    "sha256": "a6dbb2fd0c190f04457c8e07d79abef06d636e682c05360a380578546d997b9e"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/avx512vlbf16intrin.h",
+    "bytes": 20943,
+    "sha256": "84e827234fd8c090e4ce3304bba8211c21a6cefc8387a682071b530a21622ae7"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/avx512vlbitalgintrin.h",
+    "bytes": 5702,
+    "sha256": "3ded224b7574a02fedac9463aa39e0f30ba50dd150fa1da41d1ab6263b4ff53e"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/avx512vlbwintrin.h",
+    "bytes": 127627,
+    "sha256": "b7786f6168018415c96f96ccd051fd628b816030c6c06df0ab7d687fdb982d22"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/avx512vlcdintrin.h",
+    "bytes": 8693,
+    "sha256": "ae0ad5e69c1ea4ea7c50bfab9f8bb586c8d3f548a08a511b0aa871ac71863009"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/avx512vldqintrin.h",
+    "bytes": 49096,
+    "sha256": "6a74b080e6d7653f6791456cfd39bc1de2f643c01561db88dc735bf98caa3322"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/avx512vlfp16intrin.h",
+    "bytes": 88558,
+    "sha256": "bef9273809ccf17a57bf32fe78244201a55f5c6001a57e9bb6f00af3476defa1"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/avx512vlintrin.h",
+    "bytes": 328007,
+    "sha256": "bc4780020be1693398e74ca998e1dc8c1bd4ad831ad66bd6ad2460e95f762675"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/avx512vlvbmi2intrin.h",
+    "bytes": 28237,
+    "sha256": "a5849b63f36f9c059acbd44f3e6f03ab9f4bb15b76212b5ab624d1c29c67b0da"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/avx512vlvnniintrin.h",
+    "bytes": 14880,
+    "sha256": "bd7d0791e3f412ec02f8fb7f812b4fa168d9bbd7fc10d470d71d24a94601386c"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/avx512vlvp2intersectintrin.h",
+    "bytes": 5410,
+    "sha256": "9c9f94150698f0160b012454e7d35e693afb1289f9c68c3573b93b32ace8f1c0"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/avx512vnniintrin.h",
+    "bytes": 4394,
+    "sha256": "2521d45d5c110974a4ba1e457d7c91d070e7819b15432fba34abe3e549e4ff30"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/avx512vp2intersectintrin.h",
+    "bytes": 3055,
+    "sha256": "b84f475d76a10c8ca674f54cb48d61ea611ec83d888b70cbff0297a5308d3289"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/avx512vpopcntdqintrin.h",
+    "bytes": 2462,
+    "sha256": "93a4e644e0f8db33e9fb17e0a0ca497b34fe68ab203fc3fb523ff10b338c58bd"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/avx512vpopcntdqvlintrin.h",
+    "bytes": 4875,
+    "sha256": "d90ff9a2aa25033301209dabbfe3b161b919203eef02e0c2764bd2a76b8b4846"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/avxifmaintrin.h",
+    "bytes": 6731,
+    "sha256": "afb6d0306977a6bbe5a7dbba1cf18e23e0f722e0e1645c0b986a9a0e19bcb2c8"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/avxintrin.h",
+    "bytes": 203451,
+    "sha256": "ab7059ee974b0562da679c896524e8bcba785efdb74748836fc5c792723c040b"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/avxneconvertintrin.h",
+    "bytes": 14432,
+    "sha256": "05482a9fb775e9595b1bdcc0b822cde959296b6cdaf57d116d716df6a118c91a"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/avxvnniint16intrin.h",
+    "bytes": 16363,
+    "sha256": "f9b14ef0020cf6ad04c91eaaab12ac9f57af69627564388cb3ec58f3c1a477f1"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/avxvnniint8intrin.h",
+    "bytes": 17915,
+    "sha256": "b9b817bb4b8ae26361fe1ffdee487e71f2cac4d768b14eca3bd5a87f0cc7e486"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/avxvnniintrin.h",
+    "bytes": 11066,
+    "sha256": "bef834f0c399054016bbf62afe4e85e68c8c3f70e5ce9ad22276307f5ff14e85"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/bmi2intrin.h",
+    "bytes": 7546,
+    "sha256": "fffd85faacca202b9539176a120cd5ca5ec9bafe91ebd234ad42eec4eb1dbcea"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/bmiintrin.h",
+    "bytes": 20976,
+    "sha256": "aa0300f2f6bae6c7fbd9373931ed8a7b2af5197365c88b2ae1a89f6c4da99bb6"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/builtins.h",
+    "bytes": 846,
+    "sha256": "a7d1f052d48c4e27d0ae1023b1cb2419e443c686193a3ab392adc776595ee23f"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/cet.h",
+    "bytes": 1527,
+    "sha256": "23568727f480e5701af3f7371d38680952e33264d9f184843353b87f583a2a9a"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/cetintrin.h",
+    "bytes": 3351,
+    "sha256": "ec1203e06e12b4a21944443330eab3a968b1048d429470c4ee0236b7ddfa39e7"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/cldemoteintrin.h",
+    "bytes": 1207,
+    "sha256": "bc5d9530ed13a5fc22ddc26f72f695d225053462bf06783a95a3532e0fcebe0c"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/clflushoptintrin.h",
+    "bytes": 1193,
+    "sha256": "930b1feb5f02450e0f75228cdaaf380f18557fee8ea64d7d8dd7268edfb50656"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/clwbintrin.h",
+    "bytes": 1229,
+    "sha256": "c014c43c1fc700e529fa5f0df8504af8c03bf21609ded625526ada7a1833ca08"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/clzerointrin.h",
+    "bytes": 1220,
+    "sha256": "3ae5138554f982a100b937124ec5bb914620e1a4dfd9e57fc89689428d5bb100"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/cmpccxaddintrin.h",
+    "bytes": 2383,
+    "sha256": "223b48bdd9e567ed17b377040b81663d3baf7fa077676d49cf3f598fc7ebf825"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/cpuid.h",
+    "bytes": 17924,
+    "sha256": "faf8dc11a0de8e2bf3e9c14de4167bf107278e1a9d8bb6ea2e1e775931311db3"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/crc32intrin.h",
+    "bytes": 3347,
+    "sha256": "0f73e381b39e4718f70159158faa3da510769bb16120ec23f35bdcff14d34cb1"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/emmintrin.h",
+    "bytes": 199072,
+    "sha256": "05f79a649178ffcb891a5c9c087319ba7d4836cd611cf72fa18538142a3611d3"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/enqcmdintrin.h",
+    "bytes": 2167,
+    "sha256": "024a79176d11b3646aa6d3648c61cead39086228178ed1138990bd861c0818f5"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/f16cintrin.h",
+    "bytes": 6357,
+    "sha256": "c53616e6fa129b54fc65fa22655657b9536f2c333ce2e1deff70087486e2bd66"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/float.h",
+    "bytes": 1416,
+    "sha256": "0242ed0a0c17fb6c24ef6953c51d02d28eadb067dfa41d7ef59fe230caee3a10"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/fma4intrin.h",
+    "bytes": 8267,
+    "sha256": "888c46bf82408db7d08387d8b7d4c224e10f7bc21909a8df8650ad41c95f4c13"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/fmaintrin.h",
+    "bytes": 30808,
+    "sha256": "e3fd6499b8d3f62b8bc7aca5c1847ac093093779c0bbf2b2707d37e8212b2b59"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/fxsrintrin.h",
+    "bytes": 2890,
+    "sha256": "892f1f63664e34c69497333eae7495f217db9ad0b4975d13c4967faec481ce04"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/gfniintrin.h",
+    "bytes": 10684,
+    "sha256": "4910e272dfaf9fe376370fa660d6d91a14cee732ab1976890314793888d04d70"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/gpuintrin.h",
+    "bytes": 13894,
+    "sha256": "f21d41368b2519a391450e4e3d5898c0c7c1b137ef2e2c05c58d0dbc000915cb"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/hexagon_circ_brev_intrinsics.h",
+    "bytes": 15966,
+    "sha256": "a1e5a7d54a47697707d54edf31b6c3eef0c3593cff2a15bb9319238b08d54be7"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/hexagon_protos.h",
+    "bytes": 383410,
+    "sha256": "0b130e0b52feb7074551b2389648a0fdc790784bb875e4f21fe47c9b0899fc8b"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/hexagon_types.h",
+    "bytes": 133505,
+    "sha256": "2ba756d62277f009ec853486a3f11fa63733a256a7bb1c6600aa9775d5970f31"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/hresetintrin.h",
+    "bytes": 1395,
+    "sha256": "ea5012c0fe5e8818863fb65104783772f21dd278f5b4880e98451bb5d70f550a"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/hvx_hexagon_protos.h",
+    "bytes": 301185,
+    "sha256": "8c430ebde7c141866a81f16b59bf1c195f5a99e03159d092f334c4b072990d1e"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/ia32intrin.h",
+    "bytes": 27218,
+    "sha256": "0f5b991dc67037018d2ae34ff0c277749bd1cf07ae23fda3968dc2717e698c20"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/immintrin.h",
+    "bytes": 25642,
+    "sha256": "eb6e38c8bfb6003a1e400df91716d8b8a1679d8bd5918b3e403759ddaf4ccdf4"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/intrin.h",
+    "bytes": 20719,
+    "sha256": "ace86093dc079a08865df5c85e5b7bf5e12252efe4191a9dc0ef5689b81f46af"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/intrin0.h",
+    "bytes": 14093,
+    "sha256": "085c456a603387cb0a7c19fbeba0d0f26237988c2346085b5916bee874830b3e"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/inttypes.h",
+    "bytes": 2427,
+    "sha256": "eb8a7b2e17d57e9321043282bf0267fedd2ca58aadb11b04929ddbf8100fc3bc"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/invpcidintrin.h",
+    "bytes": 764,
+    "sha256": "70f32ed90521d7135aa2b96e6fef366e9793ad99caf6fb5e0ec188be1fa6b7ed"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/iso646.h",
+    "bytes": 763,
+    "sha256": "3a190443022054d1fd72ec44316dce619b8f130bd10eacf906edf9486e8c270c"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/keylockerintrin.h",
+    "bytes": 17973,
+    "sha256": "e0696fb307ea0944dd7cef129ccc83c230edf38d60bed826b8a1a8cecf82fb3c"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/larchintrin.h",
+    "bytes": 8703,
+    "sha256": "e769cbd2b3bcdefd2cf996a499ba81b40e18cb6390658d56caff19ddf721dfaf"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/lasxintrin.h",
+    "bytes": 149402,
+    "sha256": "cd3013ace2e20ee9947fe10290c08ca110161b44f5469d27637bd51d23c9997f"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/limits.h",
+    "bytes": 3794,
+    "sha256": "6b59cc1b6f86c901bf41ce942b8434530e852eb16e79e6e9287f89441f71efca"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/llvm_offload_wrappers/__llvm_offload.h",
+    "bytes": 1063,
+    "sha256": "e07f4bb61698a2e55d7fd2e8a7a39dd91c08f1a275363b045c3d4929153cec42"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/llvm_offload_wrappers/__llvm_offload_device.h",
+    "bytes": 400,
+    "sha256": "5b246a387424b8ff24fbfc00091b148feb90514367fbc79713fbc95ee2759702"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/llvm_offload_wrappers/__llvm_offload_host.h",
+    "bytes": 569,
+    "sha256": "cc9e08884bbc2a41b77161776a7ca8e40900c7f98d13e2b6e69eb88352f5ccfd"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/lsxintrin.h",
+    "bytes": 137936,
+    "sha256": "22b225744f28d416d29ad488bb4002efba9728400bea655b644b838d85e794cb"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/lwpintrin.h",
+    "bytes": 5115,
+    "sha256": "485b84552e9163bd7362e6353d5b2a5a3bce9c45d385d0c3224ad1ec543e790c"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/lzcntintrin.h",
+    "bytes": 3659,
+    "sha256": "1f539282621ac8edc624dff2b698e4375a535178e1f26c64a29d9f2522caaa16"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/mm3dnow.h",
+    "bytes": 729,
+    "sha256": "9779205196471f01374264a25acdf50c6705c29db47bb180bfa4f549b33c5a51"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/mm_malloc.h",
+    "bytes": 1929,
+    "sha256": "5cd8a3d288d469c9e5a2fc8a8ee624f50889dbcd06dea1262ef7aaf510a204af"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/mmintrin.h",
+    "bytes": 63289,
+    "sha256": "71114aa2eaa7919d566040b048d213553b089ced814d4bf301d8c6417b78fdce"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/movdirintrin.h",
+    "bytes": 1612,
+    "sha256": "ae4691076535aefa2a2c465e13e3873d29e1dcf7a6d12faf5f631a54ae7c77f8"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/movrs_avx10_2_512intrin.h",
+    "bytes": 3939,
+    "sha256": "2600bfdf3a553d23d4429eede13eb1e51a5a3533fd4c4af1194d83a95b3dbb46"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/movrs_avx10_2intrin.h",
+    "bytes": 6970,
+    "sha256": "041cb2db5914c9b2b42dfc4cde078ef77725d57d94c177cce7e63f30f41ce633"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/movrsintrin.h",
+    "bytes": 2025,
+    "sha256": "f8a52dbef1e07264523a12bea5f4295f2a028b246b97c0c4a1ca91ac58b72125"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/mwaitxintrin.h",
+    "bytes": 2244,
+    "sha256": "e7dc6d77422aa1fcd6f26126dd98f6a88b2ff506ed75fd1538cc4b2aaf33ef8d"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/nmmintrin.h",
+    "bytes": 709,
+    "sha256": "cd7b51a1c33c7e7d710f070315e7bc034757ea6be9e6804864cf159c79f48d54"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/nvptxintrin.h",
+    "bytes": 7911,
+    "sha256": "2cf2588450c2d14b25efad55dba2a6190722347150ce485ded0c224117d3c856"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/opencl-c-base.h",
+    "bytes": 29287,
+    "sha256": "385234c8474c33d684a94593deb3e1a8f2fec4033cb5c7807f99b6fdf3f3352f"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/opencl-c.h",
+    "bytes": 917597,
+    "sha256": "ad34b929177968a147af28d421cc884f9132146aad0671c66c662579652fd635"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/pconfigintrin.h",
+    "bytes": 1216,
+    "sha256": "c8090603fa18cca9af372a25de032695bc782e6480520a9da880907dc7f31679"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/pkuintrin.h",
+    "bytes": 934,
+    "sha256": "d103441f018b003a07117ad8ae662294cb59c9b457196d85d8ac4287f1c0d01b"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/pmmintrin.h",
+    "bytes": 11277,
+    "sha256": "8c9a708d4e89092143accd2f385cfabb80980f746c911f3a9b09eb6493e70c4f"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/popcntintrin.h",
+    "bytes": 2703,
+    "sha256": "5b5c49061914dd844cde3d1310974d16032c207481847d2c1fa9005c3bd58d90"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/prfchiintrin.h",
+    "bytes": 2073,
+    "sha256": "8dec1f9509fd459fc4d51bf5183e2672a7a3497681b322a36e78379c7e371af0"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/prfchwintrin.h",
+    "bytes": 2468,
+    "sha256": "42f91d5ab15f42408b2153f84683fd1f4eda6788717790b165b2d9436acb97d4"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/profile/instr_prof_interface.h",
+    "bytes": 3137,
+    "sha256": "e799e4872db5104692980bd2a7349d383d1dfeee9fe02eb3e5ede302dc23c7e0"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/ptrauth.h",
+    "bytes": 19176,
+    "sha256": "8c243a0793afb2d5c3f8ed0fffcb52624c77c49c1b20be8f48950bfd6c5067ed"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/ptwriteintrin.h",
+    "bytes": 1076,
+    "sha256": "549e44eef926d5bb1333c87d32d977270649a8fd7c7161093db600e472d23039"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/raointintrin.h",
+    "bytes": 6748,
+    "sha256": "fcc60ade967bf5152675de42f9f48fe5b17b40ff432ab993159119ba2038c5e5"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/rdpruintrin.h",
+    "bytes": 1624,
+    "sha256": "6d0b9af132bfbbc72f6a3821b9eedbbb7457fc43cd94ad73c08d1de72ed8b7f3"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/rdseedintrin.h",
+    "bytes": 2919,
+    "sha256": "d936c47a6fd689a47acb819dd28ba4ad779e667116ae5002c1e06149c0804b14"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/riscv_bitmanip.h",
+    "bytes": 5725,
+    "sha256": "736cee6955e7ed4e0ff4e17a5edb42591e1e28f083ca9f9c109085c7ac57f8aa"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/riscv_corev_alu.h",
+    "bytes": 4033,
+    "sha256": "8a2273e07bc28f74ee4bdfa661f0c683fcd792b40ad3fe7968b8bfcdf2dc0270"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/riscv_crypto.h",
+    "bytes": 5211,
+    "sha256": "215fc9a87e37fe2d2c389e78895cccf2dca67f31964408da2b050c75c7e3b139"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/riscv_mips.h",
+    "bytes": 991,
+    "sha256": "5898c9caa155083d3d1ecc666d15e03c95d284eaa974e4cfd74274c940c4885d"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/riscv_nds.h",
+    "bytes": 2416,
+    "sha256": "706bc89ccce68191472b8407cea772bbf844e5580e64b73f2267b7d5f99b93fd"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/riscv_ntlh.h",
+    "bytes": 744,
+    "sha256": "a0a75c40f11a4910506c44a6c1bb44e568f0c90c34aeb715836380c9ae7f54e5"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/rtmintrin.h",
+    "bytes": 1280,
+    "sha256": "18fe263a76ad5970e47d2e8b9b5c99a4370f1a4f7258e2e197c4c8fab0cb2123"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/serializeintrin.h",
+    "bytes": 881,
+    "sha256": "dd29ae159d83161dd61d6bfcd6a7a37aa3f5930f814e8d12bf15ae131a0c6ac6"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/sgxintrin.h",
+    "bytes": 1816,
+    "sha256": "0e8dc78c7311b9dda1499587ac5eaa3e1c485b9c7df0fc54225b8425db5ae964"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/sha512intrin.h",
+    "bytes": 6088,
+    "sha256": "094f1882a68f1511fec3d1145aef332ce75086cf194101dd5049e143ff771de0"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/shaintrin.h",
+    "bytes": 7660,
+    "sha256": "1a87fd31fd1247db417a8fc08929791b26fd45347871d8c3333f38a883ea4378"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/sifive_vector.h",
+    "bytes": 10625,
+    "sha256": "09b2ac00781681bfce91cc5eafec83682f2093b3a0edcc34b94951f007a9153c"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/sm3intrin.h",
+    "bytes": 7470,
+    "sha256": "66680c0998f322f5ae97157dd422a735bcf32363fe382076d43cd669b3361d0c"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/sm4evexintrin.h",
+    "bytes": 1164,
+    "sha256": "f6197faa9615bdc374cf2633571a023562a7573a9585831aad6a00a45cfdb11f"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/sm4intrin.h",
+    "bytes": 8401,
+    "sha256": "1a56d69f3c2fdadbf81c67b6cf7b36efc3892777d7c64d55bacdfb31b21aa5e6"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/smmintrin.h",
+    "bytes": 101506,
+    "sha256": "0c1b6358cdfc2ea7b68968664ee8c323c50a1c4bb133b0edebfe91dc1b3493f1"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/spirvintrin.h",
+    "bytes": 7526,
+    "sha256": "506e6f4943f9b64eacc33d789c4782c79dcc6039cc646707d815c93c52fa11c9"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/stdalign.h",
+    "bytes": 756,
+    "sha256": "0375392ce44c0bce9d2dda696b0b2e7129e2e58233e002f532d010c9ac02d27b"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/stdarg.h",
+    "bytes": 3201,
+    "sha256": "f91004a03a20be2ed374d0d3a5a0f0b55ad1be01f22f8d146043616f7726095d"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/stdatomic.h",
+    "bytes": 9461,
+    "sha256": "a57315bd9e7e23770b9a7bbe050839432e7fb374eb07ad67cac84ce72c5cbafb"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/stdbool.h",
+    "bytes": 1172,
+    "sha256": "48655faf4ebd4ca0af26a1ee8e3e16f8dc68385c9cd550ffb3629320681305b3"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/stdckdint.h",
+    "bytes": 1666,
+    "sha256": "808854b229028d66012bef0eb5f7cccb2d9a228edcdc5eb2bc710bc7cea4b25a"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/stdcountof.h",
+    "bytes": 473,
+    "sha256": "f042faf9ae255233e0dbaa5db23e42eaea2d213bd5d19b8d4af642bbfb0bf689"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/stddef.h",
+    "bytes": 5753,
+    "sha256": "643724e67948341e9a0de143ea59db89255226926d69d437855bdeb5036fc81b"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/stddefer.h",
+    "bytes": 610,
+    "sha256": "1370dad5543b648efb2c2070b9e66739488fcd36f284632b9ee3f32ac44cafaa"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/stdint.h",
+    "bytes": 27519,
+    "sha256": "f43783466c93f77a6464274ebf18f9e4cc46f0d90770ddee2993c6cf39f7514f"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/stdnoreturn.h",
+    "bytes": 1316,
+    "sha256": "53912b2e9a149a73fe58d88d6c41e69f49020eab7884c81ebf0b4f3607e96847"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/svmlintrin.h",
+    "bytes": 144762,
+    "sha256": "1f3428020b19449b8d13064e18b8b88bd220db6f063ee0b2c74c557a70d1cd83"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/tbmintrin.h",
+    "bytes": 3507,
+    "sha256": "5dbc7e08c1eb24436182fb9b2bf9bb157f944a20c3b88f4d975af12b7c02fb11"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/tgmath.h",
+    "bytes": 30389,
+    "sha256": "7aa69dc82ec404a51295498cc4cb07d0441e5dcd891819247c14ccb3f9745e3b"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/tmmintrin.h",
+    "bytes": 32725,
+    "sha256": "e5e01417daf19a741d918aa2e077f7facbb902a1d6d5f3a35bec5639652b7b54"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/tsxldtrkintrin.h",
+    "bytes": 2015,
+    "sha256": "c833bd7383b431a0b1bf65c864deef445a25fb7db2c924b4b83272957f2ceb51"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/uintrintrin.h",
+    "bytes": 5079,
+    "sha256": "d34ec074087d3b827cdff359c4ce646f3563a94f335fab6ece28970e448d4bdb"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/unwind.h",
+    "bytes": 11477,
+    "sha256": "fb7175e889f60907dbd0fd02fdc1571fcf33d867f3d0bbffb21356d2bd9b69ea"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/usermsrintrin.h",
+    "bytes": 1572,
+    "sha256": "03c169539a584284e2eabb5230f98bdf7e85772a41f7d6e93fef11485499da32"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/vadefs.h",
+    "bytes": 1420,
+    "sha256": "e338a8bbdbc40a9662d76a0a395313cf17a9541a0fadf3cf8bfa6ee6fa3db4ec"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/vaesintrin.h",
+    "bytes": 3211,
+    "sha256": "ab37a05a245545cc36d51983e7b29e42b215b99e4946012194e1a2ede4348a27"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/varargs.h",
+    "bytes": 584,
+    "sha256": "41bf9afa7c9cf7e5eb5e4a42aab8eee3f5a97977a6d33094b2c8f6b3ef1943bb"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/velintrin.h",
+    "bytes": 2153,
+    "sha256": "7c2e001d36310ceaea4045d9cea1f227f491d0cdebf749959c852b44b217978f"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/velintrin_approx.h",
+    "bytes": 3623,
+    "sha256": "6655c27881e5d1bb8d68f9aa3fee49576e22287f02e2cf422ed9dd3259727b57"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/velintrin_gen.h",
+    "bytes": 70721,
+    "sha256": "d39909a5d140e00148cda92e485afccd02288db702b1dbb4b2eb38b2c61a7754"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/vpclmulqdqintrin.h",
+    "bytes": 1086,
+    "sha256": "db240ad56ccfc14a7e29862b50c1214b1be5666cccecde1401d28afe075a606f"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/waitpkgintrin.h",
+    "bytes": 1357,
+    "sha256": "8b036e6a2c20dca74fbc38b898dc32a36dc46bdb4c0a5a71d691096ca04f6ca3"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/wasm_simd128.h",
+    "bytes": 83675,
+    "sha256": "93a4905ac462809f5a5d970286e0ef7cca11b27726c2e8461304e7bc701f9db7"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/wbnoinvdintrin.h",
+    "bytes": 749,
+    "sha256": "e22b8221209e1aeed8de50e81c6bfe84b378a8b92bdf018aea601bf1d3c4ac22"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/wmmintrin.h",
+    "bytes": 659,
+    "sha256": "eb4f03593063aa1c27cc306474814e3c3caeb6644379415e1104d299288a3231"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/x86gprintrin.h",
+    "bytes": 2354,
+    "sha256": "928c3652f417ac9ae68fd31a81c409a06b0b80521259eeadf102ad9b798003e4"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/x86intrin.h",
+    "bytes": 1640,
+    "sha256": "04ee6c5105e1579a2e89c3075efce03806fb0f7f6b4241c4d070def515028dce"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/xmmintrin.h",
+    "bytes": 121081,
+    "sha256": "4dc1ef77ca853d0bbae9d6f96752914e2f00cae2a0bb3c9254a70fccf07f2502"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/xopintrin.h",
+    "bytes": 20965,
+    "sha256": "30f118ac13831a83f6329695f68882e817a8d8f9acac9d62ece262077b75d9de"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/xsavecintrin.h",
+    "bytes": 2574,
+    "sha256": "b3d0b240cd59068ba5dd40f79a921e727815f0722d07051ec01aae09b91c4ac8"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/xsaveintrin.h",
+    "bytes": 2482,
+    "sha256": "9a9e1b3e4e6acc35b788116bf6f28ec356c9a471a872152741b97e045d50ba61"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/xsaveoptintrin.h",
+    "bytes": 1026,
+    "sha256": "3dee1885dff4d101804c273d87f98cdf37a5e0975d936a3683ffbe1d10ffda7e"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/xsavesintrin.h",
+    "bytes": 1268,
+    "sha256": "cf3692a69c4c96e0b4c0d291c6aa09cba851dff1d82f8b266d08fee7bdeaa5ea"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/xtestintrin.h",
+    "bytes": 873,
+    "sha256": "05e7c974641109d1214f9016c3939787e2912e6990fd20bf5886fcca4c40e699"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/yvals_core.h",
+    "bytes": 687,
+    "sha256": "8f1033d2fc8cb786d7a6d3ff174aa819495c1c7d8948b5a94a9daca24d5ee3c2"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/clang/22/include/zos_wrappers/builtins.h",
+    "bytes": 608,
+    "sha256": "fca65b1462b08910b24dbd2016425aa6f4b7b32f1ed2eaa8014c10f79f88fbd4"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/libpstloffload.so",
+    "bytes": 431232,
+    "sha256": "e4bd266de083541a29260fb2e799e2c25fb9d67ec0b9d4e2155f7c28de2708a0"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/libpstloffload.so.1",
+    "bytes": 431232,
+    "sha256": "e4bd266de083541a29260fb2e799e2c25fb9d67ec0b9d4e2155f7c28de2708a0"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/libpstloffload.so.1.0.0",
+    "bytes": 431232,
+    "sha256": "e4bd266de083541a29260fb2e799e2c25fb9d67ec0b9d4e2155f7c28de2708a0"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/libsycl-jit.so",
+    "bytes": 186032928,
+    "sha256": "ab15f77f9974133aee6a67f633b7d9ab79505a248313ec070376508e44b916d0"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/libsycl-jit.so.22.1",
+    "bytes": 186032928,
+    "sha256": "ab15f77f9974133aee6a67f633b7d9ab79505a248313ec070376508e44b916d0"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/libsycl-preview.so",
+    "bytes": 11686856,
+    "sha256": "fe21f8ac4328893bea5a2df960a5973782dd789db98e1cda82cf669015ae937d"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/libsycl-preview.so.9",
+    "bytes": 11686856,
+    "sha256": "fe21f8ac4328893bea5a2df960a5973782dd789db98e1cda82cf669015ae937d"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/libsycl-preview.so.9.0.0",
+    "bytes": 11686856,
+    "sha256": "fe21f8ac4328893bea5a2df960a5973782dd789db98e1cda82cf669015ae937d"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/libsycl-preview.so.9.0.0-gdb.py",
+    "bytes": 44304,
+    "sha256": "4bfb57a88ec08eb72744776dd35d95d1bc7cadbaec64789c672c18822e5b4d39"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/libsycl.so",
+    "bytes": 11686656,
+    "sha256": "d769a71f2c71530e59a5ba22831ec5a82edcde718076d2663772255498c8e053"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/libsycl.so.9",
+    "bytes": 11686656,
+    "sha256": "d769a71f2c71530e59a5ba22831ec5a82edcde718076d2663772255498c8e053"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/libsycl.so.9.0.0",
+    "bytes": 11686656,
+    "sha256": "d769a71f2c71530e59a5ba22831ec5a82edcde718076d2663772255498c8e053"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/libsycl.so.9.0.0-gdb.py",
+    "bytes": 44304,
+    "sha256": "4bfb57a88ec08eb72744776dd35d95d1bc7cadbaec64789c672c18822e5b4d39"
+  },
+  {
+    "distribution": "intel-sycl-rt",
+    "version": "2026.1.1",
+    "path": "/opt/venv/lib/libsycl_ur_trace_collector.so",
+    "bytes": 265776,
+    "sha256": "b8bbd405279de1a6c0eeb27b0bcd7541bbb53412b5d40342d17d35ca3bf257f0"
+  },
+  {
+    "distribution": "numpy",
+    "version": "2.2.6",
+    "path": "/opt/venv/lib/python3.12/site-packages/numpy.libs/libgfortran-040039e1-0352e75f.so.5.0.0",
+    "bytes": 2833617,
+    "sha256": "c6090048eccc763522c12ef016f81da6b627cb3a044f55cf0479a839c41c0980"
+  },
+  {
+    "distribution": "numpy",
+    "version": "2.2.6",
+    "path": "/opt/venv/lib/python3.12/site-packages/numpy.libs/libquadmath-96973f99-934c22de.so.0.0.0",
+    "bytes": 250985,
+    "sha256": "6ed5137f412781ad7863439fb543613f620b43c32b63292a0029246162f5bbc6"
+  },
+  {
+    "distribution": "numpy",
+    "version": "2.2.6",
+    "path": "/opt/venv/lib/python3.12/site-packages/numpy.libs/libscipy_openblas64_-56d6093b.so",
+    "bytes": 25021457,
+    "sha256": "0bd815d04b6b54990e3cccc7528fbb696456d09569f533d0390c13f0cdc4dd4a"
+  },
+  {
+    "distribution": "numpy",
+    "version": "2.2.6",
+    "path": "/opt/venv/lib/python3.12/site-packages/numpy/_core/_multiarray_tests.cpython-312-x86_64-linux-gnu.so",
+    "bytes": 178888,
+    "sha256": "b167d67f2925053a273915bfba272f05ce114699dabb3310bb860f9d4c8619dc"
+  },
+  {
+    "distribution": "numpy",
+    "version": "2.2.6",
+    "path": "/opt/venv/lib/python3.12/site-packages/numpy/_core/_multiarray_umath.cpython-312-x86_64-linux-gnu.so",
+    "bytes": 10510625,
+    "sha256": "e6241082eaab01d0f68b2b661522ecb9d5d2160915104df8b112cc161dfa18b4"
+  },
+  {
+    "distribution": "numpy",
+    "version": "2.2.6",
+    "path": "/opt/venv/lib/python3.12/site-packages/numpy/_core/_operand_flag_tests.cpython-312-x86_64-linux-gnu.so",
+    "bytes": 16984,
+    "sha256": "e13a51c775c895385f62bd84c807c507bcd1c4877c88e2bf1d8a55130b1ab17f"
+  },
+  {
+    "distribution": "numpy",
+    "version": "2.2.6",
+    "path": "/opt/venv/lib/python3.12/site-packages/numpy/_core/_rational_tests.cpython-312-x86_64-linux-gnu.so",
+    "bytes": 59832,
+    "sha256": "e3b166cefd55e6e1d5a1c943c64c8e62bd82ded78baf72ba52ede0758de36358"
+  },
+  {
+    "distribution": "numpy",
+    "version": "2.2.6",
+    "path": "/opt/venv/lib/python3.12/site-packages/numpy/_core/_simd.cpython-312-x86_64-linux-gnu.so",
+    "bytes": 3042312,
+    "sha256": "9888bb2a927432dd090f426b043652dd687692db6c3a6af3486d3cefd50ee2ef"
+  },
+  {
+    "distribution": "numpy",
+    "version": "2.2.6",
+    "path": "/opt/venv/lib/python3.12/site-packages/numpy/_core/_struct_ufunc_tests.cpython-312-x86_64-linux-gnu.so",
+    "bytes": 17120,
+    "sha256": "7221148456141cbd67e40570b92466935c29becc48ef466721efdf7c491a8c76"
+  },
+  {
+    "distribution": "numpy",
+    "version": "2.2.6",
+    "path": "/opt/venv/lib/python3.12/site-packages/numpy/_core/_umath_tests.cpython-312-x86_64-linux-gnu.so",
+    "bytes": 50512,
+    "sha256": "748682e30aca23d832e0571235ebbcced53a4a83163cb122314c1b6d746aae65"
+  },
+  {
+    "distribution": "numpy",
+    "version": "2.2.6",
+    "path": "/opt/venv/lib/python3.12/site-packages/numpy/_core/include/numpy/__multiarray_api.h",
+    "bytes": 61383,
+    "sha256": "6a47405dd350bc7c4f14f6dd7a86e1a06cf22d492855dc332838f375bb64e734"
+  },
+  {
+    "distribution": "numpy",
+    "version": "2.2.6",
+    "path": "/opt/venv/lib/python3.12/site-packages/numpy/_core/include/numpy/__ufunc_api.h",
+    "bytes": 13166,
+    "sha256": "b5ac99b8309ebaa9b782016f5b126ea00473e686f3e9269ab3d2fb25c28efde4"
+  },
+  {
+    "distribution": "numpy",
+    "version": "2.2.6",
+    "path": "/opt/venv/lib/python3.12/site-packages/numpy/_core/include/numpy/_neighborhood_iterator_imp.h",
+    "bytes": 1857,
+    "sha256": "b3e1f0fe5e564702ad62fb22220845d1b83e980fc28169f314539854527eab89"
+  },
+  {
+    "distribution": "numpy",
+    "version": "2.2.6",
+    "path": "/opt/venv/lib/python3.12/site-packages/numpy/_core/include/numpy/_numpyconfig.h",
+    "bytes": 926,
+    "sha256": "6ebaaa0c8e20c1f1841473085a2d28340d27fea9c1054585549b607dc769480d"
+  },
+  {
+    "distribution": "numpy",
+    "version": "2.2.6",
+    "path": "/opt/venv/lib/python3.12/site-packages/numpy/_core/include/numpy/_public_dtype_api_table.h",
+    "bytes": 4574,
+    "sha256": "9fafca6fdf12cafb11fd7eecb62340e95b86a7f7395b57b87cc55c25d3b4c22b"
+  },
+  {
+    "distribution": "numpy",
+    "version": "2.2.6",
+    "path": "/opt/venv/lib/python3.12/site-packages/numpy/_core/include/numpy/arrayobject.h",
+    "bytes": 204,
+    "sha256": "994e6fa5c43de4f1f58f76e9f0a62124e14707e1b1c118d252c47b9f19534919"
+  },
+  {
+    "distribution": "numpy",
+    "version": "2.2.6",
+    "path": "/opt/venv/lib/python3.12/site-packages/numpy/_core/include/numpy/arrayscalars.h",
+    "bytes": 4243,
+    "sha256": "2e5cab6486bfe6d775d417ea7cc0afd6161b886ebfff3c711afd4c463f2e215a"
+  },
+  {
+    "distribution": "numpy",
+    "version": "2.2.6",
+    "path": "/opt/venv/lib/python3.12/site-packages/numpy/_core/include/numpy/dtype_api.h",
+    "bytes": 19238,
+    "sha256": "1a7dfb47339b99c4ec2fa614618f5a1b6d82b7c17eaf865a0b9dcd3c5a9a22ca"
+  },
+  {
+    "distribution": "numpy",
+    "version": "2.2.6",
+    "path": "/opt/venv/lib/python3.12/site-packages/numpy/_core/include/numpy/halffloat.h",
+    "bytes": 1959,
+    "sha256": "4d165f5e08a96be745a695f6b8d824ae3acf962fb505f26d69d5a301e99b278b"
+  },
+  {
+    "distribution": "numpy",
+    "version": "2.2.6",
+    "path": "/opt/venv/lib/python3.12/site-packages/numpy/_core/include/numpy/ndarrayobject.h",
+    "bytes": 12057,
+    "sha256": "327ca45a6721c92d3995eaff67284522bff48fa73421c9dd122dd7de7d195839"
+  },
+  {
+    "distribution": "numpy",
+    "version": "2.2.6",
+    "path": "/opt/venv/lib/python3.12/site-packages/numpy/_core/include/numpy/ndarraytypes.h",
+    "bytes": 65053,
+    "sha256": "aa79c2eb417ea1e1b390ceb9bd5f1570cb1384b60a7035a484b40139f2778d99"
+  },
+  {
+    "distribution": "numpy",
+    "version": "2.2.6",
+    "path": "/opt/venv/lib/python3.12/site-packages/numpy/_core/include/numpy/npy_1_7_deprecated_api.h",
+    "bytes": 3746,
+    "sha256": "f7490670d6813e04f914902b07f30f816db8fcca65e5171f511dd8d2b441e41c"
+  },
+  {
+    "distribution": "numpy",
+    "version": "2.2.6",
+    "path": "/opt/venv/lib/python3.12/site-packages/numpy/_core/include/numpy/npy_2_compat.h",
+    "bytes": 8546,
+    "sha256": "c1d8c1efff80b56de8a7aed76e3dc4547e9aa5217b7111ba877739841cfe60cb"
+  },
+  {
+    "distribution": "numpy",
+    "version": "2.2.6",
+    "path": "/opt/venv/lib/python3.12/site-packages/numpy/_core/include/numpy/npy_2_complexcompat.h",
+    "bytes": 857,
+    "sha256": "784f5d57f22ade311f1862451ffa508c99ef0ba790d765a0381edc64c9870721"
+  },
+  {
+    "distribution": "numpy",
+    "version": "2.2.6",
+    "path": "/opt/venv/lib/python3.12/site-packages/numpy/_core/include/numpy/npy_3kcompat.h",
+    "bytes": 9648,
+    "sha256": "82b37a5b59fb6de9e3dc5da94803a997fb3abe7d58e7441f00ff836a5783edc0"
+  },
+  {
+    "distribution": "numpy",
+    "version": "2.2.6",
+    "path": "/opt/venv/lib/python3.12/site-packages/numpy/_core/include/numpy/npy_common.h",
+    "bytes": 36551,
+    "sha256": "c1b57567a9b7c35878a9570ec5f177f2cdc7d7751f14712e04645f0e14de50a1"
+  },
+  {
+    "distribution": "numpy",
+    "version": "2.2.6",
+    "path": "/opt/venv/lib/python3.12/site-packages/numpy/_core/include/numpy/npy_cpu.h",
+    "bytes": 4703,
+    "sha256": "0142790aa960bad791dfe4742233ede6bca55adbef71c096b6dd06a6365b7b15"
+  },
+  {
+    "distribution": "numpy",
+    "version": "2.2.6",
+    "path": "/opt/venv/lib/python3.12/site-packages/numpy/_core/include/numpy/npy_endian.h",
+    "bytes": 2834,
+    "sha256": "bef2bb6653add2f82a4d5ac8caf896ce8c50cfbd12f81bdf952e19fe4e97e571"
+  },
+  {
+    "distribution": "numpy",
+    "version": "2.2.6",
+    "path": "/opt/venv/lib/python3.12/site-packages/numpy/_core/include/numpy/npy_math.h",
+    "bytes": 18858,
+    "sha256": "69e485b3ad106d63f2d6020fc870cfad813189f9b999b0c07233ff98b93f3c5d"
+  },
+  {
+    "distribution": "numpy",
+    "version": "2.2.6",
+    "path": "/opt/venv/lib/python3.12/site-packages/numpy/_core/include/numpy/npy_no_deprecated_api.h",
+    "bytes": 678,
+    "sha256": "d3266b25c40427a3021c9227424e533fdfea678b7b11f06ea0b389df822525de"
+  },
+  {
+    "distribution": "numpy",
+    "version": "2.2.6",
+    "path": "/opt/venv/lib/python3.12/site-packages/numpy/_core/include/numpy/npy_os.h",
+    "bytes": 1256,
+    "sha256": "86542c83fefe464bd2decf0e33c297cbdf71c7225b0a6f96d4061571d9ced5cc"
+  },
+  {
+    "distribution": "numpy",
+    "version": "2.2.6",
+    "path": "/opt/venv/lib/python3.12/site-packages/numpy/_core/include/numpy/numpyconfig.h",
+    "bytes": 7161,
+    "sha256": "3af465adee1e6fd2815adea0004e5c4382be3f6b91988294d6b00ac561728260"
+  },
+  {
+    "distribution": "numpy",
+    "version": "2.2.6",
+    "path": "/opt/venv/lib/python3.12/site-packages/numpy/_core/include/numpy/random/bitgen.h",
+    "bytes": 488,
+    "sha256": "e3d03028e479e76afe36486e48e175bac6ff51188c49132f0f6d89179a4a2278"
+  },
+  {
+    "distribution": "numpy",
+    "version": "2.2.6",
+    "path": "/opt/venv/lib/python3.12/site-packages/numpy/_core/include/numpy/random/distributions.h",
+    "bytes": 9861,
+    "sha256": "5b9b4ec844ddd26d56d0675a6797493fc7ca941b6c4e91b6dd5d99966ae5aa98"
+  },
+  {
+    "distribution": "numpy",
+    "version": "2.2.6",
+    "path": "/opt/venv/lib/python3.12/site-packages/numpy/_core/include/numpy/random/libdivide.h",
+    "bytes": 80138,
+    "sha256": "7b0f4c3613d07752ec0998968859a3f4867bc8e9c0dc728e5df7c3791f57d63c"
+  },
+  {
+    "distribution": "numpy",
+    "version": "2.2.6",
+    "path": "/opt/venv/lib/python3.12/site-packages/numpy/_core/include/numpy/ufuncobject.h",
+    "bytes": 11918,
+    "sha256": "af65cce97c882ca5cbaa0987155bbc8d7aaf3a9fd9bfcb4b7d2f0e9a7e636e78"
+  },
+  {
+    "distribution": "numpy",
+    "version": "2.2.6",
+    "path": "/opt/venv/lib/python3.12/site-packages/numpy/_core/include/numpy/utils.h",
+    "bytes": 1185,
+    "sha256": "c0c3689921f70df8f4abbf0fae32d5b45b4df853e8ed4278a3489f0943bee84b"
+  },
+  {
+    "distribution": "numpy",
+    "version": "2.2.6",
+    "path": "/opt/venv/lib/python3.12/site-packages/numpy/f2py/src/fortranobject.h",
+    "bytes": 5823,
+    "sha256": "edc7d137fb53a0043535ad77550d8acdbdae8cc1d40201ac6d27277cb54e1eab"
+  },
+  {
+    "distribution": "numpy",
+    "version": "2.2.6",
+    "path": "/opt/venv/lib/python3.12/site-packages/numpy/fft/_pocketfft_umath.cpython-312-x86_64-linux-gnu.so",
+    "bytes": 649272,
+    "sha256": "18caba329ca56282504877dd05d2d3f695ac92deb044c406db1cc50f75091894"
+  },
+  {
+    "distribution": "numpy",
+    "version": "2.2.6",
+    "path": "/opt/venv/lib/python3.12/site-packages/numpy/linalg/_umath_linalg.cpython-312-x86_64-linux-gnu.so",
+    "bytes": 227657,
+    "sha256": "cc26f067e35c99248f354652fb7a941fd6c60823bb100524d245f6a54fbceba6"
+  },
+  {
+    "distribution": "numpy",
+    "version": "2.2.6",
+    "path": "/opt/venv/lib/python3.12/site-packages/numpy/linalg/lapack_lite.cpython-312-x86_64-linux-gnu.so",
+    "bytes": 30009,
+    "sha256": "00b0f883636367e47297a79024ac517d4f959004434476abfc2f483a1e7e690c"
+  },
+  {
+    "distribution": "numpy",
+    "version": "2.2.6",
+    "path": "/opt/venv/lib/python3.12/site-packages/numpy/random/_bounded_integers.cpython-312-x86_64-linux-gnu.so",
+    "bytes": 319560,
+    "sha256": "26cf7b75e1d56d55575f111da21942a3f24c04e044d0d4be53746312e168f815"
+  },
+  {
+    "distribution": "numpy",
+    "version": "2.2.6",
+    "path": "/opt/venv/lib/python3.12/site-packages/numpy/random/_common.cpython-312-x86_64-linux-gnu.so",
+    "bytes": 238304,
+    "sha256": "3ad9b1890b8f2a7f3f8de0c2d52c179ddf333b7a1a6d51972cc407748c900339"
+  },
+  {
+    "distribution": "numpy",
+    "version": "2.2.6",
+    "path": "/opt/venv/lib/python3.12/site-packages/numpy/random/_generator.cpython-312-x86_64-linux-gnu.so",
+    "bytes": 988680,
+    "sha256": "16eb02f2ebc5b4d1e26dedfa18b65aede9f2a8a095a07d3cd2c257008a25d24c"
+  },
+  {
+    "distribution": "numpy",
+    "version": "2.2.6",
+    "path": "/opt/venv/lib/python3.12/site-packages/numpy/random/_mt19937.cpython-312-x86_64-linux-gnu.so",
+    "bytes": 137616,
+    "sha256": "acefbf04c22e4b674b9c0c2ac792e4be1201ff6ea010eb1b5154b25ba53dd1c6"
+  },
+  {
+    "distribution": "numpy",
+    "version": "2.2.6",
+    "path": "/opt/venv/lib/python3.12/site-packages/numpy/random/_pcg64.cpython-312-x86_64-linux-gnu.so",
+    "bytes": 147744,
+    "sha256": "f5d9a4164344d1180404de6dbb7d0951e77b5b2437ea5089aa3af2d1d38206c9"
+  },
+  {
+    "distribution": "numpy",
+    "version": "2.2.6",
+    "path": "/opt/venv/lib/python3.12/site-packages/numpy/random/_philox.cpython-312-x86_64-linux-gnu.so",
+    "bytes": 120360,
+    "sha256": "b11e1768ba1d8c96de1213f1ef8db1dccac95e69866ede511fa8dd043d3fc495"
+  },
+  {
+    "distribution": "numpy",
+    "version": "2.2.6",
+    "path": "/opt/venv/lib/python3.12/site-packages/numpy/random/_sfc64.cpython-312-x86_64-linux-gnu.so",
+    "bytes": 89456,
+    "sha256": "64f12f308bea1252f284056af2d98e781942b5c5089b05b958966abf687ce163"
+  },
+  {
+    "distribution": "numpy",
+    "version": "2.2.6",
+    "path": "/opt/venv/lib/python3.12/site-packages/numpy/random/bit_generator.cpython-312-x86_64-linux-gnu.so",
+    "bytes": 234720,
+    "sha256": "e580315a2cd8803c90f87ed63d999c0d32c7a4f21881f2b5fcca13a959f49e2c"
+  },
+  {
+    "distribution": "numpy",
+    "version": "2.2.6",
+    "path": "/opt/venv/lib/python3.12/site-packages/numpy/random/mtrand.cpython-312-x86_64-linux-gnu.so",
+    "bytes": 781008,
+    "sha256": "bb95b388fbfc1f87a332b5c08dd6b0f565c7c9a7c5a4a7e18e9dac2a884a4eb5"
+  },
+  {
+    "distribution": "pyzmq",
+    "version": "27.1.0",
+    "path": "/opt/venv/lib/python3.12/site-packages/pyzmq.libs/libsodium-19479d6d.so.26.2.0",
+    "bytes": 1209897,
+    "sha256": "0ddb0009726fd4ea61cf66f2c29e52829ae95cc6600e392a0974b311e41b1be3"
+  },
+  {
+    "distribution": "pyzmq",
+    "version": "27.1.0",
+    "path": "/opt/venv/lib/python3.12/site-packages/pyzmq.libs/libzmq-7b073b3d.so.5.2.5",
+    "bytes": 950593,
+    "sha256": "811573ed3af354fa8da51e0a7b055cfe38d15ea6bd067a2c6c4974b55de38c8b"
+  },
+  {
+    "distribution": "pyzmq",
+    "version": "27.1.0",
+    "path": "/opt/venv/lib/python3.12/site-packages/zmq/backend/cffi/_cdefs.h",
+    "bytes": 2889,
+    "sha256": "8552f24c210405925c1dbae1c0a2dbedd4917ddec5c55354482b5f691ab991ef"
+  },
+  {
+    "distribution": "pyzmq",
+    "version": "27.1.0",
+    "path": "/opt/venv/lib/python3.12/site-packages/zmq/backend/cython/_zmq.abi3.so",
+    "bytes": 266809,
+    "sha256": "f1eb00d8890b3ba39b98e5505f7e80ca902974c80cb24801ece23baf5856924d"
+  },
+  {
+    "distribution": "pyzmq",
+    "version": "27.1.0",
+    "path": "/opt/venv/lib/python3.12/site-packages/zmq/utils/getpid_compat.h",
+    "bytes": 116,
+    "sha256": "7a6bdc90f7d2958782a143607d84e40160b889ef8b5cb4675c334b957c5768f2"
+  },
+  {
+    "distribution": "pyzmq",
+    "version": "27.1.0",
+    "path": "/opt/venv/lib/python3.12/site-packages/zmq/utils/ipcmaxlen.h",
+    "bytes": 522,
+    "sha256": "abe6065f904408bfd0a4eccec77a02fc8f2670d0966c927a16752b74a946d5f5"
+  },
+  {
+    "distribution": "pyzmq",
+    "version": "27.1.0",
+    "path": "/opt/venv/lib/python3.12/site-packages/zmq/utils/mutex.h",
+    "bytes": 1646,
+    "sha256": "494fa710778535cfe6cf141c0dbf5cf0da5d2c94cba72102a72d46c981693851"
+  },
+  {
+    "distribution": "pyzmq",
+    "version": "27.1.0",
+    "path": "/opt/venv/lib/python3.12/site-packages/zmq/utils/pyversion_compat.h",
+    "bytes": 284,
+    "sha256": "e05910f79515980fdab3d941ac83bbfb03390f4b448a754095899996cfd2453d"
+  },
+  {
+    "distribution": "pyzmq",
+    "version": "27.1.0",
+    "path": "/opt/venv/lib/python3.12/site-packages/zmq/utils/zmq_compat.h",
+    "bytes": 2824,
+    "sha256": "3060dcf6f23cf49d90653fb718e77627164ef9aa0c1df96e4d961fa6ce3dc27d"
+  },
+  {
+    "distribution": "soxr",
+    "version": "1.1.0",
+    "path": "/opt/venv/lib/python3.12/site-packages/soxr/soxr_ext.abi3.so",
+    "bytes": 502560,
+    "sha256": "bc2cc091949ba7ea3179e2859128a433f73fb448d6d938129db1ea0204d0f969"
+  },
+  {
+    "distribution": "vllm-xpu-kernels",
+    "version": "0.1.15.4",
+    "path": "/opt/venv/lib/python3.12/site-packages/vllm_xpu_kernels/_C.abi3.so",
+    "bytes": 60278112,
+    "sha256": "15289a0f57fe14634417248b3dbe1582b29ace6a1483992d5c27d76eed69a6d2"
+  },
+  {
+    "distribution": "vllm-xpu-kernels",
+    "version": "0.1.15.4",
+    "path": "/opt/venv/lib/python3.12/site-packages/vllm_xpu_kernels/_moe_C.abi3.so",
+    "bytes": 95204544,
+    "sha256": "803b4a7b40393df1670b28cdb34533d09a352202dbceb35bcad5a6a99a9b5482"
+  },
+  {
+    "distribution": "vllm-xpu-kernels",
+    "version": "0.1.15.4",
+    "path": "/opt/venv/lib/python3.12/site-packages/vllm_xpu_kernels/_vllm_fa2_C.abi3.so",
+    "bytes": 139832,
+    "sha256": "28c36760256c4065e1eabd5ba6ffd3fa181073dafe372b35a3e2952e86d262fe"
+  },
+  {
+    "distribution": "vllm-xpu-kernels",
+    "version": "0.1.15.4",
+    "path": "/opt/venv/lib/python3.12/site-packages/vllm_xpu_kernels/_xpu_C.abi3.so",
+    "bytes": 112111696,
+    "sha256": "9a103edaa1457c719671e2b20e9b28cbf86fc77e7e60429468661d1bbcda4289"
+  },
+  {
+    "distribution": "vllm-xpu-kernels",
+    "version": "0.1.15.4",
+    "path": "/opt/venv/lib/python3.12/site-packages/vllm_xpu_kernels/libattn_kernels_xe_2.so",
+    "bytes": 306868136,
+    "sha256": "ec26f8f58ca8d868dceb5fb80f622410c669a12852e541916cc093be92b60663"
+  },
+  {
+    "distribution": "vllm-xpu-kernels",
+    "version": "0.1.15.4",
+    "path": "/opt/venv/lib/python3.12/site-packages/vllm_xpu_kernels/libattn_kernels_xe_3.so",
+    "bytes": 147236760,
+    "sha256": "c4fe9db4de4c47af695e7ba990d9f22e9d46608958b4aad7dcb47d509d57a12e"
+  },
+  {
+    "distribution": "vllm-xpu-kernels",
+    "version": "0.1.15.4",
+    "path": "/opt/venv/lib/python3.12/site-packages/vllm_xpu_kernels/libgdn_attn_kernels_xe_2.so",
+    "bytes": 5841792,
+    "sha256": "eaa927edd271b91b2785aed0b5888cbfd5acc9f0d210aae970ee25d0d2675f69"
+  },
+  {
+    "distribution": "vllm-xpu-kernels",
+    "version": "0.1.15.4",
+    "path": "/opt/venv/lib/python3.12/site-packages/vllm_xpu_kernels/libgrouped_gemm_xe_2.so",
+    "bytes": 12449176,
+    "sha256": "a8c48caf6bf89f5e7f3b3ee780e53e915b97aedf2ebd05308ff34c8f8513bbed"
+  },
+  {
+    "distribution": "vllm-xpu-kernels",
+    "version": "0.1.15.4",
+    "path": "/opt/venv/lib/python3.12/site-packages/vllm_xpu_kernels/libgrouped_gemm_xe_default.so",
+    "bytes": 1714104,
+    "sha256": "e1bc7550b41ca23f9d782aad5c271cc9fd598486958c9499012f1bc78ad368c5"
+  },
+  {
+    "distribution": "vllm-xpu-kernels",
+    "version": "0.1.15.4",
+    "path": "/opt/venv/lib/python3.12/site-packages/vllm_xpu_kernels/libmhc_kernels_xe_2.so",
+    "bytes": 971272,
+    "sha256": "344c91e6707f60c28f9baab655fe5ee8ba655b58288b18ec1e9084cf4b3a2a8d"
+  },
+  {
+    "distribution": "vllm-xpu-kernels",
+    "version": "0.1.15.4",
+    "path": "/opt/venv/lib/python3.12/site-packages/vllm_xpu_kernels/libmqa_logits_kernels_xe_2.so",
+    "bytes": 413352,
+    "sha256": "a3b3270ad9c8f47d40940598f0cd93fd5771b1d7ee5077904b11a899aa9dd230"
+  },
+  {
+    "distribution": "vllm-xpu-kernels",
+    "version": "0.1.15.4",
+    "path": "/opt/venv/lib/python3.12/site-packages/vllm_xpu_kernels/xpumem_allocator.abi3.so",
+    "bytes": 57280,
+    "sha256": "a305006da0aaf3f91dc0b6c0127fb00484fb91d7f80d734d1a3efaaddabc8568"
+  }
+]

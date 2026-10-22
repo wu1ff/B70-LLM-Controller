@@ -1,0 +1,45 @@
+{
+  "source_verification": "PASS",
+  "archive": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/release-prep/dflash2-portable-source-v1.tar.gz",
+  "archive_sha256": "b2c2d0ae12c229651c287d397b4e8f110b48399aa764228a6065c02bbe02445a",
+  "archive_bytes": 55143086,
+  "archive_regular_files": 2639,
+  "relocated_bundle": "/tmp/dflash2-phase2-relocated-tri3h_p2/dflash2-portable-source/patches",
+  "clean_staging": "/tmp/dflash2-phase2-relocated-tri3h_p2/clean-reconstruction",
+  "positive_report": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/release-prep/phase2-evidence/source-final-verification.json",
+  "negative_checks": [
+    {
+      "case": "missing-clean-input",
+      "status": "PASS",
+      "detected": "bundle file set differs from SHA256SUMS; missing: production/inputs/vllm-v0.32.0-package.tar.gz; unexpected: "
+    },
+    {
+      "case": "wrong-patch-order",
+      "status": "PASS",
+      "detected": "command failed: ['git', 'apply', '--check', '-p1', '/tmp/dflash2-phase2-relocated-tri3h_p2/dflash2-portable-source/patches/production/patch-chain/dflash2-v032.patch']\nerror: vllm/models/qwen4_exp/nvidia/b70_disk.py: No such file or directory\nerror: vllm/models/qwen4_exp/nvidia/b70_hyperconnection.py: No such file or directory\n"
+    },
+    {
+      "case": "missing-fallback-inventory",
+      "status": "PASS",
+      "detected": "expected twelve native libraries"
+    },
+    {
+      "case": "missing-gdn-header",
+      "status": "PASS",
+      "detected": "missing: csrc/xpu/gdn_attn/causal_conv1d.hpp"
+    },
+    {
+      "case": "altered-support",
+      "status": "PASS",
+      "detected": "hash mismatch: production/support/b70-flashnext/prepare-serve.sh"
+    },
+    {
+      "case": "missing-fallback-export",
+      "status": "PASS",
+      "detected": "missing native installation: vllm_xpu_kernels/libbeyond_prefill.so"
+    }
+  ],
+  "network_or_gpu_needed_for_verifier": false,
+  "native_compilation": "NOT RUN",
+  "full_image_build": "NOT RUN"
+}

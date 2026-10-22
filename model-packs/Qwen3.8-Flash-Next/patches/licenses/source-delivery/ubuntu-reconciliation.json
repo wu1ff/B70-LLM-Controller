@@ -1,0 +1,630 @@
+[
+  {
+    "source": "apt",
+    "historical_source_version": "2.8.3",
+    "accepted_packages": [
+      {
+        "package": "apt",
+        "version": "2.8.3",
+        "source": "apt",
+        "source_version": "2.8.3"
+      },
+      {
+        "package": "libapt-pkg6.0t64",
+        "version": "2.8.3",
+        "source": "apt",
+        "source_version": "2.8.3"
+      }
+    ],
+    "version_matches": true,
+    "source_files": [
+      {
+        "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/apt/2.8.3/apt_2.8.3.dsc",
+        "local": "corresponding-source/ubuntu/apt/apt_2.8.3.dsc",
+        "size": 2973,
+        "sha256": "1d41cd04115e1a79f0fa4d738e5c34603ae8a4f40122d8a18a622fd6d20a5523",
+        "retained_source_hash_matches": true
+      },
+      {
+        "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/apt/2.8.3/apt_2.8.3.tar.xz",
+        "local": "corresponding-source/ubuntu/apt/apt_2.8.3.tar.xz",
+        "size": 2354680,
+        "sha256": "088522b3613b28fdbcfa61f1f7e476bf6dc6b0120a8f74409e9527580c9f9d3b",
+        "retained_source_hash_matches": true
+      }
+    ],
+    "distribution_status": "Source URLs/hashes and local availability retained; final companion placement/directions pending."
+  },
+  {
+    "source": "bash",
+    "historical_source_version": "5.2.21-2ubuntu4",
+    "accepted_packages": [
+      {
+        "package": "bash",
+        "version": "5.2.21-2ubuntu4",
+        "source": "bash",
+        "source_version": "5.2.21-2ubuntu4"
+      }
+    ],
+    "version_matches": true,
+    "source_files": [
+      {
+        "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/bash/5.2.21-2ubuntu4/bash_5.2.21-2ubuntu4.dsc",
+        "local": "corresponding-source/ubuntu/bash/bash_5.2.21-2ubuntu4.dsc",
+        "size": 2437,
+        "sha256": "d5a89c09f42c828d5e31dc3a1680882aa0ddaad5072963e563dec7dfc4919d33",
+        "retained_source_hash_matches": true
+      },
+      {
+        "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/bash/5.2.21-2ubuntu4/bash_5.2.21-2ubuntu4.debian.tar.xz",
+        "local": "corresponding-source/ubuntu/bash/bash_5.2.21-2ubuntu4.debian.tar.xz",
+        "size": 94124,
+        "sha256": "bdb10c18d167dda3b265cb3db75314d524edbf7794fed36f0fb0dcc32f5e6ac9",
+        "retained_source_hash_matches": true
+      },
+      {
+        "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/bash/5.2.21-2ubuntu4/bash_5.2.21.orig.tar.xz",
+        "local": "corresponding-source/ubuntu/bash/bash_5.2.21.orig.tar.xz",
+        "size": 5598816,
+        "sha256": "ec21ab4efd6bd7a6e2802fbda622b81bfc43a8095d721234d4bf075797683014",
+        "retained_source_hash_matches": true
+      }
+    ],
+    "distribution_status": "Source URLs/hashes and local availability retained; final companion placement/directions pending."
+  },
+  {
+    "source": "binutils",
+    "historical_source_version": "2.42-4ubuntu2.10",
+    "accepted_packages": [
+      {
+        "package": "binutils",
+        "version": "2.42-4ubuntu2.10",
+        "source": "binutils",
+        "source_version": "2.42-4ubuntu2.10"
+      },
+      {
+        "package": "binutils-common",
+        "version": "2.42-4ubuntu2.10",
+        "source": "binutils",
+        "source_version": "2.42-4ubuntu2.10"
+      },
+      {
+        "package": "binutils-x86-64-linux-gnu",
+        "version": "2.42-4ubuntu2.10",
+        "source": "binutils",
+        "source_version": "2.42-4ubuntu2.10"
+      },
+      {
+        "package": "libbinutils",
+        "version": "2.42-4ubuntu2.10",
+        "source": "binutils",
+        "source_version": "2.42-4ubuntu2.10"
+      },
+      {
+        "package": "libctf-nobfd0",
+        "version": "2.42-4ubuntu2.10",
+        "source": "binutils",
+        "source_version": "2.42-4ubuntu2.10"
+      },
+      {
+        "package": "libctf0",
+        "version": "2.42-4ubuntu2.10",
+        "source": "binutils",
+        "source_version": "2.42-4ubuntu2.10"
+      },
+      {
+        "package": "libgprofng0",
+        "version": "2.42-4ubuntu2.10",
+        "source": "binutils",
+        "source_version": "2.42-4ubuntu2.10"
+      },
+      {
+        "package": "libsframe1",
+        "version": "2.42-4ubuntu2.10",
+        "source": "binutils",
+        "source_version": "2.42-4ubuntu2.10"
+      }
+    ],
+    "version_matches": true,
+    "source_files": [
+      {
+        "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/binutils/2.42-4ubuntu2.10/binutils_2.42-4ubuntu2.10.dsc",
+        "local": "corresponding-source/ubuntu/binutils/binutils_2.42-4ubuntu2.10.dsc",
+        "size": 10152,
+        "sha256": "a14a8e2efdb3566955476bccd2248cebed5cf2a2f5d28e223d08200ec1a18d75",
+        "retained_source_hash_matches": true
+      },
+      {
+        "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/binutils/2.42-4ubuntu2.10/binutils_2.42-4ubuntu2.10.debian.tar.xz",
+        "local": "corresponding-source/ubuntu/binutils/binutils_2.42-4ubuntu2.10.debian.tar.xz",
+        "size": 196552,
+        "sha256": "6acc777971890cb1efaeeb33a0a5358651c71067ced69dcfd59da7d0977f7530",
+        "retained_source_hash_matches": true
+      },
+      {
+        "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/binutils/2.42-4ubuntu2.10/binutils_2.42.orig.tar.xz",
+        "local": "corresponding-source/ubuntu/binutils/binutils_2.42.orig.tar.xz",
+        "size": 27567160,
+        "sha256": "f6e4d41fd5fc778b06b7891457b3620da5ecea1006c6a4a41ae998109f85a800",
+        "retained_source_hash_matches": true
+      }
+    ],
+    "distribution_status": "Source URLs/hashes and local availability retained; final companion placement/directions pending."
+  },
+  {
+    "source": "coreutils",
+    "historical_source_version": "9.4-3ubuntu6.3",
+    "accepted_packages": [
+      {
+        "package": "coreutils",
+        "version": "9.4-3ubuntu6.3",
+        "source": "coreutils",
+        "source_version": "9.4-3ubuntu6.3"
+      }
+    ],
+    "version_matches": true,
+    "source_files": [
+      {
+        "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/coreutils/9.4-3ubuntu6.3/coreutils_9.4-3ubuntu6.3.dsc",
+        "local": "corresponding-source/ubuntu/coreutils/coreutils_9.4-3ubuntu6.3.dsc",
+        "size": 2030,
+        "sha256": "419fea2f0fec8299d95cafb11425391fe45d60b30d052c7f1e3a162ea56a6653",
+        "retained_source_hash_matches": true
+      },
+      {
+        "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/coreutils/9.4-3ubuntu6.3/coreutils_9.4-3ubuntu6.3.debian.tar.xz",
+        "local": "corresponding-source/ubuntu/coreutils/coreutils_9.4-3ubuntu6.3.debian.tar.xz",
+        "size": 43156,
+        "sha256": "23eb9e94564e2451ea02a879daa0ee9ba8db3777e84e020fcd08d49aaebc57d4",
+        "retained_source_hash_matches": true
+      },
+      {
+        "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/coreutils/9.4-3ubuntu6.3/coreutils_9.4.orig.tar.xz",
+        "local": "corresponding-source/ubuntu/coreutils/coreutils_9.4.orig.tar.xz",
+        "size": 5979200,
+        "sha256": "ea613a4cf44612326e917201bbbcdfbd301de21ffc3b59b6e5c07e040b275e52",
+        "retained_source_hash_matches": true
+      }
+    ],
+    "distribution_status": "Source URLs/hashes and local availability retained; final companion placement/directions pending."
+  },
+  {
+    "source": "dpkg",
+    "historical_source_version": "1.22.6ubuntu6.6",
+    "accepted_packages": [
+      {
+        "package": "dpkg",
+        "version": "1.22.6ubuntu6.6",
+        "source": "dpkg",
+        "source_version": "1.22.6ubuntu6.6"
+      },
+      {
+        "package": "dpkg-dev",
+        "version": "1.22.6ubuntu6.6",
+        "source": "dpkg",
+        "source_version": "1.22.6ubuntu6.6"
+      },
+      {
+        "package": "libdpkg-perl",
+        "version": "1.22.6ubuntu6.6",
+        "source": "dpkg",
+        "source_version": "1.22.6ubuntu6.6"
+      }
+    ],
+    "version_matches": true,
+    "source_files": [
+      {
+        "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/dpkg/1.22.6ubuntu6.6/dpkg_1.22.6ubuntu6.6.dsc",
+        "local": "corresponding-source/ubuntu/dpkg/dpkg_1.22.6ubuntu6.6.dsc",
+        "size": 3156,
+        "sha256": "5828d5dd77635c8bd0197116446bc64ec76913500affbcb42aaae1644acb749d",
+        "retained_source_hash_matches": true
+      },
+      {
+        "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/dpkg/1.22.6ubuntu6.6/dpkg_1.22.6ubuntu6.6.tar.xz",
+        "local": "corresponding-source/ubuntu/dpkg/dpkg_1.22.6ubuntu6.6.tar.xz",
+        "size": 5548716,
+        "sha256": "7048ee31e30066ae123cdcb891cfa1ad55b2f42a4e04fca2c5db41607ae25196",
+        "retained_source_hash_matches": true
+      }
+    ],
+    "distribution_status": "Source URLs/hashes and local availability retained; final companion placement/directions pending."
+  },
+  {
+    "source": "ffmpeg",
+    "historical_source_version": "7:6.1.1-3ubuntu5",
+    "accepted_packages": [
+      {
+        "package": "ffmpeg",
+        "version": "7:6.1.1-3ubuntu5",
+        "source": "ffmpeg",
+        "source_version": "7:6.1.1-3ubuntu5"
+      },
+      {
+        "package": "libavcodec60",
+        "version": "7:6.1.1-3ubuntu5",
+        "source": "ffmpeg",
+        "source_version": "7:6.1.1-3ubuntu5"
+      },
+      {
+        "package": "libavdevice60",
+        "version": "7:6.1.1-3ubuntu5",
+        "source": "ffmpeg",
+        "source_version": "7:6.1.1-3ubuntu5"
+      },
+      {
+        "package": "libavfilter9",
+        "version": "7:6.1.1-3ubuntu5",
+        "source": "ffmpeg",
+        "source_version": "7:6.1.1-3ubuntu5"
+      },
+      {
+        "package": "libavformat60",
+        "version": "7:6.1.1-3ubuntu5",
+        "source": "ffmpeg",
+        "source_version": "7:6.1.1-3ubuntu5"
+      },
+      {
+        "package": "libavutil58",
+        "version": "7:6.1.1-3ubuntu5",
+        "source": "ffmpeg",
+        "source_version": "7:6.1.1-3ubuntu5"
+      },
+      {
+        "package": "libpostproc57",
+        "version": "7:6.1.1-3ubuntu5",
+        "source": "ffmpeg",
+        "source_version": "7:6.1.1-3ubuntu5"
+      },
+      {
+        "package": "libswresample4",
+        "version": "7:6.1.1-3ubuntu5",
+        "source": "ffmpeg",
+        "source_version": "7:6.1.1-3ubuntu5"
+      },
+      {
+        "package": "libswscale7",
+        "version": "7:6.1.1-3ubuntu5",
+        "source": "ffmpeg",
+        "source_version": "7:6.1.1-3ubuntu5"
+      }
+    ],
+    "version_matches": true,
+    "source_files": [
+      {
+        "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/ffmpeg/7:6.1.1-3ubuntu5/ffmpeg_6.1.1-3ubuntu5.dsc",
+        "local": "corresponding-source/ubuntu/ffmpeg/ffmpeg_6.1.1-3ubuntu5.dsc",
+        "size": 6459,
+        "sha256": "a10fbc05d525244502b2e66634ce1c0d8dd7e5d042a69ec4548dfa661f149774",
+        "retained_source_hash_matches": true
+      },
+      {
+        "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/ffmpeg/7:6.1.1-3ubuntu5/ffmpeg_6.1.1-3ubuntu5.debian.tar.xz",
+        "local": "corresponding-source/ubuntu/ffmpeg/ffmpeg_6.1.1-3ubuntu5.debian.tar.xz",
+        "size": 56008,
+        "sha256": "874b7862a84e2afa89a74b9c736e988858becb8f17c0b0e8f339a71cb2ddbff1",
+        "retained_source_hash_matches": true
+      },
+      {
+        "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/ffmpeg/7:6.1.1-3ubuntu5/ffmpeg_6.1.1.orig.tar.xz.asc",
+        "local": "corresponding-source/ubuntu/ffmpeg/ffmpeg_6.1.1.orig.tar.xz.asc",
+        "size": 520,
+        "sha256": "e1aa97244d6d61b508ae06a71c7b8362b3b1733459a3fc1f2efa5d85456135d3",
+        "retained_source_hash_matches": true
+      },
+      {
+        "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/ffmpeg/7:6.1.1-3ubuntu5/ffmpeg_6.1.1.orig.tar.xz",
+        "local": "corresponding-source/ubuntu/ffmpeg/ffmpeg_6.1.1.orig.tar.xz",
+        "size": 10458600,
+        "sha256": "8684f4b00f94b85461884c3719382f1261f0d9eb3d59640a1f4ac0873616f968",
+        "retained_source_hash_matches": true
+      }
+    ],
+    "distribution_status": "Source URLs/hashes and local availability retained; final companion placement/directions pending."
+  },
+  {
+    "source": "gcc-13",
+    "historical_source_version": "13.3.0-6ubuntu2~24.04.1",
+    "accepted_packages": [
+      {
+        "package": "cpp-13",
+        "version": "13.3.0-6ubuntu2~24.04.1",
+        "source": "gcc-13",
+        "source_version": "13.3.0-6ubuntu2~24.04.1"
+      },
+      {
+        "package": "cpp-13-x86-64-linux-gnu",
+        "version": "13.3.0-6ubuntu2~24.04.1",
+        "source": "gcc-13",
+        "source_version": "13.3.0-6ubuntu2~24.04.1"
+      },
+      {
+        "package": "g++-13",
+        "version": "13.3.0-6ubuntu2~24.04.1",
+        "source": "gcc-13",
+        "source_version": "13.3.0-6ubuntu2~24.04.1"
+      },
+      {
+        "package": "g++-13-x86-64-linux-gnu",
+        "version": "13.3.0-6ubuntu2~24.04.1",
+        "source": "gcc-13",
+        "source_version": "13.3.0-6ubuntu2~24.04.1"
+      },
+      {
+        "package": "gcc-13",
+        "version": "13.3.0-6ubuntu2~24.04.1",
+        "source": "gcc-13",
+        "source_version": "13.3.0-6ubuntu2~24.04.1"
+      },
+      {
+        "package": "gcc-13-base",
+        "version": "13.3.0-6ubuntu2~24.04.1",
+        "source": "gcc-13",
+        "source_version": "13.3.0-6ubuntu2~24.04.1"
+      },
+      {
+        "package": "gcc-13-x86-64-linux-gnu",
+        "version": "13.3.0-6ubuntu2~24.04.1",
+        "source": "gcc-13",
+        "source_version": "13.3.0-6ubuntu2~24.04.1"
+      },
+      {
+        "package": "libgcc-13-dev",
+        "version": "13.3.0-6ubuntu2~24.04.1",
+        "source": "gcc-13",
+        "source_version": "13.3.0-6ubuntu2~24.04.1"
+      },
+      {
+        "package": "libstdc++-13-dev",
+        "version": "13.3.0-6ubuntu2~24.04.1",
+        "source": "gcc-13",
+        "source_version": "13.3.0-6ubuntu2~24.04.1"
+      }
+    ],
+    "version_matches": true,
+    "source_files": [
+      {
+        "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/gcc-13/13.3.0-6ubuntu2~24.04.1/gcc-13_13.3.0-6ubuntu2~24.04.1.dsc",
+        "local": "corresponding-source/ubuntu/gcc-13/gcc-13_13.3.0-6ubuntu2~24.04.1.dsc",
+        "size": 39540,
+        "sha256": "86b4012c312ac13e3e092877719a62a5b5dbab082ae7e9680780a25c6a13ddc6",
+        "retained_source_hash_matches": true
+      },
+      {
+        "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/gcc-13/13.3.0-6ubuntu2~24.04.1/gcc-13_13.3.0-6ubuntu2~24.04.1.debian.tar.xz",
+        "local": "corresponding-source/ubuntu/gcc-13/gcc-13_13.3.0-6ubuntu2~24.04.1.debian.tar.xz",
+        "size": 646156,
+        "sha256": "5523658f272ad6d15a83b6e26d178fbd5cb7709ec7ce2ca52b0c843e19c228e3",
+        "retained_source_hash_matches": true
+      },
+      {
+        "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/gcc-13/13.3.0-6ubuntu2~24.04.1/gcc-13_13.3.0.orig.tar.gz",
+        "local": "corresponding-source/ubuntu/gcc-13/gcc-13_13.3.0.orig.tar.gz",
+        "size": 92761021,
+        "sha256": "3b85d91bf38d1b858d9d01134f4046b3359731968ed4e6e912d29717a35d1a46",
+        "retained_source_hash_matches": true
+      }
+    ],
+    "distribution_status": "Source URLs/hashes and local availability retained; final companion placement/directions pending."
+  },
+  {
+    "source": "gcc-14",
+    "historical_source_version": "14.2.0-4ubuntu2~24.04.1",
+    "accepted_packages": [
+      {
+        "package": "gcc-14-base",
+        "version": "14.2.0-4ubuntu2~24.04.1",
+        "source": "gcc-14",
+        "source_version": "14.2.0-4ubuntu2~24.04.1"
+      },
+      {
+        "package": "libasan8",
+        "version": "14.2.0-4ubuntu2~24.04.1",
+        "source": "gcc-14",
+        "source_version": "14.2.0-4ubuntu2~24.04.1"
+      },
+      {
+        "package": "libatomic1",
+        "version": "14.2.0-4ubuntu2~24.04.1",
+        "source": "gcc-14",
+        "source_version": "14.2.0-4ubuntu2~24.04.1"
+      },
+      {
+        "package": "libcc1-0",
+        "version": "14.2.0-4ubuntu2~24.04.1",
+        "source": "gcc-14",
+        "source_version": "14.2.0-4ubuntu2~24.04.1"
+      },
+      {
+        "package": "libgcc-s1",
+        "version": "14.2.0-4ubuntu2~24.04.1",
+        "source": "gcc-14",
+        "source_version": "14.2.0-4ubuntu2~24.04.1"
+      },
+      {
+        "package": "libgfortran5",
+        "version": "14.2.0-4ubuntu2~24.04.1",
+        "source": "gcc-14",
+        "source_version": "14.2.0-4ubuntu2~24.04.1"
+      },
+      {
+        "package": "libgomp1",
+        "version": "14.2.0-4ubuntu2~24.04.1",
+        "source": "gcc-14",
+        "source_version": "14.2.0-4ubuntu2~24.04.1"
+      },
+      {
+        "package": "libhwasan0",
+        "version": "14.2.0-4ubuntu2~24.04.1",
+        "source": "gcc-14",
+        "source_version": "14.2.0-4ubuntu2~24.04.1"
+      },
+      {
+        "package": "libitm1",
+        "version": "14.2.0-4ubuntu2~24.04.1",
+        "source": "gcc-14",
+        "source_version": "14.2.0-4ubuntu2~24.04.1"
+      },
+      {
+        "package": "liblsan0",
+        "version": "14.2.0-4ubuntu2~24.04.1",
+        "source": "gcc-14",
+        "source_version": "14.2.0-4ubuntu2~24.04.1"
+      },
+      {
+        "package": "libquadmath0",
+        "version": "14.2.0-4ubuntu2~24.04.1",
+        "source": "gcc-14",
+        "source_version": "14.2.0-4ubuntu2~24.04.1"
+      },
+      {
+        "package": "libstdc++6",
+        "version": "14.2.0-4ubuntu2~24.04.1",
+        "source": "gcc-14",
+        "source_version": "14.2.0-4ubuntu2~24.04.1"
+      },
+      {
+        "package": "libtsan2",
+        "version": "14.2.0-4ubuntu2~24.04.1",
+        "source": "gcc-14",
+        "source_version": "14.2.0-4ubuntu2~24.04.1"
+      },
+      {
+        "package": "libubsan1",
+        "version": "14.2.0-4ubuntu2~24.04.1",
+        "source": "gcc-14",
+        "source_version": "14.2.0-4ubuntu2~24.04.1"
+      }
+    ],
+    "version_matches": true,
+    "source_files": [
+      {
+        "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/gcc-14/14.2.0-4ubuntu2~24.04.1/gcc-14_14.2.0-4ubuntu2~24.04.1.dsc",
+        "local": "corresponding-source/ubuntu/gcc-14/gcc-14_14.2.0-4ubuntu2~24.04.1.dsc",
+        "size": 46930,
+        "sha256": "50950080874a6ec6780dd60c243e21d9cda9d736bb32bca98d16095d27cc01b5",
+        "retained_source_hash_matches": true
+      },
+      {
+        "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/gcc-14/14.2.0-4ubuntu2~24.04.1/gcc-14_14.2.0-4ubuntu2~24.04.1.debian.tar.xz",
+        "local": "corresponding-source/ubuntu/gcc-14/gcc-14_14.2.0-4ubuntu2~24.04.1.debian.tar.xz",
+        "size": 1950432,
+        "sha256": "cfece214c2fb790ef5f3baffb9a53e40618e7ae12d053610b251e94d77d08ade",
+        "retained_source_hash_matches": true
+      },
+      {
+        "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/gcc-14/14.2.0-4ubuntu2~24.04.1/gcc-14_14.2.0.orig.tar.gz",
+        "local": "corresponding-source/ubuntu/gcc-14/gcc-14_14.2.0.orig.tar.gz",
+        "size": 97158172,
+        "sha256": "768c314c11eeab56ccebb91eb42ec4a41122fa94f0d83400126401942622197b",
+        "retained_source_hash_matches": true
+      }
+    ],
+    "distribution_status": "Source URLs/hashes and local availability retained; final companion placement/directions pending."
+  },
+  {
+    "source": "git",
+    "historical_source_version": "1:2.43.0-1ubuntu7.3",
+    "accepted_packages": [
+      {
+        "package": "git",
+        "version": "1:2.43.0-1ubuntu7.3",
+        "source": "git",
+        "source_version": "1:2.43.0-1ubuntu7.3"
+      },
+      {
+        "package": "git-man",
+        "version": "1:2.43.0-1ubuntu7.3",
+        "source": "git",
+        "source_version": "1:2.43.0-1ubuntu7.3"
+      }
+    ],
+    "version_matches": true,
+    "source_files": [
+      {
+        "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/git/1:2.43.0-1ubuntu7.3/git_2.43.0-1ubuntu7.3.dsc",
+        "local": "corresponding-source/ubuntu/git/git_2.43.0-1ubuntu7.3.dsc",
+        "size": 2972,
+        "sha256": "1e3e5b83bf41318cc957a9e471ed82f8ca4d6befe91b008699959072c97430f4",
+        "retained_source_hash_matches": true
+      },
+      {
+        "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/git/1:2.43.0-1ubuntu7.3/git_2.43.0-1ubuntu7.3.debian.tar.xz",
+        "local": "corresponding-source/ubuntu/git/git_2.43.0-1ubuntu7.3.debian.tar.xz",
+        "size": 795448,
+        "sha256": "5bb363b59fda93816ec9ef34476e720b4f66f4b9947866bfaf414964be7dd4a7",
+        "retained_source_hash_matches": true
+      },
+      {
+        "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/git/1:2.43.0-1ubuntu7.3/git_2.43.0.orig.tar.xz",
+        "local": "corresponding-source/ubuntu/git/git_2.43.0.orig.tar.xz",
+        "size": 7382996,
+        "sha256": "5446603e73d911781d259e565750dcd277a42836c8e392cac91cf137aa9b76ec",
+        "retained_source_hash_matches": true
+      }
+    ],
+    "distribution_status": "Source URLs/hashes and local availability retained; final companion placement/directions pending."
+  },
+  {
+    "source": "glibc",
+    "historical_source_version": "2.39-0ubuntu8.9",
+    "accepted_packages": [
+      {
+        "package": "libc-bin",
+        "version": "2.39-0ubuntu8.9",
+        "source": "glibc",
+        "source_version": "2.39-0ubuntu8.9"
+      },
+      {
+        "package": "libc-dev-bin",
+        "version": "2.39-0ubuntu8.9",
+        "source": "glibc",
+        "source_version": "2.39-0ubuntu8.9"
+      },
+      {
+        "package": "libc6",
+        "version": "2.39-0ubuntu8.9",
+        "source": "glibc",
+        "source_version": "2.39-0ubuntu8.9"
+      },
+      {
+        "package": "libc6-dev",
+        "version": "2.39-0ubuntu8.9",
+        "source": "glibc",
+        "source_version": "2.39-0ubuntu8.9"
+      }
+    ],
+    "version_matches": true,
+    "source_files": [
+      {
+        "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/glibc/2.39-0ubuntu8.9/glibc_2.39-0ubuntu8.9.dsc",
+        "local": "corresponding-source/ubuntu/glibc/glibc_2.39-0ubuntu8.9.dsc",
+        "size": 9387,
+        "sha256": "1b73a89e0910eb3e5920cde639ac7eb606256d8ee809688ff9b5912b67002711",
+        "retained_source_hash_matches": true
+      },
+      {
+        "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/glibc/2.39-0ubuntu8.9/glibc_2.39-0ubuntu8.9.debian.tar.xz",
+        "local": "corresponding-source/ubuntu/glibc/glibc_2.39-0ubuntu8.9.debian.tar.xz",
+        "size": 491440,
+        "sha256": "d6114f2302896a3c8612453e1bf1d0e61603e3029ba4a7c246fbb1ab4c48d2b0",
+        "retained_source_hash_matches": true
+      },
+      {
+        "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/glibc/2.39-0ubuntu8.9/glibc_2.39.orig.tar.xz.asc",
+        "local": "corresponding-source/ubuntu/glibc/glibc_2.39.orig.tar.xz.asc",
+        "size": 833,
+        "sha256": "2cce427ef7933c17379f5514e4f0ccf8dffae5bf8c72f0f7e0bf8b8401f34be5",
+        "retained_source_hash_matches": true
+      },
+      {
+        "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/glibc/2.39-0ubuntu8.9/glibc_2.39.orig.tar.xz",
+        "local": "corresponding-source/ubuntu/glibc/glibc_2.39.orig.tar.xz",
+        "size": 18520988,
+        "sha256": "f77bd47cf8170c57365ae7bf86696c118adb3b120d3259c64c502d3dc1e2d926",
+        "retained_source_hash_matches": true
+      }
+    ],
+    "distribution_status": "Source URLs/hashes and local availability retained; final companion placement/directions pending."
+  }
+]

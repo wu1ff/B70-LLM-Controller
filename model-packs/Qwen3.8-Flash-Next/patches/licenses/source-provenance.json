@@ -1,0 +1,7 @@
+{
+  "accepted_image": "sha256:6e2ab4e686680a5208ff0119c4637341cba81942bd39b6576ea14dc8f547b83b",
+  "attribution": "Retain Wulf Disk/checkpoint/shim integration, Astra implementation records, Intel/vLLM/kernel/TLA and incoai/Qwen notices. No new personal author attribution is inferred.",
+  "campaign": "archive/reconnaissance/CAMPAIGN.md",
+  "collection": "Separate read-only network-disabled metadata container; no GPU/import of model code.",
+  "modified_sources": "production/patch-chain and archive/originals preserve exact campaign bytes and original SPDX/copyrights."
+}

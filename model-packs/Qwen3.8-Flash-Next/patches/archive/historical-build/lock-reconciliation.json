@@ -1,0 +1,82 @@
+[
+  {
+    "historical_path": "build/phase3-context/sources/vllm/vllm/_xpu_ops.py",
+    "historical_sha256": "be09193a4a4970003a7ad8185f2e6cca6df0541967ef453a7e554a62996a50fd",
+    "current_working_file_sha256": "9271b737b720b62c1b927c269f56d6f34c6ac46439030098f205c3f90e89300b",
+    "production_path": "vllm/_xpu_ops.py",
+    "accepted_sha256": "9271b737b720b62c1b927c269f56d6f34c6ac46439030098f205c3f90e89300b",
+    "resolution": "Retired mutable historical path. Reconstruct from pinned package and 16-patch chain; active integrated lock covers portable inputs rather than repinning stale Phase 2-4 source."
+  },
+  {
+    "historical_path": "build/phase3-context/sources/vllm/vllm/models/qwen4_exp/nvidia/b70_hc_gemm.py",
+    "historical_sha256": "215368e3bfd130b5246d9a2c3797cd8a73f4ff618818fa6e58b662d71b9b16da",
+    "current_working_file_sha256": "e711cf4a18aadcecb9bc76296cc8dd80b380ba3d6eb0637f6ba2b4e7aab5e8b6",
+    "production_path": "vllm/models/qwen4_exp/nvidia/b70_hc_gemm.py",
+    "accepted_sha256": "ef8a0842f407bbbcc661266ce5fc8468ddc5b53bbf4e537a4ad983d7ee8f72d4",
+    "resolution": "Retired mutable historical path. Reconstruct from pinned package and 16-patch chain; active integrated lock covers portable inputs rather than repinning stale Phase 2-4 source."
+  },
+  {
+    "historical_path": "sources/vllm/vllm/_xpu_ops.py",
+    "historical_sha256": "be09193a4a4970003a7ad8185f2e6cca6df0541967ef453a7e554a62996a50fd",
+    "current_working_file_sha256": "9271b737b720b62c1b927c269f56d6f34c6ac46439030098f205c3f90e89300b",
+    "production_path": "vllm/_xpu_ops.py",
+    "accepted_sha256": "9271b737b720b62c1b927c269f56d6f34c6ac46439030098f205c3f90e89300b",
+    "resolution": "Retired mutable historical path. Reconstruct from pinned package and 16-patch chain; active integrated lock covers portable inputs rather than repinning stale Phase 2-4 source."
+  },
+  {
+    "historical_path": "sources/vllm/vllm/model_executor/models/config.py",
+    "historical_sha256": "2681d140001b41b163de78a73bf27e09a44dfcd7b88f9c3e2c04a7b04029b602",
+    "current_working_file_sha256": "95d47664e5f56b31e34f0ef3308bc0e783894664b9cb79e2256f2e96a0d1da59",
+    "production_path": "vllm/model_executor/models/config.py",
+    "accepted_sha256": "95d47664e5f56b31e34f0ef3308bc0e783894664b9cb79e2256f2e96a0d1da59",
+    "resolution": "Retired mutable historical path. Reconstruct from pinned package and 16-patch chain; active integrated lock covers portable inputs rather than repinning stale Phase 2-4 source."
+  },
+  {
+    "historical_path": "sources/vllm/vllm/models/qwen4_exp/nvidia/b70_c1_graph.py",
+    "historical_sha256": "aadb423846c41df9aa1e9a311f9799938e8df2fc7492fd570efcd5fbc0143244",
+    "current_working_file_sha256": "8bcc88090f65aa3bf68910dcf99beccee61228f62158fc12a3148d8eb0d3f6de",
+    "production_path": "vllm/models/qwen4_exp/nvidia/b70_c1_graph.py",
+    "accepted_sha256": "e34ffd39199cb5b2fdaddfd0c09a5ae6ef21ed36e5dc5dfa4c729c79c854a5dc",
+    "resolution": "Retired mutable historical path. Reconstruct from pinned package and 16-patch chain; active integrated lock covers portable inputs rather than repinning stale Phase 2-4 source."
+  },
+  {
+    "historical_path": "sources/vllm/vllm/models/qwen4_exp/nvidia/b70_disk.py",
+    "historical_sha256": "9d094134302e53ea5db27e5615459287b64916dcc06e857a7fe224e1efa194b8",
+    "current_working_file_sha256": "c63f717e56fa077b80ef9fb016900b8ae57f8016b43a8352b6776c560d01243d",
+    "production_path": "vllm/models/qwen4_exp/nvidia/b70_disk.py",
+    "accepted_sha256": "14f2a3c094d6089f89359e0c352cb966026318b73e4c7e62f6e6f66d1f1fa530",
+    "resolution": "Retired mutable historical path. Reconstruct from pinned package and 16-patch chain; active integrated lock covers portable inputs rather than repinning stale Phase 2-4 source."
+  },
+  {
+    "historical_path": "sources/vllm/vllm/models/qwen4_exp/nvidia/b70_hc_gemm.py",
+    "historical_sha256": "215368e3bfd130b5246d9a2c3797cd8a73f4ff618818fa6e58b662d71b9b16da",
+    "current_working_file_sha256": "e711cf4a18aadcecb9bc76296cc8dd80b380ba3d6eb0637f6ba2b4e7aab5e8b6",
+    "production_path": "vllm/models/qwen4_exp/nvidia/b70_hc_gemm.py",
+    "accepted_sha256": "ef8a0842f407bbbcc661266ce5fc8468ddc5b53bbf4e537a4ad983d7ee8f72d4",
+    "resolution": "Retired mutable historical path. Reconstruct from pinned package and 16-patch chain; active integrated lock covers portable inputs rather than repinning stale Phase 2-4 source."
+  },
+  {
+    "historical_path": "sources/vllm/vllm/models/qwen4_exp/nvidia/c1_verify.py",
+    "historical_sha256": "cef9665deecc5234195da1d409e8c17333efdfcb820d46cedc60cfed67fa7f9e",
+    "current_working_file_sha256": "8dc55fc24395c15119a4e0a367b90b227a51be52a0f46dd6f71da9836ff22981",
+    "production_path": "vllm/models/qwen4_exp/nvidia/c1_verify.py",
+    "accepted_sha256": "c289c433560d6b16473f41a86dc590a96ba0cd6cf233a3d5ceb72e047c2d97da",
+    "resolution": "Retired mutable historical path. Reconstruct from pinned package and 16-patch chain; active integrated lock covers portable inputs rather than repinning stale Phase 2-4 source."
+  },
+  {
+    "historical_path": "sources/vllm/vllm/v1/attention/backends/gdn_attn.py",
+    "historical_sha256": "ce951db92bb58b5b655ff00a89d0ffc68f8fbfb936e1e2a72a5da543cdf9d2f4",
+    "current_working_file_sha256": "9e9ca40956a422ddaba3e4442cb44c8972eab18eca517911224b6f382b665bd6",
+    "production_path": "vllm/v1/attention/backends/gdn_attn.py",
+    "accepted_sha256": "9e9ca40956a422ddaba3e4442cb44c8972eab18eca517911224b6f382b665bd6",
+    "resolution": "Retired mutable historical path. Reconstruct from pinned package and 16-patch chain; active integrated lock covers portable inputs rather than repinning stale Phase 2-4 source."
+  },
+  {
+    "historical_path": "sources/vllm/vllm/v1/worker/mamba_utils.py",
+    "historical_sha256": "2d540d0d368e59b834ff4e5500be2cc804b934fdbafa4b304cff1719ead38c44",
+    "current_working_file_sha256": "91f12db0ab44064d6a4400e34a86d14443c61c1a56df32ef1a880a44ab109221",
+    "production_path": "vllm/v1/worker/mamba_utils.py",
+    "accepted_sha256": "91f12db0ab44064d6a4400e34a86d14443c61c1a56df32ef1a880a44ab109221",
+    "resolution": "Retired mutable historical path. Reconstruct from pinned package and 16-patch chain; active integrated lock covers portable inputs rather than repinning stale Phase 2-4 source."
+  }
+]

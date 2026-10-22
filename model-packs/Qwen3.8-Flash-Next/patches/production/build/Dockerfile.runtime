@@ -1,0 +1,16 @@
+FROM vllm/vllm-openai-xpu@sha256:9dd913e9036633d55ace17265cbfc29f48b9b85fe4bc8b129debcf7e1b269ce7
+COPY rootfs/ /
+RUN /opt/venv/bin/python -m compileall -q /opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp
+RUN --mount=type=bind,source=metadata-fixups.json,target=/tmp/phase3-metadata.json,ro /opt/venv/bin/python - <<'PY'
+import json, os
+for path, mode in json.load(open('/tmp/phase3-metadata.json')).items():
+    if os.path.exists(path):
+        os.chmod(path, mode)
+    else:
+        # Accepted history includes host Python 3.14 caches. Rebuild source
+        # with runtime Python 3.12; never import historical compiled artifacts.
+        assert path.endswith('.pyc') or '/__pycache__' in path, path
+PY
+ENV VLLM_XPU_DFLASH_FIXED_SPLITS=32
+ENTRYPOINT ["/opt/b70-flashnext/prepare-serve.sh"]
+WORKDIR /opt/venv

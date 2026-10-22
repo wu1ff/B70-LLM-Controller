@@ -1,0 +1,101 @@
+[
+  {
+    "package": "numpy",
+    "version": "2.2.6",
+    "installed_native_filename": "libgfortran-040039e1-0352e75f.so.5.0.0",
+    "installed_native_sha256": "c6090048eccc763522c12ef016f81da6b627cb3a044f55cf0479a839c41c0980",
+    "downloads": [
+      {
+        "url": "https://files.pythonhosted.org/packages/76/21/7d2a95e4bba9dc13d043ee156a356c0a8f0c6309dff6b21b4d71a073b8a8/numpy-2.2.6.tar.gz",
+        "filename": "numpy-2.2.6.tar.gz",
+        "sha256": "e29554e2bef54a90aa5cc07da6ce955accb83f21ab5de01a62c8478897b264fd",
+        "kind": "sdist",
+        "source_members": 7822,
+        "libsoxr_source_members": 0
+      },
+      {
+        "url": "https://files.pythonhosted.org/packages/8c/3d/1e1db36cfd41f895d266b103df00ca5b3cbe965184df824dec5c08c6b803/numpy-2.2.6-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+        "filename": "numpy-2.2.6-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+        "sha256": "fd83c01228a688733f1ded5201c678f0c53ecc1006ffbc404db9f7a899ac6249",
+        "kind": "bdist_wheel",
+        "native_binary_matches_installed": true
+      }
+    ],
+    "accepted_native": [
+      {
+        "distribution": "numpy",
+        "version": "2.2.6",
+        "path": "/opt/venv/lib/python3.12/site-packages/numpy.libs/libgfortran-040039e1-0352e75f.so.5.0.0",
+        "bytes": 2833617,
+        "sha256": "c6090048eccc763522c12ef016f81da6b627cb3a044f55cf0479a839c41c0980"
+      }
+    ],
+    "accepted_bytes_match_prior_source_evidence": true
+  },
+  {
+    "package": "soxr",
+    "version": "1.1.0",
+    "installed_native_filename": "soxr_ext.abi3.so",
+    "installed_native_sha256": "bc2cc091949ba7ea3179e2859128a433f73fb448d6d938129db1ea0204d0f969",
+    "downloads": [
+      {
+        "url": "https://files.pythonhosted.org/packages/ed/11/27cebce4a108f77afea7c80545115536b45e3f11ebfb914f638fdd9ba847/soxr-1.1.0.tar.gz",
+        "filename": "soxr-1.1.0.tar.gz",
+        "sha256": "9f228ae21c78fa9359ca98d8a5e8e91f30639e438e574133dace62c5b5309e44",
+        "kind": "sdist",
+        "source_members": 167,
+        "libsoxr_source_members": 138
+      },
+      {
+        "url": "https://files.pythonhosted.org/packages/5c/f1/0e55195893228609c9a08c3b13b7a83a46c3a992cd00d3304f0f320cfb07/soxr-1.1.0-cp312-abi3-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl",
+        "filename": "soxr-1.1.0-cp312-abi3-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl",
+        "sha256": "3b033078e86f3c4a658e5697fac8995764fad9e799563616b630136b613167f1",
+        "kind": "bdist_wheel",
+        "native_binary_matches_installed": true
+      }
+    ],
+    "accepted_native": [
+      {
+        "distribution": "soxr",
+        "version": "1.1.0",
+        "path": "/opt/venv/lib/python3.12/site-packages/soxr/soxr_ext.abi3.so",
+        "bytes": 502560,
+        "sha256": "bc2cc091949ba7ea3179e2859128a433f73fb448d6d938129db1ea0204d0f969"
+      }
+    ],
+    "accepted_bytes_match_prior_source_evidence": true
+  },
+  {
+    "package": "pyzmq",
+    "version": "27.1.0",
+    "installed_native_filename": "libzmq-7b073b3d.so.5.2.5",
+    "installed_native_sha256": "811573ed3af354fa8da51e0a7b055cfe38d15ea6bd067a2c6c4974b55de38c8b",
+    "downloads": [
+      {
+        "url": "https://files.pythonhosted.org/packages/04/0b/3c9baedbdf613ecaa7aa07027780b8867f57b6293b6ee50de316c9f3222b/pyzmq-27.1.0.tar.gz",
+        "filename": "pyzmq-27.1.0.tar.gz",
+        "sha256": "ac0765e3d44455adb6ddbf4417dcce460fc40a05978c08efdf2948072f6db540",
+        "kind": "sdist",
+        "source_members": 291,
+        "libsoxr_source_members": 0
+      },
+      {
+        "url": "https://files.pythonhosted.org/packages/f8/9b/c108cdb55560eaf253f0cbdb61b29971e9fb34d9c3499b0e96e4e60ed8a5/pyzmq-27.1.0-cp312-abi3-manylinux_2_26_x86_64.manylinux_2_28_x86_64.whl",
+        "filename": "pyzmq-27.1.0-cp312-abi3-manylinux_2_26_x86_64.manylinux_2_28_x86_64.whl",
+        "sha256": "43ad9a73e3da1fab5b0e7e13402f0b2fb934ae1c876c51d0afff0e7c052eca31",
+        "kind": "bdist_wheel",
+        "native_binary_matches_installed": true
+      }
+    ],
+    "accepted_native": [
+      {
+        "distribution": "pyzmq",
+        "version": "27.1.0",
+        "path": "/opt/venv/lib/python3.12/site-packages/pyzmq.libs/libzmq-7b073b3d.so.5.2.5",
+        "bytes": 950593,
+        "sha256": "811573ed3af354fa8da51e0a7b055cfe38d15ea6bd067a2c6c4974b55de38c8b"
+      }
+    ],
+    "accepted_bytes_match_prior_source_evidence": true
+  }
+]

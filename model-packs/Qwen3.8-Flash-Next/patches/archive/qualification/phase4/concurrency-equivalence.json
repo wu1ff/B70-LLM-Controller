@@ -1,0 +1,144 @@
+{
+  "passed": true,
+  "comparisons": [
+    {
+      "case": "c2",
+      "candidate_output_multiset_exact": true,
+      "restored_output_multiset_exact": true,
+      "candidate_to_restored_multiset_exact": true,
+      "restored_state": {
+        "drafts": 24.0,
+        "proposals": 168.0,
+        "accepted": 104.0,
+        "accepted_by_position": {
+          "4": 12.0,
+          "2": 17.0,
+          "6": 10.0,
+          "5": 12.0,
+          "3": 12.0,
+          "1": 18.0,
+          "0": 23.0
+        },
+        "cache_hits": 0.0,
+        "computed_tokens": 196.0,
+        "preemptions": 0.0,
+        "successes": 2.0
+      },
+      "expected_state": {
+        "drafts": 24.0,
+        "proposals": 168.0,
+        "accepted": 104.0,
+        "accepted_by_position": {
+          "5": 12.0,
+          "4": 12.0,
+          "2": 17.0,
+          "1": 18.0,
+          "6": 10.0,
+          "0": 23.0,
+          "3": 12.0
+        },
+        "cache_hits": 0.0,
+        "computed_tokens": 196.0,
+        "preemptions": 0.0,
+        "successes": 2.0
+      },
+      "restored_state_exact": true,
+      "indexed_candidate_equal": [
+        false,
+        false
+      ],
+      "indexed_restored_equal": [
+        true,
+        true
+      ],
+      "candidate_sha256": [
+        "b8a2b64728840e168cd987b29bcdbf1fc2276dea5280db581b53f5ef38c09360",
+        "9a033c287e61cfc89ffe28d49eef8c5cd9baef25230c7095b1b0fbd83012681a"
+      ],
+      "accepted_retained_sha256": [
+        "9a033c287e61cfc89ffe28d49eef8c5cd9baef25230c7095b1b0fbd83012681a",
+        "b8a2b64728840e168cd987b29bcdbf1fc2276dea5280db581b53f5ef38c09360"
+      ],
+      "accepted_restored_sha256": [
+        "9a033c287e61cfc89ffe28d49eef8c5cd9baef25230c7095b1b0fbd83012681a",
+        "b8a2b64728840e168cd987b29bcdbf1fc2276dea5280db581b53f5ef38c09360"
+      ],
+      "passed": true
+    },
+    {
+      "case": "c4",
+      "candidate_output_multiset_exact": true,
+      "restored_output_multiset_exact": true,
+      "candidate_to_restored_multiset_exact": true,
+      "restored_state": {
+        "drafts": 48.0,
+        "proposals": 336.0,
+        "accepted": 208.0,
+        "accepted_by_position": {
+          "4": 24.0,
+          "2": 34.0,
+          "6": 20.0,
+          "5": 24.0,
+          "3": 24.0,
+          "1": 36.0,
+          "0": 46.0
+        },
+        "cache_hits": 0.0,
+        "computed_tokens": 392.0,
+        "preemptions": 0.0,
+        "successes": 4.0
+      },
+      "expected_state": {
+        "drafts": 48.0,
+        "proposals": 336.0,
+        "accepted": 208.0,
+        "accepted_by_position": {
+          "1": 36.0,
+          "0": 46.0,
+          "4": 24.0,
+          "2": 34.0,
+          "6": 20.0,
+          "3": 24.0,
+          "5": 24.0
+        },
+        "cache_hits": 0.0,
+        "computed_tokens": 392.0,
+        "preemptions": 0.0,
+        "successes": 4.0
+      },
+      "restored_state_exact": true,
+      "indexed_candidate_equal": [
+        false,
+        false,
+        false,
+        false
+      ],
+      "indexed_restored_equal": [
+        true,
+        true,
+        false,
+        false
+      ],
+      "candidate_sha256": [
+        "b8a2b64728840e168cd987b29bcdbf1fc2276dea5280db581b53f5ef38c09360",
+        "9a033c287e61cfc89ffe28d49eef8c5cd9baef25230c7095b1b0fbd83012681a",
+        "b8a2b64728840e168cd987b29bcdbf1fc2276dea5280db581b53f5ef38c09360",
+        "9a033c287e61cfc89ffe28d49eef8c5cd9baef25230c7095b1b0fbd83012681a"
+      ],
+      "accepted_retained_sha256": [
+        "9a033c287e61cfc89ffe28d49eef8c5cd9baef25230c7095b1b0fbd83012681a",
+        "b8a2b64728840e168cd987b29bcdbf1fc2276dea5280db581b53f5ef38c09360",
+        "9a033c287e61cfc89ffe28d49eef8c5cd9baef25230c7095b1b0fbd83012681a",
+        "b8a2b64728840e168cd987b29bcdbf1fc2276dea5280db581b53f5ef38c09360"
+      ],
+      "accepted_restored_sha256": [
+        "9a033c287e61cfc89ffe28d49eef8c5cd9baef25230c7095b1b0fbd83012681a",
+        "b8a2b64728840e168cd987b29bcdbf1fc2276dea5280db581b53f5ef38c09360",
+        "b8a2b64728840e168cd987b29bcdbf1fc2276dea5280db581b53f5ef38c09360",
+        "9a033c287e61cfc89ffe28d49eef8c5cd9baef25230c7095b1b0fbd83012681a"
+      ],
+      "passed": true
+    }
+  ],
+  "comparison_contract": "Exact multiset of full outputs, usage and finish, with identical sampling inputs except isolated cold salts. All aggregate counters and per-position acceptance counts remain exact. Client labels are not model inputs. Indexed mismatches are retained, not hidden."
+}

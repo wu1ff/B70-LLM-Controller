@@ -1,0 +1,233 @@
+{
+  "phase": "DFlash2 release Phase 4",
+  "date": "2026-10-22 America/Phoenix",
+  "live_equivalence": "PASS",
+  "independent_image": {
+    "tag": "qwen38-flashnext-dflash2:phase3-independent-v1",
+    "id": "sha256:ef0ece167b6bd7da3e24c794ba8e7d0a9834ef4209110f53ab8422f555bbf4c1"
+  },
+  "serial_exact_checks": 9,
+  "concurrent_exact_groups": [
+    {
+      "case": "c2",
+      "candidate_output_multiset_exact": true,
+      "restored_output_multiset_exact": true,
+      "candidate_to_restored_multiset_exact": true,
+      "restored_state": {
+        "drafts": 24.0,
+        "proposals": 168.0,
+        "accepted": 104.0,
+        "accepted_by_position": {
+          "4": 12.0,
+          "2": 17.0,
+          "6": 10.0,
+          "5": 12.0,
+          "3": 12.0,
+          "1": 18.0,
+          "0": 23.0
+        },
+        "cache_hits": 0.0,
+        "computed_tokens": 196.0,
+        "preemptions": 0.0,
+        "successes": 2.0
+      },
+      "expected_state": {
+        "drafts": 24.0,
+        "proposals": 168.0,
+        "accepted": 104.0,
+        "accepted_by_position": {
+          "5": 12.0,
+          "4": 12.0,
+          "2": 17.0,
+          "1": 18.0,
+          "6": 10.0,
+          "0": 23.0,
+          "3": 12.0
+        },
+        "cache_hits": 0.0,
+        "computed_tokens": 196.0,
+        "preemptions": 0.0,
+        "successes": 2.0
+      },
+      "restored_state_exact": true,
+      "indexed_candidate_equal": [
+        false,
+        false
+      ],
+      "indexed_restored_equal": [
+        true,
+        true
+      ],
+      "candidate_sha256": [
+        "b8a2b64728840e168cd987b29bcdbf1fc2276dea5280db581b53f5ef38c09360",
+        "9a033c287e61cfc89ffe28d49eef8c5cd9baef25230c7095b1b0fbd83012681a"
+      ],
+      "accepted_retained_sha256": [
+        "9a033c287e61cfc89ffe28d49eef8c5cd9baef25230c7095b1b0fbd83012681a",
+        "b8a2b64728840e168cd987b29bcdbf1fc2276dea5280db581b53f5ef38c09360"
+      ],
+      "accepted_restored_sha256": [
+        "9a033c287e61cfc89ffe28d49eef8c5cd9baef25230c7095b1b0fbd83012681a",
+        "b8a2b64728840e168cd987b29bcdbf1fc2276dea5280db581b53f5ef38c09360"
+      ],
+      "passed": true
+    },
+    {
+      "case": "c4",
+      "candidate_output_multiset_exact": true,
+      "restored_output_multiset_exact": true,
+      "candidate_to_restored_multiset_exact": true,
+      "restored_state": {
+        "drafts": 48.0,
+        "proposals": 336.0,
+        "accepted": 208.0,
+        "accepted_by_position": {
+          "4": 24.0,
+          "2": 34.0,
+          "6": 20.0,
+          "5": 24.0,
+          "3": 24.0,
+          "1": 36.0,
+          "0": 46.0
+        },
+        "cache_hits": 0.0,
+        "computed_tokens": 392.0,
+        "preemptions": 0.0,
+        "successes": 4.0
+      },
+      "expected_state": {
+        "drafts": 48.0,
+        "proposals": 336.0,
+        "accepted": 208.0,
+        "accepted_by_position": {
+          "1": 36.0,
+          "0": 46.0,
+          "4": 24.0,
+          "2": 34.0,
+          "6": 20.0,
+          "3": 24.0,
+          "5": 24.0
+        },
+        "cache_hits": 0.0,
+        "computed_tokens": 392.0,
+        "preemptions": 0.0,
+        "successes": 4.0
+      },
+      "restored_state_exact": true,
+      "indexed_candidate_equal": [
+        false,
+        false,
+        false,
+        false
+      ],
+      "indexed_restored_equal": [
+        true,
+        true,
+        false,
+        false
+      ],
+      "candidate_sha256": [
+        "b8a2b64728840e168cd987b29bcdbf1fc2276dea5280db581b53f5ef38c09360",
+        "9a033c287e61cfc89ffe28d49eef8c5cd9baef25230c7095b1b0fbd83012681a",
+        "b8a2b64728840e168cd987b29bcdbf1fc2276dea5280db581b53f5ef38c09360",
+        "9a033c287e61cfc89ffe28d49eef8c5cd9baef25230c7095b1b0fbd83012681a"
+      ],
+      "accepted_retained_sha256": [
+        "9a033c287e61cfc89ffe28d49eef8c5cd9baef25230c7095b1b0fbd83012681a",
+        "b8a2b64728840e168cd987b29bcdbf1fc2276dea5280db581b53f5ef38c09360",
+        "9a033c287e61cfc89ffe28d49eef8c5cd9baef25230c7095b1b0fbd83012681a",
+        "b8a2b64728840e168cd987b29bcdbf1fc2276dea5280db581b53f5ef38c09360"
+      ],
+      "accepted_restored_sha256": [
+        "9a033c287e61cfc89ffe28d49eef8c5cd9baef25230c7095b1b0fbd83012681a",
+        "b8a2b64728840e168cd987b29bcdbf1fc2276dea5280db581b53f5ef38c09360",
+        "b8a2b64728840e168cd987b29bcdbf1fc2276dea5280db581b53f5ef38c09360",
+        "9a033c287e61cfc89ffe28d49eef8c5cd9baef25230c7095b1b0fbd83012681a"
+      ],
+      "passed": true
+    }
+  ],
+  "runtime": [
+    {
+      "worker": "VLLM::Worker_TP0_EP0",
+      "library_paths_and_hashes_equal": true,
+      "observed_libraries": 19,
+      "ple_mapping_equal": true,
+      "accepted_primary_gpu": "0000:03:00.0",
+      "candidate_primary_gpu": "0000:03:00.0",
+      "passed": true
+    },
+    {
+      "worker": "VLLM::Worker_TP1_EP1",
+      "library_paths_and_hashes_equal": true,
+      "observed_libraries": 19,
+      "ple_mapping_equal": true,
+      "accepted_primary_gpu": "0000:43:00.0",
+      "candidate_primary_gpu": "0000:43:00.0",
+      "passed": true
+    },
+    {
+      "worker": "VLLM::Worker_TP2_EP2",
+      "library_paths_and_hashes_equal": true,
+      "observed_libraries": 19,
+      "ple_mapping_equal": true,
+      "accepted_primary_gpu": "0000:83:00.0",
+      "candidate_primary_gpu": "0000:83:00.0",
+      "passed": true
+    },
+    {
+      "worker": "VLLM::Worker_TP3_EP3",
+      "library_paths_and_hashes_equal": true,
+      "observed_libraries": 19,
+      "ple_mapping_equal": true,
+      "accepted_primary_gpu": "0000:c8:00.0",
+      "candidate_primary_gpu": "0000:c8:00.0",
+      "passed": true
+    }
+  ],
+  "native_checks_per_image": 16,
+  "checkpoint_files_verified": 30,
+  "original_service_preserved": {
+    "Id": true,
+    "Image": true,
+    "Config": true,
+    "HostConfig": true,
+    "RestartCount": true,
+    "Mounts": true
+  },
+  "current_service": {
+    "name": "flashnext-integrated-final",
+    "image": "sha256:6e2ab4e686680a5208ff0119c4637341cba81942bd39b6576ea14dc8f547b83b",
+    "port": 8000,
+    "healthy": true,
+    "idle": true,
+    "model_discovery": true,
+    "ordinary_request": true,
+    "restart_count": 0
+  },
+  "candidate_stopped": true,
+  "images_preserved": true,
+  "differences": [
+    "OCI history and bytecode cache differences retained from Phase 3.",
+    "Client-to-output assignment varies among simultaneous identical sampled requests on both images. Exact output/usage/finish multisets and aggregate/per-position acceptance counters match retained accepted evidence; failed indexed comparisons are preserved.",
+    "Candidate cold work/cache paths require first-use compilation; no performance equivalence claim."
+  ],
+  "scope": {
+    "betterbench_run": false,
+    "native_context_campaign": false,
+    "soak": false,
+    "tuning": false,
+    "controller_mutated": false,
+    "documentation_rewritten": false,
+    "published": false
+  },
+  "remaining_blockers": [
+    "stock XPU kernel wheel source attestation",
+    "maintained matching companion source and distribution directions",
+    "NumPy libgfortran exact source/build identity",
+    "Intel 2026.1.1 designation coverage and recipient arrangements",
+    "changed-file notices including kernel/native/GDN review",
+    "15 missing upstream modification headers and remaining changed-file notices; no distribution/legal clearance.",
+    "Later Controller acquisition/import validation and release/distribution staging are not performed."
+  ]
+}

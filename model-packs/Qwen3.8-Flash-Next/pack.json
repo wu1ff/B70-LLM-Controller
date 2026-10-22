@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "id": "qwen38-flashnext-b70",
-  "name": "Qwen3.8-Flash-Next B70 Pack (Intel Dynamic MTP5)",
-  "version": "1.0.4",
+  "name": "Qwen3.8-Flash-Next B70 Pack (DFlash2)",
+  "version": "2.0.0-dev.1",
   "models": [
     {
       "id": "qwen38-flashnext-w4a16",
@@ -129,23 +129,63 @@
           "size": 1165
         }
       ],
-      "mount_path": "/models/Intel__Qwen3.8-Flash-Next-W4A16-AutoRound",
+      "mount_path": "/models",
       "launch": {
         "docker_args": [],
         "environment": {},
         "command_args": [
-          "/models/Intel__Qwen3.8-Flash-Next-W4A16-AutoRound",
+          "/models",
           "--served-model-name",
           "Intel/Qwen3.8-Flash-Next-W4A16-AutoRound"
         ]
+      }
+    },
+    {
+      "id": "qwen38-flashnext-dflash2-bf16",
+      "name": "Qwen3.8-Flash-Next DFlash2 BF16 Assistant",
+      "kind": "assistant",
+      "repo": "incoai/Qwen3.8-Flash-Next-DFlash2",
+      "revision": "a22a1744e85c17364dcc54a6a420af7135d4c7f6",
+      "gated": false,
+      "files": [
+        {
+          "path": ".gitattributes",
+          "size": 1581
+        },
+        {
+          "path": "README.md",
+          "size": 5402
+        },
+        {
+          "path": "assets/dflash2-figure.png",
+          "size": 286889
+        },
+        {
+          "path": "config.json",
+          "size": 1236
+        },
+        {
+          "path": "model.safetensors",
+          "size": 1206140008
+        },
+        {
+          "path": "patches/qwen38-dflash2-capture.patch",
+          "size": 2642
+        }
+      ],
+      "mount_path": "/draft",
+      "launch": {
+        "docker_args": [],
+        "environment": {},
+        "command_args": []
       }
     }
   ],
   "runtimes": [
     {
-      "id": "qwen38-flashnext-runtime-disk",
-      "image": "ghcr.io/wu1ff/qwen38-flashnext-b70:disk",
-      "digest": "sha256:dc25c8cd205a828ad4df3ae9aa3e9505f0a51550010ac9a115336473ca268086",
+      "id": "qwen38-flashnext-runtime-dflash2",
+      "image": "qwen38-flashnext-dflash2:integrated-serving-v1",
+      "digest": "sha256:6e2ab4e686680a5208ff0119c4637341cba81942bd39b6576ea14dc8f547b83b",
       "container_port": 8000,
       "health_path": "/health",
       "launch": {
@@ -154,32 +194,37 @@
           "never",
           "--device=/dev/dri:/dev/dri",
           "--ipc=host",
-          "--shm-size=32g",
           "--security-opt",
           "seccomp=unconfined",
           "--security-opt",
           "label=disable",
           "--mount",
-          "type=bind,source=/dev/dri/by-path,target=/dev/dri/by-path,readonly"
+          "type=bind,source=/dev/dri/by-path,target=/dev/dri/by-path,readonly",
+          "--mount",
+          "type=volume,source=b70ctl-qwen38-flashnext-dflash2-work,target=/work"
         ],
         "environment": {
+          "CCL_SYCL_ALLREDUCE_LL_THRESHOLD": "65536",
           "CCL_SYCL_ALLGATHERV_TMP_BUF": "1",
-          "CCL_SYCL_ALLREDUCE_TMP_BUF": "1",
-          "HF_DATASETS_OFFLINE": "1",
           "HF_HOME": "/work/hf-cache",
-          "HF_HUB_OFFLINE": "1",
-          "LD_PRELOAD": "/opt/b70-residency-shim/libl0_peer_residency_shim.so",
-          "PLE_TABLE_PATH": "/models/Intel__Qwen3.8-Flash-Next-W4A16-AutoRound/model-00016-of-00017.safetensors",
-          "TMPDIR": "/work/tmp",
           "TRANSFORMERS_OFFLINE": "1",
           "TRITON_CACHE_DIR": "/work/triton-cache",
+          "VLLM_XPU_DFLASH_FIXED_SPLITS": "32",
+          "PYTHONPATH": "/opt/phase4-tests:/tests:/opt/phase3-tests:/opt/phase2-tests",
+          "B70_PLE_DISK_BF16": "1",
+          "CCL_SYCL_ALLREDUCE_TMP_BUF": "1",
           "VLLM_CACHE_ROOT": "/work/vllm-cache",
           "VLLM_TARGET_DEVICE": "xpu",
-          "VLLM_WORKER_MULTIPROC_METHOD": "spawn",
-          "VLLM_XPU_ENABLE_XPU_GRAPH": "1",
           "XDG_CACHE_HOME": "/work/xdg-cache",
+          "HF_DATASETS_OFFLINE": "1",
+          "VLLM_USE_V2_MODEL_RUNNER": "1",
+          "ZE_AFFINITY_MASK": "0,1,2,3",
+          "VLLM_WORKER_MULTIPROC_METHOD": "spawn",
+          "TMPDIR": "/work/tmp",
+          "LD_PRELOAD": "/opt/b70-residency-shim/libl0_peer_residency_shim.so",
+          "PLE_TABLE_PATH": "/models/model-00016-of-00017.safetensors",
           "ZE_FLAT_DEVICE_HIERARCHY": "FLAT",
-          "B70_PLE_DISK_BF16": "1"
+          "HF_HUB_OFFLINE": "1"
         },
         "command": [
           "vllm",
@@ -191,68 +236,58 @@
           "--dtype",
           "bfloat16",
           "--enable-expert-parallel",
-          "--trust-remote-code",
-          "--max-num-batched-tokens",
-          "1024",
           "--max-num-seqs",
           "4",
+          "--max-num-batched-tokens",
+          "1024",
+          "--gpu-memory-utilization",
+          "0.91",
           "--limit-mm-per-prompt",
           "{\"image\":2,\"video\":0}",
-          "--cudagraph-metrics",
+          "--trust-remote-code",
+          "--enable-prefix-caching",
           "--enable-auto-tool-choice",
           "--tool-call-parser",
           "qwen3_xml",
           "--reasoning-parser",
           "qwen3",
-          "--exclude-tools-when-tool-choice-none"
+          "--exclude-tools-when-tool-choice-none",
+          "--enforce-eager",
+          "--num-gpu-blocks-override",
+          "7785"
         ]
-      },
-      "registry": "ghcr.io/wu1ff/qwen38-flashnext-b70@sha256:dc25c8cd205a828ad4df3ae9aa3e9505f0a51550010ac9a115336473ca268086"
+      }
     }
   ],
   "modes": [
     {
-      "id": "mtp5-dynamic",
-      "display_name": "Dynamic MTP5",
-      "assistants": [],
+      "id": "dflash2",
+      "display_name": "DFlash2 \u00b7 seven proposals",
+      "assistants": [
+        "qwen38-flashnext-dflash2-bf16"
+      ],
       "launch": {
         "docker_args": [],
-        "environment": {
-          "B70_MTP_SKIP_PREFILL_TAIL": "1",
-          "B70_PLE_MTP_PREFILL_1024": "1",
-          "B70_MTP_DRAFT_PREFILL_EAGER": "1",
-          "B70_MTP_PREFILL_KV_ONLY": "1",
-          "B70_XPU_POST_CAPTURE_WARMUP": "1",
-          "B70_XPU_SPEC_SPLIT_PLAN": "1",
-          "B70_XPU_SPEC_META_FUSED": "1",
-          "B70_XPU_TILED_REDUCER": "1",
-          "CCL_SYCL_ALLREDUCE_LL_THRESHOLD": "65536"
-        },
+        "environment": {},
         "command_args": [
-          "--gpu-memory-utilization",
-          "0.91",
-          "--compilation-config",
-          "{\"cudagraph_mode\": \"FULL_AND_PIECEWISE\", \"cudagraph_capture_sizes\": [1, 2, 4, 6, 8, 64, 128, 256, 512, 832, 1024]}",
           "--speculative-config",
-          "{\"method\": \"mtp\", \"num_speculative_tokens\": 5, \"use_local_argmax_reduction\": true, \"num_speculative_tokens_per_batch_size\": [[1, 1, 5], [2, 4, 3]]}"
+          "{\"method\": \"dflash\", \"model\": \"/draft\", \"num_speculative_tokens\": 7, \"draft_tensor_parallel_size\": 4, \"draft_sample_method\": \"probabilistic\", \"rejection_sample_method\": \"standard\", \"attention_backend\": \"TRITON_ATTN\"}"
         ]
       }
     }
   ],
   "profiles": [
     {
-      "id": "w4a16-mtp5-dynamic-tp4-262144",
+      "id": "w4a16-dflash2-tp4-262144",
       "model_id": "qwen38-flashnext-w4a16",
-      "runtime_id": "qwen38-flashnext-runtime-disk",
+      "runtime_id": "qwen38-flashnext-runtime-dflash2",
       "cards": 4,
       "tensor_parallel": 4,
       "context": 262144,
-      "mode": "mtp5-dynamic",
+      "mode": "dflash2",
       "launch": {
         "docker_args": [],
-        "environment": {
-          "ZE_AFFINITY_MASK": "0,1,2,3"
-        },
+        "environment": {},
         "command_args": [
           "--tensor-parallel-size",
           "4",

@@ -1,0 +1,764 @@
+[
+  {
+    "original_path": "disk/NOTICE.md",
+    "sha256": "d81c251be9cca4ff6a96d873595b5d542993958b11a459de5d86a91a1f4f5ff0",
+    "retained_path": "licenses/historical-1.0.4/NOTICE.md",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/README.md",
+    "sha256": "1921fa8d07a34a48728e9d6cd05a5fb5948a74aa5437b34d122f4859f362127b",
+    "retained_path": "licenses/historical-1.0.4/licenses/README.md",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/SYCL-TLA.txt",
+    "sha256": "638fb2d044d7af64da8b2aef711276810f411396cbaee2afd4779eaee2377dfb",
+    "retained_path": "licenses/historical-1.0.4/licenses/SYCL-TLA.txt",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/external-model.txt",
+    "sha256": "a0dc422560841fd68e06d974907f8b4c709bca44a67daad2b528437bdf676c08",
+    "retained_path": "licenses/historical-1.0.4/licenses/external-model.txt",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/oneapi/opt/intel/oneapi/compiler/2026.0/share/doc/compiler/licensing/c/LICENSE",
+    "sha256": "febfb69a5b058f55892dc7f341108a9ca29d50e9fe85723a57eebbb826436958",
+    "retained_path": "licenses/historical-1.0.4/licenses/oneapi/opt/intel/oneapi/compiler/2026.0/share/doc/compiler/licensing/c/LICENSE",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/oneapi/opt/intel/oneapi/compiler/2026.0/share/doc/compiler/licensing/c/third-party-programs.txt",
+    "sha256": "a81491a0243fa1d072aa636c890a6dd082ca403aca4681672cf6f69d3d516f79",
+    "retained_path": "licenses/historical-1.0.4/licenses/oneapi/opt/intel/oneapi/compiler/2026.0/share/doc/compiler/licensing/c/third-party-programs.txt",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/oneapi/opt/intel/oneapi/compiler/2026.0/share/doc/compiler/licensing/openmp/third-party-programs.txt",
+    "sha256": "f8ce918fe7311ce279e68380a2e233f8a42b1cd3dda8f4c48d6de97a0255c1d7",
+    "retained_path": "licenses/historical-1.0.4/licenses/oneapi/opt/intel/oneapi/compiler/2026.0/share/doc/compiler/licensing/openmp/third-party-programs.txt",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/oneapi/opt/intel/oneapi/dev-utilities/2026.0/include/stb/LICENSE.txt",
+    "sha256": "a25c57988e8e529594e07814608dfdddb36b562556383c8a43aa1e26e1a94524",
+    "retained_path": "licenses/historical-1.0.4/licenses/oneapi/opt/intel/oneapi/dev-utilities/2026.0/include/stb/LICENSE.txt",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/oneapi/opt/intel/oneapi/dev-utilities/2026.0/include/stb/third-party-programs.txt",
+    "sha256": "13f4dfa70992faed3ea087716ad989fecf9ee7c8f655599ae9a0330757a7ff05",
+    "retained_path": "licenses/historical-1.0.4/licenses/oneapi/opt/intel/oneapi/dev-utilities/2026.0/include/stb/third-party-programs.txt",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/oneapi/opt/intel/oneapi/dev-utilities/2026.0/share/doc/dev-utilities/licensing/com.intel.samples/LICENSE.txt",
+    "sha256": "051c7c56cdb4712c632174eb3ad5140f86b36c234fcfd371b70e48a06da6684b",
+    "retained_path": "licenses/historical-1.0.4/licenses/oneapi/opt/intel/oneapi/dev-utilities/2026.0/share/doc/dev-utilities/licensing/com.intel.samples/LICENSE.txt",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/oneapi/opt/intel/oneapi/dev-utilities/2026.0/share/doc/dev-utilities/licensing/oneapi-cli/LICENSE",
+    "sha256": "212936947eda2663050c75426b02ff72db99878075952e78749aae5f192c6145",
+    "retained_path": "licenses/historical-1.0.4/licenses/oneapi/opt/intel/oneapi/dev-utilities/2026.0/share/doc/dev-utilities/licensing/oneapi-cli/LICENSE",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/oneapi/opt/intel/oneapi/dev-utilities/2026.0/share/doc/dev-utilities/licensing/third-party-programs.txt",
+    "sha256": "8ce6718831d7d1339517952dcbe2e9c540828384e9a5e71f088d827ffe6dfa5d",
+    "retained_path": "licenses/historical-1.0.4/licenses/oneapi/opt/intel/oneapi/dev-utilities/2026.0/share/doc/dev-utilities/licensing/third-party-programs.txt",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/oneapi/opt/intel/oneapi/licensing/2026.0/.toolkit_linking_tool/intel-oneapi-common-licensing-2026.0-2026.0.0-235.filelist",
+    "sha256": "ab18038384cb85370fc08d8340f79b01d10d22cf5e15a4d58b006307de4692bd",
+    "retained_path": "licenses/historical-1.0.4/licenses/oneapi/opt/intel/oneapi/licensing/2026.0/.toolkit_linking_tool/intel-oneapi-common-licensing-2026.0-2026.0.0-235.filelist",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/oneapi/opt/intel/oneapi/licensing/2026.0/licensing/2026.0/license.htm",
+    "sha256": "9bca3c7ee7f60640b15f9c19c8813f123944d2054ff43a542584a5df45f43b6c",
+    "retained_path": "licenses/historical-1.0.4/licenses/oneapi/opt/intel/oneapi/licensing/2026.0/licensing/2026.0/license.htm",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/open_clip_torch-2.32.0.dist-info/licenses/LICENSE",
+    "sha256": "4a5b4f13ea4792a8211a69f32d2b460b6d520e57cd23c6301e707c76a6e97a55",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/open_clip_torch-2.32.0.dist-info/licenses/LICENSE",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/LICENSE",
+    "sha256": "bd018feef8825e88181c84eb7e3aa4eafb8f08a20d9fd6ef948569610c4a3e43",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/LICENSE",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/FP16/LICENSE",
+    "sha256": "17e4f539024be2749ee729d1e2f01d24cef12ece8c9bf18e91a4349be29c80bf",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/FP16/LICENSE",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/FXdiv/LICENSE",
+    "sha256": "7cac00006125b1486a27e4801ed66357236e984c540bd323945ab7b66b078ec3",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/FXdiv/LICENSE",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/NNPACK/LICENSE",
+    "sha256": "ab09e33621f513ebdd1ef685b324f39c1f6bee9221d15600bafd958322df1231",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/NNPACK/LICENSE",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/NVTX/LICENSE.txt",
+    "sha256": "abdfd8a6738b27cd1504e091f77b682dbae928339f040b8a6f59a548245991a0",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/NVTX/LICENSE.txt",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/NVTX/docs/LICENSE.txt",
+    "sha256": "abdfd8a6738b27cd1504e091f77b682dbae928339f040b8a6f59a548245991a0",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/NVTX/LICENSE.txt",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/NVTX/python/LICENSE.txt",
+    "sha256": "abdfd8a6738b27cd1504e091f77b682dbae928339f040b8a6f59a548245991a0",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/NVTX/LICENSE.txt",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/VulkanMemoryAllocator/LICENSE.txt",
+    "sha256": "8d70e4cf2a9941f6454da71cd60e38484dd3e34810c824760d550e982af6d97a",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/VulkanMemoryAllocator/LICENSE.txt",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/XNNPACK/LICENSE",
+    "sha256": "63f519e15726f4c4f830bd958f694c84fecb4e0a4cacc527d2696bb71ef95ada",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/XNNPACK/LICENSE",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/aiter/3rdparty/composable_kernel/LICENSE",
+    "sha256": "20f3b83dfda01bd18d285e0edbb9d044be6dde04cdf76a1ec18d9fc7127936bf",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/composable_kernel/LICENSE",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/aiter/LICENSE",
+    "sha256": "0baca809927cad448401b252ce3bae12687c2987597ad7088cf3423f872d5bcd",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/aiter/LICENSE",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/benchmark/LICENSE",
+    "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/onnx/LICENSE",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/composable_kernel/LICENSE",
+    "sha256": "20f3b83dfda01bd18d285e0edbb9d044be6dde04cdf76a1ec18d9fc7127936bf",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/composable_kernel/LICENSE",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/cpp-httplib/LICENSE",
+    "sha256": "4b45cbe16d7b71b89ae6127e26e0d90a029198ca5e958ad8e3d0b8bbed364d8b",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/cpp-httplib/LICENSE",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/cpuinfo/LICENSE",
+    "sha256": "8e7e60636c3aa0cb03571a1a841ce5697f9551ff92b3c426c2561613d15ade70",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/cpuinfo/LICENSE",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/cpuinfo/deps/clog/LICENSE",
+    "sha256": "68a14c3e79add023eecd83d611e73f05b8bf1d16852efeb7eb4033a96736da9e",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/cpuinfo/deps/clog/LICENSE",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/cudnn_frontend/LICENSE.txt",
+    "sha256": "3fc4b473a2c08768a8066bf7e4a58a1185060f3ad674f2ca9e2011bca4adf2ce",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/cudnn_frontend/LICENSE.txt",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/cutlass/LICENSE.txt",
+    "sha256": "7bc733829f16663593865344541c6dcc433beb6b6b555c8f86a43e9b399993cf",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/cutlass/LICENSE.txt",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/cutlass/python/LICENSE.txt",
+    "sha256": "00bf1806f664ac1afe4221f5f04b384fb6f1ca6eb33efcb6dccf599eb06d08b9",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/cutlass/python/LICENSE.txt",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/fbgemm/LICENSE",
+    "sha256": "12c2370ec32e78115dcd71ba22cdcb1297320fdc4ade81f798136d42357c58b8",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/fbgemm/LICENSE",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/fbgemm/external/composable_kernel/LICENSE",
+    "sha256": "20f3b83dfda01bd18d285e0edbb9d044be6dde04cdf76a1ec18d9fc7127936bf",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/composable_kernel/LICENSE",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/fbgemm/external/cpuinfo/LICENSE",
+    "sha256": "8e7e60636c3aa0cb03571a1a841ce5697f9551ff92b3c426c2561613d15ade70",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/cpuinfo/LICENSE",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/fbgemm/external/cpuinfo/deps/clog/LICENSE",
+    "sha256": "68a14c3e79add023eecd83d611e73f05b8bf1d16852efeb7eb4033a96736da9e",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/cpuinfo/deps/clog/LICENSE",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/fbgemm/external/cutlass/LICENSE.txt",
+    "sha256": "80a7a18b73d41f64dd9ca881af35938f8de88b18c728703251f4c94d1299884d",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/mslk/external/cutlass/LICENSE.txt",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/fbgemm/external/cutlass/python/LICENSE.txt",
+    "sha256": "42fec630f410aa308f70a51a89fadcd19586fa620f9831a32bee528a9a10000e",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/mslk/external/cutlass/python/LICENSE.txt",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/fbgemm/external/googletest/LICENSE",
+    "sha256": "9702de7e4117a8e2b20dafab11ffda58c198aede066406496bef670d40a22138",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/googletest/LICENSE",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/fbgemm/external/hipify_torch/LICENSE.txt",
+    "sha256": "ecf819d55b17c2f091b3ba0934d044368aa0680d8a81374860306aa2b91aa1eb",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/mslk/external/hipify_torch/LICENSE.txt",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/fbgemm/fbgemm_gpu/experimental/hstu/LICENSE",
+    "sha256": "e364577f7a53353281c4462d5810e284e14d5e801414a9117a108ff2da987bcd",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/fbgemm/fbgemm_gpu/experimental/hstu/LICENSE",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/fbgemm/fbgemm_gpu/src/quantize_ops/mx/LICENSE",
+    "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/fbgemm/fbgemm_gpu/src/quantize_ops/mx/LICENSE",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/fbgemm/fbgemm_gpu/test/quantize/mx/LICENSE",
+    "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/fbgemm/fbgemm_gpu/src/quantize_ops/mx/LICENSE",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/flash-attention/LICENSE",
+    "sha256": "8c9ccb96c065e706135b6cbad279b721da6156e51f3a5f27c6b3329af9416d73",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/flash-attention/LICENSE",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/flash-attention/csrc/composable_kernel/LICENSE",
+    "sha256": "20f3b83dfda01bd18d285e0edbb9d044be6dde04cdf76a1ec18d9fc7127936bf",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/composable_kernel/LICENSE",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/flash-attention/csrc/cutlass/LICENSE.txt",
+    "sha256": "80a7a18b73d41f64dd9ca881af35938f8de88b18c728703251f4c94d1299884d",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/mslk/external/cutlass/LICENSE.txt",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/flash-attention/csrc/cutlass/python/LICENSE.txt",
+    "sha256": "42fec630f410aa308f70a51a89fadcd19586fa620f9831a32bee528a9a10000e",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/mslk/external/cutlass/python/LICENSE.txt",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/flash-attention/flash_attn/cute/LICENSE",
+    "sha256": "8c9ccb96c065e706135b6cbad279b721da6156e51f3a5f27c6b3329af9416d73",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/flash-attention/LICENSE",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/flash-attention/third_party/aiter/3rdparty/composable_kernel/LICENSE",
+    "sha256": "20f3b83dfda01bd18d285e0edbb9d044be6dde04cdf76a1ec18d9fc7127936bf",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/composable_kernel/LICENSE",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/flash-attention/third_party/aiter/LICENSE",
+    "sha256": "0baca809927cad448401b252ce3bae12687c2987597ad7088cf3423f872d5bcd",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/aiter/LICENSE",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/flatbuffers/LICENSE",
+    "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/onnx/LICENSE",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/flatbuffers/dart/LICENSE",
+    "sha256": "edd9b3459bee4c79b549a5ef66d06d12bd144ddb8d08e0b448fb421267f43dd5",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/flatbuffers/dart/LICENSE",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/flatbuffers/swift/LICENSE",
+    "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/onnx/LICENSE",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/fmt/LICENSE",
+    "sha256": "07580f2a3b35709ce703d523f447b242f6dfec7582a8c0df102c7fa2849375f8",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/fmt/LICENSE",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/gemmlowp/gemmlowp/LICENSE",
+    "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/onnx/LICENSE",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/gloo/LICENSE",
+    "sha256": "2afbc572cf7f60888159bc2ca48ba58f8adec06682ae5de820d61449d1eeea81",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/gloo/LICENSE",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/googletest/LICENSE",
+    "sha256": "9702de7e4117a8e2b20dafab11ffda58c198aede066406496bef670d40a22138",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/googletest/LICENSE",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/ideep/LICENSE",
+    "sha256": "a26add03107a53a605a89711b9b7dbd4f5dd668ae193a912e01a879366a23b0e",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/ideep/LICENSE",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/ideep/mkl-dnn/LICENSE",
+    "sha256": "e9fc874fc09801b9acf3411ba72394098473704d832d713404b6c4861a086318",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/ideep/mkl-dnn/LICENSE",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/ideep/mkl-dnn/third_party/gtest/LICENSE",
+    "sha256": "9702de7e4117a8e2b20dafab11ffda58c198aede066406496bef670d40a22138",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/googletest/LICENSE",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/ideep/mkl-dnn/third_party/opencl/LICENSE",
+    "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/onnx/LICENSE",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/kineto/LICENSE",
+    "sha256": "6f3d59b9103e72e5c977eecf61b261c2e1546a9be2995847e3ee2d31021fd39b",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/kineto/LICENSE",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/kineto/libkineto/third_party/dynolog/LICENSE",
+    "sha256": "52412d7bc7ce4157ea628bbaacb8829e0a9cb3c58f57f99176126bc8cf2bfc85",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/kineto/libkineto/third_party/dynolog/LICENSE",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/kineto/libkineto/third_party/dynolog/third_party/DCGM/LICENSE",
+    "sha256": "6617037401b04db6d1e89a9bec00e25a063edab9354dba63f84bf4e7e1345470",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/kineto/libkineto/third_party/dynolog/third_party/DCGM/LICENSE",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/kineto/libkineto/third_party/dynolog/third_party/DCGM/testing/python3/libs_3rdparty/colorama/LICENSE.txt",
+    "sha256": "90ba34a1de1a8f02b8a9896aa2c83b9a960376b85bc7d0d20f39b84c9174c7c1",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/kineto/libkineto/third_party/dynolog/third_party/DCGM/testing/python3/libs_3rdparty/colorama/LICENSE.txt",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/kineto/libkineto/third_party/dynolog/third_party/cpr/LICENSE",
+    "sha256": "df77cacba01d8f241a2e7af01b9a636c0037cf810d80bbcfdbcc405c99a2d563",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/kineto/libkineto/third_party/dynolog/third_party/cpr/LICENSE",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/kineto/libkineto/third_party/dynolog/third_party/cpr/test/LICENSE",
+    "sha256": "7d412b7a16a0ca54f6a026b7e24394f9ac3621fba8301976db4044711135842b",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/kineto/libkineto/third_party/dynolog/third_party/cpr/test/LICENSE",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/kineto/libkineto/third_party/dynolog/third_party/fmt/LICENSE.rst",
+    "sha256": "825c9324e70f8c839c8ba910543dd4a7daee243b86ef960594c11381a19980b8",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/kineto/libkineto/third_party/dynolog/third_party/fmt/LICENSE.rst",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/kineto/libkineto/third_party/dynolog/third_party/googletest/LICENSE",
+    "sha256": "9702de7e4117a8e2b20dafab11ffda58c198aede066406496bef670d40a22138",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/googletest/LICENSE",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/kineto/libkineto/third_party/dynolog/third_party/json/test/thirdparty/doctest/LICENSE.txt",
+    "sha256": "21d5cc7eacfbe785d8a7642457ecf630a611220683aa7d7d8cd9febfdb0d06fc",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/kineto/libkineto/third_party/dynolog/third_party/json/test/thirdparty/doctest/LICENSE.txt",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/kineto/libkineto/third_party/dynolog/third_party/json/third_party/cpplint/LICENSE",
+    "sha256": "02fd655b9adb79e771fd60267a722f0862d43381f95bb38bd6ada5e2080272c4",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/kineto/libkineto/third_party/dynolog/third_party/json/third_party/cpplint/LICENSE",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/kineto/libkineto/third_party/dynolog/third_party/pfs/LICENSE",
+    "sha256": "d86de50046bd9fd5e47f305236f2a1b342865e367e6da1fbd4185791be5f741a",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/kineto/libkineto/third_party/dynolog/third_party/pfs/LICENSE",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/kineto/libkineto/third_party/dynolog/third_party/prometheus-cpp/3rdparty/civetweb/examples/rest/cJSON/LICENSE",
+    "sha256": "a36dda207c36db5818729c54e7ad4e8b0c6fba847491ba64f372c1a2037b6d5c",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/kineto/libkineto/third_party/dynolog/third_party/prometheus-cpp/3rdparty/civetweb/examples/rest/cJSON/LICENSE",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/kineto/libkineto/third_party/dynolog/third_party/prometheus-cpp/3rdparty/civetweb/src/third_party/duktape-1.5.2/LICENSE.txt",
+    "sha256": "f95a124945067d1143f1c6de9a990f2db2426456408ee0f0bfe6de2f568a899f",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/kineto/libkineto/third_party/dynolog/third_party/prometheus-cpp/3rdparty/civetweb/src/third_party/duktape-1.5.2/LICENSE.txt",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/kineto/libkineto/third_party/dynolog/third_party/prometheus-cpp/3rdparty/civetweb/src/third_party/duktape-1.8.0/LICENSE.txt",
+    "sha256": "5358498534dac625c89a69c10becf3dcc40f9af58e6b69ee358ebdf6934f49c6",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/kineto/libkineto/third_party/dynolog/third_party/prometheus-cpp/3rdparty/civetweb/src/third_party/duktape-1.8.0/LICENSE.txt",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/kineto/libkineto/third_party/dynolog/third_party/prometheus-cpp/3rdparty/googletest/LICENSE",
+    "sha256": "9702de7e4117a8e2b20dafab11ffda58c198aede066406496bef670d40a22138",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/googletest/LICENSE",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/kineto/libkineto/third_party/dynolog/third_party/prometheus-cpp/3rdparty/googletest/googlemock/scripts/generator/LICENSE",
+    "sha256": "5e0df8c845c742e76f2f64d2d9ce1b7e74a2422fddbc577ae6a56319083de0bf",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/protobuf/third_party/googletest/googlemock/scripts/generator/LICENSE",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/kineto/libkineto/third_party/dynolog/third_party/prometheus-cpp/LICENSE",
+    "sha256": "631da2561d776749086945e1f5adf2e5f4fcde920ddaacda018d505787de1882",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/kineto/libkineto/third_party/dynolog/third_party/prometheus-cpp/LICENSE",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/kineto/libkineto/third_party/fmt/LICENSE",
+    "sha256": "07580f2a3b35709ce703d523f447b242f6dfec7582a8c0df102c7fa2849375f8",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/fmt/LICENSE",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/kineto/libkineto/third_party/googletest/LICENSE",
+    "sha256": "9702de7e4117a8e2b20dafab11ffda58c198aede066406496bef670d40a22138",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/googletest/LICENSE",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/llvm-openmp/LICENSE.txt",
+    "sha256": "68395143f21a9aa29b8232168c71892af5ec4f1ae2529571cd250a71c9e37a03",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/llvm-openmp/LICENSE.txt",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/mimalloc/LICENSE",
+    "sha256": "82ade5d7d9b029044b5fbbc326207fc47c2d44ee4dd71e8a559c36d728217de9",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/mimalloc/LICENSE",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/miniz-3.0.2/LICENSE",
+    "sha256": "0115478d567121238cf6cc1c0c361926cf07a49d9e4c9e66da97fac6a01646b3",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/miniz-3.0.2/LICENSE",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/mslk/LICENSE",
+    "sha256": "44519cbe722d7bf092cd7e0fa26558b9e3905b88fca4c0c278e2733a9f6b4cf9",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/mslk/LICENSE",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/mslk/external/composable_kernel/LICENSE",
+    "sha256": "20f3b83dfda01bd18d285e0edbb9d044be6dde04cdf76a1ec18d9fc7127936bf",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/composable_kernel/LICENSE",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/mslk/external/cutlass/LICENSE.txt",
+    "sha256": "80a7a18b73d41f64dd9ca881af35938f8de88b18c728703251f4c94d1299884d",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/mslk/external/cutlass/LICENSE.txt",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/mslk/external/cutlass/python/LICENSE.txt",
+    "sha256": "42fec630f410aa308f70a51a89fadcd19586fa620f9831a32bee528a9a10000e",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/mslk/external/cutlass/python/LICENSE.txt",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/mslk/external/googletest/LICENSE",
+    "sha256": "9702de7e4117a8e2b20dafab11ffda58c198aede066406496bef670d40a22138",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/googletest/LICENSE",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/mslk/external/hipify_torch/LICENSE.txt",
+    "sha256": "ecf819d55b17c2f091b3ba0934d044368aa0680d8a81374860306aa2b91aa1eb",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/mslk/external/hipify_torch/LICENSE.txt",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/mslk/mslk/attention/flash_attn/LICENSE",
+    "sha256": "8c9ccb96c065e706135b6cbad279b721da6156e51f3a5f27c6b3329af9416d73",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/flash-attention/LICENSE",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/onnx/LICENSE",
+    "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/onnx/LICENSE",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/onnx/third_party/pybind11/LICENSE",
+    "sha256": "83965b843b98f670d3a85bd041ed4b372c8ec50d7b4a5995a83ac697ba675dcb",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/pybind11/LICENSE",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/protobuf/LICENSE",
+    "sha256": "6e5e117324afd944dcf67f36cf329843bc1a92229a8cd9bb573d7a83130fea7d",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/protobuf/LICENSE",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/protobuf/third_party/benchmark/LICENSE",
+    "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/onnx/LICENSE",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/protobuf/third_party/googletest/LICENSE",
+    "sha256": "9702de7e4117a8e2b20dafab11ffda58c198aede066406496bef670d40a22138",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/googletest/LICENSE",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/protobuf/third_party/googletest/googlemock/LICENSE",
+    "sha256": "9702de7e4117a8e2b20dafab11ffda58c198aede066406496bef670d40a22138",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/googletest/LICENSE",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/protobuf/third_party/googletest/googlemock/scripts/generator/LICENSE",
+    "sha256": "5e0df8c845c742e76f2f64d2d9ce1b7e74a2422fddbc577ae6a56319083de0bf",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/protobuf/third_party/googletest/googlemock/scripts/generator/LICENSE",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/protobuf/third_party/googletest/googletest/LICENSE",
+    "sha256": "9702de7e4117a8e2b20dafab11ffda58c198aede066406496bef670d40a22138",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/googletest/LICENSE",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/psimd/LICENSE",
+    "sha256": "984ce1e0b8ee89d234e28b960381f240e03a07a8031f35012f9c3256f56964e2",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/psimd/LICENSE",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/pthreadpool/LICENSE",
+    "sha256": "57814a606b4d0fb087d9a534919084b6c11b58a4174cb5a4aef200187780dc3a",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/pthreadpool/LICENSE",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/pybind11/LICENSE",
+    "sha256": "83965b843b98f670d3a85bd041ed4b372c8ec50d7b4a5995a83ac697ba675dcb",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/pybind11/LICENSE",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/python-peachpy/LICENSE.rst",
+    "sha256": "e6d6fdbfc09c9cc1bfc55946ca9690dd9276deeaed2b72ac7fc5c79bde80ff32",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/python-peachpy/LICENSE.rst",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/sleef/LICENSE.txt",
+    "sha256": "c9bff75738922193e67fa726fa225535870d2aa1059f91452c411736284ad566",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/sleef/LICENSE.txt",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/tensorpipe/LICENSE.txt",
+    "sha256": "f4dcef0d1f0520b414d5bfaeed8df02f188e4ec05c0a17bf1c18f25f6cc66245",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/tensorpipe/LICENSE.txt",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/tensorpipe/third_party/googletest/LICENSE",
+    "sha256": "9702de7e4117a8e2b20dafab11ffda58c198aede066406496bef670d40a22138",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/googletest/LICENSE",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/tensorpipe/third_party/googletest/googlemock/LICENSE",
+    "sha256": "9702de7e4117a8e2b20dafab11ffda58c198aede066406496bef670d40a22138",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/googletest/LICENSE",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/tensorpipe/third_party/googletest/googlemock/scripts/generator/LICENSE",
+    "sha256": "5e0df8c845c742e76f2f64d2d9ce1b7e74a2422fddbc577ae6a56319083de0bf",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/protobuf/third_party/googletest/googlemock/scripts/generator/LICENSE",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/tensorpipe/third_party/googletest/googletest/LICENSE",
+    "sha256": "9702de7e4117a8e2b20dafab11ffda58c198aede066406496bef670d40a22138",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/googletest/LICENSE",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/tensorpipe/third_party/libnop/LICENSE",
+    "sha256": "876e8f7432440974ee5543a2aa1344370ef1f2f7949ad98a1f3899cf722d5631",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/tensorpipe/third_party/libnop/LICENSE",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/tensorpipe/third_party/libuv/LICENSE",
+    "sha256": "16de0c32b265cb7d46a6d3bd614f259dd4d693a5e26b3407b04aae8d73041f0c",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/tensorpipe/third_party/libuv/LICENSE",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/tensorpipe/third_party/pybind11/LICENSE",
+    "sha256": "9a37ea54aa3cf12c7f3292799f20822ffd4b9b7142b36a7a9997b28c39264dc9",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/tensorpipe/third_party/pybind11/LICENSE",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/torch-xpu-ops/LICENSE",
+    "sha256": "3cac8f8d0bd2a0d8bbf71384c2bb935f6067bbe25f353b3e44d0c452c2fca370",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/torch-2.13.0+xpu.dist-info/licenses/third_party/torch-xpu-ops/LICENSE",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/triton_xpu-3.7.2.dist-info/licenses/LICENSE",
+    "sha256": "a2171c47708ddb3dc1cbc1d33a1bc8cee72b19d98174d3bcf8e7cba982c3101d",
+    "retained_path": "licenses/historical-1.0.4/licenses/vendor/triton_xpu-3.7.2.dist-info/licenses/LICENSE",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vendor/vllm-0.30.0+xpu.dist-info/licenses/LICENSE",
+    "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+    "retained_path": "licenses/upstream/vllm-LICENSE",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/licenses/vllm-xpu-kernels.txt",
+    "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+    "retained_path": "licenses/upstream/vllm-LICENSE",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/native/source/LICENSE",
+    "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+    "retained_path": "licenses/upstream/vllm-LICENSE",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/overlay/opt/b70-flashnext/licenses/Qwen-Community-License-1.0.txt",
+    "sha256": "a0dc422560841fd68e06d974907f8b4c709bca44a67daad2b528437bdf676c08",
+    "retained_path": "licenses/historical-1.0.4/licenses/external-model.txt",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/overlay/opt/b70-flashnext/licenses/vllm-xpu-kernels-Apache-2.0.txt",
+    "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+    "retained_path": "licenses/upstream/vllm-LICENSE",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/provenance/PATCH_PROVENANCE_LEDGER.md",
+    "sha256": "279a96b6b4350baf9532ef44d90b828eecbe2fd44a98f59a6e0ee9e589a0a85f",
+    "retained_path": "licenses/historical-1.0.4/provenance/PATCH_PROVENANCE_LEDGER.md",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/provenance/contribution-closeout.md",
+    "sha256": "51bd33b8387f2c7b3c3965dd00ea295c3dff735e7ab1cf4b1fa94ce14234dabb",
+    "retained_path": "licenses/historical-1.0.4/provenance/contribution-closeout.md",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/provenance/contributors.json",
+    "sha256": "899ff0b7d3082806f96efaae9614e859c7a33df0c98d207dbd4e7ca08ba51179",
+    "retained_path": "licenses/historical-1.0.4/provenance/contributors.json",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/provenance/historical-1.0.3.json",
+    "sha256": "70ec6c0b9a711f279c2c2a4ca94390e1611ef6760e794b5dec5e522491b7f40b",
+    "retained_path": "licenses/historical-1.0.4/provenance/historical-1.0.3.json",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/provenance/intel-dynamic-mtp5-concurrency.json",
+    "sha256": "e64a5d533dc3f8c9ba8daa09f092285727d1dd6b669e0f346f885914e4431e8d",
+    "retained_path": "licenses/historical-1.0.4/provenance/intel-dynamic-mtp5-concurrency.json",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/provenance/intel-dynamic-mtp5.json",
+    "sha256": "2fd5664aa9db5d6ad2aceefdf80ac0aa3f236a8377abdf40c85991d622d4cfca",
+    "retained_path": "licenses/historical-1.0.4/provenance/intel-dynamic-mtp5.json",
+    "status": "historical attribution; not current clearance"
+  },
+  {
+    "original_path": "disk/provenance/moe-reproduction.json",
+    "sha256": "cce0ac3549f6133be75abe48c21389ad7028ae4d2cd0911bc55a8f9c8cd6f083",
+    "retained_path": "licenses/historical-1.0.4/provenance/moe-reproduction.json",
+    "status": "historical attribution; not current clearance"
+  }
+]

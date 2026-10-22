@@ -1,0 +1,60 @@
+# Reconstructed recipe: exact campaign sources, flags and /build paths.
+# No compilation or binary reproducibility is asserted by source verification.
+FROM intel/omix@sha256:59cef13f8e87275846cc08e01d32b49082694a5c01d842d2e845552cbc8c199f AS compiler
+FROM vllm/vllm-openai-xpu@sha256:9dd913e9036633d55ace17265cbfc29f48b9b85fe4bc8b129debcf7e1b269ce7 AS vendor
+FROM vendor AS toolchain
+COPY --from=compiler /opt/intel/oneapi/ /toolchain/oneapi/opt/intel/oneapi/
+FROM toolchain AS common-builder
+COPY dependencies/common-native-headers/ /build/source/
+COPY inputs/sycl-tla.tar.gz /tmp/sycl-tla.tar.gz
+RUN mkdir -p /build/tla && tar -xzf /tmp/sycl-tla.tar.gz -C /build/tla --strip-components=1
+FROM toolchain AS native
+COPY dependencies/gdn-headers/ /build/source/
+COPY native/native/ /build/
+RUN bash /build/build.sh
+FROM vendor AS residency-shim
+COPY native/residency-shim/l0_peer_residency_shim.c /tmp/l0_peer_residency_shim.c
+RUN mkdir -p /build && gcc -std=c11 -O2 -fPIC -shared -Wall -Wextra -Werror /tmp/l0_peer_residency_shim.c -o /build/libl0_peer_residency_shim.so -lze_loader -ldl -pthread
+FROM common-builder AS astra500-native
+COPY native/astra500-native/ /build/
+RUN bash /build/build.sh
+FROM common-builder AS astra500-structural-hc
+COPY native/astra500-structural-hc/ /build/
+RUN bash /build/build-v3.sh
+FROM common-builder AS astra500-structural-moe
+COPY native/astra500-structural-moe/ /build/
+RUN bash /build/build.sh
+FROM common-builder AS astra500-ownership-groups
+COPY native/astra500-ownership-groups/ /build/
+RUN bash /build/build.sh
+FROM common-builder AS astra500-ownership-batch
+COPY native/astra500-ownership-batch/ /build/
+RUN bash /build/build.sh
+FROM common-builder AS astra500-beyond-prefill
+COPY native/astra500-beyond-prefill/ /build/
+RUN bash /build/build.sh
+FROM common-builder AS astra500-dominant-native
+COPY native/astra500-dominant-native/ /build/
+RUN bash /build/build.sh
+FROM common-builder AS prefill-native
+COPY native/prefill-native/ /build/
+RUN bash /build/build.sh
+FROM common-builder AS long-hc-selected
+COPY native/long-hc-selected/ /build/
+RUN bash /build/build.sh
+FROM common-builder AS long-prefill-native
+COPY native/long-prefill-native/ /build/
+RUN bash /build/build.sh
+FROM scratch AS export
+COPY --from=native /build/libgdn_index64.so /vllm_xpu_kernels/libgdn_index64.so
+COPY --from=residency-shim /build/libl0_peer_residency_shim.so /b70-residency-shim/libl0_peer_residency_shim.so
+COPY --from=astra500-native /build/libastra_moe.so /vllm_xpu_kernels/libastra_moe.so
+COPY --from=astra500-structural-hc /build/libastra_hc_v3.so /vllm_xpu_kernels/libastra_hc.so
+COPY --from=astra500-structural-moe /build/libastra_direct.so /vllm_xpu_kernels/libastra_direct.so
+COPY --from=astra500-ownership-groups /build/libastra_groups.so /vllm_xpu_kernels/libastra_groups.so
+COPY --from=astra500-ownership-batch /build/libastra_batch.so /vllm_xpu_kernels/libastra_batch.so
+COPY --from=astra500-beyond-prefill /build/libbeyond_prefill.so /vllm_xpu_kernels/libbeyond_prefill.so
+COPY --from=astra500-dominant-native /build/libdominant_w4_layout.so /vllm_xpu_kernels/libdominant_w4_layout.so
+COPY --from=prefill-native /build/libserving_prefill.so /vllm_xpu_kernels/libserving_prefill.so
+COPY --from=long-hc-selected /build/liblong_hc.so /vllm_xpu_kernels/liblong_hc.so
+COPY --from=long-prefill-native /build/liblong_prefill_v3.so /vllm_xpu_kernels/liblong_prefill_v3.so

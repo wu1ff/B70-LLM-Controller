@@ -1,0 +1,129 @@
+{
+  "phase": "DFlash2 release Phase 3",
+  "date": "2026-10-22 America/Phoenix",
+  "independence": {
+    "workspace": "/tmp/dflash2-phase3-independent-vwpo8_wa",
+    "inputs": "Extracted portable archive plus the two pinned OCI foundations",
+    "native_and_runtime_build_cache": "disabled (--no-cache)",
+    "network": "none for build RUN steps and validation containers",
+    "accepted_payload_use": "comparison only; Unix mode metadata used for assembly",
+    "campaign_compiled_artifact_inputs": false
+  },
+  "image": {
+    "tag": "qwen38-flashnext-dflash2:phase3-independent-v1",
+    "id": "sha256:ef0ece167b6bd7da3e24c794ba8e7d0a9834ef4209110f53ab8422f555bbf4c1",
+    "descriptor": {
+      "mediaType": "application/vnd.oci.image.manifest.v1+json",
+      "digest": "sha256:ef0ece167b6bd7da3e24c794ba8e7d0a9834ef4209110f53ab8422f555bbf4c1",
+      "size": 4688,
+      "annotations": {
+        "config.digest": "sha256:b264669b148e175b1c71a6cdce020efdffc02f06e7868171c19f44c4c6da6259"
+      }
+    },
+    "accepted_id": "sha256:6e2ab4e686680a5208ff0119c4637341cba81942bd39b6576ea14dc8f547b83b",
+    "config_equal": true,
+    "oci_identical": false,
+    "oci_difference_reason": "New assembly/layer history and creation metadata, regenerated caches; accepted includes an OCI index."
+  },
+  "native": {
+    "libraries": 12,
+    "sha256_identical": 12,
+    "elf_reports_identical": 12,
+    "gnu_build_id_present": 1,
+    "sycl_without_gnu_build_id": 11,
+    "shim_build_id": [
+      "8586cc1050298239bb439e45022432a4c9349227"
+    ],
+    "nondeterminism_observed": false
+  },
+  "coverage": {
+    "accepted-python.json": 2664,
+    "accepted-package-data.json": 654,
+    "accepted-support.json": 13,
+    "accepted-image-support.json": 110
+  },
+  "filesystem": {
+    "accepted_entries": 166881,
+    "candidate_entries": 166885,
+    "differences": 52,
+    "non_bytecode_differences": 0,
+    "cache_categories": {
+      "header_only": 42,
+      "refreshed_invalid_cache": 2,
+      "newly_generated_cache": 6,
+      "omitted_python314_cache": 2
+    },
+    "virtual_container_exclusions": [
+      "/.dockerenv",
+      "/dev",
+      "/etc/hostname",
+      "/etc/hosts",
+      "/etc/resolv.conf",
+      "/proc",
+      "/sys"
+    ]
+  },
+  "dependencies": {
+    "distribution_records": 337,
+    "equal": true,
+    "pip_check_exit_code": 1,
+    "inherited_pip_check_findings": 14,
+    "pip_check_identical_in_vendor_accepted_candidate": true,
+    "vendor_extra_duplicate_vllm_record": "Vendor working directory /workspace/vllm also appears on Python sys.path; unique name/version identities match."
+  },
+  "validation": {
+    "python_syntax_files": 2664,
+    "imports": [
+      "vllm",
+      "vllm.models.qwen4_exp",
+      "vllm.models.qwen4_exp.nvidia.b70_disk",
+      "vllm.models.qwen4_exp.nvidia.dflash2_features",
+      "vllm.v1.worker.gpu.spec_decode.dflash.speculator",
+      "vllm_xpu_kernels.astra500_moe",
+      "vllm_xpu_kernels.astra_ownership",
+      "vllm_xpu_kernels.astra_structural"
+    ],
+    "ldd_pass": 12,
+    "dlopen_pass": 11,
+    "shim_gpu_tracing_constructor": "DEFERRED",
+    "shim_gpu_free_preload": "Both accepted and candidate exit 127, result=0x78000001 without GPU devices",
+    "reused_cpu_tests": 3,
+    "checkpoint_ple_metadata_test": "PASS",
+    "active_lock_files": 2641,
+    "active_lock_and_native": "PASS",
+    "frozen_serving_contract": "PASS: Config, HostConfig, Image and Mounts match",
+    "inference": "NOT RUN",
+    "benchmark": "NOT RUN"
+  },
+  "distribution": {
+    "notice_paths_preserved": 1215,
+    "intel_native_paths_preserved": 59,
+    "wheel_native_hashes_preserved": 3,
+    "missing_upstream_modification_headers": 15,
+    "unresolved": [
+      "stock XPU kernel wheel source attestation",
+      "maintained matching companion source and distribution directions",
+      "NumPy libgfortran exact source/build identity",
+      "Intel 2026.1.1 designation coverage and recipient arrangements",
+      "changed-file notices including kernel/native/GDN review"
+    ],
+    "legal_clearance": false
+  },
+  "accepted_service": {
+    "Id": true,
+    "Image": true,
+    "Path": true,
+    "Args": true,
+    "Config": true,
+    "HostConfig": true,
+    "RestartCount": true,
+    "mounts_unchanged": true,
+    "Pid": true,
+    "StartedAt": true,
+    "Running": true,
+    "Restarting": true,
+    "accepted_tag_unchanged": true
+  },
+  "ready_for_focused_live_equivalence": true,
+  "live_requirements": "Equivalent four-GPU host, or a subsequent explicit decision about GPU/service scheduling on this host. Use pinned models/draft, isolated writable work, frozen serving environment, Disk PLE and seven proposals. No simultaneous memory-heavy service is started."
+}

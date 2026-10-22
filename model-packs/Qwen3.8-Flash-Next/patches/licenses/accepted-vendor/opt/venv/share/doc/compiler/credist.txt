@@ -1,0 +1,61 @@
+This is the redist.txt file mentioned in the associated Intel End User License 
+Agreement for Developer Tools (Version April 2023) (“Agreement”).  All 
+capitalized terms used but not defined in this file have the same meaning as 
+specified in the Agreement. The Redistributables are listed below, and are 
+subject to all of the terms and conditions of the Agreement.
+
+Please note that Third Party Programs, if any, may also be redistributable. See 
+the “third-party-programs.txt” or other similarly-named text file for more 
+details.”
+
+################################################################################
+###   Intel® oneAPI DPC++/C++ Compiler 2026.1.1
+################################################################################
+
+<installdir>/lib/libomptarget.sycl.wrap.so
+<installdir>/opt/compiler/lib/libomptarget-opencl-required.bc
+<installdir>/opt/compiler/lib/libomptarget-opencl-optional.bc
+<installdir>/lib/libarcher.so
+<installdir>/lib/libomptarget.so
+<installdir>/opt/compiler/lib/libomp-fallback-imf-fp64.o
+<installdir>/opt/compiler/lib/libomp-fallback-imf.o
+<installdir>/opt/compiler/lib/libomp-imf-fp64.o
+<installdir>/opt/compiler/lib/libomp-imf.o
+<installdir>/opt/compiler/lib/libomp-asan-pvc.o
+<installdir>/opt/compiler/lib/libomp-asan.o
+<installdir>/opt/compiler/lib/libomp-msan.o
+<installdir>/opt/compiler/lib/libomp-msan-pvc.o
+<installdir>/opt/compiler/lib/libomp-tsan.o
+<installdir>/opt/compiler/lib/libomp-tsan-pvc.o
+<installdir>/lib/libiomp5.so
+<installdir>/lib/libiompstubs5.so
+<installdir>/lib/libiomp5_db.so
+<installdir>/lib/cl.cfg
+<installdir>/lib/libcommon_clang.so
+<installdir>/lib/libintelocl.so
+<installdir>/lib/clbltfnshared.rtl
+<installdir>/lib/clbltfnz0.rtl
+<installdir>/lib/clbltfnl9.rtl
+<installdir>/lib/clbltfnh8.rtl
+<installdir>/lib/clbltfne9.rtl
+<installdir>/lib/clbltfnz1.rtl
+<installdir>/lib/cllibraryz1.o
+<installdir>/lib/cllibrary.rtl
+<installdir>/lib/cllibrarye9.o
+<installdir>/lib/cllibraryh8.o
+<installdir>/lib/cllibraryl9.o
+<installdir>/lib/cllibraryz0.o
+<installdir>/lib/libintelocl.so-gdb.py
+<installdir>/lib/libocl_svml_e9.so
+<installdir>/lib/libocl_svml_h8.so
+<installdir>/lib/libocl_svml_l9.so
+<installdir>/lib/libocl_svml_z0.so
+<installdir>/lib/libocl_svml_z1.so
+<installdir>/lib/libcommon_clang.so.2026.21.7.0
+<installdir>/lib/libintelocl.so.2026.21.7.0
+<installdir>/lib/libOpenCL.so.1
+<installdir>/lib/libOpenCL.so
+<installdir>/lib/libOpenCL.so.1.0.0
+<installdir>//share/doc/opencl/licensing/third-party-programs.txt
+<installdir>//share/doc/opencl/licensing/TBB_TPP.txt
+<installdir>//share/doc/opencl/licensing/EULA.txt

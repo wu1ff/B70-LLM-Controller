@@ -1,0 +1,467 @@
+{
+  "date": "2026-10-22 America/Phoenix",
+  "scope": "Separate source derivatives; accepted replay/native inputs and all original campaign/archive bytes remain immutable.",
+  "missing_phase4_vllm_headers_covered": 15,
+  "kernel_wrapper_covered": true,
+  "gdn_int64_headers_covered": 3,
+  "files": [
+    {
+      "path": "dependencies/gdn-headers/csrc/xpu/gdn_attn/causal_conv1d.hpp",
+      "accepted_sha256": "e99b5de3a12e812be08e5e85bf0a2607cce866270114f2ed25ea4ba3ccd86aac",
+      "notice_sha256": "9dffeb8b60050c71864068dcc74f4f06732cb563a786aa767fd25e983e7f3944",
+      "insert_offset": 0,
+      "comment": "// Modified for the B70 Flash-Next DFlash2 campaign; notice export 2026-10-22.\n// B70 Flash-Next correction: 64-bit causal-convolution indexing. Exact pre-notice source is retained in production/dependencies/gdn-headers; this derivative changes comments only.\n// Implementation attribution: Wulf integration and Astra campaign records; see licenses/NOTICE.md.\n// This notice adds no license grant and does not replace upstream notices.\n",
+      "status": "COMMENT_ONLY_STAGED; not installed in frozen image"
+    },
+    {
+      "path": "dependencies/gdn-headers/csrc/xpu/gdn_attn/xe_2/chunk_causal_conv1d_tiled_xe2.hpp",
+      "accepted_sha256": "ee239ed0d9eb9af9c183c707262d97c617ff4b6ff10d22296c6fd924e0902a7b",
+      "notice_sha256": "6414a8e628e08b0eb9d119cfa8b33caf0072d1cf1be773092c0962a7114be28a",
+      "insert_offset": 0,
+      "comment": "// Modified for the B70 Flash-Next DFlash2 campaign; notice export 2026-10-22.\n// B70 Flash-Next correction: 64-bit causal-convolution indexing. Exact pre-notice source is retained in production/dependencies/gdn-headers; this derivative changes comments only.\n// Implementation attribution: Wulf integration and Astra campaign records; see licenses/NOTICE.md.\n// This notice adds no license grant and does not replace upstream notices.\n",
+      "status": "COMMENT_ONLY_STAGED; not installed in frozen image"
+    },
+    {
+      "path": "dependencies/gdn-headers/csrc/xpu/gdn_attn/xe_2/chunk_causal_conv1d_xe2.hpp",
+      "accepted_sha256": "bc643f91d2d5b8a5b0949c7c8acff4c551ce916c3ff77564e6644368aef6c001",
+      "notice_sha256": "817cb133ed34ffdf18b8ce894a0a62198dacf617565bb4434bd17fbe9dcf2443",
+      "insert_offset": 0,
+      "comment": "// Modified for the B70 Flash-Next DFlash2 campaign; notice export 2026-10-22.\n// B70 Flash-Next correction: 64-bit causal-convolution indexing. Exact pre-notice source is retained in production/dependencies/gdn-headers; this derivative changes comments only.\n// Implementation attribution: Wulf integration and Astra campaign records; see licenses/NOTICE.md.\n// This notice adds no license grant and does not replace upstream notices.\n",
+      "status": "COMMENT_ONLY_STAGED; not installed in frozen image"
+    },
+    {
+      "path": "native/astra500-beyond-prefill/beyond_prefill.cpp",
+      "accepted_sha256": "465be5170d77338c4dec09508a319f0176cebbad34cd3f85a0b84f850d9b9477",
+      "notice_sha256": "f2ba96f017e2ef7344a20e283fd8d9625c9463764da41bdb7d61867d5ef4ec7e",
+      "insert_offset": 0,
+      "comment": "// Modified for the B70 Flash-Next DFlash2 campaign; notice export 2026-10-22.\n// DFlash2 campaign native kernel/residency integration; original upstream licensing and attribution remain below. Exact accepted inputs and build commands are in production/manifests/native-builds.json.\n// Implementation attribution: Wulf integration and Astra campaign records; see licenses/NOTICE.md.\n// This notice adds no license grant and does not replace upstream notices.\n",
+      "status": "COMMENT_ONLY_STAGED; not installed in frozen image"
+    },
+    {
+      "path": "native/astra500-beyond-prefill/direct_gemm_v2.hpp",
+      "accepted_sha256": "a723129d94d02a9aa0b7c36d0ac87d750d3622c6607c4346f823a4bccd37a688",
+      "notice_sha256": "54a06a43cb46183b0d28048fa9c883cfb11a82a4ce0ef4d03fda2ba39b565a91",
+      "insert_offset": 0,
+      "comment": "// Modified for the B70 Flash-Next DFlash2 campaign; notice export 2026-10-22.\n// DFlash2 campaign native kernel/residency integration; original upstream licensing and attribution remain below. Exact accepted inputs and build commands are in production/manifests/native-builds.json.\n// Implementation attribution: Wulf integration and Astra campaign records; see licenses/NOTICE.md.\n// This notice adds no license grant and does not replace upstream notices.\n",
+      "status": "COMMENT_ONLY_STAGED; not installed in frozen image"
+    },
+    {
+      "path": "native/astra500-dominant-native/layout_gemm.hpp",
+      "accepted_sha256": "7d6ffb1eec6992f99238f5e8c380707605a961656c1d4134a4080e14aebc4a9b",
+      "notice_sha256": "f8330dfb4f3aca52cdfcaf2e593162b2591773ea84f7da2670af7c5d3ccafe1c",
+      "insert_offset": 0,
+      "comment": "// Modified for the B70 Flash-Next DFlash2 campaign; notice export 2026-10-22.\n// DFlash2 campaign native kernel/residency integration; original upstream licensing and attribution remain below. Exact accepted inputs and build commands are in production/manifests/native-builds.json.\n// Implementation attribution: Wulf integration and Astra campaign records; see licenses/NOTICE.md.\n// This notice adds no license grant and does not replace upstream notices.\n",
+      "status": "COMMENT_ONLY_STAGED; not installed in frozen image"
+    },
+    {
+      "path": "native/astra500-dominant-native/w4_layout.cpp",
+      "accepted_sha256": "4bef7018a71ee1bcabb18f88e106a5730b4ea42253dc6cae13251a1da9003998",
+      "notice_sha256": "669522152394b61330ecd8c3f4fd3e2dd45a53f097543daa9ab632c19997c09a",
+      "insert_offset": 0,
+      "comment": "// Modified for the B70 Flash-Next DFlash2 campaign; notice export 2026-10-22.\n// DFlash2 campaign native kernel/residency integration; original upstream licensing and attribution remain below. Exact accepted inputs and build commands are in production/manifests/native-builds.json.\n// Implementation attribution: Wulf integration and Astra campaign records; see licenses/NOTICE.md.\n// This notice adds no license grant and does not replace upstream notices.\n",
+      "status": "COMMENT_ONLY_STAGED; not installed in frozen image"
+    },
+    {
+      "path": "native/astra500-native/astra_moe.cpp",
+      "accepted_sha256": "38dd2f12da21a143a6cfa7050d630e460954cfa06499c672d7023b554cd08baf",
+      "notice_sha256": "e005499e171c8a012e2ba6ac917c2e8663df312471ca6a417f8a1f4e725c86ab",
+      "insert_offset": 0,
+      "comment": "// Modified for the B70 Flash-Next DFlash2 campaign; notice export 2026-10-22.\n// DFlash2 campaign native kernel/residency integration; original upstream licensing and attribution remain below. Exact accepted inputs and build commands are in production/manifests/native-builds.json.\n// Implementation attribution: Wulf integration and Astra campaign records; see licenses/NOTICE.md.\n// This notice adds no license grant and does not replace upstream notices.\n",
+      "status": "COMMENT_ONLY_STAGED; not installed in frozen image"
+    },
+    {
+      "path": "native/astra500-ownership-batch/astra_batch.cpp",
+      "accepted_sha256": "edd368bf0203085ced760ec66d47071986a0d120c2a2e01128ff85f56ff0b8fb",
+      "notice_sha256": "6be86eb71dc4ff663afe5b17a1c97807f7232b7385fa308163d56390604be56b",
+      "insert_offset": 0,
+      "comment": "// Modified for the B70 Flash-Next DFlash2 campaign; notice export 2026-10-22.\n// DFlash2 campaign native kernel/residency integration; original upstream licensing and attribution remain below. Exact accepted inputs and build commands are in production/manifests/native-builds.json.\n// Implementation attribution: Wulf integration and Astra campaign records; see licenses/NOTICE.md.\n// This notice adds no license grant and does not replace upstream notices.\n",
+      "status": "COMMENT_ONLY_STAGED; not installed in frozen image"
+    },
+    {
+      "path": "native/astra500-ownership-batch/direct_gemm.hpp",
+      "accepted_sha256": "b29bf23c5e9d706d33b0e35bbd79fd922ade9b1b36eb5d5e42ae4f90dd78a167",
+      "notice_sha256": "86398ccf6c55f787f5a292c1d9f7b23ad270ae2ceb3e6b8dadb9681cd5aef2bc",
+      "insert_offset": 0,
+      "comment": "// Modified for the B70 Flash-Next DFlash2 campaign; notice export 2026-10-22.\n// DFlash2 campaign native kernel/residency integration; original upstream licensing and attribution remain below. Exact accepted inputs and build commands are in production/manifests/native-builds.json.\n// Implementation attribution: Wulf integration and Astra campaign records; see licenses/NOTICE.md.\n// This notice adds no license grant and does not replace upstream notices.\n",
+      "status": "COMMENT_ONLY_STAGED; not installed in frozen image"
+    },
+    {
+      "path": "native/astra500-ownership-groups/astra_direct.cpp",
+      "accepted_sha256": "b4dd8789ab0bd2b8f9fbc22809537f48c2f98a7feaaff0d3cbbc443176fbd637",
+      "notice_sha256": "dc98ff400d824579efead5bdf4474593019a35274b97fc141cda6b73449565c1",
+      "insert_offset": 0,
+      "comment": "// Modified for the B70 Flash-Next DFlash2 campaign; notice export 2026-10-22.\n// DFlash2 campaign native kernel/residency integration; original upstream licensing and attribution remain below. Exact accepted inputs and build commands are in production/manifests/native-builds.json.\n// Implementation attribution: Wulf integration and Astra campaign records; see licenses/NOTICE.md.\n// This notice adds no license grant and does not replace upstream notices.\n",
+      "status": "COMMENT_ONLY_STAGED; not installed in frozen image"
+    },
+    {
+      "path": "native/astra500-ownership-groups/direct_gemm.hpp",
+      "accepted_sha256": "512417e6b0ba4e054cff6f2626da28d126c21534c7bbef3d55777e5d4494f25f",
+      "notice_sha256": "c22ae1745ec7b4271b5cec186a665e7607685027e2edc16ef6c5f6536b1e0cce",
+      "insert_offset": 0,
+      "comment": "// Modified for the B70 Flash-Next DFlash2 campaign; notice export 2026-10-22.\n// DFlash2 campaign native kernel/residency integration; original upstream licensing and attribution remain below. Exact accepted inputs and build commands are in production/manifests/native-builds.json.\n// Implementation attribution: Wulf integration and Astra campaign records; see licenses/NOTICE.md.\n// This notice adds no license grant and does not replace upstream notices.\n",
+      "status": "COMMENT_ONLY_STAGED; not installed in frozen image"
+    },
+    {
+      "path": "native/astra500-ownership-groups/ownership_gather.cpp",
+      "accepted_sha256": "035f9952644e9dbe77b17e5c6ad6b519cf4d2601d2e334daa4cf8fe0725b9b1c",
+      "notice_sha256": "6bf56ff1485d8e103e769c5b725ab337c3c212b8b4a45019ad1c8bbd6d79014c",
+      "insert_offset": 0,
+      "comment": "// Modified for the B70 Flash-Next DFlash2 campaign; notice export 2026-10-22.\n// DFlash2 campaign native kernel/residency integration; original upstream licensing and attribution remain below. Exact accepted inputs and build commands are in production/manifests/native-builds.json.\n// Implementation attribution: Wulf integration and Astra campaign records; see licenses/NOTICE.md.\n// This notice adds no license grant and does not replace upstream notices.\n",
+      "status": "COMMENT_ONLY_STAGED; not installed in frozen image"
+    },
+    {
+      "path": "native/astra500-ownership-groups/ownership_remap.cpp",
+      "accepted_sha256": "ada545d108dbc5c709ba8ef44c931b41416b5a0011d950aadeeffeb0a6938c6f",
+      "notice_sha256": "1b026fbdd724eb3722b132e000ee7706ab24106b542e5fe45ec8a01306e14661",
+      "insert_offset": 0,
+      "comment": "// Modified for the B70 Flash-Next DFlash2 campaign; notice export 2026-10-22.\n// DFlash2 campaign native kernel/residency integration; original upstream licensing and attribution remain below. Exact accepted inputs and build commands are in production/manifests/native-builds.json.\n// Implementation attribution: Wulf integration and Astra campaign records; see licenses/NOTICE.md.\n// This notice adds no license grant and does not replace upstream notices.\n",
+      "status": "COMMENT_ONLY_STAGED; not installed in frozen image"
+    },
+    {
+      "path": "native/astra500-structural-hc/astra_hc_v3.cpp",
+      "accepted_sha256": "6f03646101a9adb093b7846c394eb4af913496ed034357db0c5305d7ef215b5f",
+      "notice_sha256": "94a6517339fdf6cecad3397d7bd2db992e726b730fd3ba18fd790312a607bcc7",
+      "insert_offset": 0,
+      "comment": "// Modified for the B70 Flash-Next DFlash2 campaign; notice export 2026-10-22.\n// DFlash2 campaign native kernel/residency integration; original upstream licensing and attribution remain below. Exact accepted inputs and build commands are in production/manifests/native-builds.json.\n// Implementation attribution: Wulf integration and Astra campaign records; see licenses/NOTICE.md.\n// This notice adds no license grant and does not replace upstream notices.\n",
+      "status": "COMMENT_ONLY_STAGED; not installed in frozen image"
+    },
+    {
+      "path": "native/astra500-structural-hc/fused_hc_v3.hpp",
+      "accepted_sha256": "d207bf1399aaa3529fb71083561b18050a7250540ea091311210b0c44a761af9",
+      "notice_sha256": "a5c08aafef1a5fbe944ecb6331614c490d83524223629aef190e22f125ba14a8",
+      "insert_offset": 0,
+      "comment": "// Modified for the B70 Flash-Next DFlash2 campaign; notice export 2026-10-22.\n// DFlash2 campaign native kernel/residency integration; original upstream licensing and attribution remain below. Exact accepted inputs and build commands are in production/manifests/native-builds.json.\n// Implementation attribution: Wulf integration and Astra campaign records; see licenses/NOTICE.md.\n// This notice adds no license grant and does not replace upstream notices.\n",
+      "status": "COMMENT_ONLY_STAGED; not installed in frozen image"
+    },
+    {
+      "path": "native/astra500-structural-moe/astra_direct.cpp",
+      "accepted_sha256": "3949c45afcb72ef94ea51076038d4b05fd3ff604c3fd2679dac11bd1b60823b4",
+      "notice_sha256": "b9bb75cbfbfb7f0c079c135bc478e8de1b95dcb965ab04406d2f4a5c8a419d8e",
+      "insert_offset": 0,
+      "comment": "// Modified for the B70 Flash-Next DFlash2 campaign; notice export 2026-10-22.\n// DFlash2 campaign native kernel/residency integration; original upstream licensing and attribution remain below. Exact accepted inputs and build commands are in production/manifests/native-builds.json.\n// Implementation attribution: Wulf integration and Astra campaign records; see licenses/NOTICE.md.\n// This notice adds no license grant and does not replace upstream notices.\n",
+      "status": "COMMENT_ONLY_STAGED; not installed in frozen image"
+    },
+    {
+      "path": "native/astra500-structural-moe/direct_gemm.hpp",
+      "accepted_sha256": "37b58dd9f567ef06df016df1e5a3247742ad4e8385edc2ed53a79940921d882e",
+      "notice_sha256": "1c11e35323a1a6bfb5a35e675f3525ff8c2fc876b06d2969bff74d7c5f338d26",
+      "insert_offset": 0,
+      "comment": "// Modified for the B70 Flash-Next DFlash2 campaign; notice export 2026-10-22.\n// DFlash2 campaign native kernel/residency integration; original upstream licensing and attribution remain below. Exact accepted inputs and build commands are in production/manifests/native-builds.json.\n// Implementation attribution: Wulf integration and Astra campaign records; see licenses/NOTICE.md.\n// This notice adds no license grant and does not replace upstream notices.\n",
+      "status": "COMMENT_ONLY_STAGED; not installed in frozen image"
+    },
+    {
+      "path": "native/long-hc-selected/hc.cpp",
+      "accepted_sha256": "3fbfd691fd2efffe69fb3d36b96c648abaccf27c4e57095d49537af06b77f969",
+      "notice_sha256": "e60cb8025c3689d0fd5189b80b682df5138ad92b6e6ffc4245a585d041ae2594",
+      "insert_offset": 0,
+      "comment": "// Modified for the B70 Flash-Next DFlash2 campaign; notice export 2026-10-22.\n// DFlash2 campaign native kernel/residency integration; original upstream licensing and attribution remain below. Exact accepted inputs and build commands are in production/manifests/native-builds.json.\n// Implementation attribution: Wulf integration and Astra campaign records; see licenses/NOTICE.md.\n// This notice adds no license grant and does not replace upstream notices.\n",
+      "status": "COMMENT_ONLY_STAGED; not installed in frozen image"
+    },
+    {
+      "path": "native/long-hc-selected/hc_tile.hpp",
+      "accepted_sha256": "8c57f69658c0c7354f8bfd4241bd082373504af400bbccfd0b32a37351959f96",
+      "notice_sha256": "1c30daca2e2a8360bb23159e4d3d43f59dd7d37c9dde6e0d76f3d9391176e1dd",
+      "insert_offset": 0,
+      "comment": "// Modified for the B70 Flash-Next DFlash2 campaign; notice export 2026-10-22.\n// DFlash2 campaign native kernel/residency integration; original upstream licensing and attribution remain below. Exact accepted inputs and build commands are in production/manifests/native-builds.json.\n// Implementation attribution: Wulf integration and Astra campaign records; see licenses/NOTICE.md.\n// This notice adds no license grant and does not replace upstream notices.\n",
+      "status": "COMMENT_ONLY_STAGED; not installed in frozen image"
+    },
+    {
+      "path": "native/long-prefill-native/direct_gemm.hpp",
+      "accepted_sha256": "a4f7f6c04cdabc9d7a910b4372063bdadd5e1dd1dfb61fc5bd56e5548d6a46d4",
+      "notice_sha256": "600fbd11ee27a8e66d8c0cb96e2c94dc707e2d6fa0c5a0ba529d14c3628a48bd",
+      "insert_offset": 0,
+      "comment": "// Modified for the B70 Flash-Next DFlash2 campaign; notice export 2026-10-22.\n// DFlash2 campaign native kernel/residency integration; original upstream licensing and attribution remain below. Exact accepted inputs and build commands are in production/manifests/native-builds.json.\n// Implementation attribution: Wulf integration and Astra campaign records; see licenses/NOTICE.md.\n// This notice adds no license grant and does not replace upstream notices.\n",
+      "status": "COMMENT_ONLY_STAGED; not installed in frozen image"
+    },
+    {
+      "path": "native/long-prefill-native/prefill_small.cpp",
+      "accepted_sha256": "2166316cc51171535610f00201bb9d112eee4d5884af98b5b8cea1280d3dbb21",
+      "notice_sha256": "8abfc514e7cb165ff86698ee4ba6c7dde7ffba8d99f3da81aa11d2874ef4cbaf",
+      "insert_offset": 0,
+      "comment": "// Modified for the B70 Flash-Next DFlash2 campaign; notice export 2026-10-22.\n// DFlash2 campaign native kernel/residency integration; original upstream licensing and attribution remain below. Exact accepted inputs and build commands are in production/manifests/native-builds.json.\n// Implementation attribution: Wulf integration and Astra campaign records; see licenses/NOTICE.md.\n// This notice adds no license grant and does not replace upstream notices.\n",
+      "status": "COMMENT_ONLY_STAGED; not installed in frozen image"
+    },
+    {
+      "path": "native/native/gdn_index64.cpp",
+      "accepted_sha256": "8de6cea7fe553900c1c18d923a1f32b4ee1d42f3c6118cf93cac31e25b7add84",
+      "notice_sha256": "c893c19641cc1d08b8f9358122538e6b017d039737d71cb7dbbf009eb921195d",
+      "insert_offset": 0,
+      "comment": "// Modified for the B70 Flash-Next DFlash2 campaign; notice export 2026-10-22.\n// DFlash2 campaign native kernel/residency integration; original upstream licensing and attribution remain below. Exact accepted inputs and build commands are in production/manifests/native-builds.json.\n// Implementation attribution: Wulf integration and Astra campaign records; see licenses/NOTICE.md.\n// This notice adds no license grant and does not replace upstream notices.\n",
+      "status": "COMMENT_ONLY_STAGED; not installed in frozen image"
+    },
+    {
+      "path": "native/prefill-native/direct_gemm_prefill.hpp",
+      "accepted_sha256": "c426cd3704f3c352c18c922ca5c1eea1946dbc720869e29837d776716f61ba0a",
+      "notice_sha256": "72647a494da7582d7a829ddb21bd8ae6348d1a402e2b8c272600969464d35281",
+      "insert_offset": 0,
+      "comment": "// Modified for the B70 Flash-Next DFlash2 campaign; notice export 2026-10-22.\n// DFlash2 campaign native kernel/residency integration; original upstream licensing and attribution remain below. Exact accepted inputs and build commands are in production/manifests/native-builds.json.\n// Implementation attribution: Wulf integration and Astra campaign records; see licenses/NOTICE.md.\n// This notice adds no license grant and does not replace upstream notices.\n",
+      "status": "COMMENT_ONLY_STAGED; not installed in frozen image"
+    },
+    {
+      "path": "native/prefill-native/prefill_small.cpp",
+      "accepted_sha256": "69ce2f7d226e106150d05894dc1c1d03ebacee503f6a65a225c5dfbe33605a82",
+      "notice_sha256": "ff1a2fa1b8d0b0e965b76a474c57f7504925593a435c1d07dfd7fc2d5687409f",
+      "insert_offset": 0,
+      "comment": "// Modified for the B70 Flash-Next DFlash2 campaign; notice export 2026-10-22.\n// DFlash2 campaign native kernel/residency integration; original upstream licensing and attribution remain below. Exact accepted inputs and build commands are in production/manifests/native-builds.json.\n// Implementation attribution: Wulf integration and Astra campaign records; see licenses/NOTICE.md.\n// This notice adds no license grant and does not replace upstream notices.\n",
+      "status": "COMMENT_ONLY_STAGED; not installed in frozen image"
+    },
+    {
+      "path": "native/residency-shim/l0_peer_residency_shim.c",
+      "accepted_sha256": "f79e1bbaa18a9c29ac621452dd091c6522f2802d96c51a95ca9cb63f1ee1f10c",
+      "notice_sha256": "ab230fbd890b09d51c937076d990d52c3bdb0f999bceefbfadf8b7a11836cd07",
+      "insert_offset": 0,
+      "comment": "// Modified for the B70 Flash-Next DFlash2 campaign; notice export 2026-10-22.\n// DFlash2 campaign native kernel/residency integration; original upstream licensing and attribution remain below. Exact accepted inputs and build commands are in production/manifests/native-builds.json.\n// Implementation attribution: Wulf integration and Astra campaign records; see licenses/NOTICE.md.\n// This notice adds no license grant and does not replace upstream notices.\n",
+      "status": "COMMENT_ONLY_STAGED; not installed in frozen image"
+    },
+    {
+      "path": "reconstructed/vllm/_xpu_ops.py",
+      "accepted_sha256": "9271b737b720b62c1b927c269f56d6f34c6ac46439030098f205c3f90e89300b",
+      "notice_sha256": "64a0524bfe1d12685696d30b03d3bf88e567204f413125f151fa39042678a3aa",
+      "insert_offset": 0,
+      "comment": "# Modified for the B70 Flash-Next DFlash2 campaign; notice export 2026-10-22.\n# DFlash2 loading, proposal/verification/state handling, Disk PLE, native dispatch and serving integration; per-file changes are recorded in production/patch-chain and archive/reconnaissance/CAMPAIGN.md.\n# Implementation attribution: Wulf integration and Astra campaign records; see licenses/NOTICE.md.\n# This notice adds no license grant and does not replace upstream notices.\n",
+      "status": "COMMENT_ONLY_STAGED; not installed in frozen image"
+    },
+    {
+      "path": "reconstructed/vllm/model_executor/layers/fused_moe/experts/xpu_moe.py",
+      "accepted_sha256": "3351465ab5247b05782e1afe69c9ba74d46f5f897f3b57cfa8e235ff7eb2dd30",
+      "notice_sha256": "a49cb46715b44dfb087491dc4e4274bca9074cb0033b0b7cbd27759294f344c9",
+      "insert_offset": 0,
+      "comment": "# Modified for the B70 Flash-Next DFlash2 campaign; notice export 2026-10-22.\n# DFlash2 loading, proposal/verification/state handling, Disk PLE, native dispatch and serving integration; per-file changes are recorded in production/patch-chain and archive/reconnaissance/CAMPAIGN.md.\n# Implementation attribution: Wulf integration and Astra campaign records; see licenses/NOTICE.md.\n# This notice adds no license grant and does not replace upstream notices.\n",
+      "status": "COMMENT_ONLY_STAGED; not installed in frozen image"
+    },
+    {
+      "path": "reconstructed/vllm/model_executor/layers/linear.py",
+      "accepted_sha256": "2155a453f3574e6fbd4ecb504e57377778995435a4ab722b9b257abfaee7ae00",
+      "notice_sha256": "586acabfe5fc56babdf50e26a24b774fa80c6b6ff3bb3132785dcc7e41722d32",
+      "insert_offset": 0,
+      "comment": "# Modified for the B70 Flash-Next DFlash2 campaign; notice export 2026-10-22.\n# DFlash2 loading, proposal/verification/state handling, Disk PLE, native dispatch and serving integration; per-file changes are recorded in production/patch-chain and archive/reconnaissance/CAMPAIGN.md.\n# Implementation attribution: Wulf integration and Astra campaign records; see licenses/NOTICE.md.\n# This notice adds no license grant and does not replace upstream notices.\n",
+      "status": "COMMENT_ONLY_STAGED; not installed in frozen image"
+    },
+    {
+      "path": "reconstructed/vllm/model_executor/layers/mamba/gdn/qwen_gdn_linear_attn.py",
+      "accepted_sha256": "584bd19857aa3dd74f24227de2f2fce757fc4f9ca5a4aaf688052da7d711081a",
+      "notice_sha256": "9172ec0548941c7d806e1caa0970381fdd0a0fa2e70f8358e8f91346dd88cc9f",
+      "insert_offset": 0,
+      "comment": "# Modified for the B70 Flash-Next DFlash2 campaign; notice export 2026-10-22.\n# DFlash2 loading, proposal/verification/state handling, Disk PLE, native dispatch and serving integration; per-file changes are recorded in production/patch-chain and archive/reconnaissance/CAMPAIGN.md.\n# Implementation attribution: Wulf integration and Astra campaign records; see licenses/NOTICE.md.\n# This notice adds no license grant and does not replace upstream notices.\n",
+      "status": "COMMENT_ONLY_STAGED; not installed in frozen image"
+    },
+    {
+      "path": "reconstructed/vllm/model_executor/models/config.py",
+      "accepted_sha256": "95d47664e5f56b31e34f0ef3308bc0e783894664b9cb79e2256f2e96a0d1da59",
+      "notice_sha256": "21d0f185f1b9dbb3fa1f014548d86ecbb3f8911bad6d2993db370ea2a74d92a5",
+      "insert_offset": 0,
+      "comment": "# Modified for the B70 Flash-Next DFlash2 campaign; notice export 2026-10-22.\n# DFlash2 loading, proposal/verification/state handling, Disk PLE, native dispatch and serving integration; per-file changes are recorded in production/patch-chain and archive/reconnaissance/CAMPAIGN.md.\n# Implementation attribution: Wulf integration and Astra campaign records; see licenses/NOTICE.md.\n# This notice adds no license grant and does not replace upstream notices.\n",
+      "status": "COMMENT_ONLY_STAGED; not installed in frozen image"
+    },
+    {
+      "path": "reconstructed/vllm/models/qwen4_exp/__init__.py",
+      "accepted_sha256": "981b71be939776b432db3264d03ede53c09bbac9280b185caf7f88bb07403920",
+      "notice_sha256": "bbacc2494e2a79a8d46a9c05ddce018d9d7f13389cd2b527eb43819933737c01",
+      "insert_offset": 0,
+      "comment": "# Modified for the B70 Flash-Next DFlash2 campaign; notice export 2026-10-22.\n# DFlash2 loading, proposal/verification/state handling, Disk PLE, native dispatch and serving integration; per-file changes are recorded in production/patch-chain and archive/reconnaissance/CAMPAIGN.md.\n# Implementation attribution: Wulf integration and Astra campaign records; see licenses/NOTICE.md.\n# This notice adds no license grant and does not replace upstream notices.\n",
+      "status": "COMMENT_ONLY_STAGED; not installed in frozen image"
+    },
+    {
+      "path": "reconstructed/vllm/models/qwen4_exp/intel_checkpoint.py",
+      "accepted_sha256": "e77b33daa443ce4348c53f3db44660f3a2789a9cf48f53a342682900ef4c432c",
+      "notice_sha256": "35e00bb033aa5aced0fd83003f30afe413b6368e241a858b6ce790db7af9c800",
+      "insert_offset": 0,
+      "comment": "# Modified for the B70 Flash-Next DFlash2 campaign; notice export 2026-10-22.\n# DFlash2 loading, proposal/verification/state handling, Disk PLE, native dispatch and serving integration; per-file changes are recorded in production/patch-chain and archive/reconnaissance/CAMPAIGN.md.\n# Implementation attribution: Wulf integration and Astra campaign records; see licenses/NOTICE.md.\n# This notice adds no license grant and does not replace upstream notices.\n",
+      "status": "COMMENT_ONLY_STAGED; not installed in frozen image"
+    },
+    {
+      "path": "reconstructed/vllm/models/qwen4_exp/nvidia/b70_c1_graph.py",
+      "accepted_sha256": "e34ffd39199cb5b2fdaddfd0c09a5ae6ef21ed36e5dc5dfa4c729c79c854a5dc",
+      "notice_sha256": "58d0fe70f71ba080275bd8a9ccc5556d5477f501948f9bee567a69852ee64304",
+      "insert_offset": 0,
+      "comment": "# Modified for the B70 Flash-Next DFlash2 campaign; notice export 2026-10-22.\n# DFlash2 loading, proposal/verification/state handling, Disk PLE, native dispatch and serving integration; per-file changes are recorded in production/patch-chain and archive/reconnaissance/CAMPAIGN.md.\n# Implementation attribution: Wulf integration and Astra campaign records; see licenses/NOTICE.md.\n# This notice adds no license grant and does not replace upstream notices.\n",
+      "status": "COMMENT_ONLY_STAGED; not installed in frozen image"
+    },
+    {
+      "path": "reconstructed/vllm/models/qwen4_exp/nvidia/b70_disk.py",
+      "accepted_sha256": "14f2a3c094d6089f89359e0c352cb966026318b73e4c7e62f6e6f66d1f1fa530",
+      "notice_sha256": "b751a3839a4cd707261c4bb60292c26b5f421efbc18bd2b143d9b43a5c26aa92",
+      "insert_offset": 0,
+      "comment": "# Modified for the B70 Flash-Next DFlash2 campaign; notice export 2026-10-22.\n# DFlash2 loading, proposal/verification/state handling, Disk PLE, native dispatch and serving integration; per-file changes are recorded in production/patch-chain and archive/reconnaissance/CAMPAIGN.md.\n# Implementation attribution: Wulf integration and Astra campaign records; see licenses/NOTICE.md.\n# This notice adds no license grant and does not replace upstream notices.\n",
+      "status": "COMMENT_ONLY_STAGED; not installed in frozen image"
+    },
+    {
+      "path": "reconstructed/vllm/models/qwen4_exp/nvidia/b70_hc_gemm.py",
+      "accepted_sha256": "ef8a0842f407bbbcc661266ce5fc8468ddc5b53bbf4e537a4ad983d7ee8f72d4",
+      "notice_sha256": "3339ebc6fc0af90d5cf2c9fe777c2aef48517d873bbf7e6f0187c6dbfa62a821",
+      "insert_offset": 0,
+      "comment": "# Modified for the B70 Flash-Next DFlash2 campaign; notice export 2026-10-22.\n# DFlash2 loading, proposal/verification/state handling, Disk PLE, native dispatch and serving integration; per-file changes are recorded in production/patch-chain and archive/reconnaissance/CAMPAIGN.md.\n# Implementation attribution: Wulf integration and Astra campaign records; see licenses/NOTICE.md.\n# This notice adds no license grant and does not replace upstream notices.\n",
+      "status": "COMMENT_ONLY_STAGED; not installed in frozen image"
+    },
+    {
+      "path": "reconstructed/vllm/models/qwen4_exp/nvidia/b70_hyperconnection.py",
+      "accepted_sha256": "26bbab23c6ca771b80999f8d6ad485c4189327357a9aae4d7d61e14b86712b3a",
+      "notice_sha256": "c7b129e598ccd426b65c7a124d4a4f6a839c4c849cd43620ebaf3487c14df9d4",
+      "insert_offset": 0,
+      "comment": "# Modified for the B70 Flash-Next DFlash2 campaign; notice export 2026-10-22.\n# DFlash2 loading, proposal/verification/state handling, Disk PLE, native dispatch and serving integration; per-file changes are recorded in production/patch-chain and archive/reconnaissance/CAMPAIGN.md.\n# Implementation attribution: Wulf integration and Astra campaign records; see licenses/NOTICE.md.\n# This notice adds no license grant and does not replace upstream notices.\n",
+      "status": "COMMENT_ONLY_STAGED; not installed in frozen image"
+    },
+    {
+      "path": "reconstructed/vllm/models/qwen4_exp/nvidia/b70_prefill_hc.py",
+      "accepted_sha256": "dcd4317687e071a6f0b6c7673888fcc67e51b741371a360c9844d5f995357af4",
+      "notice_sha256": "4f022b858e204978da65b85165f952248f93c55d1a78744a99836d341bb9e88c",
+      "insert_offset": 0,
+      "comment": "# Modified for the B70 Flash-Next DFlash2 campaign; notice export 2026-10-22.\n# DFlash2 loading, proposal/verification/state handling, Disk PLE, native dispatch and serving integration; per-file changes are recorded in production/patch-chain and archive/reconnaissance/CAMPAIGN.md.\n# Implementation attribution: Wulf integration and Astra campaign records; see licenses/NOTICE.md.\n# This notice adds no license grant and does not replace upstream notices.\n",
+      "status": "COMMENT_ONLY_STAGED; not installed in frozen image"
+    },
+    {
+      "path": "reconstructed/vllm/models/qwen4_exp/nvidia/b70_target_attention.py",
+      "accepted_sha256": "a1a152ebbecfc3bff714185edd833da3287c4e4bff10cc3f3f3d914b5b95abc1",
+      "notice_sha256": "b9e2b1b5ef86f9753c4245789009f571a3e3d0ab4fec351006bcf1727e00548c",
+      "insert_offset": 0,
+      "comment": "# Modified for the B70 Flash-Next DFlash2 campaign; notice export 2026-10-22.\n# DFlash2 loading, proposal/verification/state handling, Disk PLE, native dispatch and serving integration; per-file changes are recorded in production/patch-chain and archive/reconnaissance/CAMPAIGN.md.\n# Implementation attribution: Wulf integration and Astra campaign records; see licenses/NOTICE.md.\n# This notice adds no license grant and does not replace upstream notices.\n",
+      "status": "COMMENT_ONLY_STAGED; not installed in frozen image"
+    },
+    {
+      "path": "reconstructed/vllm/models/qwen4_exp/nvidia/b70_target_graph.py",
+      "accepted_sha256": "3b666618463f430d2ac02bfc2eb446143774c27fd11a5384010bbac7f19436b1",
+      "notice_sha256": "0528a95ab1ef2ed80a9e7892b305f96eb5ef0f80bb10322b472b011e4ba2e3e4",
+      "insert_offset": 0,
+      "comment": "# Modified for the B70 Flash-Next DFlash2 campaign; notice export 2026-10-22.\n# DFlash2 loading, proposal/verification/state handling, Disk PLE, native dispatch and serving integration; per-file changes are recorded in production/patch-chain and archive/reconnaissance/CAMPAIGN.md.\n# Implementation attribution: Wulf integration and Astra campaign records; see licenses/NOTICE.md.\n# This notice adds no license grant and does not replace upstream notices.\n",
+      "status": "COMMENT_ONLY_STAGED; not installed in frozen image"
+    },
+    {
+      "path": "reconstructed/vllm/models/qwen4_exp/nvidia/c1_verify.py",
+      "accepted_sha256": "c289c433560d6b16473f41a86dc590a96ba0cd6cf233a3d5ceb72e047c2d97da",
+      "notice_sha256": "a48e2517f0cce184e773455b1f33aad20995cc201458854b1c6df9136e349bee",
+      "insert_offset": 0,
+      "comment": "# Modified for the B70 Flash-Next DFlash2 campaign; notice export 2026-10-22.\n# DFlash2 loading, proposal/verification/state handling, Disk PLE, native dispatch and serving integration; per-file changes are recorded in production/patch-chain and archive/reconnaissance/CAMPAIGN.md.\n# Implementation attribution: Wulf integration and Astra campaign records; see licenses/NOTICE.md.\n# This notice adds no license grant and does not replace upstream notices.\n",
+      "status": "COMMENT_ONLY_STAGED; not installed in frozen image"
+    },
+    {
+      "path": "reconstructed/vllm/models/qwen4_exp/nvidia/dflash2_features.py",
+      "accepted_sha256": "c952c8e513e86adb4b137c8aaea018d70fd45d0e4b4c533cb7a0b5d371235042",
+      "notice_sha256": "92cd0205b4dd42b19904fa323c23f7956e77015df64cab0bedd1658c5a06c827",
+      "insert_offset": 0,
+      "comment": "# Modified for the B70 Flash-Next DFlash2 campaign; notice export 2026-10-22.\n# DFlash2 loading, proposal/verification/state handling, Disk PLE, native dispatch and serving integration; per-file changes are recorded in production/patch-chain and archive/reconnaissance/CAMPAIGN.md.\n# Implementation attribution: Wulf integration and Astra campaign records; see licenses/NOTICE.md.\n# This notice adds no license grant and does not replace upstream notices.\n",
+      "status": "COMMENT_ONLY_STAGED; not installed in frozen image"
+    },
+    {
+      "path": "reconstructed/vllm/models/qwen4_exp/nvidia/model.py",
+      "accepted_sha256": "2d1cc52d4332e8d34ea0710e04caf7afa1b511aa4c06bbc5c45791c8f05f5fe6",
+      "notice_sha256": "1a3eb260fd33c17d575611a355dc318d69e71da559faff1130393b793362b584",
+      "insert_offset": 0,
+      "comment": "# Modified for the B70 Flash-Next DFlash2 campaign; notice export 2026-10-22.\n# DFlash2 loading, proposal/verification/state handling, Disk PLE, native dispatch and serving integration; per-file changes are recorded in production/patch-chain and archive/reconnaissance/CAMPAIGN.md.\n# Implementation attribution: Wulf integration and Astra campaign records; see licenses/NOTICE.md.\n# This notice adds no license grant and does not replace upstream notices.\n",
+      "status": "COMMENT_ONLY_STAGED; not installed in frozen image"
+    },
+    {
+      "path": "reconstructed/vllm/models/qwen4_exp/nvidia/ngram_embedding.py",
+      "accepted_sha256": "68a282cbcc0187d849c3a6495167006ef260fef8de3eb73084dd9956c38caff8",
+      "notice_sha256": "0501a8cb700ad4d90f788b9ea2a68736ec77006ee04906e6863e5ff21afd9968",
+      "insert_offset": 0,
+      "comment": "# Modified for the B70 Flash-Next DFlash2 campaign; notice export 2026-10-22.\n# DFlash2 loading, proposal/verification/state handling, Disk PLE, native dispatch and serving integration; per-file changes are recorded in production/patch-chain and archive/reconnaissance/CAMPAIGN.md.\n# Implementation attribution: Wulf integration and Astra campaign records; see licenses/NOTICE.md.\n# This notice adds no license grant and does not replace upstream notices.\n",
+      "status": "COMMENT_ONLY_STAGED; not installed in frozen image"
+    },
+    {
+      "path": "reconstructed/vllm/v1/attention/backends/gdn_attn.py",
+      "accepted_sha256": "9e9ca40956a422ddaba3e4442cb44c8972eab18eca517911224b6f382b665bd6",
+      "notice_sha256": "4888cc1b9acafef0c21ee0261150a41ae97837628c61817ccb3af6e0cafed88d",
+      "insert_offset": 0,
+      "comment": "# Modified for the B70 Flash-Next DFlash2 campaign; notice export 2026-10-22.\n# DFlash2 loading, proposal/verification/state handling, Disk PLE, native dispatch and serving integration; per-file changes are recorded in production/patch-chain and archive/reconnaissance/CAMPAIGN.md.\n# Implementation attribution: Wulf integration and Astra campaign records; see licenses/NOTICE.md.\n# This notice adds no license grant and does not replace upstream notices.\n",
+      "status": "COMMENT_ONLY_STAGED; not installed in frozen image"
+    },
+    {
+      "path": "reconstructed/vllm/v1/core/sched/scheduler.py",
+      "accepted_sha256": "afd5fb83f769572e369953ebcdc5b56f5e44a0ce9adffb89f340c96873f93014",
+      "notice_sha256": "edb39bd7dd031c77586d55a76ce2a8a4ac5894be3ccd5a9c97a4684e846c9758",
+      "insert_offset": 0,
+      "comment": "# Modified for the B70 Flash-Next DFlash2 campaign; notice export 2026-10-22.\n# DFlash2 loading, proposal/verification/state handling, Disk PLE, native dispatch and serving integration; per-file changes are recorded in production/patch-chain and archive/reconnaissance/CAMPAIGN.md.\n# Implementation attribution: Wulf integration and Astra campaign records; see licenses/NOTICE.md.\n# This notice adds no license grant and does not replace upstream notices.\n",
+      "status": "COMMENT_ONLY_STAGED; not installed in frozen image"
+    },
+    {
+      "path": "reconstructed/vllm/v1/sample/ops/topk_topp_triton.py",
+      "accepted_sha256": "bf2f6143e58e8a08a794f98124d5c716e1ad7b2c5c4443151f95f07d953e7cae",
+      "notice_sha256": "dcc9e5d4977706c9492545955358ba530e772efbe1028c08c38c3a5c7948fb4f",
+      "insert_offset": 0,
+      "comment": "# Modified for the B70 Flash-Next DFlash2 campaign; notice export 2026-10-22.\n# DFlash2 loading, proposal/verification/state handling, Disk PLE, native dispatch and serving integration; per-file changes are recorded in production/patch-chain and archive/reconnaissance/CAMPAIGN.md.\n# Implementation attribution: Wulf integration and Astra campaign records; see licenses/NOTICE.md.\n# This notice adds no license grant and does not replace upstream notices.\n",
+      "status": "COMMENT_ONLY_STAGED; not installed in frozen image"
+    },
+    {
+      "path": "reconstructed/vllm/v1/worker/gpu/astra_greedy.py",
+      "accepted_sha256": "383eee474c15bff948179d8933c03fbf727b32f9c5473706e5c51c5a1988e163",
+      "notice_sha256": "a5c9a629d2bda0e6271298384eb8e71c1bf4f22ed4de3eeffeddd1c686708432",
+      "insert_offset": 0,
+      "comment": "# Modified for the B70 Flash-Next DFlash2 campaign; notice export 2026-10-22.\n# DFlash2 loading, proposal/verification/state handling, Disk PLE, native dispatch and serving integration; per-file changes are recorded in production/patch-chain and archive/reconnaissance/CAMPAIGN.md.\n# Implementation attribution: Wulf integration and Astra campaign records; see licenses/NOTICE.md.\n# This notice adds no license grant and does not replace upstream notices.\n",
+      "status": "COMMENT_ONLY_STAGED; not installed in frozen image"
+    },
+    {
+      "path": "reconstructed/vllm/v1/worker/gpu/model_runner.py",
+      "accepted_sha256": "9b718bd2eb4fa696fbd399f26100e7b2a2a003a4fb9ca96c1fe420b844a86271",
+      "notice_sha256": "a003f913a72406f2c9aff7123a9edeb9d24c07bb1c43b11c764c4f768a30963d",
+      "insert_offset": 0,
+      "comment": "# Modified for the B70 Flash-Next DFlash2 campaign; notice export 2026-10-22.\n# DFlash2 loading, proposal/verification/state handling, Disk PLE, native dispatch and serving integration; per-file changes are recorded in production/patch-chain and archive/reconnaissance/CAMPAIGN.md.\n# Implementation attribution: Wulf integration and Astra campaign records; see licenses/NOTICE.md.\n# This notice adds no license grant and does not replace upstream notices.\n",
+      "status": "COMMENT_ONLY_STAGED; not installed in frozen image"
+    },
+    {
+      "path": "reconstructed/vllm/v1/worker/gpu/sample/xpu_filter_warmup.py",
+      "accepted_sha256": "3dbebbaca7a44844e48b69ae8587cdb0a0ba10388950e115c66ea4ee6e254277",
+      "notice_sha256": "7bab4b6c68c1ca9b89c293d05bc5074839ba71d9f9410c198e13dba76e4582e3",
+      "insert_offset": 0,
+      "comment": "# Modified for the B70 Flash-Next DFlash2 campaign; notice export 2026-10-22.\n# DFlash2 loading, proposal/verification/state handling, Disk PLE, native dispatch and serving integration; per-file changes are recorded in production/patch-chain and archive/reconnaissance/CAMPAIGN.md.\n# Implementation attribution: Wulf integration and Astra campaign records; see licenses/NOTICE.md.\n# This notice adds no license grant and does not replace upstream notices.\n",
+      "status": "COMMENT_ONLY_STAGED; not installed in frozen image"
+    },
+    {
+      "path": "reconstructed/vllm/v1/worker/gpu/spec_decode/dflash/speculator.py",
+      "accepted_sha256": "b8f1fa3475085397b96090e1ec25ea8ad255e33695dabc8dc9f07c254f25a96f",
+      "notice_sha256": "512c4099f1f28f3aa3ca2352f51ad87e14338f92a079c1b9e72d3ec8c3052d2e",
+      "insert_offset": 0,
+      "comment": "# Modified for the B70 Flash-Next DFlash2 campaign; notice export 2026-10-22.\n# DFlash2 loading, proposal/verification/state handling, Disk PLE, native dispatch and serving integration; per-file changes are recorded in production/patch-chain and archive/reconnaissance/CAMPAIGN.md.\n# Implementation attribution: Wulf integration and Astra campaign records; see licenses/NOTICE.md.\n# This notice adds no license grant and does not replace upstream notices.\n",
+      "status": "COMMENT_ONLY_STAGED; not installed in frozen image"
+    },
+    {
+      "path": "reconstructed/vllm/v1/worker/gpu_worker.py",
+      "accepted_sha256": "c47cb01a7bb3064aae0bdda32ee6b9d10dabdf37d32a0f4d7e2a46e648022cca",
+      "notice_sha256": "12de37be445aa37bca49eff037e8edd6161275eaaca6db67e733c2a8249601ec",
+      "insert_offset": 0,
+      "comment": "# Modified for the B70 Flash-Next DFlash2 campaign; notice export 2026-10-22.\n# DFlash2 loading, proposal/verification/state handling, Disk PLE, native dispatch and serving integration; per-file changes are recorded in production/patch-chain and archive/reconnaissance/CAMPAIGN.md.\n# Implementation attribution: Wulf integration and Astra campaign records; see licenses/NOTICE.md.\n# This notice adds no license grant and does not replace upstream notices.\n",
+      "status": "COMMENT_ONLY_STAGED; not installed in frozen image"
+    },
+    {
+      "path": "reconstructed/vllm/v1/worker/mamba_utils.py",
+      "accepted_sha256": "91f12db0ab44064d6a4400e34a86d14443c61c1a56df32ef1a880a44ab109221",
+      "notice_sha256": "161e884170b6c475ad30cd2cf8ec5cfa222ba70be7cd380b2f43a484a807cd24",
+      "insert_offset": 0,
+      "comment": "# Modified for the B70 Flash-Next DFlash2 campaign; notice export 2026-10-22.\n# DFlash2 loading, proposal/verification/state handling, Disk PLE, native dispatch and serving integration; per-file changes are recorded in production/patch-chain and archive/reconnaissance/CAMPAIGN.md.\n# Implementation attribution: Wulf integration and Astra campaign records; see licenses/NOTICE.md.\n# This notice adds no license grant and does not replace upstream notices.\n",
+      "status": "COMMENT_ONLY_STAGED; not installed in frozen image"
+    },
+    {
+      "path": "reconstructed/vllm_xpu_kernels/astra500_moe.py",
+      "accepted_sha256": "9346e3d41d2d7b890edf441624359db7d8d77214b19d776878bd0e5a1dbc3806",
+      "notice_sha256": "df4a67d6746cb55fdb0d678f25dfbe9e86175115b7c1182defc4df3d8bb354b8",
+      "insert_offset": 0,
+      "comment": "# Modified for the B70 Flash-Next DFlash2 campaign; notice export 2026-10-22.\n# DFlash2 loading, proposal/verification/state handling, Disk PLE, native dispatch and serving integration; per-file changes are recorded in production/patch-chain and archive/reconnaissance/CAMPAIGN.md.\n# Implementation attribution: Wulf integration and Astra campaign records; see licenses/NOTICE.md.\n# This notice adds no license grant and does not replace upstream notices.\n",
+      "status": "COMMENT_ONLY_STAGED; not installed in frozen image"
+    },
+    {
+      "path": "reconstructed/vllm_xpu_kernels/astra_ownership.py",
+      "accepted_sha256": "1c445de78cadbbbba037161e399edab93d82d0302f09760ba22bd233bfa55a47",
+      "notice_sha256": "38f16460ae1667f9f5e5adc80b7bdd590f7785dbf9b964abc34f56bd627bdc5f",
+      "insert_offset": 0,
+      "comment": "# Modified for the B70 Flash-Next DFlash2 campaign; notice export 2026-10-22.\n# DFlash2 loading, proposal/verification/state handling, Disk PLE, native dispatch and serving integration; per-file changes are recorded in production/patch-chain and archive/reconnaissance/CAMPAIGN.md.\n# Implementation attribution: Wulf integration and Astra campaign records; see licenses/NOTICE.md.\n# This notice adds no license grant and does not replace upstream notices.\n",
+      "status": "COMMENT_ONLY_STAGED; not installed in frozen image"
+    },
+    {
+      "path": "reconstructed/vllm_xpu_kernels/astra_structural.py",
+      "accepted_sha256": "6650c391e6defcf0433ace77ba7fb63ba69c5e88e43fb5d5f29dcc79318e7f9e",
+      "notice_sha256": "1b445bbe587426d09762b5b397f319578d0935270b38fe5fa439ef1772ef6bbf",
+      "insert_offset": 0,
+      "comment": "# Modified for the B70 Flash-Next DFlash2 campaign; notice export 2026-10-22.\n# DFlash2 loading, proposal/verification/state handling, Disk PLE, native dispatch and serving integration; per-file changes are recorded in production/patch-chain and archive/reconnaissance/CAMPAIGN.md.\n# Implementation attribution: Wulf integration and Astra campaign records; see licenses/NOTICE.md.\n# This notice adds no license grant and does not replace upstream notices.\n",
+      "status": "COMMENT_ONLY_STAGED; not installed in frozen image"
+    },
+    {
+      "path": "reconstructed/vllm_xpu_kernels/fused_moe_interface.py",
+      "accepted_sha256": "0f2fb737da190ff3f662083f38ca01182da38631d545cc8e69d6763fab3987ad",
+      "notice_sha256": "a99cf739748f4e1bf1c76d6f75a8f6006d7a49f069cfadbbde7bee3fb785e745",
+      "insert_offset": 0,
+      "comment": "# Modified for the B70 Flash-Next DFlash2 campaign; notice export 2026-10-22.\n# DFlash2 loading, proposal/verification/state handling, Disk PLE, native dispatch and serving integration; per-file changes are recorded in production/patch-chain and archive/reconnaissance/CAMPAIGN.md.\n# Implementation attribution: Wulf integration and Astra campaign records; see licenses/NOTICE.md.\n# This notice adds no license grant and does not replace upstream notices.\n",
+      "status": "COMMENT_ONLY_STAGED; not installed in frozen image"
+    }
+  ],
+  "executable_differences": "none staged; executable image not modified; no native binary equivalence claim",
+  "remaining": "Review archival originals and incorporate applicable notices/source-access directions in eventual distributed executable/source artifacts before publication."
+}

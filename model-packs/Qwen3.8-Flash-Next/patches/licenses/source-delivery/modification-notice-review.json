@@ -1,0 +1,86 @@
+{
+  "scope": "Modified vLLM upstream files; header inspection only, original exact source bytes preserved.",
+  "files": [
+    {
+      "path": "vllm/_xpu_ops.py",
+      "accepted_sha256": "9271b737b720b62c1b927c269f56d6f34c6ac46439030098f205c3f90e89300b",
+      "explicit_modification_header": false
+    },
+    {
+      "path": "vllm/model_executor/layers/fused_moe/experts/xpu_moe.py",
+      "accepted_sha256": "3351465ab5247b05782e1afe69c9ba74d46f5f897f3b57cfa8e235ff7eb2dd30",
+      "explicit_modification_header": false
+    },
+    {
+      "path": "vllm/model_executor/layers/linear.py",
+      "accepted_sha256": "2155a453f3574e6fbd4ecb504e57377778995435a4ab722b9b257abfaee7ae00",
+      "explicit_modification_header": false
+    },
+    {
+      "path": "vllm/model_executor/layers/mamba/gdn/qwen_gdn_linear_attn.py",
+      "accepted_sha256": "584bd19857aa3dd74f24227de2f2fce757fc4f9ca5a4aaf688052da7d711081a",
+      "explicit_modification_header": false
+    },
+    {
+      "path": "vllm/model_executor/models/config.py",
+      "accepted_sha256": "95d47664e5f56b31e34f0ef3308bc0e783894664b9cb79e2256f2e96a0d1da59",
+      "explicit_modification_header": false
+    },
+    {
+      "path": "vllm/models/qwen4_exp/__init__.py",
+      "accepted_sha256": "981b71be939776b432db3264d03ede53c09bbac9280b185caf7f88bb07403920",
+      "explicit_modification_header": false
+    },
+    {
+      "path": "vllm/models/qwen4_exp/nvidia/model.py",
+      "accepted_sha256": "2d1cc52d4332e8d34ea0710e04caf7afa1b511aa4c06bbc5c45791c8f05f5fe6",
+      "explicit_modification_header": false
+    },
+    {
+      "path": "vllm/models/qwen4_exp/nvidia/model_state.py",
+      "accepted_sha256": "b492fa8c4f0b1d3714e342669778cba3487dcbd55dfc9f143e8af34598942e4e",
+      "explicit_modification_header": true
+    },
+    {
+      "path": "vllm/models/qwen4_exp/nvidia/ngram_embedding.py",
+      "accepted_sha256": "68a282cbcc0187d849c3a6495167006ef260fef8de3eb73084dd9956c38caff8",
+      "explicit_modification_header": false
+    },
+    {
+      "path": "vllm/v1/attention/backends/gdn_attn.py",
+      "accepted_sha256": "9e9ca40956a422ddaba3e4442cb44c8972eab18eca517911224b6f382b665bd6",
+      "explicit_modification_header": false
+    },
+    {
+      "path": "vllm/v1/core/sched/scheduler.py",
+      "accepted_sha256": "afd5fb83f769572e369953ebcdc5b56f5e44a0ce9adffb89f340c96873f93014",
+      "explicit_modification_header": false
+    },
+    {
+      "path": "vllm/v1/sample/ops/topk_topp_triton.py",
+      "accepted_sha256": "bf2f6143e58e8a08a794f98124d5c716e1ad7b2c5c4443151f95f07d953e7cae",
+      "explicit_modification_header": false
+    },
+    {
+      "path": "vllm/v1/worker/gpu/model_runner.py",
+      "accepted_sha256": "9b718bd2eb4fa696fbd399f26100e7b2a2a003a4fb9ca96c1fe420b844a86271",
+      "explicit_modification_header": false
+    },
+    {
+      "path": "vllm/v1/worker/gpu/spec_decode/dflash/speculator.py",
+      "accepted_sha256": "b8f1fa3475085397b96090e1ec25ea8ad255e33695dabc8dc9f07c254f25a96f",
+      "explicit_modification_header": false
+    },
+    {
+      "path": "vllm/v1/worker/gpu_worker.py",
+      "accepted_sha256": "c47cb01a7bb3064aae0bdda32ee6b9d10dabdf37d32a0f4d7e2a46e648022cca",
+      "explicit_modification_header": false
+    },
+    {
+      "path": "vllm/v1/worker/mamba_utils.py",
+      "accepted_sha256": "91f12db0ab44064d6a4400e34a86d14443c61c1a56df32ef1a880a44ab109221",
+      "explicit_modification_header": false
+    }
+  ],
+  "status": "Resolve missing prominent changed-file notices before source publication; track any notice-only derivative separately from accepted hashes."
+}

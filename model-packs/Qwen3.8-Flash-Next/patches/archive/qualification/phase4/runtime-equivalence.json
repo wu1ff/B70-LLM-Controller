@@ -1,0 +1,41 @@
+{
+  "passed": true,
+  "workers": [
+    {
+      "worker": "VLLM::Worker_TP0_EP0",
+      "library_paths_and_hashes_equal": true,
+      "observed_libraries": 19,
+      "ple_mapping_equal": true,
+      "accepted_primary_gpu": "0000:03:00.0",
+      "candidate_primary_gpu": "0000:03:00.0",
+      "passed": true
+    },
+    {
+      "worker": "VLLM::Worker_TP1_EP1",
+      "library_paths_and_hashes_equal": true,
+      "observed_libraries": 19,
+      "ple_mapping_equal": true,
+      "accepted_primary_gpu": "0000:43:00.0",
+      "candidate_primary_gpu": "0000:43:00.0",
+      "passed": true
+    },
+    {
+      "worker": "VLLM::Worker_TP2_EP2",
+      "library_paths_and_hashes_equal": true,
+      "observed_libraries": 19,
+      "ple_mapping_equal": true,
+      "accepted_primary_gpu": "0000:83:00.0",
+      "candidate_primary_gpu": "0000:83:00.0",
+      "passed": true
+    },
+    {
+      "worker": "VLLM::Worker_TP3_EP3",
+      "library_paths_and_hashes_equal": true,
+      "observed_libraries": 19,
+      "ple_mapping_equal": true,
+      "accepted_primary_gpu": "0000:c8:00.0",
+      "candidate_primary_gpu": "0000:c8:00.0",
+      "passed": true
+    }
+  ]
+}

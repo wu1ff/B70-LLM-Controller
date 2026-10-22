@@ -1,0 +1,14 @@
+{
+  "image": "sha256:6e2ab4e686680a5208ff0119c4637341cba81942bd39b6576ea14dc8f547b83b",
+  "tag": "qwen38-flashnext-dflash2:integrated-serving-v1",
+  "accepted_image": "sha256:3759949f91996e86dd510310c623fef9933ae296ae3493778bf9698d4bb477f3",
+  "parent_layers_exact": true,
+  "payload": {
+    "vllm/v1/worker/gpu_worker.py": "c47cb01a7bb3064aae0bdda32ee6b9d10dabdf37d32a0f4d7e2a46e648022cca",
+    "vllm/v1/core/sched/scheduler.py": "afd5fb83f769572e369953ebcdc5b56f5e44a0ce9adffb89f340c96873f93014",
+    "vllm/v1/worker/gpu/sample/xpu_filter_warmup.py": "3dbebbaca7a44844e48b69ae8587cdb0a0ba10388950e115c66ea4ee6e254277",
+    "vllm/v1/sample/ops/topk_topp_triton.py": "bf2f6143e58e8a08a794f98124d5c716e1ad7b2c5c4443151f95f07d953e7cae"
+  },
+  "excluded_prototype": "integrated-v1 / expanded native operators and PLE capacity",
+  "launch": "/home/wulf/Desktop/Benchmarking/flashnext-integrated-serving-20261022/launch-flashnext-integrated-final.json"
+}

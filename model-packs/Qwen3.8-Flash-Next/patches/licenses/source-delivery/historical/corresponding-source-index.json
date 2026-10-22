@@ -1,0 +1,736 @@
+{
+  "ubuntu": [
+    {
+      "source": "apt",
+      "version": "2.8.3",
+      "installed_packages": [
+        "apt",
+        "libapt-pkg6.0t64:amd64"
+      ],
+      "files": [
+        {
+          "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/apt/2.8.3/apt_2.8.3.dsc",
+          "local": "corresponding-source/ubuntu/apt/apt_2.8.3.dsc",
+          "size": 2973,
+          "sha256": "1d41cd04115e1a79f0fa4d738e5c34603ae8a4f40122d8a18a622fd6d20a5523"
+        },
+        {
+          "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/apt/2.8.3/apt_2.8.3.tar.xz",
+          "local": "corresponding-source/ubuntu/apt/apt_2.8.3.tar.xz",
+          "size": 2354680,
+          "sha256": "088522b3613b28fdbcfa61f1f7e476bf6dc6b0120a8f74409e9527580c9f9d3b"
+        }
+      ],
+      "publication": {
+        "self_link": "https://api.launchpad.net/1.0/ubuntu/+archive/primary/+sourcepub/17305170",
+        "resource_type_link": "https://api.launchpad.net/1.0/#source_package_publishing_history",
+        "display_name": "apt 2.8.3 in noble",
+        "component_name": "main",
+        "section_name": "admin",
+        "status": "Published",
+        "distro_series_link": "https://api.launchpad.net/1.0/ubuntu/noble",
+        "date_published": "2025-05-28T19:04:14.892298+00:00",
+        "scheduled_deletion_date": null,
+        "pocket": "Updates",
+        "archive_link": "https://api.launchpad.net/1.0/ubuntu/+archive/primary",
+        "copied_from_archive_link": "https://api.launchpad.net/1.0/ubuntu/+archive/primary",
+        "date_superseded": null,
+        "date_created": "2025-05-28T18:50:27.084442+00:00",
+        "date_made_pending": null,
+        "date_removed": null,
+        "removed_by_link": null,
+        "removal_comment": null,
+        "source_package_name": "apt",
+        "source_package_version": "2.8.3",
+        "package_creator_link": "https://api.launchpad.net/1.0/~juliank",
+        "package_maintainer_link": "https://api.launchpad.net/1.0/~deity",
+        "package_signer_link": "https://api.launchpad.net/1.0/~juliank",
+        "creator_link": "https://api.launchpad.net/1.0/~ahasenack",
+        "sponsor_link": null,
+        "packageupload_link": null,
+        "http_etag": "\"42b769b1ef12883a99473edb8ec2e6c70f322511-a2831a3b9ab8239f046b9ea2fd2a91d9387cf552\""
+      },
+      "dsc_sha256_membership_exact": true,
+      "complete_exact_source_files_available": true,
+      "debian_rules_present": true,
+      "dsc_source_version_matches_installed": true
+    },
+    {
+      "source": "bash",
+      "version": "5.2.21-2ubuntu4",
+      "installed_packages": [
+        "bash"
+      ],
+      "files": [
+        {
+          "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/bash/5.2.21-2ubuntu4/bash_5.2.21-2ubuntu4.dsc",
+          "local": "corresponding-source/ubuntu/bash/bash_5.2.21-2ubuntu4.dsc",
+          "size": 2437,
+          "sha256": "d5a89c09f42c828d5e31dc3a1680882aa0ddaad5072963e563dec7dfc4919d33"
+        },
+        {
+          "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/bash/5.2.21-2ubuntu4/bash_5.2.21-2ubuntu4.debian.tar.xz",
+          "local": "corresponding-source/ubuntu/bash/bash_5.2.21-2ubuntu4.debian.tar.xz",
+          "size": 94124,
+          "sha256": "bdb10c18d167dda3b265cb3db75314d524edbf7794fed36f0fb0dcc32f5e6ac9"
+        },
+        {
+          "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/bash/5.2.21-2ubuntu4/bash_5.2.21.orig.tar.xz",
+          "local": "corresponding-source/ubuntu/bash/bash_5.2.21.orig.tar.xz",
+          "size": 5598816,
+          "sha256": "ec21ab4efd6bd7a6e2802fbda622b81bfc43a8095d721234d4bf075797683014"
+        }
+      ],
+      "publication": {
+        "self_link": "https://api.launchpad.net/1.0/ubuntu/+archive/primary/+sourcepub/15920518",
+        "resource_type_link": "https://api.launchpad.net/1.0/#source_package_publishing_history",
+        "display_name": "bash 5.2.21-2ubuntu4 in noble",
+        "component_name": "main",
+        "section_name": "shells",
+        "status": "Published",
+        "distro_series_link": "https://api.launchpad.net/1.0/ubuntu/noble",
+        "date_published": "2024-04-08T17:01:45.816601+00:00",
+        "scheduled_deletion_date": null,
+        "pocket": "Release",
+        "archive_link": "https://api.launchpad.net/1.0/ubuntu/+archive/primary",
+        "copied_from_archive_link": "https://api.launchpad.net/1.0/ubuntu/+archive/primary",
+        "date_superseded": null,
+        "date_created": "2024-04-08T16:19:50.215957+00:00",
+        "date_made_pending": null,
+        "date_removed": null,
+        "removed_by_link": null,
+        "removal_comment": null,
+        "source_package_name": "bash",
+        "source_package_version": "5.2.21-2ubuntu4",
+        "package_creator_link": "https://api.launchpad.net/1.0/~vorlon",
+        "package_maintainer_link": "https://api.launchpad.net/1.0/~ubuntu-devel-discuss-lists",
+        "package_signer_link": "https://api.launchpad.net/1.0/~vorlon",
+        "creator_link": "https://api.launchpad.net/1.0/~katie",
+        "sponsor_link": "https://api.launchpad.net/1.0/~ubuntu-archive-robot",
+        "packageupload_link": null,
+        "http_etag": "\"3950b6c1bb4badf692f818ec536ae1d51ce3885d-c74dd3472586ada3e6144017d641cfbc6b4d7da5\""
+      },
+      "dsc_sha256_membership_exact": true,
+      "debian_rules_present": true,
+      "debian_patches_entries": 22,
+      "complete_exact_source_files_available": true,
+      "dsc_source_version_matches_installed": true
+    },
+    {
+      "source": "binutils",
+      "version": "2.42-4ubuntu2.10",
+      "installed_packages": [
+        "binutils",
+        "binutils-common:amd64",
+        "binutils-x86-64-linux-gnu",
+        "libbinutils:amd64",
+        "libctf-nobfd0:amd64",
+        "libctf0:amd64",
+        "libgprofng0:amd64",
+        "libsframe1:amd64"
+      ],
+      "files": [
+        {
+          "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/binutils/2.42-4ubuntu2.10/binutils_2.42-4ubuntu2.10.dsc",
+          "local": "corresponding-source/ubuntu/binutils/binutils_2.42-4ubuntu2.10.dsc",
+          "size": 10152,
+          "sha256": "a14a8e2efdb3566955476bccd2248cebed5cf2a2f5d28e223d08200ec1a18d75"
+        },
+        {
+          "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/binutils/2.42-4ubuntu2.10/binutils_2.42-4ubuntu2.10.debian.tar.xz",
+          "local": "corresponding-source/ubuntu/binutils/binutils_2.42-4ubuntu2.10.debian.tar.xz",
+          "size": 196552,
+          "sha256": "6acc777971890cb1efaeeb33a0a5358651c71067ced69dcfd59da7d0977f7530"
+        },
+        {
+          "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/binutils/2.42-4ubuntu2.10/binutils_2.42.orig.tar.xz",
+          "local": "corresponding-source/ubuntu/binutils/binutils_2.42.orig.tar.xz",
+          "size": 27567160,
+          "sha256": "f6e4d41fd5fc778b06b7891457b3620da5ecea1006c6a4a41ae998109f85a800"
+        }
+      ],
+      "publication": {
+        "self_link": "https://api.launchpad.net/1.0/ubuntu/+archive/primary/+sourcepub/18174235",
+        "resource_type_link": "https://api.launchpad.net/1.0/#source_package_publishing_history",
+        "display_name": "binutils 2.42-4ubuntu2.10 in noble",
+        "component_name": "main",
+        "section_name": "devel",
+        "status": "Published",
+        "distro_series_link": "https://api.launchpad.net/1.0/ubuntu/noble",
+        "date_published": "2026-03-18T01:26:49.264059+00:00",
+        "scheduled_deletion_date": null,
+        "pocket": "Updates",
+        "archive_link": "https://api.launchpad.net/1.0/ubuntu/+archive/primary",
+        "copied_from_archive_link": "https://api.launchpad.net/1.0/ubuntu/+archive/primary",
+        "date_superseded": null,
+        "date_created": "2026-03-17T22:53:22.603256+00:00",
+        "date_made_pending": null,
+        "date_removed": null,
+        "removed_by_link": null,
+        "removal_comment": null,
+        "source_package_name": "binutils",
+        "source_package_version": "2.42-4ubuntu2.10",
+        "package_creator_link": "https://api.launchpad.net/1.0/~vpa1977",
+        "package_maintainer_link": "https://api.launchpad.net/1.0/~ubuntu-devel-discuss-lists",
+        "package_signer_link": "https://api.launchpad.net/1.0/~vpa1977",
+        "creator_link": "https://api.launchpad.net/1.0/~raof",
+        "sponsor_link": null,
+        "packageupload_link": null,
+        "http_etag": "\"52a946b038e7416aaa84bbbf373be34428da5d0a-94eee08637eaf5713a0658ad681d0469e0be5294\""
+      },
+      "dsc_sha256_membership_exact": true,
+      "debian_rules_present": true,
+      "debian_patches_entries": 60,
+      "complete_exact_source_files_available": true,
+      "dsc_source_version_matches_installed": true
+    },
+    {
+      "source": "coreutils",
+      "version": "9.4-3ubuntu6.3",
+      "installed_packages": [
+        "coreutils"
+      ],
+      "files": [
+        {
+          "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/coreutils/9.4-3ubuntu6.3/coreutils_9.4-3ubuntu6.3.dsc",
+          "local": "corresponding-source/ubuntu/coreutils/coreutils_9.4-3ubuntu6.3.dsc",
+          "size": 2030,
+          "sha256": "419fea2f0fec8299d95cafb11425391fe45d60b30d052c7f1e3a162ea56a6653"
+        },
+        {
+          "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/coreutils/9.4-3ubuntu6.3/coreutils_9.4-3ubuntu6.3.debian.tar.xz",
+          "local": "corresponding-source/ubuntu/coreutils/coreutils_9.4-3ubuntu6.3.debian.tar.xz",
+          "size": 43156,
+          "sha256": "23eb9e94564e2451ea02a879daa0ee9ba8db3777e84e020fcd08d49aaebc57d4"
+        },
+        {
+          "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/coreutils/9.4-3ubuntu6.3/coreutils_9.4.orig.tar.xz",
+          "local": "corresponding-source/ubuntu/coreutils/coreutils_9.4.orig.tar.xz",
+          "size": 5979200,
+          "sha256": "ea613a4cf44612326e917201bbbcdfbd301de21ffc3b59b6e5c07e040b275e52"
+        }
+      ],
+      "publication": {
+        "self_link": "https://api.launchpad.net/1.0/ubuntu/+archive/primary/+sourcepub/18709776",
+        "resource_type_link": "https://api.launchpad.net/1.0/#source_package_publishing_history",
+        "display_name": "coreutils 9.4-3ubuntu6.3 in noble",
+        "component_name": "main",
+        "section_name": "utils",
+        "status": "Published",
+        "distro_series_link": "https://api.launchpad.net/1.0/ubuntu/noble",
+        "date_published": "2026-08-31T14:05:04.734778+00:00",
+        "scheduled_deletion_date": null,
+        "pocket": "Updates",
+        "archive_link": "https://api.launchpad.net/1.0/ubuntu/+archive/primary",
+        "copied_from_archive_link": "https://api.launchpad.net/1.0/ubuntu/+archive/primary",
+        "date_superseded": null,
+        "date_created": "2026-08-31T13:10:42.218745+00:00",
+        "date_made_pending": null,
+        "date_removed": null,
+        "removed_by_link": null,
+        "removal_comment": null,
+        "source_package_name": "coreutils",
+        "source_package_version": "9.4-3ubuntu6.3",
+        "package_creator_link": "https://api.launchpad.net/1.0/~mdeslaur",
+        "package_maintainer_link": "https://api.launchpad.net/1.0/~ubuntu-devel-discuss-lists",
+        "package_signer_link": "https://api.launchpad.net/1.0/~mdeslaur",
+        "creator_link": "https://api.launchpad.net/1.0/~ubuntu-archive-robot",
+        "sponsor_link": null,
+        "packageupload_link": null,
+        "http_etag": "\"661ea2dbc23e64f48799f9d47dcc91ae4fa203bf-c41dae857d17189fdef252148f7abbdf3d1b8035\""
+      },
+      "dsc_sha256_membership_exact": true,
+      "debian_rules_present": true,
+      "debian_patches_entries": 11,
+      "complete_exact_source_files_available": true,
+      "dsc_source_version_matches_installed": true
+    },
+    {
+      "source": "dpkg",
+      "version": "1.22.6ubuntu6.6",
+      "installed_packages": [
+        "dpkg",
+        "dpkg-dev",
+        "libdpkg-perl"
+      ],
+      "files": [
+        {
+          "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/dpkg/1.22.6ubuntu6.6/dpkg_1.22.6ubuntu6.6.dsc",
+          "local": "corresponding-source/ubuntu/dpkg/dpkg_1.22.6ubuntu6.6.dsc",
+          "size": 3156,
+          "sha256": "5828d5dd77635c8bd0197116446bc64ec76913500affbcb42aaae1644acb749d"
+        },
+        {
+          "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/dpkg/1.22.6ubuntu6.6/dpkg_1.22.6ubuntu6.6.tar.xz",
+          "local": "corresponding-source/ubuntu/dpkg/dpkg_1.22.6ubuntu6.6.tar.xz",
+          "size": 5548716,
+          "sha256": "7048ee31e30066ae123cdcb891cfa1ad55b2f42a4e04fca2c5db41607ae25196"
+        }
+      ],
+      "publication": {
+        "self_link": "https://api.launchpad.net/1.0/ubuntu/+archive/primary/+sourcepub/18387864",
+        "resource_type_link": "https://api.launchpad.net/1.0/#source_package_publishing_history",
+        "display_name": "dpkg 1.22.6ubuntu6.6 in noble",
+        "component_name": "main",
+        "section_name": "admin",
+        "status": "Published",
+        "distro_series_link": "https://api.launchpad.net/1.0/ubuntu/noble",
+        "date_published": "2026-05-07T14:41:47.729144+00:00",
+        "scheduled_deletion_date": null,
+        "pocket": "Updates",
+        "archive_link": "https://api.launchpad.net/1.0/ubuntu/+archive/primary",
+        "copied_from_archive_link": "https://api.launchpad.net/1.0/ubuntu/+archive/primary",
+        "date_superseded": null,
+        "date_created": "2026-05-07T13:58:44.807333+00:00",
+        "date_made_pending": null,
+        "date_removed": null,
+        "removed_by_link": null,
+        "removal_comment": null,
+        "source_package_name": "dpkg",
+        "source_package_version": "1.22.6ubuntu6.6",
+        "package_creator_link": "https://api.launchpad.net/1.0/~mdeslaur",
+        "package_maintainer_link": "https://api.launchpad.net/1.0/~ubuntu-devel-discuss-lists",
+        "package_signer_link": "https://api.launchpad.net/1.0/~mdeslaur",
+        "creator_link": "https://api.launchpad.net/1.0/~ubuntu-archive-robot",
+        "sponsor_link": null,
+        "packageupload_link": null,
+        "http_etag": "\"9a60cac86c0ddbe044a28deaed7e6749714540f8-c9848ff7a99b427830c972cf607b8860eb02d793\""
+      },
+      "dsc_sha256_membership_exact": true,
+      "complete_exact_source_files_available": true,
+      "debian_rules_present": true,
+      "dsc_source_version_matches_installed": true
+    },
+    {
+      "source": "ffmpeg",
+      "version": "7:6.1.1-3ubuntu5",
+      "installed_packages": [
+        "ffmpeg",
+        "libavcodec60:amd64",
+        "libavdevice60:amd64",
+        "libavfilter9:amd64",
+        "libavformat60:amd64",
+        "libavutil58:amd64",
+        "libpostproc57:amd64",
+        "libswresample4:amd64",
+        "libswscale7:amd64"
+      ],
+      "files": [
+        {
+          "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/ffmpeg/7:6.1.1-3ubuntu5/ffmpeg_6.1.1-3ubuntu5.dsc",
+          "local": "corresponding-source/ubuntu/ffmpeg/ffmpeg_6.1.1-3ubuntu5.dsc",
+          "size": 6459,
+          "sha256": "a10fbc05d525244502b2e66634ce1c0d8dd7e5d042a69ec4548dfa661f149774"
+        },
+        {
+          "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/ffmpeg/7:6.1.1-3ubuntu5/ffmpeg_6.1.1-3ubuntu5.debian.tar.xz",
+          "local": "corresponding-source/ubuntu/ffmpeg/ffmpeg_6.1.1-3ubuntu5.debian.tar.xz",
+          "size": 56008,
+          "sha256": "874b7862a84e2afa89a74b9c736e988858becb8f17c0b0e8f339a71cb2ddbff1"
+        },
+        {
+          "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/ffmpeg/7:6.1.1-3ubuntu5/ffmpeg_6.1.1.orig.tar.xz.asc",
+          "local": "corresponding-source/ubuntu/ffmpeg/ffmpeg_6.1.1.orig.tar.xz.asc",
+          "size": 520,
+          "sha256": "e1aa97244d6d61b508ae06a71c7b8362b3b1733459a3fc1f2efa5d85456135d3"
+        },
+        {
+          "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/ffmpeg/7:6.1.1-3ubuntu5/ffmpeg_6.1.1.orig.tar.xz",
+          "local": "corresponding-source/ubuntu/ffmpeg/ffmpeg_6.1.1.orig.tar.xz",
+          "size": 10458600,
+          "sha256": "8684f4b00f94b85461884c3719382f1261f0d9eb3d59640a1f4ac0873616f968"
+        }
+      ],
+      "publication": {
+        "self_link": "https://api.launchpad.net/1.0/ubuntu/+archive/primary/+sourcepub/15916163",
+        "resource_type_link": "https://api.launchpad.net/1.0/#source_package_publishing_history",
+        "display_name": "ffmpeg 7:6.1.1-3ubuntu5 in noble",
+        "component_name": "universe",
+        "section_name": "misc",
+        "status": "Published",
+        "distro_series_link": "https://api.launchpad.net/1.0/ubuntu/noble",
+        "date_published": "2024-04-06T21:32:16.388666+00:00",
+        "scheduled_deletion_date": null,
+        "pocket": "Release",
+        "archive_link": "https://api.launchpad.net/1.0/ubuntu/+archive/primary",
+        "copied_from_archive_link": "https://api.launchpad.net/1.0/ubuntu/+archive/primary",
+        "date_superseded": null,
+        "date_created": "2024-04-06T21:27:03.188428+00:00",
+        "date_made_pending": null,
+        "date_removed": null,
+        "removed_by_link": null,
+        "removal_comment": null,
+        "source_package_name": "ffmpeg",
+        "source_package_version": "7:6.1.1-3ubuntu5",
+        "package_creator_link": "https://api.launchpad.net/1.0/~costamagnagianfranco",
+        "package_maintainer_link": "https://api.launchpad.net/1.0/~ubuntu-devel-discuss-lists",
+        "package_signer_link": "https://api.launchpad.net/1.0/~costamagnagianfranco",
+        "creator_link": "https://api.launchpad.net/1.0/~katie",
+        "sponsor_link": "https://api.launchpad.net/1.0/~ubuntu-archive-robot",
+        "packageupload_link": null,
+        "http_etag": "\"0a46cf47fcb07b4ce689cf9ab19d73f9a956848e-348887d3699fd0d380433dc2542b91d87679572b\""
+      },
+      "dsc_sha256_membership_exact": true,
+      "debian_rules_present": true,
+      "debian_patches_entries": 2,
+      "complete_exact_source_files_available": true,
+      "dsc_source_version_matches_installed": true
+    },
+    {
+      "source": "gcc-13",
+      "version": "13.3.0-6ubuntu2~24.04.1",
+      "installed_packages": [
+        "cpp-13",
+        "cpp-13-x86-64-linux-gnu",
+        "g++-13",
+        "g++-13-x86-64-linux-gnu",
+        "gcc-13",
+        "gcc-13-base:amd64",
+        "gcc-13-x86-64-linux-gnu",
+        "libgcc-13-dev:amd64",
+        "libstdc++-13-dev:amd64"
+      ],
+      "files": [
+        {
+          "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/gcc-13/13.3.0-6ubuntu2~24.04.1/gcc-13_13.3.0-6ubuntu2~24.04.1.dsc",
+          "local": "corresponding-source/ubuntu/gcc-13/gcc-13_13.3.0-6ubuntu2~24.04.1.dsc",
+          "size": 39540,
+          "sha256": "86b4012c312ac13e3e092877719a62a5b5dbab082ae7e9680780a25c6a13ddc6"
+        },
+        {
+          "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/gcc-13/13.3.0-6ubuntu2~24.04.1/gcc-13_13.3.0-6ubuntu2~24.04.1.debian.tar.xz",
+          "local": "corresponding-source/ubuntu/gcc-13/gcc-13_13.3.0-6ubuntu2~24.04.1.debian.tar.xz",
+          "size": 646156,
+          "sha256": "5523658f272ad6d15a83b6e26d178fbd5cb7709ec7ce2ca52b0c843e19c228e3"
+        },
+        {
+          "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/gcc-13/13.3.0-6ubuntu2~24.04.1/gcc-13_13.3.0.orig.tar.gz",
+          "local": "corresponding-source/ubuntu/gcc-13/gcc-13_13.3.0.orig.tar.gz",
+          "size": 92761021,
+          "sha256": "3b85d91bf38d1b858d9d01134f4046b3359731968ed4e6e912d29717a35d1a46"
+        }
+      ],
+      "publication": {
+        "self_link": "https://api.launchpad.net/1.0/ubuntu/+archive/primary/+sourcepub/18137224",
+        "resource_type_link": "https://api.launchpad.net/1.0/#source_package_publishing_history",
+        "display_name": "gcc-13 13.3.0-6ubuntu2~24.04.1 in noble",
+        "component_name": "main",
+        "section_name": "devel",
+        "status": "Published",
+        "distro_series_link": "https://api.launchpad.net/1.0/ubuntu/noble",
+        "date_published": "2026-02-26T13:46:14.383123+00:00",
+        "scheduled_deletion_date": null,
+        "pocket": "Security",
+        "archive_link": "https://api.launchpad.net/1.0/ubuntu/+archive/primary",
+        "copied_from_archive_link": "https://api.launchpad.net/1.0/ubuntu/+archive/primary",
+        "date_superseded": null,
+        "date_created": "2026-02-26T13:44:03.605358+00:00",
+        "date_made_pending": null,
+        "date_removed": null,
+        "removed_by_link": null,
+        "removal_comment": null,
+        "source_package_name": "gcc-13",
+        "source_package_version": "13.3.0-6ubuntu2~24.04.1",
+        "package_creator_link": "https://api.launchpad.net/1.0/~vpa1977",
+        "package_maintainer_link": "https://api.launchpad.net/1.0/~ubuntu-devel-discuss-lists",
+        "package_signer_link": "https://api.launchpad.net/1.0/~vpa1977",
+        "creator_link": "https://api.launchpad.net/1.0/~ahasenack",
+        "sponsor_link": null,
+        "packageupload_link": null,
+        "http_etag": "\"535543b5b0a8870efc9e4dc212d95fcc5e39b71b-c0c0a18677aab096b2b0225c1527a508b4949b76\""
+      },
+      "dsc_sha256_membership_exact": true,
+      "debian_rules_present": true,
+      "debian_patches_entries": 133,
+      "complete_exact_source_files_available": true,
+      "dsc_source_version_matches_installed": true
+    },
+    {
+      "source": "gcc-14",
+      "version": "14.2.0-4ubuntu2~24.04.1",
+      "installed_packages": [
+        "gcc-14-base:amd64",
+        "libasan8:amd64",
+        "libatomic1:amd64",
+        "libcc1-0:amd64",
+        "libgcc-s1:amd64",
+        "libgfortran5:amd64",
+        "libgomp1:amd64",
+        "libhwasan0:amd64",
+        "libitm1:amd64",
+        "liblsan0:amd64",
+        "libquadmath0:amd64",
+        "libstdc++6:amd64",
+        "libtsan2:amd64",
+        "libubsan1:amd64"
+      ],
+      "files": [
+        {
+          "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/gcc-14/14.2.0-4ubuntu2~24.04.1/gcc-14_14.2.0-4ubuntu2~24.04.1.dsc",
+          "local": "corresponding-source/ubuntu/gcc-14/gcc-14_14.2.0-4ubuntu2~24.04.1.dsc",
+          "size": 46930,
+          "sha256": "50950080874a6ec6780dd60c243e21d9cda9d736bb32bca98d16095d27cc01b5"
+        },
+        {
+          "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/gcc-14/14.2.0-4ubuntu2~24.04.1/gcc-14_14.2.0-4ubuntu2~24.04.1.debian.tar.xz",
+          "local": "corresponding-source/ubuntu/gcc-14/gcc-14_14.2.0-4ubuntu2~24.04.1.debian.tar.xz",
+          "size": 1950432,
+          "sha256": "cfece214c2fb790ef5f3baffb9a53e40618e7ae12d053610b251e94d77d08ade"
+        },
+        {
+          "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/gcc-14/14.2.0-4ubuntu2~24.04.1/gcc-14_14.2.0.orig.tar.gz",
+          "local": "corresponding-source/ubuntu/gcc-14/gcc-14_14.2.0.orig.tar.gz",
+          "size": 97158172,
+          "sha256": "768c314c11eeab56ccebb91eb42ec4a41122fa94f0d83400126401942622197b"
+        }
+      ],
+      "publication": {
+        "self_link": "https://api.launchpad.net/1.0/ubuntu/+archive/primary/+sourcepub/18137225",
+        "resource_type_link": "https://api.launchpad.net/1.0/#source_package_publishing_history",
+        "display_name": "gcc-14 14.2.0-4ubuntu2~24.04.1 in noble",
+        "component_name": "main",
+        "section_name": "devel",
+        "status": "Published",
+        "distro_series_link": "https://api.launchpad.net/1.0/ubuntu/noble",
+        "date_published": "2026-02-26T17:46:57.806225+00:00",
+        "scheduled_deletion_date": null,
+        "pocket": "Security",
+        "archive_link": "https://api.launchpad.net/1.0/ubuntu/+archive/primary",
+        "copied_from_archive_link": "https://api.launchpad.net/1.0/ubuntu/+archive/primary",
+        "date_superseded": null,
+        "date_created": "2026-02-26T13:48:00.993785+00:00",
+        "date_made_pending": null,
+        "date_removed": null,
+        "removed_by_link": null,
+        "removal_comment": null,
+        "source_package_name": "gcc-14",
+        "source_package_version": "14.2.0-4ubuntu2~24.04.1",
+        "package_creator_link": "https://api.launchpad.net/1.0/~vpa1977",
+        "package_maintainer_link": "https://api.launchpad.net/1.0/~ubuntu-devel-discuss-lists",
+        "package_signer_link": "https://api.launchpad.net/1.0/~vpa1977",
+        "creator_link": "https://api.launchpad.net/1.0/~ahasenack",
+        "sponsor_link": null,
+        "packageupload_link": null,
+        "http_etag": "\"c8f9aa122ef8ae37661332c5120f7c3797ffb217-e6b72ac36ff7da6a160c222cd97bf1fb6b6fe7cf\""
+      },
+      "dsc_sha256_membership_exact": true,
+      "debian_rules_present": true,
+      "debian_patches_entries": 118,
+      "complete_exact_source_files_available": true,
+      "dsc_source_version_matches_installed": true
+    },
+    {
+      "source": "git",
+      "version": "1:2.43.0-1ubuntu7.3",
+      "installed_packages": [
+        "git",
+        "git-man"
+      ],
+      "files": [
+        {
+          "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/git/1:2.43.0-1ubuntu7.3/git_2.43.0-1ubuntu7.3.dsc",
+          "local": "corresponding-source/ubuntu/git/git_2.43.0-1ubuntu7.3.dsc",
+          "size": 2972,
+          "sha256": "1e3e5b83bf41318cc957a9e471ed82f8ca4d6befe91b008699959072c97430f4"
+        },
+        {
+          "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/git/1:2.43.0-1ubuntu7.3/git_2.43.0-1ubuntu7.3.debian.tar.xz",
+          "local": "corresponding-source/ubuntu/git/git_2.43.0-1ubuntu7.3.debian.tar.xz",
+          "size": 795448,
+          "sha256": "5bb363b59fda93816ec9ef34476e720b4f66f4b9947866bfaf414964be7dd4a7"
+        },
+        {
+          "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/git/1:2.43.0-1ubuntu7.3/git_2.43.0.orig.tar.xz",
+          "local": "corresponding-source/ubuntu/git/git_2.43.0.orig.tar.xz",
+          "size": 7382996,
+          "sha256": "5446603e73d911781d259e565750dcd277a42836c8e392cac91cf137aa9b76ec"
+        }
+      ],
+      "publication": {
+        "self_link": "https://api.launchpad.net/1.0/ubuntu/+archive/primary/+sourcepub/17444991",
+        "resource_type_link": "https://api.launchpad.net/1.0/#source_package_publishing_history",
+        "display_name": "git 1:2.43.0-1ubuntu7.3 in noble",
+        "component_name": "main",
+        "section_name": "vcs",
+        "status": "Published",
+        "distro_series_link": "https://api.launchpad.net/1.0/ubuntu/noble",
+        "date_published": "2025-07-08T19:33:39.042560+00:00",
+        "scheduled_deletion_date": null,
+        "pocket": "Updates",
+        "archive_link": "https://api.launchpad.net/1.0/ubuntu/+archive/primary",
+        "copied_from_archive_link": "https://api.launchpad.net/1.0/ubuntu/+archive/primary",
+        "date_superseded": null,
+        "date_created": "2025-07-08T17:58:47.298756+00:00",
+        "date_made_pending": null,
+        "date_removed": null,
+        "removed_by_link": null,
+        "removal_comment": null,
+        "source_package_name": "git",
+        "source_package_version": "1:2.43.0-1ubuntu7.3",
+        "package_creator_link": "https://api.launchpad.net/1.0/~hlibk",
+        "package_maintainer_link": "https://api.launchpad.net/1.0/~ubuntu-devel-discuss-lists",
+        "package_signer_link": "https://api.launchpad.net/1.0/~hlibk",
+        "creator_link": "https://api.launchpad.net/1.0/~ubuntu-archive-robot",
+        "sponsor_link": null,
+        "packageupload_link": null,
+        "http_etag": "\"312c2a75fc82e317a171376f37296f003a4f2043-4c84d64af1041fbddca549ae10ec8d93dfe9f498\""
+      },
+      "dsc_sha256_membership_exact": true,
+      "debian_rules_present": true,
+      "debian_patches_entries": 16,
+      "complete_exact_source_files_available": true,
+      "dsc_source_version_matches_installed": true
+    },
+    {
+      "source": "glibc",
+      "version": "2.39-0ubuntu8.9",
+      "installed_packages": [
+        "libc-bin",
+        "libc-dev-bin",
+        "libc6:amd64",
+        "libc6-dev:amd64"
+      ],
+      "files": [
+        {
+          "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/glibc/2.39-0ubuntu8.9/glibc_2.39-0ubuntu8.9.dsc",
+          "local": "corresponding-source/ubuntu/glibc/glibc_2.39-0ubuntu8.9.dsc",
+          "size": 9387,
+          "sha256": "1b73a89e0910eb3e5920cde639ac7eb606256d8ee809688ff9b5912b67002711"
+        },
+        {
+          "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/glibc/2.39-0ubuntu8.9/glibc_2.39-0ubuntu8.9.debian.tar.xz",
+          "local": "corresponding-source/ubuntu/glibc/glibc_2.39-0ubuntu8.9.debian.tar.xz",
+          "size": 491440,
+          "sha256": "d6114f2302896a3c8612453e1bf1d0e61603e3029ba4a7c246fbb1ab4c48d2b0"
+        },
+        {
+          "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/glibc/2.39-0ubuntu8.9/glibc_2.39.orig.tar.xz.asc",
+          "local": "corresponding-source/ubuntu/glibc/glibc_2.39.orig.tar.xz.asc",
+          "size": 833,
+          "sha256": "2cce427ef7933c17379f5514e4f0ccf8dffae5bf8c72f0f7e0bf8b8401f34be5"
+        },
+        {
+          "url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/glibc/2.39-0ubuntu8.9/glibc_2.39.orig.tar.xz",
+          "local": "corresponding-source/ubuntu/glibc/glibc_2.39.orig.tar.xz",
+          "size": 18520988,
+          "sha256": "f77bd47cf8170c57365ae7bf86696c118adb3b120d3259c64c502d3dc1e2d926"
+        }
+      ],
+      "publication": {
+        "self_link": "https://api.launchpad.net/1.0/ubuntu/+archive/primary/+sourcepub/18725976",
+        "resource_type_link": "https://api.launchpad.net/1.0/#source_package_publishing_history",
+        "display_name": "glibc 2.39-0ubuntu8.9 in noble",
+        "component_name": "main",
+        "section_name": "libs",
+        "status": "Published",
+        "distro_series_link": "https://api.launchpad.net/1.0/ubuntu/noble",
+        "date_published": "2026-09-10T14:51:16.014275+00:00",
+        "scheduled_deletion_date": null,
+        "pocket": "Updates",
+        "archive_link": "https://api.launchpad.net/1.0/ubuntu/+archive/primary",
+        "copied_from_archive_link": "https://api.launchpad.net/1.0/ubuntu/+archive/primary",
+        "date_superseded": null,
+        "date_created": "2026-09-10T14:06:35.929637+00:00",
+        "date_made_pending": null,
+        "date_removed": null,
+        "removed_by_link": null,
+        "removal_comment": null,
+        "source_package_name": "glibc",
+        "source_package_version": "2.39-0ubuntu8.9",
+        "package_creator_link": "https://api.launchpad.net/1.0/~mdeslaur",
+        "package_maintainer_link": "https://api.launchpad.net/1.0/~ubuntu-devel-discuss-lists",
+        "package_signer_link": "https://api.launchpad.net/1.0/~mdeslaur",
+        "creator_link": "https://api.launchpad.net/1.0/~ubuntu-archive-robot",
+        "sponsor_link": null,
+        "packageupload_link": null,
+        "http_etag": "\"a82564565bf46be70dddb4698537a982f062770b-d3cbfda7916cb237bbdb7bad01a7dcac544af1b4\""
+      },
+      "dsc_sha256_membership_exact": true,
+      "debian_rules_present": true,
+      "debian_patches_entries": 157,
+      "complete_exact_source_files_available": true,
+      "dsc_source_version_matches_installed": true
+    }
+  ],
+  "wheels": [
+    {
+      "package": "numpy",
+      "version": "2.2.6",
+      "installed_native_filename": "libgfortran-040039e1-0352e75f.so.5.0.0",
+      "installed_native_sha256": "c6090048eccc763522c12ef016f81da6b627cb3a044f55cf0479a839c41c0980",
+      "downloads": [
+        {
+          "url": "https://files.pythonhosted.org/packages/76/21/7d2a95e4bba9dc13d043ee156a356c0a8f0c6309dff6b21b4d71a073b8a8/numpy-2.2.6.tar.gz",
+          "filename": "numpy-2.2.6.tar.gz",
+          "sha256": "e29554e2bef54a90aa5cc07da6ce955accb83f21ab5de01a62c8478897b264fd",
+          "kind": "sdist",
+          "source_members": 7822,
+          "libsoxr_source_members": 0
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/8c/3d/1e1db36cfd41f895d266b103df00ca5b3cbe965184df824dec5c08c6b803/numpy-2.2.6-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+          "filename": "numpy-2.2.6-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+          "sha256": "fd83c01228a688733f1ded5201c678f0c53ecc1006ffbc404db9f7a899ac6249",
+          "kind": "bdist_wheel",
+          "native_binary_matches_installed": true
+        }
+      ]
+    },
+    {
+      "package": "soxr",
+      "version": "1.1.0",
+      "installed_native_filename": "soxr_ext.abi3.so",
+      "installed_native_sha256": "bc2cc091949ba7ea3179e2859128a433f73fb448d6d938129db1ea0204d0f969",
+      "downloads": [
+        {
+          "url": "https://files.pythonhosted.org/packages/ed/11/27cebce4a108f77afea7c80545115536b45e3f11ebfb914f638fdd9ba847/soxr-1.1.0.tar.gz",
+          "filename": "soxr-1.1.0.tar.gz",
+          "sha256": "9f228ae21c78fa9359ca98d8a5e8e91f30639e438e574133dace62c5b5309e44",
+          "kind": "sdist",
+          "source_members": 167,
+          "libsoxr_source_members": 138
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/5c/f1/0e55195893228609c9a08c3b13b7a83a46c3a992cd00d3304f0f320cfb07/soxr-1.1.0-cp312-abi3-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl",
+          "filename": "soxr-1.1.0-cp312-abi3-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl",
+          "sha256": "3b033078e86f3c4a658e5697fac8995764fad9e799563616b630136b613167f1",
+          "kind": "bdist_wheel",
+          "native_binary_matches_installed": true
+        }
+      ]
+    },
+    {
+      "package": "pyzmq",
+      "version": "27.1.0",
+      "installed_native_filename": "libzmq-7b073b3d.so.5.2.5",
+      "installed_native_sha256": "811573ed3af354fa8da51e0a7b055cfe38d15ea6bd067a2c6c4974b55de38c8b",
+      "downloads": [
+        {
+          "url": "https://files.pythonhosted.org/packages/04/0b/3c9baedbdf613ecaa7aa07027780b8867f57b6293b6ee50de316c9f3222b/pyzmq-27.1.0.tar.gz",
+          "filename": "pyzmq-27.1.0.tar.gz",
+          "sha256": "ac0765e3d44455adb6ddbf4417dcce460fc40a05978c08efdf2948072f6db540",
+          "kind": "sdist",
+          "source_members": 291,
+          "libsoxr_source_members": 0
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/f8/9b/c108cdb55560eaf253f0cbdb61b29971e9fb34d9c3499b0e96e4e60ed8a5/pyzmq-27.1.0-cp312-abi3-manylinux_2_26_x86_64.manylinux_2_28_x86_64.whl",
+          "filename": "pyzmq-27.1.0-cp312-abi3-manylinux_2_26_x86_64.manylinux_2_28_x86_64.whl",
+          "sha256": "43ad9a73e3da1fab5b0e7e13402f0b2fb934ae1c876c51d0afff0e7c052eca31",
+          "kind": "bdist_wheel",
+          "native_binary_matches_installed": true
+        }
+      ]
+    }
+  ],
+  "libzmq": {
+    "version": "4.3.5",
+    "url": "https://github.com/zeromq/libzmq/releases/download/v4.3.5/zeromq-4.3.5.tar.gz",
+    "sha256": "6653ef5910f17954861fe72332e68b03ca6e4d9c7160eb3a8de5a5a913bfab43"
+  },
+  "source_identity_unresolved": {
+    "component": "numpy-2.2.6 bundled libgfortran",
+    "path": "/opt/venv/lib/python3.12/site-packages/numpy.libs/libgfortran-040039e1-0352e75f.so.5.0.0"
+  },
+  "publication_location": null
+}

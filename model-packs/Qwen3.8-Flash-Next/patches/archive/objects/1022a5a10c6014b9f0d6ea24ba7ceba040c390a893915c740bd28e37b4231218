@@ -1,0 +1,62 @@
+# SPDX-License-Identifier: Apache-2.0
+"""Vocab-parallel greedy verification with the ordinary proposal/state protocol."""
+import os
+import numpy as np
+import torch
+from vllm.triton_utils import triton,tl
+from vllm.v1.worker.gpu.input_batch import get_num_sampled_and_rejected
+from vllm.v1.worker.gpu.sample.output import SamplerOutput
+from vllm.v1.worker.gpu.spec_decode.rejection_sampler import gather_draft_sampled
+
+@triton.jit
+def _verify(top,draft,cu,out,count,WIDTH:tl.constexpr):
+    r=tl.program_id(0);start=tl.load(cu+r);end=tl.load(cu+r+1)
+    n=end-start;accepted=tl.full((),0,tl.int32);valid=True
+    for i in range(n-1):
+        t=tl.load(top+start+i);d=tl.load(draft+start+i+1)
+        ok=(t==d)&(d>=0)
+        accepted+=valid&ok
+        valid=valid&ok
+    offs=tl.arange(0,WIDTH)
+    values=tl.load(top+start+offs,offs<n,other=-1)
+    tl.store(out+r*WIDTH+offs,tl.where(offs<=accepted,values,-1))
+    tl.store(count+r,accepted+1)
+
+
+def eligible(runner,batch,grammar):
+    if os.getenv('VLLM_XPU_ASTRA_GREEDY','1')!='1':return False
+    sampler=runner.sampler;reject=runner.rejection_sampler
+    if (grammar is not None or runner.batch_sharder is not None or sampler is None
+            or reject is None or batch.num_reqs<1 or batch.num_draft_tokens<1):return False
+    if (reject.num_speculative_steps!=7 or reject.enable_adaptive_verification
+            or reject.synthetic_conditional_rates is not None or reject.use_block_verification
+            or reject.watermark_key is not None or sampler.compute_nans
+            or sampler.return_sampling_mask or sampler.trace_replay_state is not None):return False
+    idx=batch.idx_mapping_np
+    if np.any(idx<0):return False
+    if not np.all(sampler.sampling_states.temperature.np[idx]==0):return False
+    if np.any(sampler.needs_logits_processing[idx]):return False
+    if sampler.get_logprobs_dims(idx) is not None:return False
+    lengths=np.diff(batch.cu_num_logits_np)
+    if np.any(lengths<1) or np.any(lengths>8):return False
+    lm=getattr(runner.model,'language_model',None)
+    if lm is None or not hasattr(lm,'lm_head') or not hasattr(lm,'logits_processor'):return False
+    head=lm.lm_head
+    if getattr(head,'num_added_embeddings',0)!=0:return False
+    return lm.logits_processor.scale>0
+
+
+def sample(runner,hidden,batch):
+    model=runner.model.language_model;sampler=runner.sampler
+    selected=hidden[batch.logits_indices]
+    # This is the same sharded head GEMM and deterministic smallest-ID tie break.
+    top=model.logits_processor.get_top_tokens(model.lm_head,selected)
+    draft,_=gather_draft_sampled(batch.input_ids,batch.positions,batch.logits_indices,
+        batch.expanded_idx_mapping,batch.expanded_local_pos,sampler.req_states.prefill_len.gpu)
+    out=torch.empty((batch.num_reqs,8),dtype=torch.int64,device=hidden.device)
+    count=torch.empty((batch.num_reqs,),dtype=torch.int32,device=hidden.device)
+    _verify[(batch.num_reqs,)](top,draft,batch.cu_num_logits,out,count,8,num_warps=1)
+    count,rejected=get_num_sampled_and_rejected(count,batch.seq_lens,batch.cu_num_logits,
+        batch.idx_mapping,sampler.req_states.prefill_len.gpu)
+    result=SamplerOutput(out,None,None,count,rejected)
+    return result,count,rejected

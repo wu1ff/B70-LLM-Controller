@@ -1,0 +1,12 @@
+{
+  "scope": "Phase 5 documentation, portable image assembly metadata/tools and staging policy; accepted inputs remain under input-lock.json",
+  "files": {
+    "README.md": "30bce0ddaefcf426af90ecaa927cfa0612931f456bbcd4ab154f02cfb06b7d39",
+    "build/Dockerfile.runtime": "094344a55b8a48b8b8864a5362d57291e601afa288e0059c1de8a16c70657b28",
+    "manifests/controller-staging.json": "07e5be21a16299da5f41e091e94713a92b5a1459a4df2fdc05e9c92fbab1589a",
+    "manifests/image-modes.json": "8d75c3de7f6e773e3e89ace95d05293367a9a8eb54894af98bb88ef2e2eaf832",
+    "manifests/image-payload.json": "df8f52056a32af3cea45e863d6160130f67dcbdc499e9f86d9242114eaa5d8eb",
+    "tools/notice_export.py": "fab07f8b586610cb1eb28d70ba60288ea8981c5dbba2199ed26e8b23c8e464b9",
+    "tools/prepare_image.py": "a43da7ad2daa8da66146e5248d95b39aadd9c3fdb5c4c6dfacbfa43034d2f789"
+  }
+}

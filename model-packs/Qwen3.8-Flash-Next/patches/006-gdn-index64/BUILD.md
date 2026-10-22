@@ -1,9 +1,0 @@
-# Build the GDN index64 correction
-
-1. Use `vllm-xpu-kernels` tag `0.1.14.1` (commit `6d92b1bfbf32767ecda8e819613eb151e70030ad`) as the clean kernel source. Apply `gdn-index64-kernels.patch`.
-2. Put the patched tree at `/build/source` and this directory’s `gdn_index64.cpp` and `build.sh` at `/build`. Stage Intel oneAPI DPC++ `2026.0.0-947` at `/toolchain/oneapi` using the exact packages and hashes in `compiler-lock.json`. The retained `stage_compiler.py` fetches and verifies the packages when placed with the lock under its original `build/gdn-index64/` layout and run from the project root. Use the pinned vLLM XPU parent image, torch `2.13.0+xpu`, without devices or network. The retained `build.sh` compiles only the GDN interface translation unit and links `libgdn_index64.so` against the existing kernel and torch libraries.
-3. Install the result at `/opt/venv/lib/python3.12/site-packages/vllm_xpu_kernels/libgdn_index64.so`. Apply `gdn-index64-vllm.patch` to the vLLM tree, in both installed and checkout copies in the original image build. `Dockerfile` and `run-build.sh` are the exact retained image/build recipes; their local parent tag represents the retained `mtp3-c1` stage.
-
-The production library SHA-256 is `0fc700d337b71dfd6f2d4d08ca8ec588a26fc1bd669ed9034c6e4e468a804b75`; the installed dispatch file SHA-256 is `1b4195c77f09f75f5f725b2d19a7aa176c8b90d6d90ab2e68ec86c480c8ca5ed`. This source publication does not rebuild or replace those artifacts.
-
-For an independent public-source rebuild, use the unchanged production image by digest as the build container with `/build` bound to the patched kernel tree and these source files, and `/toolchain` bound read-only to the staged compiler. It contains the same torch and kernel package headers/libraries as the retained parent. Run `bash /build/build.sh`; `run-build.sh` records the original local-parent invocation and digest gate.
