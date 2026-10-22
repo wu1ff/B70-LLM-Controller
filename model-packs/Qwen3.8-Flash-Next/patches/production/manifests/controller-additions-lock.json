@@ -1,12 +1,15 @@
 {
-  "scope": "Phase 5 documentation, portable image assembly metadata/tools and staging policy; accepted inputs remain under input-lock.json",
+  "scope": "Controller source-only export, verification, technical documentation and staging metadata; accepted inputs remain immutable under input-lock.json",
   "files": {
-    "README.md": "30bce0ddaefcf426af90ecaa927cfa0612931f456bbcd4ab154f02cfb06b7d39",
+    "README.md": "421394521b744acf0aa437d8e2ec77b84e3547ca48da705c660275d842a13590",
     "build/Dockerfile.runtime": "094344a55b8a48b8b8864a5362d57291e601afa288e0059c1de8a16c70657b28",
-    "manifests/controller-staging.json": "07e5be21a16299da5f41e091e94713a92b5a1459a4df2fdc05e9c92fbab1589a",
+    "manifests/controller-staging.json": "866e335c9e1c0bcd2bef1e8c0fd4082412e16244f9efe7a95d5f86d9d8c78ae8",
     "manifests/image-modes.json": "8d75c3de7f6e773e3e89ace95d05293367a9a8eb54894af98bb88ef2e2eaf832",
     "manifests/image-payload.json": "df8f52056a32af3cea45e863d6160130f67dcbdc499e9f86d9242114eaa5d8eb",
-    "tools/notice_export.py": "fab07f8b586610cb1eb28d70ba60288ea8981c5dbba2199ed26e8b23c8e464b9",
-    "tools/prepare_image.py": "a43da7ad2daa8da66146e5248d95b39aadd9c3fdb5c4c6dfacbfa43034d2f789"
+    "tools/notice_export.py": "89e70d9e1559082cc6ece1f6a4f6e6d892bac4d03205dba216476ede286f75b4",
+    "tools/prepare_image.py": "a43da7ad2daa8da66146e5248d95b39aadd9c3fdb5c4c6dfacbfa43034d2f789",
+    "tools/verify_notice_export.py": "c88074d8a4dd6f77f4327aa7546a865b2b93dfdd7e38b839c4d9210c8f9ae6a1",
+    "manifests/source-export.json": "c27f014ece3e6ab0f547825f94c354c853c2ee03ab48a5ec2895bc91873d94dc",
+    "distribution-source.tar.gz": "48cf80d47cc416a8ee8940ff30f596c5d67f5ad6bffa3f79f15a5e7894b2f329"
   }
 }

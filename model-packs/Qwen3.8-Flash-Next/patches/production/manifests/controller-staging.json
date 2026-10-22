@@ -12,5 +12,7 @@
   "launch_transport": "Controller bridge and published Local/LAN port; accepted campaign used host networking. No new launch boot performed.",
   "source_archive_sha256": "b2c2d0ae12c229651c287d397b4e8f110b48399aa764228a6065c02bbe02445a",
   "published_catalog": "Retains actual 1.0.4 URL and SHA256; no development entry is advertised.",
-  "controller_compatibility": "Requires this branch: installed b70ctl 1.0.1 rejects the explicit work-volume mount. Import retains only README.md and pack.json."
+  "controller_compatibility": "Requires this branch: installed b70ctl 1.0.1 rejects the explicit work-volume mount. Import retains only README.md and pack.json.",
+  "source_archive_identity_scope": "source_archive_sha256 identifies the retained Phase 2 source-authority archive, not the current Controller archive or annotated distribution export.",
+  "annotated_source_archive_manifest": "source-export.json"
 }

@@ -82,5 +82,5 @@
       "explicit_modification_header": false
     }
   ],
-  "status": "Resolve missing prominent changed-file notices before source publication; track any notice-only derivative separately from accepted hashes."
+  "status": "RESOLVED_FOR_PRODUCTION_SOURCE_EXPORT: all 15 missing vLLM headers are in the separately hashed 57-file annotated export; existing model_state.py notice preserved. Accepted bytes unchanged. Executable/archive treatment is separate."
 }

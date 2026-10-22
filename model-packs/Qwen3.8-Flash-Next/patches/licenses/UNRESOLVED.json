@@ -1,28 +1,28 @@
 [
   {
     "id": "vendor-wheel-source",
-    "status": "OPEN",
-    "detail": "Stock vllm-xpu-kernels 0.1.15.4 source commit is unattested. Pinned vendor image is sufficient for custom overlay builds; a wholly source-built vendor stack is not established."
+    "status": "BINARY_WHEEL_IDENTITY_VERIFIED; SOURCE_BUILD_ATTESTATION_OPEN",
+    "detail": "Published PyPI wheel SHA256 4ec262f7afdd07c62defc8286dc9f357569627b996c09b410f7972b653696fe7 matches all 12 accepted stock native libraries. No sdist, exact 0.1.15.4 source tag or per-file PyPI provenance found in inspected sources. v0.1.15 tag is a candidate, not an attestation. See source-delivery/kernel-wheel-provenance.json."
   },
   {
     "id": "source-delivery",
-    "status": "OPEN",
-    "detail": "Actual accepted Ubuntu versions and wheel native hashes are reconciled in source-delivery/. Source assets/directions must be made available beside a future distributed image; this reconstruction bundle is not complete companion corresponding source for every inherited executable."
+    "status": "LOCAL_COMPANION_CANDIDATE_VERIFIED; PUBLIC_DELIVERY_AND_SCOPE_OPEN",
+    "detail": "34 source assets staged separately: 30 exact Ubuntu files from ten families, three wheel sdists and libzmq 4.3.5; all SHA256 and .dsc member checks pass. No public URL, maintainer source offer or exhaustive inherited-image scope determination. See source-delivery/companion-delivery.json and SOURCE_ACCESS.md."
   },
   {
     "id": "numpy-libgfortran",
-    "status": "OPEN",
-    "detail": "NumPy 2.2.6 bundled libgfortran exact source/build identity remains unresolved. Do not substitute Ubuntu GCC source or infer identity from SONAME."
+    "status": "OPEN; PROVENANCE_CHAIN_NARROWED",
+    "detail": "Pinned NumPy 2.2.6 build requirements identify scipy-openblas64 0.3.29.0.0. That wheel libgfortran matches accepted build ID and 23 ELF sections; only dynamic metadata sections differ. Exact GCC source revision, distro patches and build-image identity remain unknown. Source/exception scope needs legal review."
   },
   {
     "id": "intel-2026.1.1",
-    "status": "OPEN",
-    "detail": "Current notices and 2026.1.1 credist are retained. Incomplete designation coverage and executable recipient arrangement remain for final image distribution; no compiler binaries are exported."
+    "status": "INSPECTED_DESIGNATION_IDENTITY_RESOLVED; RECIPIENT_TERMS_OPEN",
+    "detail": "All 55 inspected EULA-governed runtime paths match explicit compiler 2026.1.1 credist paths byte for byte. Four PTI paths have separate MIT notices. EULA 2.1.D(2) requires distribution subject to a recipient license prohibiting reverse engineering/decompiling/disassembly of those Intel Redistributables. No implemented recipient arrangement/alternate permission evidenced. List preamble references April 2023 while installed EULA is August 2024; retain and review the discrepancy. Scope is not an exhaustive image audit."
   },
   {
     "id": "changed-file-notices",
-    "status": "SOURCE_DERIVATIVES_STAGED; EXECUTABLE_INCORPORATION_OPEN",
-    "detail": "All 15 missing vLLM headers, kernel wrapper, three GDN conv headers and campaign custom source comments are staged in 57 comment-only derivatives with exact before/after hashes. Frozen accepted executable unchanged. Final source/archive notice review and executable incorporation remain open."
+    "status": "PRODUCTION_SOURCE_EXPORT_INCORPORATED; EXECUTABLE_AND_ARCHIVE_REVIEW_OPEN",
+    "detail": "All 57 reviewed derivatives incorporated with exact insertion and Python AST checks; accepted source and historical archive bytes unchanged. The historical index header screen finds 194/241 records without explicit modification wording (heuristic; repeated original paths, not 194 distinct files). Decide historical documentary-original treatment/annotated copies and eventual executable notice placement; do not infer blanket Apache compliance."
   },
   {
     "id": "binary-and-image-build",

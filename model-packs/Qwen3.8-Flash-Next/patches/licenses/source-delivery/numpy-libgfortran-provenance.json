@@ -1,0 +1,74 @@
+{
+  "date": "2026-10-22 America/Phoenix",
+  "package": "numpy",
+  "version": "2.2.6",
+  "accepted_sha256": "c6090048eccc763522c12ef016f81da6b627cb3a044f55cf0479a839c41c0980",
+  "accepted_build_id": "5bbe74eb6855e0a2c043c0bec2f484bf3e9f14c0",
+  "numpy_build_requirements": "https://github.com/numpy/numpy/blob/v2.2.6/requirements/ci_requirements.txt",
+  "openblas_package": "scipy-openblas64==0.3.29.0.0",
+  "openblas_wheel": {
+    "comment_text": "",
+    "core-metadata": {
+      "sha256": "3f71e6acbcbc90a6a27de6e868d276731036b469a55fe583156a860a49007ea5"
+    },
+    "digests": {
+      "blake2b_256": "fa01ff01e8f8cc20fa7ea094fa6f12af2dde06cb23de0fc97f6baa04bc568f69",
+      "md5": "a078847915b0f700432a732c5911fff1",
+      "sha256": "ebaeee4e243c116ee274f1612481c8513bcaa6b4c6afa306b5ee7629de2f280a"
+    },
+    "downloads": -1,
+    "filename": "scipy_openblas64-0.3.29.0.0-py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+    "has_sig": false,
+    "md5_digest": "a078847915b0f700432a732c5911fff1",
+    "packagetype": "bdist_wheel",
+    "python_version": "py3",
+    "requires_python": ">=3.7",
+    "size": 8459981,
+    "upload_time": "2025-01-21T23:11:09",
+    "upload_time_iso_8601": "2025-01-21T23:11:09.137940Z",
+    "url": "https://files.pythonhosted.org/packages/fa/01/ff01e8f8cc20fa7ea094fa6f12af2dde06cb23de0fc97f6baa04bc568f69/scipy_openblas64-0.3.29.0.0-py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+    "yanked": false,
+    "yanked_reason": null
+  },
+  "openblas_member": "scipy_openblas64/lib/libgfortran-040039e1.so.5.0.0",
+  "openblas_member_sha256": "0352e75f0719d9a299cb52919977eb5d7bd249d1fcad06d5e14030b272aae619",
+  "openblas_build_repository": "https://github.com/MacPython/openblas-libs/tree/510428188c2a87260a0593796af9ce425f86ad8e",
+  "identical_elf_sections": [
+    ".data",
+    ".data.rel.ro",
+    ".dynsym",
+    ".eh_frame",
+    ".eh_frame_hdr",
+    ".fini",
+    ".fini_array",
+    ".gnu.hash",
+    ".gnu.version",
+    ".gnu.version_d",
+    ".gnu_debugdata",
+    ".gnu_debuglink",
+    ".got",
+    ".got.plt",
+    ".init",
+    ".init_array",
+    ".note.gnu.build-id",
+    ".plt",
+    ".rela.dyn",
+    ".rela.plt",
+    ".rodata",
+    ".shstrtab",
+    ".text"
+  ],
+  "differing_elf_sections": [
+    ".dynamic",
+    ".dynstr",
+    ".gnu.version_r"
+  ],
+  "inference": "Pinned NumPy build requirements, matching build ID and identical code/data sections support provenance through scipy-openblas64; dynamic metadata differs after wheel repair. This does not identify GCC source/build patches.",
+  "exact_gcc_source_status": "OPEN: no exact GCC source revision, distro SRPM/patch set or immutable build-image identity established. Stripped/compiler metadata and mutable manylinux workflow tags do not prove these.",
+  "terms": "Retained NumPy wheel notice identifies GPLv3 plus GCC Runtime Library Exception 3.1. Legal must assess exception scope for the separately bundled shared runtime and applicable source obligations; do not treat the exception as a blanket source waiver.",
+  "forbidden_substitutions": [
+    "Ubuntu gcc-13/gcc-14 source",
+    "NumPy sdist alone",
+    "nearby GCC release inferred from SONAME"
+  ]
+}

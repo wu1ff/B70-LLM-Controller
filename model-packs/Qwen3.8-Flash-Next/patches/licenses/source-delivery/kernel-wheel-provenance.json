@@ -1,0 +1,138 @@
+{
+  "public_wheel_sha256": "4ec262f7afdd07c62defc8286dc9f357569627b996c09b410f7972b653696fe7",
+  "native": [
+    {
+      "distribution": "vllm-xpu-kernels",
+      "version": "0.1.15.4",
+      "path": "/opt/venv/lib/python3.12/site-packages/vllm_xpu_kernels/_C.abi3.so",
+      "bytes": 60278112,
+      "sha256": "15289a0f57fe14634417248b3dbe1582b29ace6a1483992d5c27d76eed69a6d2",
+      "public_sha256": "15289a0f57fe14634417248b3dbe1582b29ace6a1483992d5c27d76eed69a6d2"
+    },
+    {
+      "distribution": "vllm-xpu-kernels",
+      "version": "0.1.15.4",
+      "path": "/opt/venv/lib/python3.12/site-packages/vllm_xpu_kernels/_moe_C.abi3.so",
+      "bytes": 95204544,
+      "sha256": "803b4a7b40393df1670b28cdb34533d09a352202dbceb35bcad5a6a99a9b5482",
+      "public_sha256": "803b4a7b40393df1670b28cdb34533d09a352202dbceb35bcad5a6a99a9b5482"
+    },
+    {
+      "distribution": "vllm-xpu-kernels",
+      "version": "0.1.15.4",
+      "path": "/opt/venv/lib/python3.12/site-packages/vllm_xpu_kernels/_vllm_fa2_C.abi3.so",
+      "bytes": 139832,
+      "sha256": "28c36760256c4065e1eabd5ba6ffd3fa181073dafe372b35a3e2952e86d262fe",
+      "public_sha256": "28c36760256c4065e1eabd5ba6ffd3fa181073dafe372b35a3e2952e86d262fe"
+    },
+    {
+      "distribution": "vllm-xpu-kernels",
+      "version": "0.1.15.4",
+      "path": "/opt/venv/lib/python3.12/site-packages/vllm_xpu_kernels/_xpu_C.abi3.so",
+      "bytes": 112111696,
+      "sha256": "9a103edaa1457c719671e2b20e9b28cbf86fc77e7e60429468661d1bbcda4289",
+      "public_sha256": "9a103edaa1457c719671e2b20e9b28cbf86fc77e7e60429468661d1bbcda4289"
+    },
+    {
+      "distribution": "vllm-xpu-kernels",
+      "version": "0.1.15.4",
+      "path": "/opt/venv/lib/python3.12/site-packages/vllm_xpu_kernels/libattn_kernels_xe_2.so",
+      "bytes": 306868136,
+      "sha256": "ec26f8f58ca8d868dceb5fb80f622410c669a12852e541916cc093be92b60663",
+      "public_sha256": "ec26f8f58ca8d868dceb5fb80f622410c669a12852e541916cc093be92b60663"
+    },
+    {
+      "distribution": "vllm-xpu-kernels",
+      "version": "0.1.15.4",
+      "path": "/opt/venv/lib/python3.12/site-packages/vllm_xpu_kernels/libattn_kernels_xe_3.so",
+      "bytes": 147236760,
+      "sha256": "c4fe9db4de4c47af695e7ba990d9f22e9d46608958b4aad7dcb47d509d57a12e",
+      "public_sha256": "c4fe9db4de4c47af695e7ba990d9f22e9d46608958b4aad7dcb47d509d57a12e"
+    },
+    {
+      "distribution": "vllm-xpu-kernels",
+      "version": "0.1.15.4",
+      "path": "/opt/venv/lib/python3.12/site-packages/vllm_xpu_kernels/libgdn_attn_kernels_xe_2.so",
+      "bytes": 5841792,
+      "sha256": "eaa927edd271b91b2785aed0b5888cbfd5acc9f0d210aae970ee25d0d2675f69",
+      "public_sha256": "eaa927edd271b91b2785aed0b5888cbfd5acc9f0d210aae970ee25d0d2675f69"
+    },
+    {
+      "distribution": "vllm-xpu-kernels",
+      "version": "0.1.15.4",
+      "path": "/opt/venv/lib/python3.12/site-packages/vllm_xpu_kernels/libgrouped_gemm_xe_2.so",
+      "bytes": 12449176,
+      "sha256": "a8c48caf6bf89f5e7f3b3ee780e53e915b97aedf2ebd05308ff34c8f8513bbed",
+      "public_sha256": "a8c48caf6bf89f5e7f3b3ee780e53e915b97aedf2ebd05308ff34c8f8513bbed"
+    },
+    {
+      "distribution": "vllm-xpu-kernels",
+      "version": "0.1.15.4",
+      "path": "/opt/venv/lib/python3.12/site-packages/vllm_xpu_kernels/libgrouped_gemm_xe_default.so",
+      "bytes": 1714104,
+      "sha256": "e1bc7550b41ca23f9d782aad5c271cc9fd598486958c9499012f1bc78ad368c5",
+      "public_sha256": "e1bc7550b41ca23f9d782aad5c271cc9fd598486958c9499012f1bc78ad368c5"
+    },
+    {
+      "distribution": "vllm-xpu-kernels",
+      "version": "0.1.15.4",
+      "path": "/opt/venv/lib/python3.12/site-packages/vllm_xpu_kernels/libmhc_kernels_xe_2.so",
+      "bytes": 971272,
+      "sha256": "344c91e6707f60c28f9baab655fe5ee8ba655b58288b18ec1e9084cf4b3a2a8d",
+      "public_sha256": "344c91e6707f60c28f9baab655fe5ee8ba655b58288b18ec1e9084cf4b3a2a8d"
+    },
+    {
+      "distribution": "vllm-xpu-kernels",
+      "version": "0.1.15.4",
+      "path": "/opt/venv/lib/python3.12/site-packages/vllm_xpu_kernels/libmqa_logits_kernels_xe_2.so",
+      "bytes": 413352,
+      "sha256": "a3b3270ad9c8f47d40940598f0cd93fd5771b1d7ee5077904b11a899aa9dd230",
+      "public_sha256": "a3b3270ad9c8f47d40940598f0cd93fd5771b1d7ee5077904b11a899aa9dd230"
+    },
+    {
+      "distribution": "vllm-xpu-kernels",
+      "version": "0.1.15.4",
+      "path": "/opt/venv/lib/python3.12/site-packages/vllm_xpu_kernels/xpumem_allocator.abi3.so",
+      "bytes": 57280,
+      "sha256": "a305006da0aaf3f91dc0b6c0127fb00484fb91d7f80d734d1a3efaaddabc8568",
+      "public_sha256": "a305006da0aaf3f91dc0b6c0127fb00484fb91d7f80d734d1a3efaaddabc8568"
+    }
+  ],
+  "metadata_equal": {
+    "vllm_xpu_kernels-0.1.15.4.dist-info/INSTALLER": false,
+    "vllm_xpu_kernels-0.1.15.4.dist-info/METADATA": true,
+    "vllm_xpu_kernels-0.1.15.4.dist-info/RECORD": false,
+    "vllm_xpu_kernels-0.1.15.4.dist-info/REQUESTED": false,
+    "vllm_xpu_kernels-0.1.15.4.dist-info/WHEEL": true,
+    "vllm_xpu_kernels-0.1.15.4.dist-info/top_level.txt": true
+  },
+  "date": "2026-10-22 America/Phoenix",
+  "package": "vllm-xpu-kernels",
+  "version": "0.1.15.4",
+  "wheel": {
+    "filename": "vllm_xpu_kernels-0.1.15.4-cp38-abi3-manylinux_2_28_x86_64.whl",
+    "url": "https://files.pythonhosted.org/packages/cc/34/8e09626d98f0be8e616c81884b859c1731bc815e07eb97a71c9273253264/vllm_xpu_kernels-0.1.15.4-cp38-abi3-manylinux_2_28_x86_64.whl",
+    "size": 141438192,
+    "digests": {
+      "blake2b_256": "cc348e09626d98f0be8e616c81884b859c1731bc815e07eb97a71c9273253264",
+      "md5": "aee0e35266a3a0f3a36522bdcd421e34",
+      "sha256": "4ec262f7afdd07c62defc8286dc9f357569627b996c09b410f7972b653696fe7"
+    },
+    "upload_time_iso_8601": "2026-09-22T08:39:49.360944Z"
+  },
+  "matching_stock_native_libraries": 12,
+  "source_commit_status": "UNATTESTED",
+  "pypi_sdist_present": false,
+  "pypi_attestation_status": "HTTP 404 at the per-file PyPI integrity/provenance endpoint on review date; absence there is not proof that no provenance exists elsewhere.",
+  "source_candidate": {
+    "url": "https://github.com/vllm-project/vllm-xpu-kernels/releases/tag/v0.1.15",
+    "commit": "1c7cbeee1cd0c1481d48f5031f679a47f3f0ef45",
+    "status": "Release/tag candidate only; no tag 0.1.15.4 or wheel-to-build attestation found in inspected metadata/releases. setup.py accepts VLLM_VERSION_OVERRIDE."
+  },
+  "outstanding_evidence": [
+    "Publisher wheel digest to source commit/submodules and build configuration attestation or retained wheel build logs.",
+    "Build-toolchain/configuration records covering all stock shared libraries; header-reference roots only attest custom native inputs."
+  ],
+  "legal_scope": "Apache-2.0 wheel metadata does not itself impose a complete-source delivery requirement. Exact stock build provenance remains a technical completeness limitation; assess embedded separately licensed dependencies under their own terms.",
+  "baseline_package_source_files_matched_to_public_wheel": 7
+}

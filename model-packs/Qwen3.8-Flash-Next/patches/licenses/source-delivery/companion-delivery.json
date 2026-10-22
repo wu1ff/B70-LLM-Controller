@@ -1,0 +1,224 @@
+{
+  "status": "LOCAL_SOURCE_ONLY_CANDIDATE; NOT_PUBLISHED; NOT_COMPLETE_IMAGE_CORRESPONDING_SOURCE",
+  "archive_filename": "dflash2-companion-source-candidate.tar.gz",
+  "archive_sha256": "abf44d9258366534cd3187ae012880b91885893a9e9ae902035c70ed95b92335",
+  "archive_bytes": 300960581,
+  "source_asset_count": 34,
+  "ubuntu_source_families": 10,
+  "dsc_member_checks": "PASS for all ten families",
+  "source_assets": [
+    {
+      "path": "ubuntu/apt/apt_2.8.3.dsc",
+      "sha256": "1d41cd04115e1a79f0fa4d738e5c34603ae8a4f40122d8a18a622fd6d20a5523",
+      "bytes": 2973,
+      "upstream_url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/apt/2.8.3/apt_2.8.3.dsc"
+    },
+    {
+      "path": "ubuntu/apt/apt_2.8.3.tar.xz",
+      "sha256": "088522b3613b28fdbcfa61f1f7e476bf6dc6b0120a8f74409e9527580c9f9d3b",
+      "bytes": 2354680,
+      "upstream_url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/apt/2.8.3/apt_2.8.3.tar.xz"
+    },
+    {
+      "path": "ubuntu/bash/bash_5.2.21-2ubuntu4.dsc",
+      "sha256": "d5a89c09f42c828d5e31dc3a1680882aa0ddaad5072963e563dec7dfc4919d33",
+      "bytes": 2437,
+      "upstream_url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/bash/5.2.21-2ubuntu4/bash_5.2.21-2ubuntu4.dsc"
+    },
+    {
+      "path": "ubuntu/bash/bash_5.2.21-2ubuntu4.debian.tar.xz",
+      "sha256": "bdb10c18d167dda3b265cb3db75314d524edbf7794fed36f0fb0dcc32f5e6ac9",
+      "bytes": 94124,
+      "upstream_url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/bash/5.2.21-2ubuntu4/bash_5.2.21-2ubuntu4.debian.tar.xz"
+    },
+    {
+      "path": "ubuntu/bash/bash_5.2.21.orig.tar.xz",
+      "sha256": "ec21ab4efd6bd7a6e2802fbda622b81bfc43a8095d721234d4bf075797683014",
+      "bytes": 5598816,
+      "upstream_url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/bash/5.2.21-2ubuntu4/bash_5.2.21.orig.tar.xz"
+    },
+    {
+      "path": "ubuntu/binutils/binutils_2.42-4ubuntu2.10.dsc",
+      "sha256": "a14a8e2efdb3566955476bccd2248cebed5cf2a2f5d28e223d08200ec1a18d75",
+      "bytes": 10152,
+      "upstream_url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/binutils/2.42-4ubuntu2.10/binutils_2.42-4ubuntu2.10.dsc"
+    },
+    {
+      "path": "ubuntu/binutils/binutils_2.42-4ubuntu2.10.debian.tar.xz",
+      "sha256": "6acc777971890cb1efaeeb33a0a5358651c71067ced69dcfd59da7d0977f7530",
+      "bytes": 196552,
+      "upstream_url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/binutils/2.42-4ubuntu2.10/binutils_2.42-4ubuntu2.10.debian.tar.xz"
+    },
+    {
+      "path": "ubuntu/binutils/binutils_2.42.orig.tar.xz",
+      "sha256": "f6e4d41fd5fc778b06b7891457b3620da5ecea1006c6a4a41ae998109f85a800",
+      "bytes": 27567160,
+      "upstream_url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/binutils/2.42-4ubuntu2.10/binutils_2.42.orig.tar.xz"
+    },
+    {
+      "path": "ubuntu/coreutils/coreutils_9.4-3ubuntu6.3.dsc",
+      "sha256": "419fea2f0fec8299d95cafb11425391fe45d60b30d052c7f1e3a162ea56a6653",
+      "bytes": 2030,
+      "upstream_url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/coreutils/9.4-3ubuntu6.3/coreutils_9.4-3ubuntu6.3.dsc"
+    },
+    {
+      "path": "ubuntu/coreutils/coreutils_9.4-3ubuntu6.3.debian.tar.xz",
+      "sha256": "23eb9e94564e2451ea02a879daa0ee9ba8db3777e84e020fcd08d49aaebc57d4",
+      "bytes": 43156,
+      "upstream_url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/coreutils/9.4-3ubuntu6.3/coreutils_9.4-3ubuntu6.3.debian.tar.xz"
+    },
+    {
+      "path": "ubuntu/coreutils/coreutils_9.4.orig.tar.xz",
+      "sha256": "ea613a4cf44612326e917201bbbcdfbd301de21ffc3b59b6e5c07e040b275e52",
+      "bytes": 5979200,
+      "upstream_url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/coreutils/9.4-3ubuntu6.3/coreutils_9.4.orig.tar.xz"
+    },
+    {
+      "path": "ubuntu/dpkg/dpkg_1.22.6ubuntu6.6.dsc",
+      "sha256": "5828d5dd77635c8bd0197116446bc64ec76913500affbcb42aaae1644acb749d",
+      "bytes": 3156,
+      "upstream_url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/dpkg/1.22.6ubuntu6.6/dpkg_1.22.6ubuntu6.6.dsc"
+    },
+    {
+      "path": "ubuntu/dpkg/dpkg_1.22.6ubuntu6.6.tar.xz",
+      "sha256": "7048ee31e30066ae123cdcb891cfa1ad55b2f42a4e04fca2c5db41607ae25196",
+      "bytes": 5548716,
+      "upstream_url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/dpkg/1.22.6ubuntu6.6/dpkg_1.22.6ubuntu6.6.tar.xz"
+    },
+    {
+      "path": "ubuntu/ffmpeg/ffmpeg_6.1.1-3ubuntu5.dsc",
+      "sha256": "a10fbc05d525244502b2e66634ce1c0d8dd7e5d042a69ec4548dfa661f149774",
+      "bytes": 6459,
+      "upstream_url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/ffmpeg/7:6.1.1-3ubuntu5/ffmpeg_6.1.1-3ubuntu5.dsc"
+    },
+    {
+      "path": "ubuntu/ffmpeg/ffmpeg_6.1.1-3ubuntu5.debian.tar.xz",
+      "sha256": "874b7862a84e2afa89a74b9c736e988858becb8f17c0b0e8f339a71cb2ddbff1",
+      "bytes": 56008,
+      "upstream_url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/ffmpeg/7:6.1.1-3ubuntu5/ffmpeg_6.1.1-3ubuntu5.debian.tar.xz"
+    },
+    {
+      "path": "ubuntu/ffmpeg/ffmpeg_6.1.1.orig.tar.xz.asc",
+      "sha256": "e1aa97244d6d61b508ae06a71c7b8362b3b1733459a3fc1f2efa5d85456135d3",
+      "bytes": 520,
+      "upstream_url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/ffmpeg/7:6.1.1-3ubuntu5/ffmpeg_6.1.1.orig.tar.xz.asc"
+    },
+    {
+      "path": "ubuntu/ffmpeg/ffmpeg_6.1.1.orig.tar.xz",
+      "sha256": "8684f4b00f94b85461884c3719382f1261f0d9eb3d59640a1f4ac0873616f968",
+      "bytes": 10458600,
+      "upstream_url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/ffmpeg/7:6.1.1-3ubuntu5/ffmpeg_6.1.1.orig.tar.xz"
+    },
+    {
+      "path": "ubuntu/gcc-13/gcc-13_13.3.0-6ubuntu2~24.04.1.dsc",
+      "sha256": "86b4012c312ac13e3e092877719a62a5b5dbab082ae7e9680780a25c6a13ddc6",
+      "bytes": 39540,
+      "upstream_url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/gcc-13/13.3.0-6ubuntu2~24.04.1/gcc-13_13.3.0-6ubuntu2~24.04.1.dsc"
+    },
+    {
+      "path": "ubuntu/gcc-13/gcc-13_13.3.0-6ubuntu2~24.04.1.debian.tar.xz",
+      "sha256": "5523658f272ad6d15a83b6e26d178fbd5cb7709ec7ce2ca52b0c843e19c228e3",
+      "bytes": 646156,
+      "upstream_url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/gcc-13/13.3.0-6ubuntu2~24.04.1/gcc-13_13.3.0-6ubuntu2~24.04.1.debian.tar.xz"
+    },
+    {
+      "path": "ubuntu/gcc-13/gcc-13_13.3.0.orig.tar.gz",
+      "sha256": "3b85d91bf38d1b858d9d01134f4046b3359731968ed4e6e912d29717a35d1a46",
+      "bytes": 92761021,
+      "upstream_url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/gcc-13/13.3.0-6ubuntu2~24.04.1/gcc-13_13.3.0.orig.tar.gz"
+    },
+    {
+      "path": "ubuntu/gcc-14/gcc-14_14.2.0-4ubuntu2~24.04.1.dsc",
+      "sha256": "50950080874a6ec6780dd60c243e21d9cda9d736bb32bca98d16095d27cc01b5",
+      "bytes": 46930,
+      "upstream_url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/gcc-14/14.2.0-4ubuntu2~24.04.1/gcc-14_14.2.0-4ubuntu2~24.04.1.dsc"
+    },
+    {
+      "path": "ubuntu/gcc-14/gcc-14_14.2.0-4ubuntu2~24.04.1.debian.tar.xz",
+      "sha256": "cfece214c2fb790ef5f3baffb9a53e40618e7ae12d053610b251e94d77d08ade",
+      "bytes": 1950432,
+      "upstream_url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/gcc-14/14.2.0-4ubuntu2~24.04.1/gcc-14_14.2.0-4ubuntu2~24.04.1.debian.tar.xz"
+    },
+    {
+      "path": "ubuntu/gcc-14/gcc-14_14.2.0.orig.tar.gz",
+      "sha256": "768c314c11eeab56ccebb91eb42ec4a41122fa94f0d83400126401942622197b",
+      "bytes": 97158172,
+      "upstream_url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/gcc-14/14.2.0-4ubuntu2~24.04.1/gcc-14_14.2.0.orig.tar.gz"
+    },
+    {
+      "path": "ubuntu/git/git_2.43.0-1ubuntu7.3.dsc",
+      "sha256": "1e3e5b83bf41318cc957a9e471ed82f8ca4d6befe91b008699959072c97430f4",
+      "bytes": 2972,
+      "upstream_url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/git/1:2.43.0-1ubuntu7.3/git_2.43.0-1ubuntu7.3.dsc"
+    },
+    {
+      "path": "ubuntu/git/git_2.43.0-1ubuntu7.3.debian.tar.xz",
+      "sha256": "5bb363b59fda93816ec9ef34476e720b4f66f4b9947866bfaf414964be7dd4a7",
+      "bytes": 795448,
+      "upstream_url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/git/1:2.43.0-1ubuntu7.3/git_2.43.0-1ubuntu7.3.debian.tar.xz"
+    },
+    {
+      "path": "ubuntu/git/git_2.43.0.orig.tar.xz",
+      "sha256": "5446603e73d911781d259e565750dcd277a42836c8e392cac91cf137aa9b76ec",
+      "bytes": 7382996,
+      "upstream_url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/git/1:2.43.0-1ubuntu7.3/git_2.43.0.orig.tar.xz"
+    },
+    {
+      "path": "ubuntu/glibc/glibc_2.39-0ubuntu8.9.dsc",
+      "sha256": "1b73a89e0910eb3e5920cde639ac7eb606256d8ee809688ff9b5912b67002711",
+      "bytes": 9387,
+      "upstream_url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/glibc/2.39-0ubuntu8.9/glibc_2.39-0ubuntu8.9.dsc"
+    },
+    {
+      "path": "ubuntu/glibc/glibc_2.39-0ubuntu8.9.debian.tar.xz",
+      "sha256": "d6114f2302896a3c8612453e1bf1d0e61603e3029ba4a7c246fbb1ab4c48d2b0",
+      "bytes": 491440,
+      "upstream_url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/glibc/2.39-0ubuntu8.9/glibc_2.39-0ubuntu8.9.debian.tar.xz"
+    },
+    {
+      "path": "ubuntu/glibc/glibc_2.39.orig.tar.xz.asc",
+      "sha256": "2cce427ef7933c17379f5514e4f0ccf8dffae5bf8c72f0f7e0bf8b8401f34be5",
+      "bytes": 833,
+      "upstream_url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/glibc/2.39-0ubuntu8.9/glibc_2.39.orig.tar.xz.asc"
+    },
+    {
+      "path": "ubuntu/glibc/glibc_2.39.orig.tar.xz",
+      "sha256": "f77bd47cf8170c57365ae7bf86696c118adb3b120d3259c64c502d3dc1e2d926",
+      "bytes": 18520988,
+      "upstream_url": "https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/glibc/2.39-0ubuntu8.9/glibc_2.39.orig.tar.xz"
+    },
+    {
+      "path": "wheels/numpy-2.2.6.tar.gz",
+      "sha256": "e29554e2bef54a90aa5cc07da6ce955accb83f21ab5de01a62c8478897b264fd",
+      "bytes": 20276440,
+      "upstream_url": "https://files.pythonhosted.org/packages/76/21/7d2a95e4bba9dc13d043ee156a356c0a8f0c6309dff6b21b4d71a073b8a8/numpy-2.2.6.tar.gz"
+    },
+    {
+      "path": "wheels/soxr-1.1.0.tar.gz",
+      "sha256": "9f228ae21c78fa9359ca98d8a5e8e91f30639e438e574133dace62c5b5309e44",
+      "bytes": 173067,
+      "upstream_url": "https://files.pythonhosted.org/packages/ed/11/27cebce4a108f77afea7c80545115536b45e3f11ebfb914f638fdd9ba847/soxr-1.1.0.tar.gz"
+    },
+    {
+      "path": "wheels/pyzmq-27.1.0.tar.gz",
+      "sha256": "ac0765e3d44455adb6ddbf4417dcce460fc40a05978c08efdf2948072f6db540",
+      "bytes": 281750,
+      "upstream_url": "https://files.pythonhosted.org/packages/04/0b/3c9baedbdf613ecaa7aa07027780b8867f57b6293b6ee50de316c9f3222b/pyzmq-27.1.0.tar.gz"
+    },
+    {
+      "path": "wheels/zeromq-4.3.5.tar.gz",
+      "sha256": "6653ef5910f17954861fe72332e68b03ca6e4d9c7160eb3a8de5a5a913bfab43",
+      "bytes": 2530237,
+      "upstream_url": "https://github.com/zeromq/libzmq/releases/download/v4.3.5/zeromq-4.3.5.tar.gz"
+    }
+  ],
+  "public_url": null,
+  "maintenance_owner": null,
+  "delivery_decisions": [
+    "Choose and test maintained adjacent source hosting and image/digest mapping.",
+    "Complete inherited executable/component source-scope review; ten families are not an exhaustive image audit.",
+    "Resolve exact NumPy libgfortran GCC source identity and source/exception duties.",
+    "Review LGPL-2.1 source/relinking duties for SoXR and MPL-2.0 source-access notices for libzmq.",
+    "Choose retention/maintenance policy and recipient directions; this is not a written source offer."
+  ]
+}

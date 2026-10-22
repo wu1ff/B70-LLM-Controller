@@ -18,3 +18,10 @@ MTP investigations: their selected effects are already in the accepted DFlash2
 chain; they do not expose a Controller MTP mode. Historical published sources stay
 available at the 1.0.4 release recorded in `archive/published-1.0.4.json`.
 `SHA256SUMS` covers every regular file below this directory except itself.
+
+The annotated production source delivery is `production/distribution-source.tar.gz`,
+pinned by `production/manifests/source-export.json`. It incorporates the reviewed
+57-file notice overlay and preserves separate accepted identities. Experimental
+archive files remain immutable evidence. Their changed-file notice treatment,
+source-delivery scope and Intel recipient terms remain explicit release decisions
+in `licenses/SOURCE_DISTRIBUTION.md`.

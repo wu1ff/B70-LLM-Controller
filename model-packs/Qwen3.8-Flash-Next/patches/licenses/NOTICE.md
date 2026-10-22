@@ -38,3 +38,11 @@ source-only derivative is not the frozen image and makes no native binary claim.
 [Source access](SOURCE_ACCESS.md) and [distribution status](SOURCE_DISTRIBUTION.md)
 remain part of this notice package. No source offer, new third-party license grant,
 Intel recipient agreement or general distribution clearance is made here.
+
+The 57 reviewed copies are now incorporated in
+`production/distribution-source.tar.gz` (paths relative to patches/), with their
+own source-export manifest and exact accepted-to-annotated mapping. They do not
+replace accepted comparison or build inputs. Executable notice placement and
+historical archival-original notice treatment remain separate release decisions;
+see `source-delivery/archival-notice-review.json`. Production coverage does not
+constitute blanket clearance of the complete experimental archive.

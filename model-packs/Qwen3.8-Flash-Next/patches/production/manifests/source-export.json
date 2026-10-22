@@ -1,0 +1,16 @@
+{
+  "archive": "distribution-source.tar.gz",
+  "sha256": "48cf80d47cc416a8ee8940ff30f596c5d67f5ad6bffa3f79f15a5e7894b2f329",
+  "bytes": 60815655,
+  "regular_files": 5649,
+  "notice_export_manifest": "NOTICE_EXPORT.json inside archive",
+  "notice_export_manifest_sha256": "79e69111e8f4f32a560ebc34a462f5f517967988570eb2e3636e0ab01f7f170c",
+  "notice_files": 57,
+  "accepted_input_lock_sha256": "e6525e8b0acf975cee099c05c148166e1adb43860785859ca3387c1d74991c61",
+  "mapping": "NOTICE_EXPORT.json mapping and ../licenses/notice-export.json files",
+  "reconstruct_accepted_first": "tools/verify.py; exact original 16 patches, accepted source hashes and original native recipes are unchanged",
+  "verify_distribution": "tools/verify_notice_export.py --source <verified>/reconstructed",
+  "source_scope": "Complete reconstructed package source, native sources, header dependencies, source input archives, support/image-support and current license/delivery records. Original recipes/patches/locks and complete experimental archive remain in the enclosing Controller pack.",
+  "executable_image_changed": false,
+  "publication_clearance": false
+}

@@ -24,9 +24,13 @@ for this pack validation; no inference image is rebuilt here.
 public-reference decision and Controller transport/storage differences. Its null
 public digest is intentional. No public DFlash2 artifact exists.
 
-Changed-file notices are staged separately in `../licenses/notice-overlay/`.
-`tools/notice_export.py` creates an independently hashed source export; this does
-not alter accepted reconstruction bytes or qualify a new executable image.
+The reviewed 57-file notice overlay is incorporated in `distribution-source.tar.gz`.
+`manifests/source-export.json` pins this separately hashed source artifact;
+`tools/verify_notice_export.py --source /tmp/dflash2-clean/reconstructed` verifies
+every exported byte against accepted inputs and the recorded comment insertions.
+`tools/notice_export.py` can regenerate it. This does not alter accepted
+reconstruction or qualify a new executable image. Keep the full enclosing pack
+for original recipes, patches, exact accepted input locks and archival evidence.
 
 For later source builds, the complete assembly sequence from the model-pack root
 is shown below. Native/image compilation is unnecessary for Phase 5 validation;
