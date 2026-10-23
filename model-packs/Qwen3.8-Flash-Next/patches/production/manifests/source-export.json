@@ -1,10 +1,10 @@
 {
   "archive": "distribution-source.tar.gz",
-  "sha256": "48cf80d47cc416a8ee8940ff30f596c5d67f5ad6bffa3f79f15a5e7894b2f329",
-  "bytes": 60815655,
+  "sha256": "d7f8ebe8f548b28112e0beb881810c49a50e34871806d397dfcab5b585317d8f",
+  "bytes": 60815621,
   "regular_files": 5649,
   "notice_export_manifest": "NOTICE_EXPORT.json inside archive",
-  "notice_export_manifest_sha256": "79e69111e8f4f32a560ebc34a462f5f517967988570eb2e3636e0ab01f7f170c",
+  "notice_export_manifest_sha256": "1cbefac578d993c4bd6dde708fe4a92d588773dd255f9a56cb48ca01dfea3bdb",
   "notice_files": 57,
   "accepted_input_lock_sha256": "e6525e8b0acf975cee099c05c148166e1adb43860785859ca3387c1d74991c61",
   "mapping": "NOTICE_EXPORT.json mapping and ../licenses/notice-export.json files",

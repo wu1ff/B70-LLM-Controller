@@ -11,7 +11,7 @@ technical findings and release decisions; it grants no distribution clearance.
 | Companion delivery | 34 source assets and ten Ubuntu .dsc member sets pass exact hash checks; a separate local source-only companion archive is staged. SoXR sdist includes libsoxr; PyZMQ/libzmq 4.3.5 source and build records are retained. | Choose actual maintained source hosting, image/digest-to-source mapping, retention and maintenance owner. Complete inherited-image source/license scope review; ten families do not cover every inherited executable. No public URL or written source offer exists. |
 | NumPy libgfortran | Accepted NumPy native hash is locked. NumPy v2.2.6 requirements pin scipy-openblas64 0.3.29.0.0; its libgfortran shares build ID `5bbe74eb6855e0a2c043c0bec2f484bf3e9f14c0` and 23 ELF sections. Only .dynamic, .dynstr and .gnu.version_r differ. | Exact GCC source/build patches and immutable manylinux build identity remain unknown. Neither NumPy sdist nor Ubuntu GCC source proves them. Legal must assess GPLv3 / GCC Runtime Library Exception duties for this separately bundled runtime. |
 | Intel 2026.1.1 | All 55 inspected EULA-governed runtime paths match explicitly designated files in the pinned compiler image byte for byte. Four additional PTI paths carry MIT notices. This resolves the old 19/59 installed-list screen for this scope. | Implement compliant recipient terms or obtain alternate Intel authorization; no agreement/permission is evidenced. Resolve the April-2023 credist-preamble / August-2024 installed-EULA discrepancy with legal/vendor review. No compiler redistribution or exhaustive image clearance is inferred. |
-| Independent build and runtime | Prior Phase 3 custom-native byte matches and Phase 4 live evidence are retained unchanged. Accepted source replay, image payload hashes and archive acquisition/import are rechecked without compilation or inference. | Stock vendor stack was inherited; no new annotated executable is qualified. Publication/version/registry/clean-install decisions remain. |
+| Independent build and runtime | Prior Phase 3 custom-native byte matches and Phase 4 live evidence are retained unchanged. Accepted source replay, image payload hashes and archive acquisition/import are rechecked without compilation or inference. | Stock vendor stack was inherited; no new annotated executable is qualified. Controller compatibility/publication/registry/clean-install decisions remain. |
 
 ## Intel recipient and authorization requirements
 
@@ -54,6 +54,8 @@ Authoritative references: [PyPI wheel record](https://pypi.org/project/vllm-xpu-
 [Apache 2.0 section 4](https://www.apache.org/licenses/LICENSE-2.0),
 [GCC Runtime Library Exception](https://www.gnu.org/licenses/gcc-exception-3.1.html).
 
-Before publication Wulf must also ratify version 2.0.0, authorize actual image/source
-publication with real identities, and arrange the later public clean-install test.
+The approved model-pack release version is 1.0.5; Controller remains 1.0.1. Before
+publication Wulf must resolve the Controller writable-work interface decision,
+authorize actual image/source publication with real identities, and arrange the
+later public clean-install test.
 No release, registry artifact, GitHub push or publication is performed here.

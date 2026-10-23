@@ -4,9 +4,10 @@
 
 One local runtime: `qwen38-flashnext-dflash2:integrated-serving-v1`, image ID
 `sha256:6e2ab4e686680a5208ff0119c4637341cba81942bd39b6576ea14dc8f547b83b`.
-This replaces the previous MTP5 pack contract. Pack version `2.0.0-dev.1` is local
-staging; **2.0.0 is the proposed release** because runtime, assistant and profile
-identities change. Maintainer ratification remains required. The intended public
+This replaces the previous MTP5 pack contract. Pack version `1.0.5-dev.1` is
+local staging for the user-approved **1.0.5 model-pack release**. B70 LLM Controller /
+`b70ctl` remains **1.0.1**; no Controller upgrade is authorized. Compatibility with
+its writable-work mount interface is blocked as detailed below. The intended public
 tag is `ghcr.io/wu1ff/qwen38-flashnext-b70:dflash2`; no registry digest is assigned
 and no DFlash2 image is publicly available. `pack.json` intentionally omits `registry`.
 The public catalog continues to advertise the unchanged 1.0.4 archive.
@@ -87,26 +88,38 @@ Keep the baked test/helper paths in `PYTHONPATH`; they are accepted image conten
 not external campaign mounts. All flags/environment are in `pack.json`; the frozen
 standalone contract is `patches/production/manifests/serving-contract.json`.
 
-Controller binds target/draft read-only and supplies a writable persistent Docker
-volume `b70ctl-qwen38-flashnext-dflash2-work` at `/work`; it does not reuse the live
-campaign's work directory. It passes all four DRI devices, uses host IPC and the
-recorded security options, and publishes port 8000 at the chosen Local/LAN address.
-The campaign used host networking; Controller uses its existing bridge/port mapping.
-No Controller-launched boot is claimed during this phase.
+The staged contract binds target/draft read-only and requests the writable
+persistent Docker volume `b70ctl-qwen38-flashnext-dflash2-work` at `/work`, separate
+from the live campaign's work directory. It retains all four DRI devices, host IPC
+and the recorded security options. Controller would publish port 8000 at the chosen
+Local/LAN address; the campaign used host networking. No Controller-launched boot
+is claimed.
 
-Build this branch's Controller from the repository root with
-`/usr/lib/go-1.25/bin/go build -buildvcs=false -o /tmp/b70ctl-dflash2 ./cmd/b70ctl`.
-The Go path follows this repository's Makefile; `-buildvcs=false` accommodates Go's
-VCS-root detection in this linked worktree.
-Installed `/usr/bin/b70ctl` 1.0.1 rejects the explicit work-volume declaration and
-needs the validator change in this branch. In the branch-built TUI choose
-**Model Packs → Import Local Pack**, enter this unpacked directory, then prepare
-both pinned checkpoints. Local image acquisition reuses the exact accepted ID;
-if absent, it reports no immutable registry reference. Do not substitute the
-published MTP image. Import stores only manifest and README: retain the original
-complete archive for recipes, notices and sources. Runtime resolution additionally
-requires both complete models and four cards. Readiness checks do not reserve GPUs;
-starting a second instance while the accepted service owns them is unsupported.
+**Controller 1.0.1 compatibility: BLOCKED.** The actual installed `/usr/bin/b70ctl`
+1.0.1 rejects the staged pack during **Model Packs → Import Local Pack** with
+`runtime qwen38-flashnext-runtime-dflash2 docker argument "--mount" is controlled by B70 LLM Controller`.
+Schema v1 has no writable-work field. Its only permitted pack mount is the exact
+read-only `/dev/dri/by-path` device bind; target and assistant `mount_path` entries
+are always bound read-only by `runtime.BuildLaunch`. Global configuration exposes
+no extra mounts. The accepted image has no declared Docker volumes. The accepted
+persistent `/work` mount cannot be expressed through this supported interface.
+
+The pre-existing validator exception and its tests remain a proposal on this
+branch, uninstalled and unauthorized for release. Checks using that exception are
+staging evidence, not proof of installed 1.0.1 compatibility. Neither the installed
+Controller nor the accepted runtime has been changed. No flag alias, extra model,
+tmpfs or writable container layer is substituted for the required work storage.
+Directory import, archive acquisition/import, profile rendering and launch through
+installed 1.0.1 are blocked at manifest validation.
+
+Wulf must choose a separately authorized Controller interface change, a separately
+qualified runtime/storage contract, or continued standalone operation of the
+accepted runtime. The first two require work outside this model-pack-only scope;
+this preview is not release-ready. Local image acquisition can reuse the accepted
+ID, but no public immutable registry reference exists. Import stores only manifest
+and README: retain the complete archive for recipes, notices and sources. Runtime
+resolution requires both complete models and four cards; readiness checks do not
+reserve GPUs. Keep the accepted service on port 8000 unchanged.
 
 ## Interfaces, performance and limitations
 
@@ -132,5 +145,5 @@ do not establish an unlimited soak or every workload. DSH/three.js telemetry is
 reserved for editorial work, with no invented figures.
 
 Publication remains blocked by the [distribution findings](patches/licenses/SOURCE_DISTRIBUTION.md),
-notice incorporation, version ratification and an actual registry artifact. No
+notice incorporation, Controller 1.0.1 compatibility and an actual registry artifact. No
 public clean-install test has been performed.

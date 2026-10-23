@@ -2,7 +2,7 @@
   "schema_version": 1,
   "id": "qwen38-flashnext-b70",
   "name": "Qwen3.8-Flash-Next B70 Pack (DFlash2)",
-  "version": "2.0.0-dev.1",
+  "version": "1.0.5-dev.1",
   "models": [
     {
       "id": "qwen38-flashnext-w4a16",

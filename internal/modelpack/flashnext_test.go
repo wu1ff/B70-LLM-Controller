@@ -17,7 +17,7 @@ func TestFlashNextDFlash2QualifiedProfile(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if manifest.Version != "2.0.0-dev.1" || len(manifest.Models) != 2 || len(manifest.Runtimes) != 1 || len(manifest.Modes) != 1 || len(manifest.Profiles) != 1 {
+	if manifest.Version != "1.0.5-dev.1" || len(manifest.Models) != 2 || len(manifest.Runtimes) != 1 || len(manifest.Modes) != 1 || len(manifest.Profiles) != 1 {
 		t.Fatal("expected one local DFlash2 runtime/profile and target/assistant")
 	}
 	runtime := manifest.Runtimes[0]
