@@ -1,0 +1,198 @@
+{
+  "schema_version": 1,
+  "source_workspace": "qwen3.8-flash-next-dflash2-v032",
+  "originals": [
+    {
+      "file": "betterbench-integrated-serving-v1-full.png",
+      "source_workspace_file": "results.png",
+      "dimensions": [
+        3000,
+        8434
+      ],
+      "sha256": "cc888e9dea708472f9ec9da378647014567808fde899a6a5a4585f5d3cf39367",
+      "byte_identical_copy": true
+    },
+    {
+      "file": "aquarium-telemetry-overview.png",
+      "source_workspace_file": "abyss-telemetry-figure.png",
+      "dimensions": [
+        2360,
+        2840
+      ],
+      "sha256": "df03fae81c81ca5bd7f0d495265ab4ca6dd03de88314a0abfdc7238e50785860",
+      "byte_identical_copy": true
+    },
+    {
+      "file": "aquarium-telemetry-full.png",
+      "source_workspace_file": "abyss-telemetry-full.png",
+      "dimensions": [
+        2360,
+        5374
+      ],
+      "sha256": "e6735e30cf1dd1a2477e1ad33be199625d8f422d64e53c1f278f4572ab407338",
+      "byte_identical_copy": true
+    }
+  ],
+  "crops": [
+    {
+      "file": "aquarium-trace-01-generation-rate.png",
+      "source": "aquarium-telemetry-full.png",
+      "box_left_top_right_bottom": [
+        60,
+        600,
+        2300,
+        1385
+      ],
+      "dimensions": [
+        2240,
+        785
+      ],
+      "sha256": "7c57c2529aec6879c18606098d7d46bb824b50913639a0d0bf1f7f338fcfbb6b",
+      "caption": "Server generation rate",
+      "pixel_identical_crop": true
+    },
+    {
+      "file": "aquarium-trace-02-generated-tokens.png",
+      "source": "aquarium-telemetry-full.png",
+      "box_left_top_right_bottom": [
+        60,
+        1385,
+        2300,
+        2055
+      ],
+      "dimensions": [
+        2240,
+        670
+      ],
+      "sha256": "ed444df830bcc026b6567f3e6c2d25fbb81eca162fe9db11654a7b1a8d358dd0",
+      "caption": "Cumulative generated tokens",
+      "pixel_identical_crop": true
+    },
+    {
+      "file": "aquarium-trace-03-prompt-occupancy.png",
+      "source": "aquarium-telemetry-full.png",
+      "box_left_top_right_bottom": [
+        60,
+        2055,
+        2300,
+        2715
+      ],
+      "dimensions": [
+        2240,
+        660
+      ],
+      "sha256": "fe6e44e783553d18c71609dfef2d6898d2ccd5b9ea7d8eb286d95237df6927fb",
+      "caption": "Prompt occupancy",
+      "pixel_identical_crop": true
+    },
+    {
+      "file": "aquarium-trace-04-cache-and-acceptance.png",
+      "source": "aquarium-telemetry-full.png",
+      "box_left_top_right_bottom": [
+        60,
+        2715,
+        2300,
+        3425
+      ],
+      "dimensions": [
+        2240,
+        710
+      ],
+      "sha256": "32a6ffc15139a42fef61aecc5bd938a3b5e2f9a205ae28052ad156eb2f21461b",
+      "caption": "Recent-window cache and draft acceptance ratios",
+      "pixel_identical_crop": true
+    },
+    {
+      "file": "aquarium-trace-05-acceptance-by-position.png",
+      "source": "aquarium-telemetry-full.png",
+      "box_left_top_right_bottom": [
+        60,
+        3425,
+        1168,
+        4365
+      ],
+      "dimensions": [
+        1108,
+        940
+      ],
+      "sha256": "fd5f6359c976d93ca2a7087628b3de76870aff641d461ea2ae4c825fb85d7573",
+      "caption": "Draft acceptance by position",
+      "pixel_identical_crop": true
+    },
+    {
+      "file": "aquarium-trace-06-compactions.png",
+      "source": "aquarium-telemetry-full.png",
+      "box_left_top_right_bottom": [
+        1192,
+        3425,
+        2300,
+        4365
+      ],
+      "dimensions": [
+        1108,
+        940
+      ],
+      "sha256": "a2697a47475a58a1e051644b7cf14acdf2f178a613ec02dfa648099f2e9ee89f",
+      "caption": "Compaction timings and prompt sizes",
+      "pixel_identical_crop": true
+    },
+    {
+      "file": "aquarium-trace-07-client-timeline.png",
+      "source": "aquarium-telemetry-full.png",
+      "box_left_top_right_bottom": [
+        60,
+        4365,
+        2300,
+        5374
+      ],
+      "dimensions": [
+        2240,
+        1009
+      ],
+      "sha256": "a2ce6bc08754db7cecf9b705ca1698e51683320a9d954dfbd2f9034780270ad2",
+      "caption": "Client activity timeline, integrity counters and evidence footer",
+      "pixel_identical_crop": true
+    }
+  ],
+  "crop_method": "Lossless PNG crops in original RGB resolution; no scaling, resampling, restyling or changed pixels. Coordinates use Pillow left/top inclusive, right/bottom exclusive. Cuts lie in existing panel gutters.",
+  "betterbench": {
+    "source_campaign": "Benchmarking/flashnext-release-betterbench-full-20261022T193611",
+    "runtime_tag": "qwen38-flashnext-dflash2:integrated-serving-v1",
+    "runtime_image_id": "sha256:6e2ab4e686680a5208ff0119c4637341cba81942bd39b6576ea14dc8f547b83b",
+    "target_revision": "4c67bf686b7f7fd386bae6b07ab59e8ff1d5b897",
+    "assistant_revision": "a22a1744e85c17364dcc54a6a420af7135d4c7f6",
+    "measured_requests": 336,
+    "warmups": 32,
+    "combined_decode_tokens_per_second": 160.10536361737414,
+    "combined_stream_update_p99_ms": 25.820321342907846,
+    "combined_ttft_p50_ms": 139.39230257747113,
+    "concurrency_aggregate_tokens_per_second": [
+      146.49984784240397,
+      227.1244348587543,
+      316.01359771326173
+    ]
+  },
+  "aquarium": {
+    "capture_id": "3f1b27fb-2569-4bdb-8865-e0c8a35f70c4",
+    "session_id": "4d83c905-4ef3-4393-97ac-38c205f203de",
+    "date": "2026-10-22",
+    "timezone": "America/Phoenix",
+    "runtime_as_printed": "Qwen3.8-Flash-Next + DFlash2 / Intel Arc Pro B70 / vLLM XPU",
+    "identity_note": "The supplied aquarium graphics print the model/runtime family but no immutable image digest or checkpoint revision. No stronger session identity is inferred.",
+    "duration_as_printed": "3h 02m 55.8s",
+    "generated_tokens": 520445,
+    "main_request_tokens": 500651,
+    "compaction_tokens": 19794,
+    "main_requests": 517,
+    "tool_calls": 520,
+    "compactions": 3,
+    "pooled_client_decode_tokens_per_second": 119.1,
+    "whole_turn_effective_tokens_per_second": 47.42,
+    "peak_prompt_tokens": 209678,
+    "context_tokens": 262144,
+    "peak_prompt_occupancy_percent": 79.99,
+    "measurement_notes": "Offline extraction from saved counters and session events. Server counters use the enclosing capture window; client timing includes harness overhead. No speedup baseline. Older benchmark references of 138 ms and 4665 tok/s are retained exactly in the supplied graphics. C1/C2/C3 in aquarium traces mean compaction events, unlike BetterBench concurrency levels.",
+    "archived_frame_reference": "seq 2662 (not supplied or embedded; screenshot integration waived by Wulf)"
+  },
+  "attribution_and_authorization": "Finished reports supplied and selected by Wulf for local model-pack README integration. Original report text and evidence attribution are preserved. This task does not assign a new license or authorize publication."
+}

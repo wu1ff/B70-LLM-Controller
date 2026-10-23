@@ -11,7 +11,8 @@
   and accepted stock BetterBench/serving measurements. They are historical evidence.
 - [Notices](licenses/NOTICE.md), [source access](licenses/SOURCE_ACCESS.md),
   [distribution findings](licenses/SOURCE_DISTRIBUTION.md).
-- [Visual assets](assets/README.md): reserved for reviewed showcase material.
+- [Visual assets](assets/README.md): complete BetterBench/aquarium reports, readable
+  telemetry crops and their provenance.
 
 Do not apply archived patches over production. Some original patch names mention
 MTP investigations: their selected effects are already in the accepted DFlash2
