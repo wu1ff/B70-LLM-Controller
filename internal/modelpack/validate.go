@@ -15,11 +15,8 @@ var (
 	registryPattern = regexp.MustCompile(`^[A-Za-z0-9][A-Za-z0-9._:/-]*@sha256:[0-9a-f]{64}$`)
 )
 
-// Keep pack-provided mounts bounded: the established device bind and one
-// persistent work volume for the Flash-Next DFlash2 runtime. Model binds are
-// still supplied read-only by Controller.
+// The exact fixed v26 runtime device bind is the only pack mount Controller permits.
 var fixedDeviceBind = [2]string{"--mount", "type=bind,source=/dev/dri/by-path,target=/dev/dri/by-path,readonly"}
-var fixedDFlashWorkVolume = [2]string{"--mount", "type=volume,source=b70ctl-qwen38-flashnext-dflash2-work,target=/work"}
 
 func (manifest *Manifest) validate() error {
 	if manifest.SchemaVersion != schemaVersion {
@@ -252,9 +249,6 @@ func validateRuntimeLaunch(launch RuntimeLaunch, label string) error {
 func validateLaunchValues(dockerArgs []string, environment map[string]string, label string) error {
 	for index, arg := range dockerArgs {
 		if arg == fixedDeviceBind[0] && index+1 < len(dockerArgs) && dockerArgs[index+1] == fixedDeviceBind[1] {
-			continue
-		}
-		if arg == fixedDFlashWorkVolume[0] && index+1 < len(dockerArgs) && dockerArgs[index+1] == fixedDFlashWorkVolume[1] {
 			continue
 		}
 		if forbiddenDockerArg(arg) {

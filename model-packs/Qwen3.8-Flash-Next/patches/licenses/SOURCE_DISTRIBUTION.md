@@ -54,8 +54,9 @@ Authoritative references: [PyPI wheel record](https://pypi.org/project/vllm-xpu-
 [Apache 2.0 section 4](https://www.apache.org/licenses/LICENSE-2.0),
 [GCC Runtime Library Exception](https://www.gnu.org/licenses/gcc-exception-3.1.html).
 
-The approved model-pack release version is 1.0.5; Controller remains 1.0.1. Before
-publication Wulf must resolve the Controller writable-work interface decision,
-authorize actual image/source publication with real identities, and arrange the
-later public clean-install test.
+The approved model-pack release version is 1.0.5; Controller remains 1.0.1.
+The external writable-work mount is unnecessary; the unchanged accepted image
+serves through installed Controller 1.0.1 using its ordinary writable filesystem.
+Before publication Wulf must authorize actual image/source publication with real
+identities and arrange the later public clean-install test.
 No release, registry artifact, GitHub push or publication is performed here.

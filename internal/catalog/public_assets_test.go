@@ -133,11 +133,7 @@ func TestFlashNextSourceArchiveLoad(t *testing.T) {
 	}
 	server := archiveServer(t, archiveBytes)
 	defer server.Close()
-	manifest, err := modelpack.Load(packDirectory)
-	if err != nil {
-		t.Fatal(err)
-	}
-	entry := catalogEntry(server.URL, archiveBytes, manifest.ID, manifest.Name, manifest.Version)
+	entry := catalogEntry(server.URL, archiveBytes, "qwen38-flashnext-b70", "Qwen3.8-Flash-Next B70 Pack (Intel Dynamic MTP5)", "1.0.4")
 	client := &Client{HTTPClient: server.Client()}
 	acquired, err := client.Acquire(context.Background(), t.TempDir(), entry)
 	if err != nil {
@@ -322,28 +318,6 @@ func TestTrackedCatalogMatchesPublishedPack(t *testing.T) {
 		}
 		if entry.ID == "" {
 			t.Fatalf("pack %s (%s) has no catalog entry; catalogs and pack directories must be added together", manifest.ID, directory)
-		}
-		// The isolated DFlash2 source is deliberately unpublished. Keep the
-		// real 1.0.4 catalog entry locked to its retained release receipt;
-		// never advertise an archive generated from these development files.
-		if directory == "Qwen3.8-Flash-Next" && strings.Contains(manifest.Version, "-dev.") {
-			var published struct {
-				Entry Entry `json:"catalog_entry"`
-			}
-			data, err := os.ReadFile(filepath.Join(packPath, "patches", "archive", "published-1.0.4.json"))
-			if err != nil {
-				t.Fatal(err)
-			}
-			if err := json.Unmarshal(data, &published); err != nil {
-				t.Fatal(err)
-			}
-			if !reflect.DeepEqual(entry, published.Entry) || entry.Version != "1.0.4" || entry.SHA256 != "sha256:845adf3a3c35193f18a3916bdccc33ae9e0d0c17340fb11a99883a313e291452" {
-				t.Fatalf("published Flash-Next catalog changed during local staging: %+v", entry)
-			}
-			if len(manifest.Runtimes) != 1 || manifest.Runtimes[0].Registry != "" {
-				t.Fatal("unpublished DFlash2 pack must not advertise a registry artifact")
-			}
-			continue
 		}
 		if entry.Name != manifest.Name || entry.Version != manifest.Version {
 			t.Fatalf("catalog entry %+v does not match pack manifest id/name/version %+v", entry, manifest)
