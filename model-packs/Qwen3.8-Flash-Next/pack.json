@@ -184,7 +184,7 @@
   "runtimes": [
     {
       "id": "qwen38-flashnext-runtime-dflash2",
-      "image": "qwen38-flashnext-dflash2:integrated-serving-v1",
+      "image": "ghcr.io/wu1ff/qwen38-flashnext-b70:dflash2",
       "digest": "sha256:6e2ab4e686680a5208ff0119c4637341cba81942bd39b6576ea14dc8f547b83b",
       "container_port": 8000,
       "health_path": "/health",
@@ -254,7 +254,8 @@
           "--num-gpu-blocks-override",
           "7785"
         ]
-      }
+      },
+      "registry": "ghcr.io/wu1ff/qwen38-flashnext-b70@sha256:6e2ab4e686680a5208ff0119c4637341cba81942bd39b6576ea14dc8f547b83b"
     }
   ],
   "modes": [

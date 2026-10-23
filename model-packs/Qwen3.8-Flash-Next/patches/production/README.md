@@ -20,9 +20,11 @@ for `build/Dockerfile.runtime`, preserving frontend, shim, baked tests, modes an
 accepted PYTHONPATH. It does not run Docker. Existing Phase 3/4 evidence is used
 for this pack validation; no inference image is rebuilt here.
 
-`manifests/controller-staging.json` records local image, proposed release version,
-public-reference decision and Controller transport/storage differences. Its null
-public digest is intentional. No public DFlash2 artifact exists.
+`manifests/controller-staging.json` records the accepted local image, release version,
+verified immutable public registry reference and Controller transport/storage
+differences. `manifests/qualified-launch.json` records the mount-free launch
+verified by installed b70ctl 1.0.1; `serving-contract.json` retains the original
+standalone capture. The accepted runtime is published unchanged.
 
 The reviewed 57-file notice overlay is incorporated in `distribution-source.tar.gz`.
 `manifests/source-export.json` pins this separately hashed source artifact;

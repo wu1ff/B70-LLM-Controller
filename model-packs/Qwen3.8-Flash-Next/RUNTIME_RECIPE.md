@@ -2,14 +2,16 @@
 
 ## Runtime and requirements
 
-One local runtime: `qwen38-flashnext-dflash2:integrated-serving-v1`, image ID
+Accepted runtime: `qwen38-flashnext-dflash2:integrated-serving-v1`, image ID
 `sha256:6e2ab4e686680a5208ff0119c4637341cba81942bd39b6576ea14dc8f547b83b`.
-This replaces the previous MTP5 pack contract. The model pack is **1.0.5**;
+The model pack is **1.0.5**;
 B70 LLM Controller / `b70ctl` remains **1.0.1**. The pack uses the existing
-read-only target/assistant mounts and the image's ordinary writable filesystem. The intended public
-tag is `ghcr.io/wu1ff/qwen38-flashnext-b70:dflash2`; no registry digest is assigned
-and no DFlash2 image is publicly available. `pack.json` intentionally omits `registry`.
-The public catalog continues to advertise the unchanged 1.0.4 archive.
+read-only target/assistant mounts and the image's ordinary writable filesystem.
+Public runtime: `ghcr.io/wu1ff/qwen38-flashnext-b70:dflash2`, immutable GHCR index
+`ghcr.io/wu1ff/qwen38-flashnext-b70@sha256:6e2ab4e686680a5208ff0119c4637341cba81942bd39b6576ea14dc8f547b83b`.
+The verified linux/amd64 manifest is
+`sha256:e33132c1e04d669929ed7909fe61478d27e88fa7816723c9bdf86b5e9ffc12d7`.
+The published index preserves the accepted local image identity; no rebuild was used.
 
 The qualified host has four Intel Arc Pro B70 32 GB GPUs and 256 GB system RAM,
 a Linux Intel Xe/Level Zero driver stack, Docker with BuildKit for source builds,
@@ -18,7 +20,7 @@ are required; 256 GB describes the tested host, not a proven minimum. Observed
 primary GPU usage was 29.765–29.774 GiB/rank. Reserve **181240433939 bytes** for
 the target, **1206437758 bytes** for all six draft-repository files, plus image,
 build space and writable caches. Disk PLE maps the 102400512256-byte target shard;
-allow host page-cache capacity and cold-storage latency. Do not place `/work` on RAM tmpfs.
+allow host page-cache capacity and cold-storage latency.
 
 Pinned dependencies: vLLM 0.32.0+xpu, Torch 2.14.0+xpu, Transformers 5.19.0,
 Triton XPU 3.8.0, XPU kernels 0.1.15.4 and Intel runtimes/compiler 2026.1.1.
@@ -59,16 +61,12 @@ Use a new staging path. Verification is offline and requires only Python 3.12+,
 Git and Bash. It replays 16 patches over clean v0.32 sources and compares every
 accepted Python/data/support file; archive variants never enter production.
 `patches/production/README.md` gives the native and portable image assembly path.
-The original Phase 2 bundle SHA256 is
-`b2c2d0ae12c229651c287d397b4e8f110b48399aa764228a6065c02bbe02445a`.
-
-The retained Phase 3 independent no-cache/offline build matched all 12 custom
-native libraries and all non-bytecode runtime files. Its image ID is
-`sha256:ef0ece167b6bd7da3e24c794ba8e7d0a9834ef4209110f53ab8422f555bbf4c1`;
-layer history/cache differences prevent OCI identity equality. Phase 4 verified
-live equivalence, including APC, tools, vision and C2/C4 overlap. This pack does
-not require another image rebuild. Notice-only source exports have separate hashes
-and are not relabeled accepted source or qualified executable images.
+The retained independent no-cache/offline build matched all 12 custom native
+libraries and all non-bytecode runtime files. Live equivalence covered APC,
+tools, vision and C2/C4 overlap; OCI identity differs because of layer history
+and caches. Build and qualification receipts remain in the archive. The published
+runtime uses the accepted image unchanged. Notice-only source exports have
+separate hashes and are not qualified executable images.
 
 ## Runtime configuration
 
@@ -84,12 +82,13 @@ APC is enabled. Disk BF16 PLE uses `PLE_TABLE_PATH=/models/model-00016-of-00017.
 a 5 MiB/rank 1024-row stage and `B70_PLE_DISK_BF16=1`. The required residency shim
 is preloaded from `/opt/b70-residency-shim/libl0_peer_residency_shim.so`.
 Keep the baked test/helper paths in `PYTHONPATH`; they are accepted image contents,
-not external campaign mounts. All flags/environment are in `pack.json`; the frozen
-standalone contract is `patches/production/manifests/serving-contract.json`.
+not external campaign mounts. All flags/environment are in `pack.json`; the qualified
+mount-free contract is `patches/production/manifests/qualified-launch.json`.
+`serving-contract.json` retains the original standalone capture.
 
 The pack binds target and draft read-only through Controller's existing model and
 assistant mechanisms. Its only explicit mount is the existing read-only DRI
-by-path bind. No volume or host directory is mounted at `/work`.
+by-path bind. No external bind, named volume or tmpfs is mounted at `/work`.
 
 The accepted image runs as root in `/opt/venv` with a writable root filesystem.
 Its existing `prepare-intel.py` creates `/work/flashnext-serve` with parents and
@@ -102,17 +101,17 @@ container recreation is safe; cold JIT caches can lengthen startup.
 Disk PLE stays on NVMe in `/models/model-00016-of-00017.safetensors`, mapped
 directly from the original 102,400,512,256-byte shard. The 1,024-row, 5 MiB/rank
 DMA stage is pinned CPU memory. No model weight or PLE staging file is copied
-into the container layer. The development campaign's 23 GiB of audit captures
-are not serving dependencies. See [the storage investigation](WORK_STORAGE.md).
+into the container layer. See [the storage investigation](WORK_STORAGE.md).
 
 Controller publishes port 8000 at the chosen Local/LAN address; the preserved
-standalone service uses host networking. Local image acquisition can reuse the
-accepted ID; no public immutable registry reference exists. Import stores only
+standalone service uses host networking. Image acquisition pulls the
+immutable registry reference or reuses the accepted ID. Import stores only
 manifest and README: retain the complete archive for recipes, notices and sources.
 Runtime resolution requires both complete models and four cards; readiness checks
-do not reserve GPUs. The storage compatibility check is limited to import,
-acquisition, profile/launch and short serving checks, not renewed performance or
-full-context qualification.
+do not reserve GPUs. Installed b70ctl 1.0.1 compatibility includes import, acquisition, profile rendering
+and a healthy mount-free launch; retained live qualification covers performance
+and full context. Public artifact checks reuse that qualification without
+interrupting the existing service.
 
 ## Interfaces, performance and limitations
 
@@ -121,12 +120,12 @@ tools and tool-result continuation, structured output and up to two images are
 retained; video is disabled. Served model name is
 `Intel/Qwen3.8-Flash-Next-W4A16-AutoRound`.
 
-Accepted stock BetterBench v0.6.0: 336 measurements + 32 warmups; weighted decode
-160.88 tok/s, median TTFT 137.78 ms, C1/C2/C4 aggregate 146.12/208.14/303.39 tok/s.
-These are one workload run with warm OS/model/PLE caches and no APC hits, not a
-quality score or a universal speed guarantee. C2/C4 aggregates were lower than the
-preceding runtime. Archived custom coding 271.47 tok/s is a different fixture;
-do not present it as the stock median. Source reports are in `patches/archive/qualification/`.
+Accepted stock BetterBench v0.6.0 rerun: 336 measurements + 32 warmups; weighted
+combined decode 160.11 tok/s, median TTFT 139.39 ms, stream-update p99 25.82 ms,
+C1/C2/C4 aggregate 146.50/227.12/316.01 tok/s. This is one workload run with
+warm OS/model/PLE caches and no APC hits, not a quality score or universal speed
+guarantee. The [README](README.md) retains the report and aquarium-session graphics;
+earlier, distinct measurements remain in `patches/archive/qualification/`.
 
 Native 261632 input + 512 reserved execution passed; cold/cached TTFT was
 111.696/1.229 s with 0/260416 reused tokens. Observed aggregate KV capacity is
@@ -134,9 +133,8 @@ roughly 491K tokens and cannot hold four full-native contexts. Startup includes 
 of bounded filter warmup; lazy graph/JIT work and roughly 200 ms mixed-prefill
 stream gaps remain. Concurrent identical sampled requests may exchange client-to-output
 assignments while exact output multisets and aggregate state agree. Finite checks
-do not establish an unlimited soak or every workload. DSH/three.js telemetry is
-reserved for editorial work, with no invented figures.
+do not establish an unlimited soak or every workload.
 
-Publication remains blocked by the [distribution findings](patches/licenses/SOURCE_DISTRIBUTION.md),
-notice incorporation and an actual registry artifact. No
-public clean-install test has been performed.
+Existing [source-distribution findings](patches/licenses/SOURCE_DISTRIBUTION.md),
+source-access instructions and required notices are retained with the complete
+production and experimental sources.

@@ -1,9 +1,14 @@
 # Source access and companion delivery directions
 
 Retain the complete model-pack archive: Controller import keeps only pack.json
-and README (plus local source metadata), not patches/**. No public DFlash2 source
-URL or registry digest has been assigned. The published 1.0.4 archive is historical
-and cannot reproduce DFlash2.
+and README (plus local source metadata), not patches/**. The complete DFlash2
+sources ship in the [1.0.5 model-pack archive](https://github.com/wu1ff/B70-LLM-Controller/releases/download/qwen3.8-flash-next-v1.0.5/qwen38-flashnext-b70-1.0.5.tar.gz)
+with its adjacent SHA256SUMS. The accepted runtime is
+`ghcr.io/wu1ff/qwen38-flashnext-b70@sha256:6e2ab4e686680a5208ff0119c4637341cba81942bd39b6576ea14dc8f547b83b`;
+its local image and platform identities are recorded in the enclosing runtime
+recipe and production manifests. The published 1.0.4 archive is historical and
+cannot reproduce DFlash2. The component-specific findings and companion-source
+limitations below remain unchanged.
 
 ## Included accepted and annotated sources
 

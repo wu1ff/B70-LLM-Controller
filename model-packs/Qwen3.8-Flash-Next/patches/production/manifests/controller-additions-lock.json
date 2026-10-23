@@ -1,15 +1,16 @@
 {
   "scope": "Controller source-only export, verification, technical documentation and staging metadata; accepted inputs remain immutable under input-lock.json",
   "files": {
-    "README.md": "421394521b744acf0aa437d8e2ec77b84e3547ca48da705c660275d842a13590",
+    "README.md": "6e2c2f8ddd022200befd6573a499107757c09e7e34cd61bd080d460cf2974bf9",
     "build/Dockerfile.runtime": "094344a55b8a48b8b8864a5362d57291e601afa288e0059c1de8a16c70657b28",
-    "manifests/controller-staging.json": "866e335c9e1c0bcd2bef1e8c0fd4082412e16244f9efe7a95d5f86d9d8c78ae8",
+    "manifests/controller-staging.json": "4bf5d0c09e4542f06294b8a449546e8e2d33867b1f8154e150972c666b903e11",
     "manifests/image-modes.json": "8d75c3de7f6e773e3e89ace95d05293367a9a8eb54894af98bb88ef2e2eaf832",
     "manifests/image-payload.json": "df8f52056a32af3cea45e863d6160130f67dcbdc499e9f86d9242114eaa5d8eb",
     "tools/notice_export.py": "89e70d9e1559082cc6ece1f6a4f6e6d892bac4d03205dba216476ede286f75b4",
     "tools/prepare_image.py": "a43da7ad2daa8da66146e5248d95b39aadd9c3fdb5c4c6dfacbfa43034d2f789",
     "tools/verify_notice_export.py": "c88074d8a4dd6f77f4327aa7546a865b2b93dfdd7e38b839c4d9210c8f9ae6a1",
-    "manifests/source-export.json": "c27f014ece3e6ab0f547825f94c354c853c2ee03ab48a5ec2895bc91873d94dc",
-    "distribution-source.tar.gz": "48cf80d47cc416a8ee8940ff30f596c5d67f5ad6bffa3f79f15a5e7894b2f329"
+    "manifests/source-export.json": "e9595a3edffa961d9187965c5238a6051ec59d74c4df585b4f023d89039db58d",
+    "distribution-source.tar.gz": "bd8616310352b7f452c16dafe150ee678a7143af6eb4b99e0c534724810a94d5",
+    "manifests/qualified-launch.json": "e24c18e9b1add2934d8c328cb0400081cfe83e3b0d0d3ec65461a3abbc38f8cf"
   }
 }

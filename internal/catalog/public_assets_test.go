@@ -84,6 +84,11 @@ func writePackArchive(t *testing.T, packDirectory, destination string) {
 func packArchiveNames(t *testing.T, packDirectory string) []string {
 	t.Helper()
 	names := []string{"README.md", "RUNTIME_RECIPE.md", "pack.json"}
+	if _, err := os.Stat(filepath.Join(packDirectory, "WORK_STORAGE.md")); err == nil {
+		names = append(names, "WORK_STORAGE.md")
+	} else if !os.IsNotExist(err) {
+		t.Fatal(err)
+	}
 	patchRoot := filepath.Join(packDirectory, "patches")
 	if _, err := os.Stat(patchRoot); os.IsNotExist(err) {
 		return names
@@ -133,7 +138,7 @@ func TestFlashNextSourceArchiveLoad(t *testing.T) {
 	}
 	server := archiveServer(t, archiveBytes)
 	defer server.Close()
-	entry := catalogEntry(server.URL, archiveBytes, "qwen38-flashnext-b70", "Qwen3.8-Flash-Next B70 Pack (Intel Dynamic MTP5)", "1.0.4")
+	entry := catalogEntry(server.URL, archiveBytes, "qwen38-flashnext-b70", "Qwen3.8-Flash-Next B70 Pack (DFlash2)", "1.0.5")
 	client := &Client{HTTPClient: server.Client()}
 	acquired, err := client.Acquire(context.Background(), t.TempDir(), entry)
 	if err != nil {
@@ -166,8 +171,14 @@ func TestFlashNextSourceArchiveLoad(t *testing.T) {
 		}
 		count++
 	}
-	if count != len(want)-4 { // three root files plus patches/SHA256SUMS
-		t.Fatalf("patch checksum count = %d, want %d", count, len(want)-4)
+	patchFiles := 0
+	for _, name := range want {
+		if strings.HasPrefix(name, "patches/") && name != "patches/SHA256SUMS" {
+			patchFiles++
+		}
+	}
+	if count != patchFiles {
+		t.Fatalf("patch checksum count = %d, want %d", count, patchFiles)
 	}
 }
 
