@@ -120,6 +120,8 @@ Keep the complete model-pack source archive: Controller import retains the manif
 not the full source tree. Use [RUNTIME_RECIPE.md](RUNTIME_RECIPE.md) for exact checkpoint revisions,
 dependencies, setup, runtime configuration and launch procedures.
 
+See the [tuning guide](docs/TUNING_GUIDE.md) for engineering decisions and measured results.
+
 ## Sources and notices
 
 [Production sources and reconstruction](patches/production/README.md),
