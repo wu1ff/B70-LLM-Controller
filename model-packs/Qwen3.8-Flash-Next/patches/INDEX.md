@@ -17,8 +17,6 @@
 - [Credits/notices](licenses/NOTICE.md), [source access](licenses/SOURCE_ACCESS.md)
   and [distribution findings](licenses/SOURCE_DISTRIBUTION.md): existing published
   attribution/evidence retained with explicit v0.33/historical scope.
-- [Historical visual assets](assets/README.md): preserved prior release assets;
-  they are not the current v0.33 benchmark results.
 
 `SHA256SUMS` covers all regular files below patches except itself. The package-root
 `SHA256SUMS` additionally covers root files and this checksum list. Production's
