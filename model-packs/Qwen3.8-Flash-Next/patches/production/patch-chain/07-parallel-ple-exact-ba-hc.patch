@@ -1,0 +1,130 @@
+diff --git a/vllm/models/qwen4_exp/common/disk_ple.py b/vllm/models/qwen4_exp/common/disk_ple.py
+index 4332704..1f527a7 100644
+--- a/vllm/models/qwen4_exp/common/disk_ple.py
++++ b/vllm/models/qwen4_exp/common/disk_ple.py
+@@ -460,3 +460,68 @@ class Qwen4ExpPLEDiskBF16Embedding(Qwen4ExpPLEPinnedHostEmbedding):
+             self.close()
+         except BaseException:
+             _disk_bf16_quarantine.append(self)
++
++
++# --- B70 expanded campaign 2026-11-16: parallel row gather (env-gated) -------
++# B70_PLE_PARALLEL_GATHER=<threads>: _fill_stage's CPU work (zero the padded
++# stage prefix, validate active IDs, copy owned rows) runs in one native call
++# that copies rows from the SAME read-only file mmap with a small persistent
++# thread pool, so page faults on the disk-backed table overlap. The staged
++# bytes are identical (bitwise verified live on all ranks); nothing becomes
++# resident beyond the OS page cache that the mmap already uses.
++_b70_gather_threads = int(os.environ.get("B70_PLE_PARALLEL_GATHER", "0"))
++if _b70_gather_threads:
++    _b70_gather_state = {}
++    _b70_original_fill_stage = Qwen4ExpPLEDiskBF16Embedding._fill_stage
++
++    def _b70_gather_lib():
++        lib = _b70_gather_state.get("lib")
++        if lib is None:
++            import vllm_xpu_kernels as _b70_vxk
++            from pathlib import Path as _b70_Path
++
++            lib = ctypes.CDLL(str(_b70_Path(_b70_vxk.__file__).with_name("libple_gather.so")))
++            lib.ple_gather_init.argtypes = [ctypes.c_int]
++            lib.ple_gather_init.restype = ctypes.c_int
++            lib.ple_gather.argtypes = [
++                ctypes.c_void_p, ctypes.c_int64, ctypes.c_int64, ctypes.c_void_p,
++                ctypes.c_void_p, ctypes.c_int64, ctypes.c_int64, ctypes.c_int64,
++                ctypes.c_int64, ctypes.c_void_p, ctypes.c_int64, ctypes.c_void_p,
++            ]
++            lib.ple_gather.restype = ctypes.c_int
++            if lib.ple_gather_init(_b70_gather_threads) != min(_b70_gather_threads, 32):
++                raise RuntimeError("Disk BF16 PLE parallel gather pool failed to start")
++            _b70_gather_state["lib"] = lib
++            logger.info("Disk BF16 PLE parallel gather active: threads=%d", _b70_gather_threads)
++        return lib
++
++    def _b70_fill_stage(self, ids_cpu, num_tokens, is_padding_cpu, num_tokens_padded):
++        ids = ids_cpu[:num_tokens].reshape(-1)
++        pad = is_padding_cpu[:num_tokens] if is_padding_cpu is not None else None
++        if (
++            ids.dtype != torch.int64
++            or not ids.is_contiguous()
++            or not self._stage.is_contiguous()
++            or (pad is not None and (pad.dtype != torch.bool or not pad.is_contiguous()))
++        ):
++            return _b70_original_fill_stage(self, ids_cpu, num_tokens, is_padding_cpu, num_tokens_padded)
++        order = self.__dict__.get("_b70_gather_order")
++        if order is None:
++            order = self._b70_gather_order = torch.empty(
++                self._capacity * self._heads, dtype=torch.int64
++            )
++        row_bytes = self.embedding_dim * self._stage.element_size()
++        rc = _b70_gather_lib().ple_gather(
++            self._table.data_ptr(), row_bytes, self.org_vocab_size, ids.data_ptr(),
++            pad.data_ptr() if pad is not None else None, self._heads, ids.numel(),
++            self.shard_indices.org_vocab_start_index,
++            self.shard_indices.org_vocab_end_index,
++            self._stage.data_ptr(), num_tokens_padded * self._heads * row_bytes,
++            order.data_ptr(),
++        )
++        if rc == 1:
++            raise ValueError("Disk BF16 PLE received an out-of-table row ID")
++        if rc != 0:
++            raise RuntimeError("Disk BF16 PLE parallel gather failed")
++
++    Qwen4ExpPLEDiskBF16Embedding._fill_stage = _b70_fill_stage
+diff --git a/vllm/models/qwen4_exp/nvidia/b70_hc_gemm.py b/vllm/models/qwen4_exp/nvidia/b70_hc_gemm.py
+index 2cb8a17..2dfd296 100644
+--- a/vllm/models/qwen4_exp/nvidia/b70_hc_gemm.py
++++ b/vllm/models/qwen4_exp/nvidia/b70_hc_gemm.py
+@@ -213,3 +213,52 @@ def parallel_hc_gemm(x, weight, valid_columns):
+         num_warps=4,
+     )
+     return output
++
++
++# --- B70 expanded campaign 2026-11-16 (exact; env-gated; default off) -------
++# B70_DFLASH_EXACT_BA=1: GDN in_proj_ba at 9..32 rows (K=2560, N=24) uses a
++#   native kernel computing the same single chained FP32 DPAS accumulation over
++#   K as _ordered_hc_gemm (bitwise verified on random and live serving inputs).
++# B70_DFLASH_HC_SPLIT32=10|20|40: native ordered HC down at exactly 32 rows uses
++#   that split; every split computes identical per-tile partials and the same
++#   sequential FP32 tile sum, so the result is bit-identical.
++_b70_exact_ba = os.getenv("B70_DFLASH_EXACT_BA", "0") == "1"
++_b70_hc_split32 = int(os.getenv("B70_DFLASH_HC_SPLIT32", "0"))
++if _b70_hc_split32 not in (0, 10, 20, 40):
++    raise ValueError("Unsupported exact-order HC split for 32 rows")
++if _b70_exact_ba or _b70_hc_split32:
++    if _b70_exact_ba:
++        import vllm_xpu_kernels as _b70_vxk
++
++        torch.ops.load_library(str(Path(_b70_vxk.__file__).with_name("libb70_exact_v1.so")))
++    _b70_original_ordered_hc_gemm = ordered_hc_gemm
++    _b70_original_parallel_hc_gemm = parallel_hc_gemm
++
++    def ordered_hc_gemm(x, weight, valid_columns):
++        if (
++            _b70_exact_ba
++            and x.dim() == 2
++            and 9 <= x.shape[0] <= 32
++            and x.shape[1] == 2560
++            and tuple(weight.shape) == (24, 2560)
++            and valid_columns == 24
++            and x.dtype == weight.dtype == torch.bfloat16
++            and x.device.type == "xpu"
++            and x.is_contiguous()
++            and weight.is_contiguous()
++        ):
++            return torch.ops.b70_exact_v1.gemm(x, weight, 1, 3)
++        return _b70_original_ordered_hc_gemm(x, weight, valid_columns)
++
++    def parallel_hc_gemm(x, weight, valid_columns):
++        if (
++            _b70_hc_split32
++            and _ordered_native_hc
++            and x.shape[0] == 32
++            and x.shape[1] == 10240
++            and weight.shape[0] in (320, 336)
++            and x.is_contiguous()
++            and weight.is_contiguous()
++        ):
++            return torch.ops.b70_ordered_hc_v2.forward(x, weight, valid_columns, _b70_hc_split32)
++        return _b70_original_parallel_hc_gemm(x, weight, valid_columns)

@@ -1,0 +1,23 @@
+{
+  "mount_source": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/runtime/draft",
+  "files": [
+    {
+      "path": "config.json",
+      "size": 1236,
+      "realpath": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/runtime/draft/config.json",
+      "sha256": "2409575986f9ea24d455343eb469c0e6940def5edab1d1be503bb8eb4cc3b1b9"
+    },
+    {
+      "path": "model.safetensors",
+      "size": 1206140008,
+      "realpath": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/runtime/draft/model.safetensors"
+    },
+    {
+      "path": "README.md",
+      "size": 5402,
+      "realpath": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/runtime/draft/README.md",
+      "sha256": "296dfce04d501f313f4223a4ab2378f198ecb860e3b24a4689e66aff651f0477"
+    }
+  ],
+  "weight_hashes": "Not rehashed; pinned revision/inventory and read-only mounted files retained."
+}

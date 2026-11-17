@@ -1,0 +1,74 @@
+[
+  {
+    "family": "native",
+    "exit": 0,
+    "seconds": 38.22077946799982,
+    "library": "vllm_xpu_kernels/libgdn_index64.so"
+  },
+  {
+    "family": "residency-shim",
+    "exit": 0,
+    "seconds": 0.3010107440059073,
+    "library": "b70-residency-shim/libl0_peer_residency_shim.so"
+  },
+  {
+    "family": "astra500-native",
+    "exit": 0,
+    "seconds": 136.89940412000578,
+    "library": "vllm_xpu_kernels/libastra_moe.so"
+  },
+  {
+    "family": "astra500-structural-hc",
+    "exit": 0,
+    "seconds": 43.298298381007044,
+    "library": "vllm_xpu_kernels/libastra_hc.so"
+  },
+  {
+    "family": "astra500-structural-moe",
+    "exit": 0,
+    "seconds": 56.31382507800299,
+    "library": "vllm_xpu_kernels/libastra_direct.so"
+  },
+  {
+    "family": "astra500-ownership-groups",
+    "exit": 0,
+    "seconds": 98.16816518000269,
+    "library": "vllm_xpu_kernels/libastra_groups.so"
+  },
+  {
+    "family": "astra500-ownership-batch",
+    "exit": 0,
+    "seconds": 57.97986955700617,
+    "library": "vllm_xpu_kernels/libastra_batch.so"
+  },
+  {
+    "family": "astra500-beyond-prefill",
+    "exit": 0,
+    "seconds": 58.32726184099738,
+    "library": "vllm_xpu_kernels/libbeyond_prefill.so"
+  },
+  {
+    "family": "astra500-dominant-native",
+    "exit": 0,
+    "seconds": 57.81127789399761,
+    "library": "vllm_xpu_kernels/libdominant_w4_layout.so"
+  },
+  {
+    "family": "prefill-native",
+    "exit": 0,
+    "seconds": 56.211278055998264,
+    "library": "vllm_xpu_kernels/libserving_prefill.so"
+  },
+  {
+    "family": "long-hc-selected",
+    "exit": 0,
+    "seconds": 73.27313854600652,
+    "library": "vllm_xpu_kernels/liblong_hc.so"
+  },
+  {
+    "family": "long-prefill-native",
+    "exit": 0,
+    "seconds": 91.1302446960035,
+    "library": "vllm_xpu_kernels/liblong_prefill_v3.so"
+  }
+]

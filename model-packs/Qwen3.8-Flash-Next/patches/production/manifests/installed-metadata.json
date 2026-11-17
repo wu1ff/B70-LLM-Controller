@@ -1,0 +1,1709 @@
+{
+  "distributions": [
+    {
+      "name": "DataProperty",
+      "version": "1.1.1",
+      "direct_url": null
+    },
+    {
+      "name": "Jinja2",
+      "version": "3.1.6",
+      "direct_url": null
+    },
+    {
+      "name": "Mako",
+      "version": "1.4.3",
+      "direct_url": null
+    },
+    {
+      "name": "MarkupSafe",
+      "version": "3.0.3",
+      "direct_url": null
+    },
+    {
+      "name": "PyJWT",
+      "version": "2.15.1",
+      "direct_url": null
+    },
+    {
+      "name": "PyStemmer",
+      "version": "3.1.0",
+      "direct_url": null
+    },
+    {
+      "name": "PyYAML",
+      "version": "6.0.3",
+      "direct_url": null
+    },
+    {
+      "name": "Pygments",
+      "version": "2.21.0",
+      "direct_url": null
+    },
+    {
+      "name": "RapidFuzz",
+      "version": "3.14.5",
+      "direct_url": null
+    },
+    {
+      "name": "Werkzeug",
+      "version": "3.1.9",
+      "direct_url": null
+    },
+    {
+      "name": "absl-py",
+      "version": "2.5.0",
+      "direct_url": null
+    },
+    {
+      "name": "accelerate",
+      "version": "1.14.0",
+      "direct_url": null
+    },
+    {
+      "name": "agent-detector",
+      "version": "2.0.0",
+      "direct_url": null
+    },
+    {
+      "name": "aiohappyeyeballs",
+      "version": "2.7.1",
+      "direct_url": null
+    },
+    {
+      "name": "aiohttp",
+      "version": "3.14.5",
+      "direct_url": null
+    },
+    {
+      "name": "aiosignal",
+      "version": "1.4.0",
+      "direct_url": null
+    },
+    {
+      "name": "albucore",
+      "version": "0.0.24",
+      "direct_url": null
+    },
+    {
+      "name": "albumentations",
+      "version": "2.0.8",
+      "direct_url": null
+    },
+    {
+      "name": "annotated-doc",
+      "version": "0.0.5",
+      "direct_url": null
+    },
+    {
+      "name": "annotated-types",
+      "version": "0.8.0",
+      "direct_url": null
+    },
+    {
+      "name": "anthropic",
+      "version": "0.122.0",
+      "direct_url": null
+    },
+    {
+      "name": "anyio",
+      "version": "4.14.2",
+      "direct_url": null
+    },
+    {
+      "name": "apache-tvm-ffi",
+      "version": "0.1.13.post3",
+      "direct_url": null
+    },
+    {
+      "name": "arctic_inference",
+      "version": "0.2.0",
+      "direct_url": null
+    },
+    {
+      "name": "astor",
+      "version": "0.8.1",
+      "direct_url": null
+    },
+    {
+      "name": "attrs",
+      "version": "26.1.0",
+      "direct_url": null
+    },
+    {
+      "name": "audioread",
+      "version": "3.1.0",
+      "direct_url": null
+    },
+    {
+      "name": "auto-round-lib",
+      "version": "0.16.0",
+      "direct_url": null
+    },
+    {
+      "name": "av",
+      "version": "18.1.0",
+      "direct_url": null
+    },
+    {
+      "name": "azure-core",
+      "version": "1.41.0",
+      "direct_url": null
+    },
+    {
+      "name": "azure-identity",
+      "version": "1.25.3",
+      "direct_url": null
+    },
+    {
+      "name": "azure-storage-blob",
+      "version": "12.30.1",
+      "direct_url": null
+    },
+    {
+      "name": "blake3",
+      "version": "1.0.9",
+      "direct_url": null
+    },
+    {
+      "name": "blobfile",
+      "version": "3.2.0",
+      "direct_url": null
+    },
+    {
+      "name": "bm25s",
+      "version": "0.3.10",
+      "direct_url": null
+    },
+    {
+      "name": "boto3",
+      "version": "1.43.87",
+      "direct_url": null
+    },
+    {
+      "name": "botocore",
+      "version": "1.43.87",
+      "direct_url": null
+    },
+    {
+      "name": "bounded-pool-executor",
+      "version": "0.0.3",
+      "direct_url": null
+    },
+    {
+      "name": "cachetools",
+      "version": "7.1.7",
+      "direct_url": null
+    },
+    {
+      "name": "cbor2",
+      "version": "6.1.4",
+      "direct_url": null
+    },
+    {
+      "name": "certifi",
+      "version": "2026.10.19",
+      "direct_url": null
+    },
+    {
+      "name": "cffi",
+      "version": "2.1.1",
+      "direct_url": null
+    },
+    {
+      "name": "chardet",
+      "version": "6.0.0.post1",
+      "direct_url": null
+    },
+    {
+      "name": "charset-normalizer",
+      "version": "3.5.1",
+      "direct_url": null
+    },
+    {
+      "name": "chz",
+      "version": "0.4.0",
+      "direct_url": null
+    },
+    {
+      "name": "click",
+      "version": "8.4.2",
+      "direct_url": null
+    },
+    {
+      "name": "cloudpickle",
+      "version": "3.1.2",
+      "direct_url": null
+    },
+    {
+      "name": "cmake",
+      "version": "4.4.4",
+      "direct_url": null
+    },
+    {
+      "name": "cohere",
+      "version": "7.1.1",
+      "direct_url": null
+    },
+    {
+      "name": "cohere_melody",
+      "version": "0.13.4",
+      "direct_url": null
+    },
+    {
+      "name": "colorama",
+      "version": "0.4.6",
+      "direct_url": null
+    },
+    {
+      "name": "compressed-tensors",
+      "version": "0.17.0",
+      "direct_url": null
+    },
+    {
+      "name": "contourpy",
+      "version": "1.3.3",
+      "direct_url": null
+    },
+    {
+      "name": "coverage",
+      "version": "7.15.4",
+      "direct_url": null
+    },
+    {
+      "name": "cryptography",
+      "version": "50.0.0",
+      "direct_url": null
+    },
+    {
+      "name": "cycler",
+      "version": "0.12.1",
+      "direct_url": null
+    },
+    {
+      "name": "datasets",
+      "version": "5.0.1",
+      "direct_url": null
+    },
+    {
+      "name": "decorator",
+      "version": "5.3.1",
+      "direct_url": null
+    },
+    {
+      "name": "decord",
+      "version": "0.6.0",
+      "direct_url": null
+    },
+    {
+      "name": "defusedxml",
+      "version": "0.7.1",
+      "direct_url": null
+    },
+    {
+      "name": "depyf",
+      "version": "0.20.0",
+      "direct_url": null
+    },
+    {
+      "name": "detect-installer",
+      "version": "0.1.0",
+      "direct_url": null
+    },
+    {
+      "name": "dill",
+      "version": "0.4.1",
+      "direct_url": null
+    },
+    {
+      "name": "distro",
+      "version": "1.9.0",
+      "direct_url": null
+    },
+    {
+      "name": "dnspython",
+      "version": "2.8.0",
+      "direct_url": null
+    },
+    {
+      "name": "docker",
+      "version": "7.2.0",
+      "direct_url": null
+    },
+    {
+      "name": "docopt",
+      "version": "0.6.2",
+      "direct_url": null
+    },
+    {
+      "name": "docstring_parser",
+      "version": "0.18.0",
+      "direct_url": null
+    },
+    {
+      "name": "dpcpp-cpp-rt",
+      "version": "2026.1.1",
+      "direct_url": null
+    },
+    {
+      "name": "einops",
+      "version": "0.8.2",
+      "direct_url": null
+    },
+    {
+      "name": "email-validator",
+      "version": "2.3.0",
+      "direct_url": null
+    },
+    {
+      "name": "evaluate",
+      "version": "0.4.6",
+      "direct_url": null
+    },
+    {
+      "name": "fastapi",
+      "version": "0.136.3",
+      "direct_url": null
+    },
+    {
+      "name": "fastapi-cli",
+      "version": "0.0.32",
+      "direct_url": null
+    },
+    {
+      "name": "fastapi-cloud-cli",
+      "version": "0.23.0",
+      "direct_url": null
+    },
+    {
+      "name": "fastar",
+      "version": "0.11.0",
+      "direct_url": null
+    },
+    {
+      "name": "fastavro",
+      "version": "1.12.2",
+      "direct_url": null
+    },
+    {
+      "name": "filelock",
+      "version": "3.32.3",
+      "direct_url": null
+    },
+    {
+      "name": "fonttools",
+      "version": "4.64.0",
+      "direct_url": null
+    },
+    {
+      "name": "frozenlist",
+      "version": "1.8.0",
+      "direct_url": null
+    },
+    {
+      "name": "fsspec",
+      "version": "2026.6.0",
+      "direct_url": null
+    },
+    {
+      "name": "ftfy",
+      "version": "6.3.1",
+      "direct_url": null
+    },
+    {
+      "name": "google-api-core",
+      "version": "2.34.0",
+      "direct_url": null
+    },
+    {
+      "name": "google-auth",
+      "version": "2.57.0",
+      "direct_url": null
+    },
+    {
+      "name": "google-cloud-core",
+      "version": "2.7.0",
+      "direct_url": null
+    },
+    {
+      "name": "google-cloud-storage",
+      "version": "3.13.1",
+      "direct_url": null
+    },
+    {
+      "name": "google-crc32c",
+      "version": "1.8.0",
+      "direct_url": null
+    },
+    {
+      "name": "google-resumable-media",
+      "version": "2.10.2",
+      "direct_url": null
+    },
+    {
+      "name": "googleapis-common-protos",
+      "version": "1.75.1",
+      "direct_url": null
+    },
+    {
+      "name": "gpt-oss",
+      "version": "0.0.9",
+      "direct_url": null
+    },
+    {
+      "name": "graphql-core",
+      "version": "3.2.11",
+      "direct_url": null
+    },
+    {
+      "name": "grpcio",
+      "version": "1.83.0",
+      "direct_url": null
+    },
+    {
+      "name": "grpcio-tools",
+      "version": "1.85.1",
+      "direct_url": null
+    },
+    {
+      "name": "h11",
+      "version": "0.16.0",
+      "direct_url": null
+    },
+    {
+      "name": "h2",
+      "version": "4.4.1",
+      "direct_url": null
+    },
+    {
+      "name": "harfile",
+      "version": "0.5.0",
+      "direct_url": null
+    },
+    {
+      "name": "hf-xet",
+      "version": "1.6.0",
+      "direct_url": null
+    },
+    {
+      "name": "hiredis",
+      "version": "3.4.1",
+      "direct_url": null
+    },
+    {
+      "name": "hpack",
+      "version": "4.2.0",
+      "direct_url": null
+    },
+    {
+      "name": "html2text",
+      "version": "2025.4.15",
+      "direct_url": null
+    },
+    {
+      "name": "httpcore",
+      "version": "1.0.9",
+      "direct_url": null
+    },
+    {
+      "name": "httpcore2",
+      "version": "2.13.1",
+      "direct_url": null
+    },
+    {
+      "name": "httptools",
+      "version": "0.8.0",
+      "direct_url": null
+    },
+    {
+      "name": "httpx",
+      "version": "0.28.1",
+      "direct_url": null
+    },
+    {
+      "name": "httpx2",
+      "version": "2.13.1",
+      "direct_url": null
+    },
+    {
+      "name": "huggingface_hub",
+      "version": "1.31.0",
+      "direct_url": null
+    },
+    {
+      "name": "humanize",
+      "version": "4.16.0",
+      "direct_url": null
+    },
+    {
+      "name": "hyperframe",
+      "version": "6.1.0",
+      "direct_url": null
+    },
+    {
+      "name": "hypothesis",
+      "version": "6.165.10",
+      "direct_url": null
+    },
+    {
+      "name": "hypothesis-graphql",
+      "version": "0.13.1",
+      "direct_url": null
+    },
+    {
+      "name": "hypothesis-jsonschema",
+      "version": "0.23.1",
+      "direct_url": null
+    },
+    {
+      "name": "idna",
+      "version": "3.18",
+      "direct_url": null
+    },
+    {
+      "name": "ijson",
+      "version": "3.5.1",
+      "direct_url": null
+    },
+    {
+      "name": "impi-rt",
+      "version": "2021.18.1",
+      "direct_url": null
+    },
+    {
+      "name": "iniconfig",
+      "version": "2.3.0",
+      "direct_url": null
+    },
+    {
+      "name": "intel-cmplr-lib-rt",
+      "version": "2026.1.1",
+      "direct_url": null
+    },
+    {
+      "name": "intel-cmplr-lib-ur",
+      "version": "2026.1.1",
+      "direct_url": null
+    },
+    {
+      "name": "intel-cmplr-lic-rt",
+      "version": "2026.1.1",
+      "direct_url": null
+    },
+    {
+      "name": "intel-opencl-rt",
+      "version": "2026.1.1",
+      "direct_url": null
+    },
+    {
+      "name": "intel-openmp",
+      "version": "2026.1.1",
+      "direct_url": null
+    },
+    {
+      "name": "intel-pti",
+      "version": "1.1.0",
+      "direct_url": null
+    },
+    {
+      "name": "intel-sycl-rt",
+      "version": "2026.1.1",
+      "direct_url": null
+    },
+    {
+      "name": "interegular",
+      "version": "0.3.3",
+      "direct_url": null
+    },
+    {
+      "name": "isodate",
+      "version": "0.7.2",
+      "direct_url": null
+    },
+    {
+      "name": "jiter",
+      "version": "0.16.0",
+      "direct_url": null
+    },
+    {
+      "name": "jiwer",
+      "version": "4.0.0",
+      "direct_url": null
+    },
+    {
+      "name": "jmespath",
+      "version": "1.1.0",
+      "direct_url": null
+    },
+    {
+      "name": "joblib",
+      "version": "1.5.3",
+      "direct_url": null
+    },
+    {
+      "name": "jsonschema",
+      "version": "4.26.0",
+      "direct_url": null
+    },
+    {
+      "name": "jsonschema-specifications",
+      "version": "2025.9.1",
+      "direct_url": null
+    },
+    {
+      "name": "jsonschema_rs",
+      "version": "0.49.9",
+      "direct_url": null
+    },
+    {
+      "name": "jupyter_client",
+      "version": "8.10.0",
+      "direct_url": null
+    },
+    {
+      "name": "jupyter_core",
+      "version": "5.9.1",
+      "direct_url": null
+    },
+    {
+      "name": "kaldi-native-fbank",
+      "version": "1.22.3",
+      "direct_url": null
+    },
+    {
+      "name": "kiwisolver",
+      "version": "1.5.1",
+      "direct_url": null
+    },
+    {
+      "name": "lark",
+      "version": "1.2.2",
+      "direct_url": null
+    },
+    {
+      "name": "lazy-loader",
+      "version": "0.5",
+      "direct_url": null
+    },
+    {
+      "name": "libnacl",
+      "version": "2.1.0",
+      "direct_url": null
+    },
+    {
+      "name": "librosa",
+      "version": "1.0.0",
+      "direct_url": null
+    },
+    {
+      "name": "llguidance",
+      "version": "1.7.6",
+      "direct_url": null
+    },
+    {
+      "name": "llvmlite",
+      "version": "0.47.0",
+      "direct_url": null
+    },
+    {
+      "name": "lm-format-enforcer",
+      "version": "0.11.3",
+      "direct_url": null
+    },
+    {
+      "name": "lm_eval",
+      "version": "0.4.12",
+      "direct_url": null
+    },
+    {
+      "name": "loguru",
+      "version": "0.7.3",
+      "direct_url": null
+    },
+    {
+      "name": "lxml",
+      "version": "6.1.1",
+      "direct_url": null
+    },
+    {
+      "name": "markdown-it-py",
+      "version": "4.2.0",
+      "direct_url": null
+    },
+    {
+      "name": "matplotlib",
+      "version": "3.11.1",
+      "direct_url": null
+    },
+    {
+      "name": "mbstrdecoder",
+      "version": "1.1.5",
+      "direct_url": null
+    },
+    {
+      "name": "mcp",
+      "version": "2.3.0",
+      "direct_url": null
+    },
+    {
+      "name": "mcp-types",
+      "version": "2.3.0",
+      "direct_url": null
+    },
+    {
+      "name": "mdurl",
+      "version": "0.1.2",
+      "direct_url": null
+    },
+    {
+      "name": "mistral_common",
+      "version": "1.11.7",
+      "direct_url": null
+    },
+    {
+      "name": "mkl",
+      "version": "2026.1.0",
+      "direct_url": null
+    },
+    {
+      "name": "model-hosting-container-standards",
+      "version": "0.1.16",
+      "direct_url": null
+    },
+    {
+      "name": "modelscope",
+      "version": "1.37.1",
+      "direct_url": null
+    },
+    {
+      "name": "more-itertools",
+      "version": "11.1.0",
+      "direct_url": null
+    },
+    {
+      "name": "mpmath",
+      "version": "1.3.0",
+      "direct_url": null
+    },
+    {
+      "name": "msal",
+      "version": "1.38.0",
+      "direct_url": null
+    },
+    {
+      "name": "msal-extensions",
+      "version": "1.3.1",
+      "direct_url": null
+    },
+    {
+      "name": "msgpack",
+      "version": "1.2.1",
+      "direct_url": null
+    },
+    {
+      "name": "msgspec",
+      "version": "0.21.1",
+      "direct_url": null
+    },
+    {
+      "name": "mteb",
+      "version": "2.19.4",
+      "direct_url": null
+    },
+    {
+      "name": "multidict",
+      "version": "7.1.0",
+      "direct_url": null
+    },
+    {
+      "name": "multiprocess",
+      "version": "0.70.19",
+      "direct_url": null
+    },
+    {
+      "name": "nanobind",
+      "version": "3.1.0",
+      "direct_url": null
+    },
+    {
+      "name": "narwhals",
+      "version": "2.24.0",
+      "direct_url": null
+    },
+    {
+      "name": "networkx",
+      "version": "3.6.1",
+      "direct_url": null
+    },
+    {
+      "name": "ninja",
+      "version": "1.13.0",
+      "direct_url": null
+    },
+    {
+      "name": "nixl",
+      "version": "1.5.0",
+      "direct_url": null
+    },
+    {
+      "name": "nixl-cu12",
+      "version": "1.5.0",
+      "direct_url": "{\"url\":\"file:///tmp/nixl_wheels/nixl_cu12-1.5.0-cp312-cp312-linux_x86_64.whl\",\"archive_info\":{}}"
+    },
+    {
+      "name": "nltk",
+      "version": "3.10.3",
+      "direct_url": null
+    },
+    {
+      "name": "num2words",
+      "version": "0.5.14",
+      "direct_url": null
+    },
+    {
+      "name": "numba",
+      "version": "0.65.0",
+      "direct_url": null
+    },
+    {
+      "name": "numpy",
+      "version": "2.2.6",
+      "direct_url": null
+    },
+    {
+      "name": "oneccl",
+      "version": "2022.1.2",
+      "direct_url": null
+    },
+    {
+      "name": "oneccl-devel",
+      "version": "2022.1.2",
+      "direct_url": null
+    },
+    {
+      "name": "onemkl-license",
+      "version": "2026.1.0",
+      "direct_url": null
+    },
+    {
+      "name": "onemkl-sycl-blas",
+      "version": "2026.1.0",
+      "direct_url": null
+    },
+    {
+      "name": "onemkl-sycl-dft",
+      "version": "2026.1.0",
+      "direct_url": null
+    },
+    {
+      "name": "onemkl-sycl-lapack",
+      "version": "2026.1.0",
+      "direct_url": null
+    },
+    {
+      "name": "onemkl-sycl-rng",
+      "version": "2026.1.0",
+      "direct_url": null
+    },
+    {
+      "name": "onemkl-sycl-sparse",
+      "version": "2026.1.0",
+      "direct_url": null
+    },
+    {
+      "name": "open_clip_torch",
+      "version": "2.32.0",
+      "direct_url": null
+    },
+    {
+      "name": "openai",
+      "version": "3.2.0",
+      "direct_url": null
+    },
+    {
+      "name": "openai-harmony",
+      "version": "0.0.8",
+      "direct_url": null
+    },
+    {
+      "name": "opencv-python-headless",
+      "version": "5.0.0.93",
+      "direct_url": null
+    },
+    {
+      "name": "opentelemetry-api",
+      "version": "1.44.0",
+      "direct_url": null
+    },
+    {
+      "name": "opentelemetry-exporter-http-transport",
+      "version": "0.66b2",
+      "direct_url": null
+    },
+    {
+      "name": "opentelemetry-exporter-otlp",
+      "version": "1.44.0",
+      "direct_url": null
+    },
+    {
+      "name": "opentelemetry-exporter-otlp-common",
+      "version": "0.66b2",
+      "direct_url": null
+    },
+    {
+      "name": "opentelemetry-exporter-otlp-proto-common",
+      "version": "1.44.0",
+      "direct_url": null
+    },
+    {
+      "name": "opentelemetry-exporter-otlp-proto-grpc",
+      "version": "1.44.0",
+      "direct_url": null
+    },
+    {
+      "name": "opentelemetry-exporter-otlp-proto-http",
+      "version": "1.44.0",
+      "direct_url": null
+    },
+    {
+      "name": "opentelemetry-proto",
+      "version": "1.44.0",
+      "direct_url": null
+    },
+    {
+      "name": "opentelemetry-sdk",
+      "version": "1.44.0",
+      "direct_url": null
+    },
+    {
+      "name": "opentelemetry-semantic-conventions",
+      "version": "0.65b0",
+      "direct_url": null
+    },
+    {
+      "name": "opentelemetry-semantic-conventions-ai",
+      "version": "0.5.1",
+      "direct_url": null
+    },
+    {
+      "name": "orjson",
+      "version": "3.12.0",
+      "direct_url": null
+    },
+    {
+      "name": "oss-harmony",
+      "version": "0.0.11",
+      "direct_url": null
+    },
+    {
+      "name": "outlines_core",
+      "version": "0.2.14",
+      "direct_url": null
+    },
+    {
+      "name": "packaging",
+      "version": "26.3",
+      "direct_url": null
+    },
+    {
+      "name": "pandas",
+      "version": "3.0.5",
+      "direct_url": null
+    },
+    {
+      "name": "partial-json-parser",
+      "version": "0.2.1.1.post7",
+      "direct_url": null
+    },
+    {
+      "name": "pathvalidate",
+      "version": "3.3.1",
+      "direct_url": null
+    },
+    {
+      "name": "peft",
+      "version": "0.21.2",
+      "direct_url": null
+    },
+    {
+      "name": "pillow",
+      "version": "13.0.0",
+      "direct_url": null
+    },
+    {
+      "name": "pip",
+      "version": "26.2.2",
+      "direct_url": null
+    },
+    {
+      "name": "platformdirs",
+      "version": "4.11.3",
+      "direct_url": null
+    },
+    {
+      "name": "pluggy",
+      "version": "1.6.0",
+      "direct_url": null
+    },
+    {
+      "name": "polars",
+      "version": "1.43.2",
+      "direct_url": null
+    },
+    {
+      "name": "polars-runtime-32",
+      "version": "1.43.2",
+      "direct_url": null
+    },
+    {
+      "name": "pooch",
+      "version": "1.9.0",
+      "direct_url": null
+    },
+    {
+      "name": "portalocker",
+      "version": "4.1.0",
+      "direct_url": null
+    },
+    {
+      "name": "pqdm",
+      "version": "0.2.0",
+      "direct_url": null
+    },
+    {
+      "name": "prometheus-fastapi-instrumentator",
+      "version": "8.1.0",
+      "direct_url": null
+    },
+    {
+      "name": "prometheus_client",
+      "version": "0.26.0",
+      "direct_url": null
+    },
+    {
+      "name": "propcache",
+      "version": "0.5.2",
+      "direct_url": null
+    },
+    {
+      "name": "proto-plus",
+      "version": "1.28.4",
+      "direct_url": null
+    },
+    {
+      "name": "protobuf",
+      "version": "7.35.1",
+      "direct_url": null
+    },
+    {
+      "name": "psutil",
+      "version": "7.2.2",
+      "direct_url": null
+    },
+    {
+      "name": "py-cpuinfo",
+      "version": "9.0.0",
+      "direct_url": null
+    },
+    {
+      "name": "pyarrow",
+      "version": "25.0.1",
+      "direct_url": null
+    },
+    {
+      "name": "pyasn1",
+      "version": "0.6.4",
+      "direct_url": null
+    },
+    {
+      "name": "pyasn1_modules",
+      "version": "0.4.2",
+      "direct_url": null
+    },
+    {
+      "name": "pybase64",
+      "version": "1.5.0",
+      "direct_url": null
+    },
+    {
+      "name": "pycountry",
+      "version": "26.2.16",
+      "direct_url": null
+    },
+    {
+      "name": "pycparser",
+      "version": "3.0",
+      "direct_url": null
+    },
+    {
+      "name": "pycryptodomex",
+      "version": "3.23.0",
+      "direct_url": null
+    },
+    {
+      "name": "pydantic",
+      "version": "2.13.4",
+      "direct_url": null
+    },
+    {
+      "name": "pydantic-extra-types",
+      "version": "2.11.1",
+      "direct_url": null
+    },
+    {
+      "name": "pydantic-settings",
+      "version": "2.15.0",
+      "direct_url": null
+    },
+    {
+      "name": "pydantic_core",
+      "version": "2.46.4",
+      "direct_url": null
+    },
+    {
+      "name": "pyelftools",
+      "version": "0.33",
+      "direct_url": null
+    },
+    {
+      "name": "pyparsing",
+      "version": "3.3.2",
+      "direct_url": null
+    },
+    {
+      "name": "pyrate-limiter",
+      "version": "4.4.0",
+      "direct_url": null
+    },
+    {
+      "name": "pytablewriter",
+      "version": "1.2.1",
+      "direct_url": null
+    },
+    {
+      "name": "pytest",
+      "version": "9.1.1",
+      "direct_url": null
+    },
+    {
+      "name": "pytest-asyncio",
+      "version": "1.4.0",
+      "direct_url": null
+    },
+    {
+      "name": "pytest-cov",
+      "version": "7.1.0",
+      "direct_url": null
+    },
+    {
+      "name": "pytest-forked",
+      "version": "1.7.5",
+      "direct_url": null
+    },
+    {
+      "name": "pytest-rerunfailures",
+      "version": "16.6",
+      "direct_url": null
+    },
+    {
+      "name": "pytest-shard",
+      "version": "0.1.2",
+      "direct_url": null
+    },
+    {
+      "name": "pytest-timeout",
+      "version": "2.4.0",
+      "direct_url": null
+    },
+    {
+      "name": "python-dateutil",
+      "version": "2.9.0.post0",
+      "direct_url": null
+    },
+    {
+      "name": "python-dotenv",
+      "version": "1.2.3",
+      "direct_url": null
+    },
+    {
+      "name": "python-json-logger",
+      "version": "4.2.0",
+      "direct_url": null
+    },
+    {
+      "name": "python-multipart",
+      "version": "0.0.32",
+      "direct_url": null
+    },
+    {
+      "name": "pytrec_eval-terrier",
+      "version": "0.5.10",
+      "direct_url": null
+    },
+    {
+      "name": "pytz",
+      "version": "2026.3.post1",
+      "direct_url": null
+    },
+    {
+      "name": "pyzes",
+      "version": "0.1.2",
+      "direct_url": null
+    },
+    {
+      "name": "pyzmq",
+      "version": "27.1.0",
+      "direct_url": null
+    },
+    {
+      "name": "ray",
+      "version": "2.59.0",
+      "direct_url": null
+    },
+    {
+      "name": "redis",
+      "version": "8.1.0",
+      "direct_url": null
+    },
+    {
+      "name": "referencing",
+      "version": "0.37.0",
+      "direct_url": null
+    },
+    {
+      "name": "regex",
+      "version": "2026.7.19",
+      "direct_url": null
+    },
+    {
+      "name": "requests",
+      "version": "2.34.2",
+      "direct_url": null
+    },
+    {
+      "name": "rich",
+      "version": "15.0.0",
+      "direct_url": null
+    },
+    {
+      "name": "rich-toolkit",
+      "version": "0.20.3",
+      "direct_url": null
+    },
+    {
+      "name": "rignore",
+      "version": "0.8.1",
+      "direct_url": null
+    },
+    {
+      "name": "rouge_score",
+      "version": "0.1.2",
+      "direct_url": null
+    },
+    {
+      "name": "rpds-py",
+      "version": "2026.6.3",
+      "direct_url": null
+    },
+    {
+      "name": "runai-model-streamer",
+      "version": "0.16.1",
+      "direct_url": null
+    },
+    {
+      "name": "runai-model-streamer-azure",
+      "version": "0.16.1",
+      "direct_url": null
+    },
+    {
+      "name": "runai-model-streamer-gcs",
+      "version": "0.16.1",
+      "direct_url": null
+    },
+    {
+      "name": "runai-model-streamer-s3",
+      "version": "0.16.1",
+      "direct_url": null
+    },
+    {
+      "name": "s3transfer",
+      "version": "0.19.2",
+      "direct_url": null
+    },
+    {
+      "name": "sacrebleu",
+      "version": "2.6.0",
+      "direct_url": null
+    },
+    {
+      "name": "safetensors",
+      "version": "0.8.0",
+      "direct_url": null
+    },
+    {
+      "name": "schemathesis",
+      "version": "4.24.3",
+      "direct_url": null
+    },
+    {
+      "name": "scikit-learn",
+      "version": "1.9.0",
+      "direct_url": null
+    },
+    {
+      "name": "scipy",
+      "version": "1.18.0",
+      "direct_url": null
+    },
+    {
+      "name": "semantic-version",
+      "version": "2.10.0",
+      "direct_url": null
+    },
+    {
+      "name": "sentence-transformers",
+      "version": "5.6.0",
+      "direct_url": null
+    },
+    {
+      "name": "sentencepiece",
+      "version": "0.2.1",
+      "direct_url": null
+    },
+    {
+      "name": "sentry-sdk",
+      "version": "2.68.0",
+      "direct_url": null
+    },
+    {
+      "name": "setproctitle",
+      "version": "1.3.7",
+      "direct_url": null
+    },
+    {
+      "name": "setuptools",
+      "version": "80.10.2",
+      "direct_url": null
+    },
+    {
+      "name": "setuptools-rust",
+      "version": "1.13.0",
+      "direct_url": null
+    },
+    {
+      "name": "setuptools-scm",
+      "version": "10.3.4",
+      "direct_url": null
+    },
+    {
+      "name": "shellingham",
+      "version": "1.5.4",
+      "direct_url": null
+    },
+    {
+      "name": "simsimd",
+      "version": "6.5.16",
+      "direct_url": null
+    },
+    {
+      "name": "six",
+      "version": "1.17.0",
+      "direct_url": null
+    },
+    {
+      "name": "sniffio",
+      "version": "1.3.1",
+      "direct_url": null
+    },
+    {
+      "name": "sortedcontainers",
+      "version": "2.4.0",
+      "direct_url": null
+    },
+    {
+      "name": "soundfile",
+      "version": "0.14.0",
+      "direct_url": null
+    },
+    {
+      "name": "soxr",
+      "version": "1.1.0",
+      "direct_url": null
+    },
+    {
+      "name": "sqlitedict",
+      "version": "2.1.0",
+      "direct_url": null
+    },
+    {
+      "name": "sse-starlette",
+      "version": "3.4.8",
+      "direct_url": null
+    },
+    {
+      "name": "starlette",
+      "version": "1.6.0",
+      "direct_url": null
+    },
+    {
+      "name": "starlette-testclient",
+      "version": "0.4.1",
+      "direct_url": null
+    },
+    {
+      "name": "stringzilla",
+      "version": "5.1.2",
+      "direct_url": null
+    },
+    {
+      "name": "structlog",
+      "version": "26.1.0",
+      "direct_url": null
+    },
+    {
+      "name": "supervisor",
+      "version": "4.3.0",
+      "direct_url": null
+    },
+    {
+      "name": "sympy",
+      "version": "1.14.0",
+      "direct_url": null
+    },
+    {
+      "name": "tabledata",
+      "version": "1.3.5",
+      "direct_url": null
+    },
+    {
+      "name": "tabulate",
+      "version": "0.10.0",
+      "direct_url": null
+    },
+    {
+      "name": "tbb",
+      "version": "2023.1.0",
+      "direct_url": null
+    },
+    {
+      "name": "tblib",
+      "version": "3.1.0",
+      "direct_url": null
+    },
+    {
+      "name": "tcmlib",
+      "version": "1.5.0",
+      "direct_url": null
+    },
+    {
+      "name": "tcolorpy",
+      "version": "0.1.7",
+      "direct_url": null
+    },
+    {
+      "name": "tenacity",
+      "version": "9.1.4",
+      "direct_url": null
+    },
+    {
+      "name": "tensorizer",
+      "version": "2.10.1",
+      "direct_url": null
+    },
+    {
+      "name": "termcolor",
+      "version": "3.3.0",
+      "direct_url": null
+    },
+    {
+      "name": "threadpoolctl",
+      "version": "3.6.0",
+      "direct_url": null
+    },
+    {
+      "name": "tiktoken",
+      "version": "0.14.0",
+      "direct_url": null
+    },
+    {
+      "name": "timm",
+      "version": "1.0.28",
+      "direct_url": null
+    },
+    {
+      "name": "tokenizers",
+      "version": "0.23.2",
+      "direct_url": null
+    },
+    {
+      "name": "torch",
+      "version": "2.14.0+xpu",
+      "direct_url": null
+    },
+    {
+      "name": "torchaudio",
+      "version": "2.11.1+xpu",
+      "direct_url": null
+    },
+    {
+      "name": "torchcodec",
+      "version": "0.17.0+cpu",
+      "direct_url": null
+    },
+    {
+      "name": "torchvision",
+      "version": "0.29.0+xpu",
+      "direct_url": null
+    },
+    {
+      "name": "tornado",
+      "version": "6.5.10",
+      "direct_url": null
+    },
+    {
+      "name": "tqdm",
+      "version": "4.70.0",
+      "direct_url": null
+    },
+    {
+      "name": "traitlets",
+      "version": "5.16.1",
+      "direct_url": null
+    },
+    {
+      "name": "transformers",
+      "version": "5.20.2",
+      "direct_url": null
+    },
+    {
+      "name": "triton",
+      "version": "3.8.0+xpu",
+      "direct_url": null
+    },
+    {
+      "name": "triton-xpu",
+      "version": "3.8.0",
+      "direct_url": null
+    },
+    {
+      "name": "truststore",
+      "version": "0.10.4",
+      "direct_url": null
+    },
+    {
+      "name": "typepy",
+      "version": "1.3.5",
+      "direct_url": null
+    },
+    {
+      "name": "typer",
+      "version": "0.27.1",
+      "direct_url": null
+    },
+    {
+      "name": "types-requests",
+      "version": "2.33.0.20260712",
+      "direct_url": null
+    },
+    {
+      "name": "typing-inspection",
+      "version": "0.4.4",
+      "direct_url": null
+    },
+    {
+      "name": "typing_extensions",
+      "version": "4.16.0",
+      "direct_url": null
+    },
+    {
+      "name": "tzdata",
+      "version": "2026.6",
+      "direct_url": null
+    },
+    {
+      "name": "umf",
+      "version": "1.1.0",
+      "direct_url": null
+    },
+    {
+      "name": "urllib3",
+      "version": "2.8.0",
+      "direct_url": null
+    },
+    {
+      "name": "uvicorn",
+      "version": "0.52.3",
+      "direct_url": null
+    },
+    {
+      "name": "uvloop",
+      "version": "0.22.1",
+      "direct_url": null
+    },
+    {
+      "name": "vcs-versioning",
+      "version": "2.6.0",
+      "direct_url": null
+    },
+    {
+      "name": "vllm",
+      "version": "0.33.0+xpu",
+      "direct_url": "{\"url\":\"file:///workspace/vllm\",\"dir_info\":{}}"
+    },
+    {
+      "name": "vllm-xpu-kernels",
+      "version": "0.1.15.4",
+      "direct_url": null
+    },
+    {
+      "name": "vllm_test_utils",
+      "version": "0.1",
+      "direct_url": "{\"url\":\"file:///workspace/vllm/tests/vllm_test_utils\",\"dir_info\":{\"editable\":true}}"
+    },
+    {
+      "name": "watchfiles",
+      "version": "1.2.0",
+      "direct_url": null
+    },
+    {
+      "name": "wcwidth",
+      "version": "0.8.3",
+      "direct_url": null
+    },
+    {
+      "name": "websockets",
+      "version": "17.0.1",
+      "direct_url": null
+    },
+    {
+      "name": "wheel",
+      "version": "0.48.0",
+      "direct_url": null
+    },
+    {
+      "name": "word2number",
+      "version": "1.1",
+      "direct_url": null
+    },
+    {
+      "name": "xgrammar",
+      "version": "0.2.8",
+      "direct_url": null
+    },
+    {
+      "name": "xxhash",
+      "version": "4.0.1",
+      "direct_url": null
+    },
+    {
+      "name": "yarl",
+      "version": "1.25.1",
+      "direct_url": null
+    }
+  ],
+  "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+  "git_head": "4ba787ec9959e566d3b587a796dff07673324da5",
+  "git_status": " M vllm/model_executor/models/qwen3_dflash2.py\n M vllm/v1/attention/backends/gdn_attn.py\n M vllm/v1/worker/gpu/sample/sampler.py\n M vllm/v1/worker/gpu/sample/thinking_budget.py\n M vllm/v1/worker/gpu/spec_decode/dflash/speculator.py\n M vllm/v1/worker/gpu/spec_decode/dflash2/speculator.py\n M vllm/v1/worker/gpu/spec_decode/rejection_sampler_utils.py\n?? vllm/model_executor/models/quality_bf16_conv.py\n?? vllm/models/qwen4_exp/nvidia/b70_compiled_graph_update.py\n?? vllm/models/qwen4_exp/nvidia/b70_hc_gemm.py\n?? vllm/models/qwen4_exp/nvidia/b70_target_graph.py\n?? vllm/models/qwen4_exp/nvidia/c1_verify.py\n?? vllm/v1/worker/gpu/spec_decode/dflash2/b70_graphs.py\n?? vllm/v1/worker/gpu/spec_decode/dflash2/quality_calibration.pt\n",
+  "gcc": "gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+  "ld": "GNU ld (GNU Binutils for Ubuntu) 2.42\nCopyright (C) 2024 Free Software Foundation, Inc.\nThis program is free software; you may redistribute it under the terms of\nthe GNU General Public License version 3 or (at your option) a later version.\nThis program has absolutely no warranty.\n"
+}

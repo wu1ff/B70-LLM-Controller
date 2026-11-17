@@ -1,0 +1,40 @@
+{
+  "Name": "calconv-graphupd-v2",
+  "Ref": "rzjne6ifkrnqc1nm3phq8e8ra",
+  "Context": "astra/candidates/calconv-graphupd-v2",
+  "Dockerfile": "Dockerfile",
+  "StartedAt": "2026-11-15T16:38:20.801966985-07:00",
+  "CompletedAt": "2026-11-15T16:38:21.250274495-07:00",
+  "Duration": 448307510,
+  "Status": "completed",
+  "NumCompletedSteps": 7,
+  "NumTotalSteps": 7,
+  "NumCachedSteps": 1,
+  "Config": {
+    "Network": "none",
+    "ImageResolveMode": "local"
+  },
+  "Materials": [
+    {
+      "URI": "pkg:docker/local/dflash2-v033@bf16-calconv-frozen-v1?platform=linux%2Famd64",
+      "Digests": [
+        "sha256:f5ac30152869ae3a0fd7c619812d645031ffa67bbb92c89235ac35b4d490da23"
+      ]
+    }
+  ],
+  "Attachments": [
+    {
+      "Digest": "sha256:bc673822914e6137807cc5e87e6b8979195774b704e9f222a76bc9619e4e770b",
+      "Type": "application/vnd.oci.image.index.v1+json"
+    },
+    {
+      "Digest": "sha256:fffe5bcd4a22d359709ad37619c789c1d63bdc7dac051896e299608a979e0b61",
+      "Type": "https://slsa.dev/provenance/v1"
+    },
+    {
+      "Digest": "sha256:4a38ef4e7ef2eb11e4d7efd12dee25cf483eddd0492d968f35cb88b438b80d97",
+      "Platform": "linux/amd64",
+      "Type": "application/vnd.oci.image.manifest.v1+json"
+    }
+  ]
+}

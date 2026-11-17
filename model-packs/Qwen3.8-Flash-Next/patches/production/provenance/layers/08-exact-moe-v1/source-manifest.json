@@ -1,0 +1,31 @@
+{
+  "base": "sha256:cf2f4b846bd7b1c3843fd2739a68809d2bdc75cbc38d76c928012e960c9b1b14",
+  "base_tag": "local/dflash2-v033:expanded-exact-v3",
+  "base_profile_sha256": "50f135523be3ae0b4c0ff4dab6baf9b41ecbe1c27128dfedecb8048792947c7c",
+  "files": [
+    {
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp/nvidia/model.py",
+      "sha256": "e770ec9dc02b90871b782469243926617cede004e518b0bd1ad47309cb156352"
+    },
+    {
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp/nvidia/b70_moe_glue.py",
+      "sha256": "398fae1127a82cc622e2b09af472a0b1e0864a442b0405a3f6c7e86922104bbe"
+    },
+    {
+      "path": "opt/venv/lib/python3.12/site-packages/vllm_xpu_kernels/libb70_exact_moe_v1.so",
+      "sha256": "892e1d86b1e0deb87538936b99d296f2c16865650997ba2565c37dc11395cb6a"
+    }
+  ],
+  "sources": {
+    "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/expanded-tails/model_tail.py": "3951e58065a2bdd1e2b8b87076af97436632a46b4e4830a7d9ed5ccf0e908846",
+    "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/expanded-tails/b70_moe_glue.py": "398fae1127a82cc622e2b09af472a0b1e0864a442b0405a3f6c7e86922104bbe",
+    "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/exact-kernels-v1/exact_moe.cpp": "d9d9a7518ec0f83a10e5240dad08b38b6fc384a7860e67ff7be53b13e2197552",
+    "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/exact-kernels-v1/dense_fragment.hpp": "32e5ac62602e7597d64cf403670ad014b59de8d87652ab96bbf49de4a13a3216",
+    "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/exact-kernels-v1/build_moe.sh": "03d71edec4caf8b8213653cbbe28a934e75cf2ac6ad5f8bbf500798a5f653b0e",
+    "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/exact-kernels-v1/command_moe.json": "aad3eed10c6bbbda2040199633473a5c58467f0d4b2af88df9eff6bfbee47f99"
+  },
+  "note": "workspace/vllm source-tree model.py differs from site-packages in the base image and is left unchanged",
+  "builder_sha256": "4282863d8d6eb8bd81708ef677442d98a0cdeb2b714f9094e0c5061205814e33",
+  "profile_sha256": "b7d2eef6fbb07ae5f661cb2b2976ec275d3ef3e132d7dbe749062a804201223f",
+  "status": "TUNING CANDIDATE, NOT PRODUCTION-QUALIFIED"
+}

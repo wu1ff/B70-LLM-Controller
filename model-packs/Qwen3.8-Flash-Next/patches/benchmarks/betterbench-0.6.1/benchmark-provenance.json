@@ -1,0 +1,12 @@
+{
+  "utc": "2026-11-17T00:55:42.286847+00:00",
+  "image": "sha256:2fa91d1ac8c17ad866d9ae7eaea83ac1b1666ffd0ccceb7685564f55528c47af",
+  "benchmark_commit": "f72bb9011a830fd98e82ab89d01e549efa76e9c5",
+  "profile_sha256": "ed6e18ce9c7bf052757da399d94857f99ebff0def85c94bb725d83301b7a7a85",
+  "previous_preserved_files_verified": 1023,
+  "benchmark_tracked_files_verified": 63,
+  "corpus_files_verified": 8,
+  "wire_validation": "validation-mock/outgoing-requests.jsonl",
+  "framework_validation": "framework-validation-v2.stdout.log",
+  "windows": "Observe CLI console/output files only. No telemetry, GPU polling, profilers or other workloads. All readiness/ownership/provenance checks precede CLI launch; shutdown checks follow CLI exit."
+}

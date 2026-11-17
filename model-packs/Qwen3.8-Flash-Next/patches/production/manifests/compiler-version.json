@@ -1,0 +1,23 @@
+{
+  "command": [
+    "docker",
+    "run",
+    "--rm",
+    "--pull",
+    "never",
+    "--network",
+    "none",
+    "-e",
+    "LD_PRELOAD=",
+    "--entrypoint",
+    "/bin/bash",
+    "-v",
+    "/home/wulf/Desktop/Qfn-Mtp-vllm33/build/phase6/toolchain:/toolchain:ro",
+    "sha256:010bdc441c72ee222f459d3b688bb41317525f1bd7223afe6218490b0c526832",
+    "-c",
+    "LD_LIBRARY_PATH=/toolchain/opt/intel/oneapi/compiler/2026.0/lib:/toolchain/opt/intel/oneapi/tbb/2023.0/lib /toolchain/opt/intel/oneapi/compiler/2026.0/bin/icpx --version"
+  ],
+  "returncode": 0,
+  "stdout": "Intel(R) oneAPI DPC++/C++ Compiler 2026.0.0 (2026.0.0.20260331)\nTarget: x86_64-unknown-linux-gnu\nThread model: posix\nInstalledDir: /toolchain/opt/intel/oneapi/compiler/2026.0/bin/compiler\nConfiguration file: /toolchain/opt/intel/oneapi/compiler/2026.0/bin/compiler/../icpx.cfg\n",
+  "stderr": ""
+}

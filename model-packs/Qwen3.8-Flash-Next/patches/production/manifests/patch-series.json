@@ -1,98 +1,375 @@
 [
   {
     "order": 1,
-    "path": "patch-chain/target-v032.patch",
-    "sha256": "b6907e3ab1921cb136852f9af7a6e65605e200a6ed488597fd7f6e25c5e8d6f6",
-    "strip": 1
+    "patch": "patch-chain/01-v033-port-metadata-b1.patch",
+    "strip": 1,
+    "base": "sha256:010bdc441c72ee222f459d3b688bb41317525f1bd7223afe6218490b0c526832",
+    "image": "sha256:ce670e4345c5476cc884052c90f3c1d3d802d6e0187d8b1f786612914a363071",
+    "tag": [
+      "local/dflash2-v033:initial-tuned-metadata-20261111",
+      "local/dflash2-v033:metadata-b1"
+    ],
+    "changed": [
+      {
+        "path": "vllm/_xpu_ops.py",
+        "sha256": "9271b737b720b62c1b927c269f56d6f34c6ac46439030098f205c3f90e89300b"
+      },
+      {
+        "path": "vllm/model_executor/layers/fused_moe/experts/xpu_moe.py",
+        "sha256": "3351465ab5247b05782e1afe69c9ba74d46f5f897f3b57cfa8e235ff7eb2dd30"
+      },
+      {
+        "path": "vllm/model_executor/layers/linear.py",
+        "sha256": "4f893be01a8ca11ae97be22dbd07d44753c2fa3b4ef61ff6790d3f06d0bb1587"
+      },
+      {
+        "path": "vllm/model_executor/layers/mamba/gdn/qwen_gdn_linear_attn.py",
+        "sha256": "8363d3a95d290d01e3780cfad75e4f430c8286c9603db7242e1c5a37171f6f33"
+      },
+      {
+        "path": "vllm/model_executor/models/config.py",
+        "sha256": "46954747257011a7fff7968f8679f015d9157d9992f8c0b341984f0e07afe9f8"
+      },
+      {
+        "path": "vllm/models/qwen4_exp/__init__.py",
+        "sha256": "981b71be939776b432db3264d03ede53c09bbac9280b185caf7f88bb07403920"
+      },
+      {
+        "path": "vllm/models/qwen4_exp/common/disk_ple.py",
+        "sha256": "8332cfab7e3c2a0d2ea885ab0eb1040e2c91b48b742675c0270826d2cafaccb4"
+      },
+      {
+        "path": "vllm/models/qwen4_exp/intel_checkpoint.py",
+        "sha256": "d345ca8e0352ee24cb419d26990a47a7e97b8f155441fdf6c0574cfd47952bbf"
+      },
+      {
+        "path": "vllm/models/qwen4_exp/nvidia/b70_c1_graph.py",
+        "sha256": "e34ffd39199cb5b2fdaddfd0c09a5ae6ef21ed36e5dc5dfa4c729c79c854a5dc"
+      },
+      {
+        "path": "vllm/models/qwen4_exp/nvidia/b70_disk.py",
+        "sha256": "68c590bdf61570495e4cf9ddcfe5cdd8f5ab3f8b76176ba7a004111bbf585415"
+      },
+      {
+        "path": "vllm/models/qwen4_exp/nvidia/b70_hc_gemm.py",
+        "sha256": "ef8a0842f407bbbcc661266ce5fc8468ddc5b53bbf4e537a4ad983d7ee8f72d4"
+      },
+      {
+        "path": "vllm/models/qwen4_exp/nvidia/b70_hyperconnection.py",
+        "sha256": "26bbab23c6ca771b80999f8d6ad485c4189327357a9aae4d7d61e14b86712b3a"
+      },
+      {
+        "path": "vllm/models/qwen4_exp/nvidia/b70_prefill_hc.py",
+        "sha256": "dcd4317687e071a6f0b6c7673888fcc67e51b741371a360c9844d5f995357af4"
+      },
+      {
+        "path": "vllm/models/qwen4_exp/nvidia/b70_target_attention.py",
+        "sha256": "a1a152ebbecfc3bff714185edd833da3287c4e4bff10cc3f3f3d914b5b95abc1"
+      },
+      {
+        "path": "vllm/models/qwen4_exp/nvidia/b70_target_graph.py",
+        "sha256": "59606459b41685af7618564f3ac870286f8fe7e4105c28197311626067bdde5b"
+      },
+      {
+        "path": "vllm/models/qwen4_exp/nvidia/c1_verify.py",
+        "sha256": "f67f546335ca204b2a542b4fe1d34da084bd1ba2cf5b2107f9f9b6627b6bf162"
+      },
+      {
+        "path": "vllm/models/qwen4_exp/nvidia/dflash2_features.py",
+        "sha256": "c952c8e513e86adb4b137c8aaea018d70fd45d0e4b4c533cb7a0b5d371235042"
+      },
+      {
+        "path": "vllm/models/qwen4_exp/nvidia/model.py",
+        "sha256": "c101469b3d866adb0a6bf0f109f5187e3c502d2d57475b1fd873b9494b3a4332"
+      },
+      {
+        "path": "vllm/models/qwen4_exp/nvidia/model_state.py",
+        "sha256": "74a8213bc1c6250483bf5f4b4de2041b1dc3587fc6e31f45690da9e0a4fd9958"
+      },
+      {
+        "path": "vllm/models/qwen4_exp/nvidia/ngram_embedding.py",
+        "sha256": "fadc5cf81fe5f544c97f339a1bf0df7370d86aef900a9f8258a4775612a8b63d"
+      },
+      {
+        "path": "vllm/v1/attention/backends/gdn_attn.py",
+        "sha256": "87d5c37dcd3bd53f7b108cd53aa75b7a2e9f124157c6129d07e5fc29a24d783c"
+      },
+      {
+        "path": "vllm/v1/attention/backends/gdn_spec_metadata.py",
+        "sha256": "bcaa05f276c95b44a63b3405012d35d7b1c2677b4bb7007fd2174967c2412600"
+      },
+      {
+        "path": "vllm/v1/core/sched/scheduler.py",
+        "sha256": "83d9a0b995e0bd58d7e08ce13ce19daf8ee1920747b244702a7c053ea1fe57b9"
+      },
+      {
+        "path": "vllm/v1/sample/ops/topk_topp_triton.py",
+        "sha256": "6a5ed7e80cb9a054cfe4251cf70e9f3dedf7c39febb5345c96d04056726cb658"
+      },
+      {
+        "path": "vllm/v1/worker/gpu/astra_greedy.py",
+        "sha256": "383eee474c15bff948179d8933c03fbf727b32f9c5473706e5c51c5a1988e163"
+      },
+      {
+        "path": "vllm/v1/worker/gpu/model_runner.py",
+        "sha256": "e0db068cc3caaaced2b259b28a018aae818373d10b33cc691d1f0e742ce985fb"
+      },
+      {
+        "path": "vllm/v1/worker/gpu/sample/xpu_filter_warmup.py",
+        "sha256": "3dbebbaca7a44844e48b69ae8587cdb0a0ba10388950e115c66ea4ee6e254277"
+      },
+      {
+        "path": "vllm/v1/worker/gpu_worker.py",
+        "sha256": "e431a315ad2b6f16b102e64a5a1c917af2305ec823a8cf6695364aa6e2fdf51f"
+      },
+      {
+        "path": "vllm/v1/worker/mamba_utils.py",
+        "sha256": "91f12db0ab44064d6a4400e34a86d14443c61c1a56df32ef1a880a44ab109221"
+      },
+      {
+        "path": "vllm_xpu_kernels/astra500_moe.py",
+        "sha256": "9346e3d41d2d7b890edf441624359db7d8d77214b19d776878bd0e5a1dbc3806"
+      },
+      {
+        "path": "vllm_xpu_kernels/astra_ownership.py",
+        "sha256": "672f2fea4f6599c5d86eb158d334fd5aaae2e670c496050f37d2d2b05fe2ba68"
+      },
+      {
+        "path": "vllm_xpu_kernels/astra_structural.py",
+        "sha256": "6650c391e6defcf0433ace77ba7fb63ba69c5e88e43fb5d5f29dcc79318e7f9e"
+      },
+      {
+        "path": "vllm_xpu_kernels/fused_moe_interface.py",
+        "sha256": "0f2fb737da190ff3f662083f38ca01182da38631d545cc8e69d6763fab3987ad"
+      }
+    ],
+    "removed": [],
+    "historical_context": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/build/metadata-b1-context"
   },
   {
     "order": 2,
-    "path": "patch-chain/dflash2-v032.patch",
-    "sha256": "cc9bc66d5645ab293b0c9310c66820f6923e22e0b3998ab7fe2cdd96fa0ae03b",
-    "strip": 1
+    "patch": "patch-chain/02-shared-gdn.patch",
+    "strip": 1,
+    "base": "sha256:ce670e4345c5476cc884052c90f3c1d3d802d6e0187d8b1f786612914a363071",
+    "image": "sha256:b0262b274313ddd1127b95631157a6929073dd6123df55746bdac6927ec76a58",
+    "tag": [
+      "local/dflash2-v033:parity-shared-gdn"
+    ],
+    "changed": [
+      {
+        "path": "vllm/v1/attention/backends/gdn_attn.py",
+        "sha256": "674bd943ec306968e4aef13273eead3971b4ba1c0cc8d2b10105775ab44254bf"
+      }
+    ],
+    "removed": [],
+    "historical_context": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/build/parity-shared-context"
   },
   {
     "order": 3,
-    "path": "patch-chain/verify-c1-v032.patch",
-    "sha256": "6ab5ddaf5e109b22839622ecbdea463604a83f5039b6b88f86b0c055c7222566",
-    "strip": 1
+    "patch": "patch-chain/03-query-ordered-hc.patch",
+    "strip": 1,
+    "base": "sha256:b0262b274313ddd1127b95631157a6929073dd6123df55746bdac6927ec76a58",
+    "image": "sha256:e0c6ee4bdb33bc073a82b86c050aedfa2c93703c6ed80f772b873cafb0b791c6",
+    "tag": [
+      "local/dflash2-v033:opt-query-ordered-hc-v3"
+    ],
+    "changed": [
+      {
+        "path": "vllm/models/qwen4_exp/nvidia/b70_hc_gemm.py",
+        "sha256": "a1471cffc4045a5222c775a4c93c45732d3ec5db91af761bedecf6a43fa37148"
+      },
+      {
+        "path": "vllm/v1/worker/gpu/spec_decode/dflash2/b70_graphs.py",
+        "sha256": "129f4dce600d69298652d140db74e756c9febfeea6e3302aef75dc97e8611845"
+      },
+      {
+        "path": "vllm/v1/worker/gpu/spec_decode/dflash2/speculator.py",
+        "sha256": "97653c5484e2e206be68e048407a629264ea0ec95bd40b308a40ecaf9d8f5397"
+      }
+    ],
+    "removed": [],
+    "historical_context": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/build/optimization-candidate-v3"
   },
   {
     "order": 4,
-    "path": "patch-chain/perf-c1-v032.patch",
-    "sha256": "8565a95f99b221a923c6ed4551609a355b58e417ee9ad6d1ac8571c1f3e934ed",
-    "strip": 1
+    "patch": "patch-chain/04-bf16-repair-standard-eos.patch",
+    "strip": 1,
+    "base": "sha256:e0c6ee4bdb33bc073a82b86c050aedfa2c93703c6ed80f772b873cafb0b791c6",
+    "image": "sha256:8ef67bb4a18c5ed47c61f756e011f8c84994c7dc678d09157e2f2428c27a37fe",
+    "tag": [
+      "local/dflash2-v033:bf16-reference-v1"
+    ],
+    "changed": [
+      {
+        "path": "vllm/models/qwen4_exp/nvidia/b70_target_graph.py",
+        "sha256": "25bb190e041ac5b077824532b65979004043971eb7e92961caf6cb8c817060eb"
+      },
+      {
+        "path": "vllm/models/qwen4_exp/nvidia/c1_verify.py",
+        "sha256": "332c123516051bf28f1b02dbfbce20a5c1a655768b372a83e71d81f9c7fb1d2c"
+      },
+      {
+        "path": "vllm/v1/attention/backends/gdn_attn.py",
+        "sha256": "6790cd3e4312ae09755869cd9bead4f939e6da8889fedd3cd4f8feec6bf1f7bf"
+      },
+      {
+        "path": "vllm/v1/worker/gpu/sample/sampler.py",
+        "sha256": "f8d31025b2e0af8b56613c18dbccb8c5bdb858676bc4ce4aa0775cf5a8b4ae44"
+      },
+      {
+        "path": "vllm/v1/worker/gpu/sample/thinking_budget.py",
+        "sha256": "00ec24f2bb775765612ef21f64dc6662aae3b74ff39cac0bbdbd82edbe900df0"
+      },
+      {
+        "path": "vllm/v1/worker/gpu/spec_decode/dflash/speculator.py",
+        "sha256": "56feae2adda26ae6cbab6201a7e72605ed904d663a9a4f6c74a04ad330a125bb"
+      },
+      {
+        "path": "vllm/v1/worker/gpu/spec_decode/dflash2/speculator.py",
+        "sha256": "cde269b3c0ce14e3fc65c9e7ebf6a18b85219e422b27ca04a31d0f9088cb9145"
+      },
+      {
+        "path": "vllm/v1/worker/gpu/spec_decode/rejection_sampler_utils.py",
+        "sha256": "482e65dcf97c64ec56eff1446136392ef335cf25e6ad8f7396e9a6b27c4fd260"
+      }
+    ],
+    "removed": [],
+    "historical_context": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/bf16-reference-v1"
   },
   {
     "order": 5,
-    "path": "patch-chain/fullwidth-c1-v032.patch",
-    "sha256": "412d7cd022a5008e86e23b568ee2df1edf57ccf94f5b64889fd4e58985f50bfb",
-    "strip": 1
+    "patch": "patch-chain/05-calibration-bf16-conv.patch",
+    "strip": 1,
+    "base": "sha256:8ef67bb4a18c5ed47c61f756e011f8c84994c7dc678d09157e2f2428c27a37fe",
+    "image": "sha256:f5ac30152869ae3a0fd7c619812d645031ffa67bbb92c89235ac35b4d490da23",
+    "tag": [
+      "local/dflash2-v033:bf16-calconv-frozen-v1"
+    ],
+    "changed": [
+      {
+        "path": "vllm/model_executor/models/quality_bf16_conv.py",
+        "sha256": "35c17b63c06b39387dca83ecafeb868900ea9204f87062586e0514821fe9cc75"
+      },
+      {
+        "path": "vllm/model_executor/models/qwen3_dflash2.py",
+        "sha256": "bd6c488f1c2f695ed2ed2a86b3132e1f51efd1e69c3cf789d5cb6f3193360e37"
+      },
+      {
+        "path": "vllm/v1/worker/gpu/spec_decode/dflash2/speculator.py",
+        "sha256": "2b17d625a3a6cd84ceda7d84ae39ce5322aec22b0a056d87fce92dcca6a4e880"
+      }
+    ],
+    "removed": [],
+    "historical_context": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/bf16-calconv-frozen-v1"
   },
   {
     "order": 6,
-    "path": "patch-chain/deep-c1-v032.patch",
-    "sha256": "d1dae47ea1db3e47c3eee1fa68388a5b1458ea8c724955a91c502e66bdd65f6b",
-    "strip": 1
+    "patch": "patch-chain/06-compiled-graph-update-copy.patch",
+    "strip": 1,
+    "base": "sha256:f5ac30152869ae3a0fd7c619812d645031ffa67bbb92c89235ac35b4d490da23",
+    "image": "sha256:bc673822914e6137807cc5e87e6b8979195774b704e9f222a76bc9619e4e770b",
+    "tag": [
+      "local/dflash2-v033:calconv-graphupd-v2"
+    ],
+    "changed": [
+      {
+        "path": "vllm/models/qwen4_exp/nvidia/b70_compiled_graph_update.py",
+        "sha256": "fa9699ea19f6acc028050867f054812bd9a9da577234c5aa9472bc4ff3402639"
+      },
+      {
+        "path": "vllm/models/qwen4_exp/nvidia/b70_target_graph.py",
+        "sha256": "386d6f7be554c06fb8298e61031f4af0689f84830334f87cd8694ab6aad83caf"
+      }
+    ],
+    "removed": [],
+    "historical_context": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/calconv-graphupd-v2"
   },
   {
     "order": 7,
-    "path": "patch-chain/mtp7-gap-v032.patch",
-    "sha256": "9106f52abba30649fed4f3f05076de8501147a3fead33a606c02c0f718aa9425",
-    "strip": 1
+    "patch": "patch-chain/07-parallel-ple-exact-ba-hc.patch",
+    "strip": 1,
+    "base": "sha256:bc673822914e6137807cc5e87e6b8979195774b704e9f222a76bc9619e4e770b",
+    "image": "sha256:cf2f4b846bd7b1c3843fd2739a68809d2bdc75cbc38d76c928012e960c9b1b14",
+    "tag": [
+      "local/dflash2-v033:expanded-exact-v3"
+    ],
+    "changed": [
+      {
+        "path": "vllm/models/qwen4_exp/common/disk_ple.py",
+        "sha256": "b6cba10cea2762e08905624c48b771a2e17788fec7fb1a67e68e57573869c72d"
+      },
+      {
+        "path": "vllm/models/qwen4_exp/nvidia/b70_hc_gemm.py",
+        "sha256": "2ff55d66e90665c5710091e170372acf52dc8a996d55ec264645b63ecb931c65"
+      }
+    ],
+    "removed": [],
+    "historical_context": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/expanded-exact-v3"
   },
   {
     "order": 8,
-    "path": "patch-chain/astra500-v032.patch",
-    "sha256": "ce19b3bc0531f86507e734ece0530616a3405b98efeaf2a98ffaa157af33c13e",
-    "strip": 1
+    "patch": "patch-chain/08-exact-moe-v1.patch",
+    "strip": 1,
+    "base": "sha256:cf2f4b846bd7b1c3843fd2739a68809d2bdc75cbc38d76c928012e960c9b1b14",
+    "image": "sha256:761f4e425466133c13a53198451177e64e9a08a97759655031c7cf96a00fd089",
+    "tag": [
+      "local/dflash2-v033:expanded-exact-v4"
+    ],
+    "changed": [
+      {
+        "path": "vllm/models/qwen4_exp/nvidia/b70_moe_glue.py",
+        "sha256": "398fae1127a82cc622e2b09af472a0b1e0864a442b0405a3f6c7e86922104bbe"
+      },
+      {
+        "path": "vllm/models/qwen4_exp/nvidia/model.py",
+        "sha256": "e770ec9dc02b90871b782469243926617cede004e518b0bd1ad47309cb156352"
+      }
+    ],
+    "removed": [],
+    "historical_context": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/expanded-exact-v4"
   },
   {
     "order": 9,
-    "path": "patch-chain/astra500-structural.patch",
-    "sha256": "b57de90e36b8b1867142c7693885e60413ab83d9993a5fda3fd2fb0cd9379725",
-    "strip": 1
+    "patch": "patch-chain/09-deferred-ple.patch",
+    "strip": 1,
+    "base": "sha256:761f4e425466133c13a53198451177e64e9a08a97759655031c7cf96a00fd089",
+    "image": "sha256:848f48ff831ff244154bab6ef2938093bb0a588b2e2bb643a51c8a57b920789b",
+    "tag": [
+      "local/dflash2-v033:expanded-exact-v5"
+    ],
+    "changed": [
+      {
+        "path": "vllm/models/qwen4_exp/nvidia/b70_defer_ple.py",
+        "sha256": "8ee9b997614b5eb28a0c4cf5a839cba556e52ff9f2a74bfa00f6e703bc997505"
+      },
+      {
+        "path": "vllm/models/qwen4_exp/nvidia/b70_moe_glue.py",
+        "sha256": "5df7da9b774661b30f801d4466d63356e58fa82b9b977177f9163597ee710ece"
+      },
+      {
+        "path": "vllm/models/qwen4_exp/nvidia/model_state.py",
+        "sha256": "fcb7638d1215b4fb015fb44f7302c7d5ba183082c0b9cad7e97d37326d459ec7"
+      }
+    ],
+    "removed": [],
+    "historical_context": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/expanded-exact-v5"
   },
   {
     "order": 10,
-    "path": "patch-chain/astra500-cycle.patch",
-    "sha256": "1650615ea69f3f0eeb3c72cf25566f221383e08ebccf487a6bbf8f39bccee778",
-    "strip": 1
-  },
-  {
-    "order": 11,
-    "path": "patch-chain/astra500-ownership.patch",
-    "sha256": "36887d6cb787f125ccdcb97cce30b85ff180b598973d1ad9864d9d431d8e4919",
-    "strip": 1
-  },
-  {
-    "order": 12,
-    "path": "patch-chain/astra500-beyond.patch",
-    "sha256": "540ef96c87e99fc4617b2b5571526cb31a403da8560ef0cf15b8b8159bfd3ac8",
-    "strip": 1
-  },
-  {
-    "order": 13,
-    "path": "patch-chain/astra500-dominant.patch",
-    "sha256": "8a97ceed1adeb1b4df148e8c2b4f8c735529b6351b3dd03e99900410fd26b0db",
-    "strip": 3
-  },
-  {
-    "order": 14,
-    "path": "patch-chain/prefill-serving.patch",
-    "sha256": "efd7de9122ca30bd9e1723d10b083a156e21a839da6837a544b9a018329878a9",
-    "strip": 1
-  },
-  {
-    "order": 15,
-    "path": "patch-chain/long-prefill.patch",
-    "sha256": "391975bcd98a90a000038283ecb96b98c3cdf26e233cfea97354acfb38b2b4e1",
-    "strip": 1
-  },
-  {
-    "order": 16,
-    "path": "patch-chain/integrated-serving.patch",
-    "sha256": "6cd8586e496f0dcab0513b14742a758dfc1d1348cd7f339bb2f8be42a2d19be7",
-    "strip": 1
+    "patch": "patch-chain/10-exact-moe-v3.patch",
+    "strip": 1,
+    "base": "sha256:848f48ff831ff244154bab6ef2938093bb0a588b2e2bb643a51c8a57b920789b",
+    "image": "sha256:2fa91d1ac8c17ad866d9ae7eaea83ac1b1666ffd0ccceb7685564f55528c47af",
+    "tag": [
+      "local/dflash2-v033:expanded2-exact-v6"
+    ],
+    "changed": [
+      {
+        "path": "vllm/models/qwen4_exp/nvidia/b70_moe_glue.py",
+        "sha256": "9842f16eb70aecfb377feb7ef96eae25dfd98d8534c493284e6cbf8e0a4a92bc"
+      }
+    ],
+    "removed": [],
+    "historical_context": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/expanded2-exact-v6"
   }
 ]

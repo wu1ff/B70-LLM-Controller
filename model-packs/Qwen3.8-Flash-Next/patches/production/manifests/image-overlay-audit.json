@@ -1,0 +1,1412 @@
+{
+  "context_files": [
+    {
+      "layer": 1,
+      "path": "opt/b70-residency-shim/libl0_peer_residency_shim.so",
+      "matches": true
+    },
+    {
+      "layer": 1,
+      "path": "opt/b70-flashnext/prepare-serve.sh",
+      "matches": true
+    },
+    {
+      "layer": 1,
+      "path": "opt/b70-flashnext/prepare-intel.py",
+      "matches": true
+    },
+    {
+      "layer": 1,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm_xpu_kernels/astra_structural.py",
+      "matches": true
+    },
+    {
+      "layer": 1,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm_xpu_kernels/astra500_moe.py",
+      "matches": true
+    },
+    {
+      "layer": 1,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm_xpu_kernels/libdominant_w4_layout.so",
+      "matches": true
+    },
+    {
+      "layer": 1,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm_xpu_kernels/libastra_batch.so",
+      "matches": true
+    },
+    {
+      "layer": 1,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm_xpu_kernels/libastra_hc.so",
+      "matches": true
+    },
+    {
+      "layer": 1,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm_xpu_kernels/libastra_moe.so",
+      "matches": true
+    },
+    {
+      "layer": 1,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm_xpu_kernels/libastra_direct.so",
+      "matches": true
+    },
+    {
+      "layer": 1,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm_xpu_kernels/liblong_hc.so",
+      "matches": true
+    },
+    {
+      "layer": 1,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm_xpu_kernels/libgdn_index64.so",
+      "matches": true
+    },
+    {
+      "layer": 1,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm_xpu_kernels/libastra_groups.so",
+      "matches": true
+    },
+    {
+      "layer": 1,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm_xpu_kernels/libserving_prefill.so",
+      "matches": true
+    },
+    {
+      "layer": 1,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm_xpu_kernels/fused_moe_interface.py",
+      "matches": true
+    },
+    {
+      "layer": 1,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm_xpu_kernels/libbeyond_prefill.so",
+      "matches": true
+    },
+    {
+      "layer": 1,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm_xpu_kernels/astra_ownership.py",
+      "matches": true
+    },
+    {
+      "layer": 1,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm_xpu_kernels/liblong_prefill_v3.so",
+      "matches": true
+    },
+    {
+      "layer": 1,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/_xpu_ops.py",
+      "matches": true
+    },
+    {
+      "layer": 1,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp/intel_checkpoint.py",
+      "matches": true
+    },
+    {
+      "layer": 1,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp/__init__.py",
+      "matches": true
+    },
+    {
+      "layer": 1,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp/common/disk_ple.py",
+      "matches": true
+    },
+    {
+      "layer": 1,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp/nvidia/b70_target_attention.py",
+      "matches": true
+    },
+    {
+      "layer": 1,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp/nvidia/b70_disk.py",
+      "matches": true
+    },
+    {
+      "layer": 1,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp/nvidia/b70_c1_graph.py",
+      "matches": true
+    },
+    {
+      "layer": 1,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp/nvidia/b70_hc_gemm.py",
+      "matches": true
+    },
+    {
+      "layer": 1,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp/nvidia/b70_prefill_hc.py",
+      "matches": true
+    },
+    {
+      "layer": 1,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp/nvidia/b70_hyperconnection.py",
+      "matches": true
+    },
+    {
+      "layer": 1,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp/nvidia/ngram_embedding.py",
+      "matches": true
+    },
+    {
+      "layer": 1,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp/nvidia/model_state.py",
+      "matches": true
+    },
+    {
+      "layer": 1,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp/nvidia/dflash2_features.py",
+      "matches": true
+    },
+    {
+      "layer": 1,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp/nvidia/b70_target_graph.py",
+      "matches": true
+    },
+    {
+      "layer": 1,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp/nvidia/model.py",
+      "matches": true
+    },
+    {
+      "layer": 1,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp/nvidia/c1_verify.py",
+      "matches": true
+    },
+    {
+      "layer": 1,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/model_executor/layers/linear.py",
+      "matches": true
+    },
+    {
+      "layer": 1,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/model_executor/models/config.py",
+      "matches": true
+    },
+    {
+      "layer": 1,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/model_executor/layers/mamba/gdn/qwen_gdn_linear_attn.py",
+      "matches": true
+    },
+    {
+      "layer": 1,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/model_executor/layers/fused_moe/experts/xpu_moe.py",
+      "matches": true
+    },
+    {
+      "layer": 1,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/v1/worker/mamba_utils.py",
+      "matches": true
+    },
+    {
+      "layer": 1,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/v1/worker/gpu_worker.py",
+      "matches": true
+    },
+    {
+      "layer": 1,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/v1/core/sched/scheduler.py",
+      "matches": true
+    },
+    {
+      "layer": 1,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/v1/attention/backends/gdn_spec_metadata.py",
+      "matches": true
+    },
+    {
+      "layer": 1,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/v1/attention/backends/gdn_attn.py",
+      "matches": true
+    },
+    {
+      "layer": 1,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/v1/worker/gpu/astra_greedy.py",
+      "matches": true
+    },
+    {
+      "layer": 1,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/v1/worker/gpu/model_runner.py",
+      "matches": true
+    },
+    {
+      "layer": 1,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/v1/worker/gpu/sample/xpu_filter_warmup.py",
+      "matches": true
+    },
+    {
+      "layer": 1,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/v1/sample/ops/topk_topp_triton.py",
+      "matches": true
+    },
+    {
+      "layer": 1,
+      "path": "opt/b70-flashnext/assets/frontend.json",
+      "matches": true
+    },
+    {
+      "layer": 1,
+      "path": "opt/b70-flashnext/assets/checkpoint-lock.json",
+      "matches": true
+    },
+    {
+      "layer": 1,
+      "path": "opt/b70-flashnext/assets/serve-config.json",
+      "matches": true
+    },
+    {
+      "layer": 1,
+      "path": "opt/b70-flashnext/assets/frontend/vocab.json",
+      "matches": true
+    },
+    {
+      "layer": 1,
+      "path": "opt/b70-flashnext/assets/frontend/tokenizer_config.json",
+      "matches": true
+    },
+    {
+      "layer": 1,
+      "path": "opt/b70-flashnext/assets/frontend/preprocessor_config.json",
+      "matches": true
+    },
+    {
+      "layer": 1,
+      "path": "opt/b70-flashnext/assets/frontend/generation_config.json",
+      "matches": true
+    },
+    {
+      "layer": 1,
+      "path": "opt/b70-flashnext/assets/frontend/video_preprocessor_config.json",
+      "matches": true
+    },
+    {
+      "layer": 1,
+      "path": "opt/b70-flashnext/assets/frontend/merges.txt",
+      "matches": true
+    },
+    {
+      "layer": 1,
+      "path": "opt/b70-flashnext/assets/frontend/tokenizer.json",
+      "matches": true
+    },
+    {
+      "layer": 1,
+      "path": "opt/b70-flashnext/assets/frontend/chat_template.jinja",
+      "matches": true
+    },
+    {
+      "layer": 1,
+      "path": "opt/b70-flashnext/assets/licenses/external-model.txt",
+      "matches": true
+    },
+    {
+      "layer": 2,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/v1/attention/backends/gdn_attn.py",
+      "matches": true
+    },
+    {
+      "layer": 3,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm_xpu_kernels/libb70_ordered_hc_v2.so",
+      "matches": true
+    },
+    {
+      "layer": 3,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp/nvidia/b70_hc_gemm.py",
+      "matches": true
+    },
+    {
+      "layer": 3,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/v1/worker/gpu/spec_decode/dflash2/speculator.py",
+      "matches": true
+    },
+    {
+      "layer": 3,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/v1/worker/gpu/spec_decode/dflash2/b70_graphs.py",
+      "matches": true
+    },
+    {
+      "layer": 4,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp/nvidia/b70_target_graph.py",
+      "matches": true
+    },
+    {
+      "layer": 4,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp/nvidia/c1_verify.py",
+      "matches": true
+    },
+    {
+      "layer": 4,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/v1/attention/backends/gdn_attn.py",
+      "matches": true
+    },
+    {
+      "layer": 4,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/v1/worker/gpu/sample/sampler.py",
+      "matches": true
+    },
+    {
+      "layer": 4,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/v1/worker/gpu/sample/thinking_budget.py",
+      "matches": true
+    },
+    {
+      "layer": 4,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/v1/worker/gpu/spec_decode/rejection_sampler_utils.py",
+      "matches": true
+    },
+    {
+      "layer": 4,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/v1/worker/gpu/spec_decode/dflash2/speculator.py",
+      "matches": true
+    },
+    {
+      "layer": 4,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/v1/worker/gpu/spec_decode/dflash/speculator.py",
+      "matches": true
+    },
+    {
+      "layer": 5,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/model_executor/models/qwen3_dflash2.py",
+      "matches": true
+    },
+    {
+      "layer": 5,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/model_executor/models/quality_bf16_conv.py",
+      "matches": true
+    },
+    {
+      "layer": 5,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/v1/worker/gpu/spec_decode/dflash2/quality_calibration.pt",
+      "matches": true
+    },
+    {
+      "layer": 5,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/v1/worker/gpu/spec_decode/dflash2/speculator.py",
+      "matches": true
+    },
+    {
+      "layer": 6,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp/nvidia/b70_target_graph.py",
+      "matches": true
+    },
+    {
+      "layer": 6,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp/nvidia/b70_compiled_graph_update.py",
+      "matches": true
+    },
+    {
+      "layer": 7,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm_xpu_kernels/libple_gather.so",
+      "matches": true
+    },
+    {
+      "layer": 7,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm_xpu_kernels/libb70_exact_v1.so",
+      "matches": true
+    },
+    {
+      "layer": 7,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp/common/disk_ple.py",
+      "matches": true
+    },
+    {
+      "layer": 7,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp/nvidia/b70_hc_gemm.py",
+      "matches": true
+    },
+    {
+      "layer": 8,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm_xpu_kernels/libb70_exact_moe_v1.so",
+      "matches": true
+    },
+    {
+      "layer": 8,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp/nvidia/b70_moe_glue.py",
+      "matches": true
+    },
+    {
+      "layer": 8,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp/nvidia/model.py",
+      "matches": true
+    },
+    {
+      "layer": 9,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp/nvidia/b70_moe_glue.py",
+      "matches": true
+    },
+    {
+      "layer": 9,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp/nvidia/model_state.py",
+      "matches": true
+    },
+    {
+      "layer": 9,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp/nvidia/b70_defer_ple.py",
+      "matches": true
+    },
+    {
+      "layer": 10,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm_xpu_kernels/libb70_exact_moe_v3.so",
+      "matches": true
+    },
+    {
+      "layer": 10,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp/nvidia/b70_moe_glue.py",
+      "matches": true
+    }
+  ],
+  "manifest_files": [
+    {
+      "layer": 3,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/v1/worker/gpu/spec_decode/dflash2/speculator.py",
+      "matches": true
+    },
+    {
+      "layer": 3,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/v1/worker/gpu/spec_decode/dflash2/b70_graphs.py",
+      "matches": true
+    },
+    {
+      "layer": 3,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp/nvidia/b70_hc_gemm.py",
+      "matches": true
+    },
+    {
+      "layer": 3,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm_xpu_kernels/libb70_ordered_hc_v2.so",
+      "matches": true
+    },
+    {
+      "layer": 4,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp/nvidia/b70_target_graph.py",
+      "matches": true
+    },
+    {
+      "layer": 4,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp/nvidia/c1_verify.py",
+      "matches": true
+    },
+    {
+      "layer": 4,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/v1/attention/backends/gdn_attn.py",
+      "matches": true
+    },
+    {
+      "layer": 4,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/v1/worker/gpu/sample/sampler.py",
+      "matches": true
+    },
+    {
+      "layer": 4,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/v1/worker/gpu/sample/thinking_budget.py",
+      "matches": true
+    },
+    {
+      "layer": 4,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/v1/worker/gpu/spec_decode/rejection_sampler_utils.py",
+      "matches": true
+    },
+    {
+      "layer": 4,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/v1/worker/gpu/spec_decode/dflash2/speculator.py",
+      "matches": true
+    },
+    {
+      "layer": 4,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/v1/worker/gpu/spec_decode/dflash/speculator.py",
+      "matches": true
+    },
+    {
+      "layer": 5,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/v1/worker/gpu/spec_decode/dflash2/speculator.py",
+      "matches": true
+    },
+    {
+      "layer": 5,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/v1/worker/gpu/spec_decode/dflash2/quality_calibration.pt",
+      "matches": true
+    },
+    {
+      "layer": 5,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/model_executor/models/qwen3_dflash2.py",
+      "matches": true
+    },
+    {
+      "layer": 5,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/model_executor/models/quality_bf16_conv.py",
+      "matches": true
+    },
+    {
+      "layer": 6,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp/nvidia/b70_target_graph.py",
+      "matches": true
+    },
+    {
+      "layer": 6,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp/nvidia/b70_compiled_graph_update.py",
+      "matches": true
+    },
+    {
+      "layer": 7,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp/nvidia/b70_hc_gemm.py",
+      "matches": true
+    },
+    {
+      "layer": 7,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp/common/disk_ple.py",
+      "matches": true
+    },
+    {
+      "layer": 7,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm_xpu_kernels/libb70_exact_v1.so",
+      "matches": true
+    },
+    {
+      "layer": 7,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm_xpu_kernels/libple_gather.so",
+      "matches": true
+    },
+    {
+      "layer": 8,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp/nvidia/model.py",
+      "matches": true
+    },
+    {
+      "layer": 8,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp/nvidia/b70_moe_glue.py",
+      "matches": true
+    },
+    {
+      "layer": 8,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm_xpu_kernels/libb70_exact_moe_v1.so",
+      "matches": true
+    },
+    {
+      "layer": 9,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp/nvidia/model_state.py",
+      "matches": true
+    },
+    {
+      "layer": 9,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp/nvidia/b70_defer_ple.py",
+      "matches": true
+    },
+    {
+      "layer": 9,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp/nvidia/b70_moe_glue.py",
+      "matches": true
+    },
+    {
+      "layer": 10,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp/nvidia/b70_moe_glue.py",
+      "matches": true
+    },
+    {
+      "layer": 10,
+      "path": "opt/venv/lib/python3.12/site-packages/vllm_xpu_kernels/libb70_exact_moe_v3.so",
+      "matches": true
+    }
+  ],
+  "source_references": [
+    {
+      "layer": 5,
+      "kind": "builder",
+      "expected": "04aaf732d06890b542051607a147698e68e525a1e4d383dfc3caf79ae4cb63f9",
+      "matches": [
+        "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/scripts/build_bf16_tuned.py"
+      ],
+      "status": "MATCH"
+    },
+    {
+      "layer": 6,
+      "kind": "builder",
+      "expected": "92f1c5e5581ad1d7309a7cc9a01bc9847103a66508a7519b1e854e8d139dfae8",
+      "matches": [
+        "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/scripts/build_calconv_graphupd.py"
+      ],
+      "status": "MATCH"
+    },
+    {
+      "layer": 7,
+      "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/expanded-tails/b70_hc_gemm_tail.py",
+      "expected": "9112bde3365c9e38a5c732ac14088733d53fe8a6846b251642b37cd2c5abc469",
+      "current": "9112bde3365c9e38a5c732ac14088733d53fe8a6846b251642b37cd2c5abc469",
+      "status": "MATCH",
+      "recovered_from": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/expanded-tails/b70_hc_gemm_tail.py",
+      "packaged": "provenance/recovered-sources/9112bde3365c9e38a5c732ac14088733d53fe8a6846b251642b37cd2c5abc469/b70_hc_gemm_tail.py",
+      "recovery_sha256": "9112bde3365c9e38a5c732ac14088733d53fe8a6846b251642b37cd2c5abc469"
+    },
+    {
+      "layer": 7,
+      "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/expanded-tails/disk_ple_tail.py",
+      "expected": "2ae452c5ad48e030c921edb08b7fe76470de2b11d616082795f29efe7b7db30e",
+      "current": "2ae452c5ad48e030c921edb08b7fe76470de2b11d616082795f29efe7b7db30e",
+      "status": "MATCH",
+      "recovered_from": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/expanded-tails/disk_ple_tail.py",
+      "packaged": "provenance/recovered-sources/2ae452c5ad48e030c921edb08b7fe76470de2b11d616082795f29efe7b7db30e/disk_ple_tail.py",
+      "recovery_sha256": "2ae452c5ad48e030c921edb08b7fe76470de2b11d616082795f29efe7b7db30e"
+    },
+    {
+      "layer": 7,
+      "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/exact-kernels-v1/exact_gemm.cpp",
+      "expected": "102425662c2d51dbd164b1685b3575ae4365fe87df0bdb9ce9deef59e8b6da37",
+      "current": "102425662c2d51dbd164b1685b3575ae4365fe87df0bdb9ce9deef59e8b6da37",
+      "status": "MATCH",
+      "recovered_from": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/exact-kernels-v1/exact_gemm.cpp",
+      "packaged": "provenance/recovered-sources/102425662c2d51dbd164b1685b3575ae4365fe87df0bdb9ce9deef59e8b6da37/exact_gemm.cpp",
+      "recovery_sha256": "102425662c2d51dbd164b1685b3575ae4365fe87df0bdb9ce9deef59e8b6da37"
+    },
+    {
+      "layer": 7,
+      "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/exact-kernels-v1/dense_fragment.hpp",
+      "expected": "32e5ac62602e7597d64cf403670ad014b59de8d87652ab96bbf49de4a13a3216",
+      "current": "32e5ac62602e7597d64cf403670ad014b59de8d87652ab96bbf49de4a13a3216",
+      "status": "MATCH",
+      "recovered_from": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/exact-kernels-v1/dense_fragment.hpp",
+      "packaged": "provenance/recovered-sources/32e5ac62602e7597d64cf403670ad014b59de8d87652ab96bbf49de4a13a3216/dense_fragment.hpp",
+      "recovery_sha256": "32e5ac62602e7597d64cf403670ad014b59de8d87652ab96bbf49de4a13a3216"
+    },
+    {
+      "layer": 7,
+      "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/exact-kernels-v1/build.sh",
+      "expected": "a6709d43b3182293bfddaaf5dc6de9f12c9d8ce331da11afe3c26d04368c00ce",
+      "current": "a6709d43b3182293bfddaaf5dc6de9f12c9d8ce331da11afe3c26d04368c00ce",
+      "status": "MATCH",
+      "recovered_from": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/exact-kernels-v1/build.sh",
+      "packaged": "provenance/recovered-sources/a6709d43b3182293bfddaaf5dc6de9f12c9d8ce331da11afe3c26d04368c00ce/build.sh",
+      "recovery_sha256": "a6709d43b3182293bfddaaf5dc6de9f12c9d8ce331da11afe3c26d04368c00ce"
+    },
+    {
+      "layer": 7,
+      "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/exact-kernels-v1/command.json",
+      "expected": "927c4ff7dbf7d4970bbd4838a189f11bed675e644d7141ec49122f5a3dc2335c",
+      "current": "927c4ff7dbf7d4970bbd4838a189f11bed675e644d7141ec49122f5a3dc2335c",
+      "status": "MATCH",
+      "recovered_from": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/exact-kernels-v1/command.json",
+      "packaged": "provenance/recovered-sources/927c4ff7dbf7d4970bbd4838a189f11bed675e644d7141ec49122f5a3dc2335c/command.json",
+      "recovery_sha256": "927c4ff7dbf7d4970bbd4838a189f11bed675e644d7141ec49122f5a3dc2335c"
+    },
+    {
+      "layer": 7,
+      "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/evidence/expanded-20261116T000816Z/dev/ple_gather/ple_gather.c",
+      "expected": "288c589d59d899d9740554042806bfe221e52e3fd2f1b578908291b70f36996b",
+      "current": "288c589d59d899d9740554042806bfe221e52e3fd2f1b578908291b70f36996b",
+      "status": "MATCH",
+      "packaged": "provenance/recovered-sources/288c589d59d899d9740554042806bfe221e52e3fd2f1b578908291b70f36996b/ple_gather.c"
+    },
+    {
+      "layer": 7,
+      "kind": "builder",
+      "expected": "d16254f3365f3a2e1e0d78c36890f2726c5584b73213e0f3d89ea88bf02125e6",
+      "matches": [
+        "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/scripts/build_expanded_v3.py"
+      ],
+      "status": "MATCH"
+    },
+    {
+      "layer": 8,
+      "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/expanded-tails/model_tail.py",
+      "expected": "3951e58065a2bdd1e2b8b87076af97436632a46b4e4830a7d9ed5ccf0e908846",
+      "current": "3951e58065a2bdd1e2b8b87076af97436632a46b4e4830a7d9ed5ccf0e908846",
+      "status": "MATCH",
+      "recovered_from": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/expanded-tails/model_tail.py",
+      "packaged": "provenance/recovered-sources/3951e58065a2bdd1e2b8b87076af97436632a46b4e4830a7d9ed5ccf0e908846/model_tail.py",
+      "recovery_sha256": "3951e58065a2bdd1e2b8b87076af97436632a46b4e4830a7d9ed5ccf0e908846"
+    },
+    {
+      "layer": 8,
+      "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/expanded-tails/b70_moe_glue.py",
+      "expected": "398fae1127a82cc622e2b09af472a0b1e0864a442b0405a3f6c7e86922104bbe",
+      "current": "5df7da9b774661b30f801d4466d63356e58fa82b9b977177f9163597ee710ece",
+      "status": "RECOVERED_EXACT",
+      "recovered_from": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/expanded-exact-v4/overlay/opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp/nvidia/b70_moe_glue.py",
+      "packaged": "provenance/recovered-sources/398fae1127a82cc622e2b09af472a0b1e0864a442b0405a3f6c7e86922104bbe/b70_moe_glue.py",
+      "recovery_sha256": "398fae1127a82cc622e2b09af472a0b1e0864a442b0405a3f6c7e86922104bbe"
+    },
+    {
+      "layer": 8,
+      "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/exact-kernels-v1/exact_moe.cpp",
+      "expected": "d9d9a7518ec0f83a10e5240dad08b38b6fc384a7860e67ff7be53b13e2197552",
+      "current": "d9d9a7518ec0f83a10e5240dad08b38b6fc384a7860e67ff7be53b13e2197552",
+      "status": "MATCH",
+      "recovered_from": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/exact-kernels-v1/exact_moe.cpp",
+      "packaged": "provenance/recovered-sources/d9d9a7518ec0f83a10e5240dad08b38b6fc384a7860e67ff7be53b13e2197552/exact_moe.cpp",
+      "recovery_sha256": "d9d9a7518ec0f83a10e5240dad08b38b6fc384a7860e67ff7be53b13e2197552"
+    },
+    {
+      "layer": 8,
+      "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/exact-kernels-v1/dense_fragment.hpp",
+      "expected": "32e5ac62602e7597d64cf403670ad014b59de8d87652ab96bbf49de4a13a3216",
+      "current": "32e5ac62602e7597d64cf403670ad014b59de8d87652ab96bbf49de4a13a3216",
+      "status": "MATCH",
+      "recovered_from": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/exact-kernels-v1/dense_fragment.hpp",
+      "packaged": "provenance/recovered-sources/32e5ac62602e7597d64cf403670ad014b59de8d87652ab96bbf49de4a13a3216/dense_fragment.hpp",
+      "recovery_sha256": "32e5ac62602e7597d64cf403670ad014b59de8d87652ab96bbf49de4a13a3216"
+    },
+    {
+      "layer": 8,
+      "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/exact-kernels-v1/build_moe.sh",
+      "expected": "03d71edec4caf8b8213653cbbe28a934e75cf2ac6ad5f8bbf500798a5f653b0e",
+      "current": "03d71edec4caf8b8213653cbbe28a934e75cf2ac6ad5f8bbf500798a5f653b0e",
+      "status": "MATCH",
+      "recovered_from": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/exact-kernels-v1/build_moe.sh",
+      "packaged": "provenance/recovered-sources/03d71edec4caf8b8213653cbbe28a934e75cf2ac6ad5f8bbf500798a5f653b0e/build_moe.sh",
+      "recovery_sha256": "03d71edec4caf8b8213653cbbe28a934e75cf2ac6ad5f8bbf500798a5f653b0e"
+    },
+    {
+      "layer": 8,
+      "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/exact-kernels-v1/command_moe.json",
+      "expected": "aad3eed10c6bbbda2040199633473a5c58467f0d4b2af88df9eff6bfbee47f99",
+      "current": "aad3eed10c6bbbda2040199633473a5c58467f0d4b2af88df9eff6bfbee47f99",
+      "status": "MATCH",
+      "recovered_from": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/exact-kernels-v1/command_moe.json",
+      "packaged": "provenance/recovered-sources/aad3eed10c6bbbda2040199633473a5c58467f0d4b2af88df9eff6bfbee47f99/command_moe.json",
+      "recovery_sha256": "aad3eed10c6bbbda2040199633473a5c58467f0d4b2af88df9eff6bfbee47f99"
+    },
+    {
+      "layer": 8,
+      "kind": "builder",
+      "expected": "4282863d8d6eb8bd81708ef677442d98a0cdeb2b714f9094e0c5061205814e33",
+      "matches": [
+        "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/scripts/build_expanded_v4.py"
+      ],
+      "status": "MATCH"
+    },
+    {
+      "layer": 9,
+      "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/expanded-tails/model_state_tail.py",
+      "expected": "beefda7e49be68abcff8c24c162a8bc6d872f4fc4d5be6d7ced0dda4dbad9773",
+      "current": "beefda7e49be68abcff8c24c162a8bc6d872f4fc4d5be6d7ced0dda4dbad9773",
+      "status": "MATCH",
+      "recovered_from": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/expanded-tails/model_state_tail.py",
+      "packaged": "provenance/recovered-sources/beefda7e49be68abcff8c24c162a8bc6d872f4fc4d5be6d7ced0dda4dbad9773/model_state_tail.py",
+      "recovery_sha256": "beefda7e49be68abcff8c24c162a8bc6d872f4fc4d5be6d7ced0dda4dbad9773"
+    },
+    {
+      "layer": 9,
+      "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/expanded-tails/b70_defer_ple.py",
+      "expected": "8ee9b997614b5eb28a0c4cf5a839cba556e52ff9f2a74bfa00f6e703bc997505",
+      "current": "8ee9b997614b5eb28a0c4cf5a839cba556e52ff9f2a74bfa00f6e703bc997505",
+      "status": "MATCH",
+      "recovered_from": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/expanded-exact-v5/overlay/opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp/nvidia/b70_defer_ple.py",
+      "packaged": "provenance/recovered-sources/8ee9b997614b5eb28a0c4cf5a839cba556e52ff9f2a74bfa00f6e703bc997505/b70_defer_ple.py",
+      "recovery_sha256": "8ee9b997614b5eb28a0c4cf5a839cba556e52ff9f2a74bfa00f6e703bc997505"
+    },
+    {
+      "layer": 9,
+      "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/expanded-tails/b70_moe_glue.py",
+      "expected": "5df7da9b774661b30f801d4466d63356e58fa82b9b977177f9163597ee710ece",
+      "current": "5df7da9b774661b30f801d4466d63356e58fa82b9b977177f9163597ee710ece",
+      "status": "MATCH",
+      "recovered_from": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/expanded-exact-v5/overlay/opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp/nvidia/b70_moe_glue.py",
+      "packaged": "provenance/recovered-sources/5df7da9b774661b30f801d4466d63356e58fa82b9b977177f9163597ee710ece/b70_moe_glue.py",
+      "recovery_sha256": "5df7da9b774661b30f801d4466d63356e58fa82b9b977177f9163597ee710ece"
+    },
+    {
+      "layer": 9,
+      "kind": "builder",
+      "expected": "84a2a07b5ebdb3e1c5267267e5948740915d2a94b93f7a868fe1f0b7341d007d",
+      "matches": [
+        "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/scripts/build_expanded_v5.py"
+      ],
+      "status": "MATCH"
+    },
+    {
+      "layer": 10,
+      "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/expanded2-tails/b70_moe_glue.py",
+      "expected": "9842f16eb70aecfb377feb7ef96eae25dfd98d8534c493284e6cbf8e0a4a92bc",
+      "current": "9842f16eb70aecfb377feb7ef96eae25dfd98d8534c493284e6cbf8e0a4a92bc",
+      "status": "MATCH",
+      "recovered_from": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/expanded2-exact-v6/overlay/opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp/nvidia/b70_moe_glue.py",
+      "packaged": "provenance/recovered-sources/9842f16eb70aecfb377feb7ef96eae25dfd98d8534c493284e6cbf8e0a4a92bc/b70_moe_glue.py",
+      "recovery_sha256": "9842f16eb70aecfb377feb7ef96eae25dfd98d8534c493284e6cbf8e0a4a92bc"
+    },
+    {
+      "layer": 10,
+      "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/exact-kernels-v3/exact_moe_v3.cpp",
+      "expected": "33ef055ad19e60073c3ad0bda39b63b6efcd93b2ad4fc978512d14a462926fdd",
+      "current": "33ef055ad19e60073c3ad0bda39b63b6efcd93b2ad4fc978512d14a462926fdd",
+      "status": "MATCH",
+      "recovered_from": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/exact-kernels-v3/exact_moe_v3.cpp",
+      "packaged": "provenance/recovered-sources/33ef055ad19e60073c3ad0bda39b63b6efcd93b2ad4fc978512d14a462926fdd/exact_moe_v3.cpp",
+      "recovery_sha256": "33ef055ad19e60073c3ad0bda39b63b6efcd93b2ad4fc978512d14a462926fdd"
+    },
+    {
+      "layer": 10,
+      "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/exact-kernels-v3/dense_fragment.hpp",
+      "expected": "2a7bc6b3c8c17b71099da55e25078b50dda77b29dfbb218c9e0689c9ecb9781f",
+      "current": "2a7bc6b3c8c17b71099da55e25078b50dda77b29dfbb218c9e0689c9ecb9781f",
+      "status": "MATCH",
+      "recovered_from": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/exact-kernels-v3/dense_fragment.hpp",
+      "packaged": "provenance/recovered-sources/2a7bc6b3c8c17b71099da55e25078b50dda77b29dfbb218c9e0689c9ecb9781f/dense_fragment.hpp",
+      "recovery_sha256": "2a7bc6b3c8c17b71099da55e25078b50dda77b29dfbb218c9e0689c9ecb9781f"
+    },
+    {
+      "layer": 10,
+      "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/exact-kernels-v3/build_moe_v3.sh",
+      "expected": "908705cf2b578e9c0fb944bf6e4c0e2f01449651d9d63fa97b83c30ea7f75074",
+      "current": "908705cf2b578e9c0fb944bf6e4c0e2f01449651d9d63fa97b83c30ea7f75074",
+      "status": "MATCH",
+      "recovered_from": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/exact-kernels-v3/build_moe_v3.sh",
+      "packaged": "provenance/recovered-sources/908705cf2b578e9c0fb944bf6e4c0e2f01449651d9d63fa97b83c30ea7f75074/build_moe_v3.sh",
+      "recovery_sha256": "908705cf2b578e9c0fb944bf6e4c0e2f01449651d9d63fa97b83c30ea7f75074"
+    },
+    {
+      "layer": 10,
+      "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/exact-kernels-v3/command_moe_v3.json",
+      "expected": "f1e0fad1b352184f39ef5ec8c1e8d43a874bd57b3da7db3c6694fccadff6d7b1",
+      "current": "f1e0fad1b352184f39ef5ec8c1e8d43a874bd57b3da7db3c6694fccadff6d7b1",
+      "status": "MATCH",
+      "recovered_from": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/exact-kernels-v3/command_moe_v3.json",
+      "packaged": "provenance/recovered-sources/f1e0fad1b352184f39ef5ec8c1e8d43a874bd57b3da7db3c6694fccadff6d7b1/command_moe_v3.json",
+      "recovery_sha256": "f1e0fad1b352184f39ef5ec8c1e8d43a874bd57b3da7db3c6694fccadff6d7b1"
+    },
+    {
+      "layer": 10,
+      "kind": "builder",
+      "expected": "15c3ca6ffcd085794d3ffc3eb0f05e16a5ddd8f7517c33c25d1f373a7c1e92df",
+      "matches": [
+        "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/scripts/build_expanded2_v6.py"
+      ],
+      "status": "MATCH"
+    }
+  ],
+  "final_overlay_files": [
+    {
+      "path": "opt/b70-residency-shim/libl0_peer_residency_shim.so",
+      "expected": "ae2c82f549d97393268cbd7b90dba7cf38fd00dbccae54f090b1a545e5613b3c",
+      "actual": "ae2c82f549d97393268cbd7b90dba7cf38fd00dbccae54f090b1a545e5613b3c",
+      "matches": true
+    },
+    {
+      "path": "opt/b70-flashnext/prepare-serve.sh",
+      "expected": "8b666d96a19e627c03c479f67d7b61743bdee042d42527ec0aa8699f2467326c",
+      "actual": "8b666d96a19e627c03c479f67d7b61743bdee042d42527ec0aa8699f2467326c",
+      "matches": true
+    },
+    {
+      "path": "opt/b70-flashnext/prepare-intel.py",
+      "expected": "8d9bb22a4e2fd39808ed1544848aa0a215e2252e15000bee632f01d28cbaebab",
+      "actual": "8d9bb22a4e2fd39808ed1544848aa0a215e2252e15000bee632f01d28cbaebab",
+      "matches": true
+    },
+    {
+      "path": "opt/venv/lib/python3.12/site-packages/vllm_xpu_kernels/astra_structural.py",
+      "expected": "6650c391e6defcf0433ace77ba7fb63ba69c5e88e43fb5d5f29dcc79318e7f9e",
+      "actual": "6650c391e6defcf0433ace77ba7fb63ba69c5e88e43fb5d5f29dcc79318e7f9e",
+      "matches": true
+    },
+    {
+      "path": "opt/venv/lib/python3.12/site-packages/vllm_xpu_kernels/astra500_moe.py",
+      "expected": "9346e3d41d2d7b890edf441624359db7d8d77214b19d776878bd0e5a1dbc3806",
+      "actual": "9346e3d41d2d7b890edf441624359db7d8d77214b19d776878bd0e5a1dbc3806",
+      "matches": true
+    },
+    {
+      "path": "opt/venv/lib/python3.12/site-packages/vllm_xpu_kernels/libdominant_w4_layout.so",
+      "expected": "1a2e8f582e76e27bbc478a9c2ffa6f26f6e2283673a4059a5c5c0564d2c9d673",
+      "actual": "1a2e8f582e76e27bbc478a9c2ffa6f26f6e2283673a4059a5c5c0564d2c9d673",
+      "matches": true
+    },
+    {
+      "path": "opt/venv/lib/python3.12/site-packages/vllm_xpu_kernels/libastra_batch.so",
+      "expected": "551f15c64119aff9905b651f880d7c1313bf0ade3fb3fcb4dc31a7432c50f77a",
+      "actual": "551f15c64119aff9905b651f880d7c1313bf0ade3fb3fcb4dc31a7432c50f77a",
+      "matches": true
+    },
+    {
+      "path": "opt/venv/lib/python3.12/site-packages/vllm_xpu_kernels/libastra_hc.so",
+      "expected": "2fdda680027db5d730ae9b9ed0098f0db4b97d83a6bc2fe27e55331e1756c44c",
+      "actual": "2fdda680027db5d730ae9b9ed0098f0db4b97d83a6bc2fe27e55331e1756c44c",
+      "matches": true
+    },
+    {
+      "path": "opt/venv/lib/python3.12/site-packages/vllm_xpu_kernels/libastra_moe.so",
+      "expected": "fd704477a62d24bb96f573564894e4723b765620e86ff1f760abaed994d755c8",
+      "actual": "fd704477a62d24bb96f573564894e4723b765620e86ff1f760abaed994d755c8",
+      "matches": true
+    },
+    {
+      "path": "opt/venv/lib/python3.12/site-packages/vllm_xpu_kernels/libastra_direct.so",
+      "expected": "ffefd9b53777893a56224cacbefbd77c09c6baa44be5c64304b27fdd846b5103",
+      "actual": "ffefd9b53777893a56224cacbefbd77c09c6baa44be5c64304b27fdd846b5103",
+      "matches": true
+    },
+    {
+      "path": "opt/venv/lib/python3.12/site-packages/vllm_xpu_kernels/liblong_hc.so",
+      "expected": "959439265e485be1434b038b2050aab775c7d421646bc77806415552749499c5",
+      "actual": "959439265e485be1434b038b2050aab775c7d421646bc77806415552749499c5",
+      "matches": true
+    },
+    {
+      "path": "opt/venv/lib/python3.12/site-packages/vllm_xpu_kernels/libgdn_index64.so",
+      "expected": "101e6a2555449dc92d94b9acc4b79c9581e458f95c4866ce7446bb03518ffa87",
+      "actual": "101e6a2555449dc92d94b9acc4b79c9581e458f95c4866ce7446bb03518ffa87",
+      "matches": true
+    },
+    {
+      "path": "opt/venv/lib/python3.12/site-packages/vllm_xpu_kernels/libastra_groups.so",
+      "expected": "e8d9887f2918046f6fb45b86a2d8737633f4e42fd3a7e734fe1e5977c9729418",
+      "actual": "e8d9887f2918046f6fb45b86a2d8737633f4e42fd3a7e734fe1e5977c9729418",
+      "matches": true
+    },
+    {
+      "path": "opt/venv/lib/python3.12/site-packages/vllm_xpu_kernels/libserving_prefill.so",
+      "expected": "c1c0190a5fd1290d057dabf11f26e3ce66bf01cdd9d32f8fcb7e315a842f35ea",
+      "actual": "c1c0190a5fd1290d057dabf11f26e3ce66bf01cdd9d32f8fcb7e315a842f35ea",
+      "matches": true
+    },
+    {
+      "path": "opt/venv/lib/python3.12/site-packages/vllm_xpu_kernels/fused_moe_interface.py",
+      "expected": "0f2fb737da190ff3f662083f38ca01182da38631d545cc8e69d6763fab3987ad",
+      "actual": "0f2fb737da190ff3f662083f38ca01182da38631d545cc8e69d6763fab3987ad",
+      "matches": true
+    },
+    {
+      "path": "opt/venv/lib/python3.12/site-packages/vllm_xpu_kernels/libbeyond_prefill.so",
+      "expected": "f2bafe516962f7109d5ec14fce47583db2289fd8830dfb7f571c14c6cf9a66d4",
+      "actual": "f2bafe516962f7109d5ec14fce47583db2289fd8830dfb7f571c14c6cf9a66d4",
+      "matches": true
+    },
+    {
+      "path": "opt/venv/lib/python3.12/site-packages/vllm_xpu_kernels/astra_ownership.py",
+      "expected": "672f2fea4f6599c5d86eb158d334fd5aaae2e670c496050f37d2d2b05fe2ba68",
+      "actual": "672f2fea4f6599c5d86eb158d334fd5aaae2e670c496050f37d2d2b05fe2ba68",
+      "matches": true
+    },
+    {
+      "path": "opt/venv/lib/python3.12/site-packages/vllm_xpu_kernels/liblong_prefill_v3.so",
+      "expected": "fe7ba008bd1251ffc1cd6bac7bc08b93fb76b61ec78bed1b66a737300f20c55f",
+      "actual": "fe7ba008bd1251ffc1cd6bac7bc08b93fb76b61ec78bed1b66a737300f20c55f",
+      "matches": true
+    },
+    {
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/_xpu_ops.py",
+      "expected": "9271b737b720b62c1b927c269f56d6f34c6ac46439030098f205c3f90e89300b",
+      "actual": "9271b737b720b62c1b927c269f56d6f34c6ac46439030098f205c3f90e89300b",
+      "matches": true
+    },
+    {
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp/intel_checkpoint.py",
+      "expected": "d345ca8e0352ee24cb419d26990a47a7e97b8f155441fdf6c0574cfd47952bbf",
+      "actual": "d345ca8e0352ee24cb419d26990a47a7e97b8f155441fdf6c0574cfd47952bbf",
+      "matches": true
+    },
+    {
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp/__init__.py",
+      "expected": "981b71be939776b432db3264d03ede53c09bbac9280b185caf7f88bb07403920",
+      "actual": "981b71be939776b432db3264d03ede53c09bbac9280b185caf7f88bb07403920",
+      "matches": true
+    },
+    {
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp/common/disk_ple.py",
+      "expected": "b6cba10cea2762e08905624c48b771a2e17788fec7fb1a67e68e57573869c72d",
+      "actual": "b6cba10cea2762e08905624c48b771a2e17788fec7fb1a67e68e57573869c72d",
+      "matches": true
+    },
+    {
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp/nvidia/b70_target_attention.py",
+      "expected": "a1a152ebbecfc3bff714185edd833da3287c4e4bff10cc3f3f3d914b5b95abc1",
+      "actual": "a1a152ebbecfc3bff714185edd833da3287c4e4bff10cc3f3f3d914b5b95abc1",
+      "matches": true
+    },
+    {
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp/nvidia/b70_disk.py",
+      "expected": "68c590bdf61570495e4cf9ddcfe5cdd8f5ab3f8b76176ba7a004111bbf585415",
+      "actual": "68c590bdf61570495e4cf9ddcfe5cdd8f5ab3f8b76176ba7a004111bbf585415",
+      "matches": true
+    },
+    {
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp/nvidia/b70_c1_graph.py",
+      "expected": "e34ffd39199cb5b2fdaddfd0c09a5ae6ef21ed36e5dc5dfa4c729c79c854a5dc",
+      "actual": "e34ffd39199cb5b2fdaddfd0c09a5ae6ef21ed36e5dc5dfa4c729c79c854a5dc",
+      "matches": true
+    },
+    {
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp/nvidia/b70_hc_gemm.py",
+      "expected": "2ff55d66e90665c5710091e170372acf52dc8a996d55ec264645b63ecb931c65",
+      "actual": "2ff55d66e90665c5710091e170372acf52dc8a996d55ec264645b63ecb931c65",
+      "matches": true
+    },
+    {
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp/nvidia/b70_prefill_hc.py",
+      "expected": "dcd4317687e071a6f0b6c7673888fcc67e51b741371a360c9844d5f995357af4",
+      "actual": "dcd4317687e071a6f0b6c7673888fcc67e51b741371a360c9844d5f995357af4",
+      "matches": true
+    },
+    {
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp/nvidia/b70_hyperconnection.py",
+      "expected": "26bbab23c6ca771b80999f8d6ad485c4189327357a9aae4d7d61e14b86712b3a",
+      "actual": "26bbab23c6ca771b80999f8d6ad485c4189327357a9aae4d7d61e14b86712b3a",
+      "matches": true
+    },
+    {
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp/nvidia/ngram_embedding.py",
+      "expected": "fadc5cf81fe5f544c97f339a1bf0df7370d86aef900a9f8258a4775612a8b63d",
+      "actual": "fadc5cf81fe5f544c97f339a1bf0df7370d86aef900a9f8258a4775612a8b63d",
+      "matches": true
+    },
+    {
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp/nvidia/model_state.py",
+      "expected": "fcb7638d1215b4fb015fb44f7302c7d5ba183082c0b9cad7e97d37326d459ec7",
+      "actual": "fcb7638d1215b4fb015fb44f7302c7d5ba183082c0b9cad7e97d37326d459ec7",
+      "matches": true
+    },
+    {
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp/nvidia/dflash2_features.py",
+      "expected": "c952c8e513e86adb4b137c8aaea018d70fd45d0e4b4c533cb7a0b5d371235042",
+      "actual": "c952c8e513e86adb4b137c8aaea018d70fd45d0e4b4c533cb7a0b5d371235042",
+      "matches": true
+    },
+    {
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp/nvidia/b70_target_graph.py",
+      "expected": "386d6f7be554c06fb8298e61031f4af0689f84830334f87cd8694ab6aad83caf",
+      "actual": "386d6f7be554c06fb8298e61031f4af0689f84830334f87cd8694ab6aad83caf",
+      "matches": true
+    },
+    {
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp/nvidia/model.py",
+      "expected": "e770ec9dc02b90871b782469243926617cede004e518b0bd1ad47309cb156352",
+      "actual": "e770ec9dc02b90871b782469243926617cede004e518b0bd1ad47309cb156352",
+      "matches": true
+    },
+    {
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp/nvidia/c1_verify.py",
+      "expected": "332c123516051bf28f1b02dbfbce20a5c1a655768b372a83e71d81f9c7fb1d2c",
+      "actual": "332c123516051bf28f1b02dbfbce20a5c1a655768b372a83e71d81f9c7fb1d2c",
+      "matches": true
+    },
+    {
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/model_executor/layers/linear.py",
+      "expected": "4f893be01a8ca11ae97be22dbd07d44753c2fa3b4ef61ff6790d3f06d0bb1587",
+      "actual": "4f893be01a8ca11ae97be22dbd07d44753c2fa3b4ef61ff6790d3f06d0bb1587",
+      "matches": true
+    },
+    {
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/model_executor/models/config.py",
+      "expected": "46954747257011a7fff7968f8679f015d9157d9992f8c0b341984f0e07afe9f8",
+      "actual": "46954747257011a7fff7968f8679f015d9157d9992f8c0b341984f0e07afe9f8",
+      "matches": true
+    },
+    {
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/model_executor/layers/mamba/gdn/qwen_gdn_linear_attn.py",
+      "expected": "8363d3a95d290d01e3780cfad75e4f430c8286c9603db7242e1c5a37171f6f33",
+      "actual": "8363d3a95d290d01e3780cfad75e4f430c8286c9603db7242e1c5a37171f6f33",
+      "matches": true
+    },
+    {
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/model_executor/layers/fused_moe/experts/xpu_moe.py",
+      "expected": "3351465ab5247b05782e1afe69c9ba74d46f5f897f3b57cfa8e235ff7eb2dd30",
+      "actual": "3351465ab5247b05782e1afe69c9ba74d46f5f897f3b57cfa8e235ff7eb2dd30",
+      "matches": true
+    },
+    {
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/v1/worker/mamba_utils.py",
+      "expected": "91f12db0ab44064d6a4400e34a86d14443c61c1a56df32ef1a880a44ab109221",
+      "actual": "91f12db0ab44064d6a4400e34a86d14443c61c1a56df32ef1a880a44ab109221",
+      "matches": true
+    },
+    {
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/v1/worker/gpu_worker.py",
+      "expected": "e431a315ad2b6f16b102e64a5a1c917af2305ec823a8cf6695364aa6e2fdf51f",
+      "actual": "e431a315ad2b6f16b102e64a5a1c917af2305ec823a8cf6695364aa6e2fdf51f",
+      "matches": true
+    },
+    {
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/v1/core/sched/scheduler.py",
+      "expected": "83d9a0b995e0bd58d7e08ce13ce19daf8ee1920747b244702a7c053ea1fe57b9",
+      "actual": "83d9a0b995e0bd58d7e08ce13ce19daf8ee1920747b244702a7c053ea1fe57b9",
+      "matches": true
+    },
+    {
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/v1/attention/backends/gdn_spec_metadata.py",
+      "expected": "bcaa05f276c95b44a63b3405012d35d7b1c2677b4bb7007fd2174967c2412600",
+      "actual": "bcaa05f276c95b44a63b3405012d35d7b1c2677b4bb7007fd2174967c2412600",
+      "matches": true
+    },
+    {
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/v1/attention/backends/gdn_attn.py",
+      "expected": "6790cd3e4312ae09755869cd9bead4f939e6da8889fedd3cd4f8feec6bf1f7bf",
+      "actual": "6790cd3e4312ae09755869cd9bead4f939e6da8889fedd3cd4f8feec6bf1f7bf",
+      "matches": true
+    },
+    {
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/v1/worker/gpu/astra_greedy.py",
+      "expected": "383eee474c15bff948179d8933c03fbf727b32f9c5473706e5c51c5a1988e163",
+      "actual": "383eee474c15bff948179d8933c03fbf727b32f9c5473706e5c51c5a1988e163",
+      "matches": true
+    },
+    {
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/v1/worker/gpu/model_runner.py",
+      "expected": "e0db068cc3caaaced2b259b28a018aae818373d10b33cc691d1f0e742ce985fb",
+      "actual": "e0db068cc3caaaced2b259b28a018aae818373d10b33cc691d1f0e742ce985fb",
+      "matches": true
+    },
+    {
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/v1/worker/gpu/sample/xpu_filter_warmup.py",
+      "expected": "3dbebbaca7a44844e48b69ae8587cdb0a0ba10388950e115c66ea4ee6e254277",
+      "actual": "3dbebbaca7a44844e48b69ae8587cdb0a0ba10388950e115c66ea4ee6e254277",
+      "matches": true
+    },
+    {
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/v1/sample/ops/topk_topp_triton.py",
+      "expected": "6a5ed7e80cb9a054cfe4251cf70e9f3dedf7c39febb5345c96d04056726cb658",
+      "actual": "6a5ed7e80cb9a054cfe4251cf70e9f3dedf7c39febb5345c96d04056726cb658",
+      "matches": true
+    },
+    {
+      "path": "opt/b70-flashnext/assets/frontend.json",
+      "expected": "42a0e4a35092f63643dc70116db509146a84fe4cdaccf86ffa3d86d9a1f0c1fb",
+      "actual": "42a0e4a35092f63643dc70116db509146a84fe4cdaccf86ffa3d86d9a1f0c1fb",
+      "matches": true
+    },
+    {
+      "path": "opt/b70-flashnext/assets/checkpoint-lock.json",
+      "expected": "529f74cdab5ea3130e92fd9fc5004cdf7649ff6a55b33e6e39caac190c6d0d8a",
+      "actual": "529f74cdab5ea3130e92fd9fc5004cdf7649ff6a55b33e6e39caac190c6d0d8a",
+      "matches": true
+    },
+    {
+      "path": "opt/b70-flashnext/assets/serve-config.json",
+      "expected": "05633cfa9fede3b56d9aac375a6893172709f3fa154ffbe0f24893063e09e4bc",
+      "actual": "05633cfa9fede3b56d9aac375a6893172709f3fa154ffbe0f24893063e09e4bc",
+      "matches": true
+    },
+    {
+      "path": "opt/b70-flashnext/assets/frontend/vocab.json",
+      "expected": "ce99b4cb2983d118806ce0a8b777a35b093e2000a503ebde25853284c9dfa003",
+      "actual": "ce99b4cb2983d118806ce0a8b777a35b093e2000a503ebde25853284c9dfa003",
+      "matches": true
+    },
+    {
+      "path": "opt/b70-flashnext/assets/frontend/tokenizer_config.json",
+      "expected": "b11349aafa7cdc6a320767cf7ceb29ed82f7eda5d65e8e0819e76f0ce947bf27",
+      "actual": "b11349aafa7cdc6a320767cf7ceb29ed82f7eda5d65e8e0819e76f0ce947bf27",
+      "matches": true
+    },
+    {
+      "path": "opt/b70-flashnext/assets/frontend/preprocessor_config.json",
+      "expected": "27225450ac9c6529872ee1924fcb0962ff5634834f817040f444118116f4e516",
+      "actual": "27225450ac9c6529872ee1924fcb0962ff5634834f817040f444118116f4e516",
+      "matches": true
+    },
+    {
+      "path": "opt/b70-flashnext/assets/frontend/generation_config.json",
+      "expected": "e70c136c1b78ddc1fb0905bac8e733a4dc448d4f852a5dd75143fffc70be550e",
+      "actual": "e70c136c1b78ddc1fb0905bac8e733a4dc448d4f852a5dd75143fffc70be550e",
+      "matches": true
+    },
+    {
+      "path": "opt/b70-flashnext/assets/frontend/video_preprocessor_config.json",
+      "expected": "7768af27c1fafa9cc9011c1dc20067e03f8915e03b63504550e11d5066986d13",
+      "actual": "7768af27c1fafa9cc9011c1dc20067e03f8915e03b63504550e11d5066986d13",
+      "matches": true
+    },
+    {
+      "path": "opt/b70-flashnext/assets/frontend/merges.txt",
+      "expected": "a9d356d7bdf1ef4949e3e748e95b8e10ad9d4e2e838eddc38a0a7b6b94d1db8d",
+      "actual": "a9d356d7bdf1ef4949e3e748e95b8e10ad9d4e2e838eddc38a0a7b6b94d1db8d",
+      "matches": true
+    },
+    {
+      "path": "opt/b70-flashnext/assets/frontend/tokenizer.json",
+      "expected": "0997f410c57a1f4e53b09e4be8f4a172d90edd9564368fb0847030937229b9f3",
+      "actual": "0997f410c57a1f4e53b09e4be8f4a172d90edd9564368fb0847030937229b9f3",
+      "matches": true
+    },
+    {
+      "path": "opt/b70-flashnext/assets/frontend/chat_template.jinja",
+      "expected": "12827f24b742ea4e80cdc12dbcf9622227056b9f797252a3149263d4f9aaadce",
+      "actual": "12827f24b742ea4e80cdc12dbcf9622227056b9f797252a3149263d4f9aaadce",
+      "matches": true
+    },
+    {
+      "path": "opt/b70-flashnext/assets/licenses/external-model.txt",
+      "expected": "a0dc422560841fd68e06d974907f8b4c709bca44a67daad2b528437bdf676c08",
+      "actual": "a0dc422560841fd68e06d974907f8b4c709bca44a67daad2b528437bdf676c08",
+      "matches": true
+    },
+    {
+      "path": "workspace/vllm/vllm/models/qwen4_exp/nvidia/b70_hc_gemm.py",
+      "expected": "2ff55d66e90665c5710091e170372acf52dc8a996d55ec264645b63ecb931c65",
+      "actual": "2ff55d66e90665c5710091e170372acf52dc8a996d55ec264645b63ecb931c65",
+      "matches": true
+    },
+    {
+      "path": "workspace/vllm/vllm/v1/worker/gpu/spec_decode/dflash2/speculator.py",
+      "expected": "2b17d625a3a6cd84ceda7d84ae39ce5322aec22b0a056d87fce92dcca6a4e880",
+      "actual": "2b17d625a3a6cd84ceda7d84ae39ce5322aec22b0a056d87fce92dcca6a4e880",
+      "matches": true
+    },
+    {
+      "path": "workspace/vllm/vllm/v1/worker/gpu/spec_decode/dflash2/b70_graphs.py",
+      "expected": "129f4dce600d69298652d140db74e756c9febfeea6e3302aef75dc97e8611845",
+      "actual": "129f4dce600d69298652d140db74e756c9febfeea6e3302aef75dc97e8611845",
+      "matches": true
+    },
+    {
+      "path": "opt/venv/lib/python3.12/site-packages/vllm_xpu_kernels/libb70_ordered_hc_v2.so",
+      "expected": "4ddb9a938ce6f415b9b0ae2c0486e04e3f74a358d9c3448381c52672f6db1ce6",
+      "actual": "4ddb9a938ce6f415b9b0ae2c0486e04e3f74a358d9c3448381c52672f6db1ce6",
+      "matches": true
+    },
+    {
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/v1/worker/gpu/spec_decode/dflash2/speculator.py",
+      "expected": "2b17d625a3a6cd84ceda7d84ae39ce5322aec22b0a056d87fce92dcca6a4e880",
+      "actual": "2b17d625a3a6cd84ceda7d84ae39ce5322aec22b0a056d87fce92dcca6a4e880",
+      "matches": true
+    },
+    {
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/v1/worker/gpu/spec_decode/dflash2/b70_graphs.py",
+      "expected": "129f4dce600d69298652d140db74e756c9febfeea6e3302aef75dc97e8611845",
+      "actual": "129f4dce600d69298652d140db74e756c9febfeea6e3302aef75dc97e8611845",
+      "matches": true
+    },
+    {
+      "path": "workspace/vllm/vllm/models/qwen4_exp/nvidia/b70_target_graph.py",
+      "expected": "386d6f7be554c06fb8298e61031f4af0689f84830334f87cd8694ab6aad83caf",
+      "actual": "386d6f7be554c06fb8298e61031f4af0689f84830334f87cd8694ab6aad83caf",
+      "matches": true
+    },
+    {
+      "path": "workspace/vllm/vllm/models/qwen4_exp/nvidia/c1_verify.py",
+      "expected": "332c123516051bf28f1b02dbfbce20a5c1a655768b372a83e71d81f9c7fb1d2c",
+      "actual": "332c123516051bf28f1b02dbfbce20a5c1a655768b372a83e71d81f9c7fb1d2c",
+      "matches": true
+    },
+    {
+      "path": "workspace/vllm/vllm/v1/attention/backends/gdn_attn.py",
+      "expected": "6790cd3e4312ae09755869cd9bead4f939e6da8889fedd3cd4f8feec6bf1f7bf",
+      "actual": "6790cd3e4312ae09755869cd9bead4f939e6da8889fedd3cd4f8feec6bf1f7bf",
+      "matches": true
+    },
+    {
+      "path": "workspace/vllm/vllm/v1/worker/gpu/sample/sampler.py",
+      "expected": "f8d31025b2e0af8b56613c18dbccb8c5bdb858676bc4ce4aa0775cf5a8b4ae44",
+      "actual": "f8d31025b2e0af8b56613c18dbccb8c5bdb858676bc4ce4aa0775cf5a8b4ae44",
+      "matches": true
+    },
+    {
+      "path": "workspace/vllm/vllm/v1/worker/gpu/sample/thinking_budget.py",
+      "expected": "00ec24f2bb775765612ef21f64dc6662aae3b74ff39cac0bbdbd82edbe900df0",
+      "actual": "00ec24f2bb775765612ef21f64dc6662aae3b74ff39cac0bbdbd82edbe900df0",
+      "matches": true
+    },
+    {
+      "path": "workspace/vllm/vllm/v1/worker/gpu/spec_decode/rejection_sampler_utils.py",
+      "expected": "482e65dcf97c64ec56eff1446136392ef335cf25e6ad8f7396e9a6b27c4fd260",
+      "actual": "482e65dcf97c64ec56eff1446136392ef335cf25e6ad8f7396e9a6b27c4fd260",
+      "matches": true
+    },
+    {
+      "path": "workspace/vllm/vllm/v1/worker/gpu/spec_decode/dflash/speculator.py",
+      "expected": "56feae2adda26ae6cbab6201a7e72605ed904d663a9a4f6c74a04ad330a125bb",
+      "actual": "56feae2adda26ae6cbab6201a7e72605ed904d663a9a4f6c74a04ad330a125bb",
+      "matches": true
+    },
+    {
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/v1/worker/gpu/sample/sampler.py",
+      "expected": "f8d31025b2e0af8b56613c18dbccb8c5bdb858676bc4ce4aa0775cf5a8b4ae44",
+      "actual": "f8d31025b2e0af8b56613c18dbccb8c5bdb858676bc4ce4aa0775cf5a8b4ae44",
+      "matches": true
+    },
+    {
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/v1/worker/gpu/sample/thinking_budget.py",
+      "expected": "00ec24f2bb775765612ef21f64dc6662aae3b74ff39cac0bbdbd82edbe900df0",
+      "actual": "00ec24f2bb775765612ef21f64dc6662aae3b74ff39cac0bbdbd82edbe900df0",
+      "matches": true
+    },
+    {
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/v1/worker/gpu/spec_decode/rejection_sampler_utils.py",
+      "expected": "482e65dcf97c64ec56eff1446136392ef335cf25e6ad8f7396e9a6b27c4fd260",
+      "actual": "482e65dcf97c64ec56eff1446136392ef335cf25e6ad8f7396e9a6b27c4fd260",
+      "matches": true
+    },
+    {
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/v1/worker/gpu/spec_decode/dflash/speculator.py",
+      "expected": "56feae2adda26ae6cbab6201a7e72605ed904d663a9a4f6c74a04ad330a125bb",
+      "actual": "56feae2adda26ae6cbab6201a7e72605ed904d663a9a4f6c74a04ad330a125bb",
+      "matches": true
+    },
+    {
+      "path": "workspace/vllm/vllm/model_executor/models/qwen3_dflash2.py",
+      "expected": "bd6c488f1c2f695ed2ed2a86b3132e1f51efd1e69c3cf789d5cb6f3193360e37",
+      "actual": "bd6c488f1c2f695ed2ed2a86b3132e1f51efd1e69c3cf789d5cb6f3193360e37",
+      "matches": true
+    },
+    {
+      "path": "workspace/vllm/vllm/model_executor/models/quality_bf16_conv.py",
+      "expected": "35c17b63c06b39387dca83ecafeb868900ea9204f87062586e0514821fe9cc75",
+      "actual": "35c17b63c06b39387dca83ecafeb868900ea9204f87062586e0514821fe9cc75",
+      "matches": true
+    },
+    {
+      "path": "workspace/vllm/vllm/v1/worker/gpu/spec_decode/dflash2/quality_calibration.pt",
+      "expected": "f6a104dd32e6a41754a89a2bb1cd3a3f35ec04ef6083c68ffd17e73a75375624",
+      "actual": "f6a104dd32e6a41754a89a2bb1cd3a3f35ec04ef6083c68ffd17e73a75375624",
+      "matches": true
+    },
+    {
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/model_executor/models/qwen3_dflash2.py",
+      "expected": "bd6c488f1c2f695ed2ed2a86b3132e1f51efd1e69c3cf789d5cb6f3193360e37",
+      "actual": "bd6c488f1c2f695ed2ed2a86b3132e1f51efd1e69c3cf789d5cb6f3193360e37",
+      "matches": true
+    },
+    {
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/model_executor/models/quality_bf16_conv.py",
+      "expected": "35c17b63c06b39387dca83ecafeb868900ea9204f87062586e0514821fe9cc75",
+      "actual": "35c17b63c06b39387dca83ecafeb868900ea9204f87062586e0514821fe9cc75",
+      "matches": true
+    },
+    {
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/v1/worker/gpu/spec_decode/dflash2/quality_calibration.pt",
+      "expected": "f6a104dd32e6a41754a89a2bb1cd3a3f35ec04ef6083c68ffd17e73a75375624",
+      "actual": "f6a104dd32e6a41754a89a2bb1cd3a3f35ec04ef6083c68ffd17e73a75375624",
+      "matches": true
+    },
+    {
+      "path": "workspace/vllm/vllm/models/qwen4_exp/nvidia/b70_compiled_graph_update.py",
+      "expected": "fa9699ea19f6acc028050867f054812bd9a9da577234c5aa9472bc4ff3402639",
+      "actual": "fa9699ea19f6acc028050867f054812bd9a9da577234c5aa9472bc4ff3402639",
+      "matches": true
+    },
+    {
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp/nvidia/b70_compiled_graph_update.py",
+      "expected": "fa9699ea19f6acc028050867f054812bd9a9da577234c5aa9472bc4ff3402639",
+      "actual": "fa9699ea19f6acc028050867f054812bd9a9da577234c5aa9472bc4ff3402639",
+      "matches": true
+    },
+    {
+      "path": "opt/venv/lib/python3.12/site-packages/vllm_xpu_kernels/libple_gather.so",
+      "expected": "b3011fac3b7f0687b4ce77a26bad8f20e1e3e9eb21b05bcb3219d8ecafab52f1",
+      "actual": "b3011fac3b7f0687b4ce77a26bad8f20e1e3e9eb21b05bcb3219d8ecafab52f1",
+      "matches": true
+    },
+    {
+      "path": "opt/venv/lib/python3.12/site-packages/vllm_xpu_kernels/libb70_exact_v1.so",
+      "expected": "be4e6e756afd5852cefee188f5cce56a18d5caf5eccc3d26b0e6c099123ad1fa",
+      "actual": "be4e6e756afd5852cefee188f5cce56a18d5caf5eccc3d26b0e6c099123ad1fa",
+      "matches": true
+    },
+    {
+      "path": "opt/venv/lib/python3.12/site-packages/vllm_xpu_kernels/libb70_exact_moe_v1.so",
+      "expected": "892e1d86b1e0deb87538936b99d296f2c16865650997ba2565c37dc11395cb6a",
+      "actual": "892e1d86b1e0deb87538936b99d296f2c16865650997ba2565c37dc11395cb6a",
+      "matches": true
+    },
+    {
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp/nvidia/b70_moe_glue.py",
+      "expected": "9842f16eb70aecfb377feb7ef96eae25dfd98d8534c493284e6cbf8e0a4a92bc",
+      "actual": "9842f16eb70aecfb377feb7ef96eae25dfd98d8534c493284e6cbf8e0a4a92bc",
+      "matches": true
+    },
+    {
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp/nvidia/b70_defer_ple.py",
+      "expected": "8ee9b997614b5eb28a0c4cf5a839cba556e52ff9f2a74bfa00f6e703bc997505",
+      "actual": "8ee9b997614b5eb28a0c4cf5a839cba556e52ff9f2a74bfa00f6e703bc997505",
+      "matches": true
+    },
+    {
+      "path": "opt/venv/lib/python3.12/site-packages/vllm_xpu_kernels/libb70_exact_moe_v3.so",
+      "expected": "20691aa32d8b61d9e1f907be92f0115960199a6a296ad14762396b218654aaaa",
+      "actual": "20691aa32d8b61d9e1f907be92f0115960199a6a296ad14762396b218654aaaa",
+      "matches": true
+    }
+  ]
+}

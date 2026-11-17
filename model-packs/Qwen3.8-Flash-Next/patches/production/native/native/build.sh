@@ -1,27 +1,6 @@
-#!/usr/bin/env bash
-set -euo pipefail
-cd /build
-COMPILER=/toolchain/oneapi/opt/intel/oneapi/compiler/2026.1
-export PATH="$COMPILER/bin:/opt/venv/bin:$PATH"
-export LD_LIBRARY_PATH="$COMPILER/lib:/toolchain/oneapi/opt/intel/oneapi/tbb/latest/lib:${LD_LIBRARY_PATH:-}"
-TORCH=/opt/venv/lib/python3.12/site-packages/torch
-KERNELS=/opt/venv/lib/python3.12/site-packages/vllm_xpu_kernels
-icpx --version
-/opt/venv/bin/python -c 'import torch; print(torch.__version__); assert not torch.xpu.is_available()'
-# Only the GDN interface TU is rebuilt. No compiler/runtime packages are
-# installed in the serving image. The existing delta-rule library is unchanged.
-icpx -std=c++20 -O3 -DNDEBUG -fPIC -fvisibility=hidden -fsycl \
-  -fsycl-targets=spir64 -DVLLM_XPU_ENABLE_XE2 \
-  -I/build/source -I/build/source/csrc \
-  -I/build/source/csrc/xpu/gdn_attn \
-  -I"$TORCH/include" -I"$TORCH/include/torch/csrc/api/include" \
-  -I/usr/include/python3.12 -I"$COMPILER/include/syclcompat" \
-  -include /build/source/csrc/sycl_first.h \
-  -c gdn_index64.cpp -o gdn_index64.o
-icpx -shared -fsycl -fsycl-targets=spir64 -fsycl-max-parallel-link-jobs=4 \
-  gdn_index64.o -o libgdn_index64.so \
-  -L"$TORCH/lib" -L"$KERNELS" \
-  -Wl,-rpath,'$ORIGIN/../torch/lib:$ORIGIN' \
-  -Wl,-Bsymbolic -ltorch -ltorch_cpu -ltorch_xpu -lc10 -lc10_xpu \
-  -lgdn_attn_kernels_xe_2
-sha256sum libgdn_index64.so
+set -euxo pipefail
+cd /outputs
+export PATH=/toolchain/opt/intel/oneapi/compiler/2026.0/bin:/opt/venv/bin:/usr/bin:/bin
+export LD_LIBRARY_PATH=/toolchain/opt/intel/oneapi/compiler/2026.0/lib:/toolchain/opt/intel/oneapi/tbb/2023.0/lib:/opt/venv/lib:/usr/local/lib
+icpx -std=c++20 -O3 -DNDEBUG -D_GLIBCXX_USE_CXX11_ABI=1 -fPIC -fvisibility=hidden -fsycl -fsycl-targets=spir64 -DVLLM_XPU_ENABLE_XE2 -DCUTLASS_ENABLE_HEADERS_ONLY -DCUTLASS_ENABLE_SYCL -DSYCL_INTEL_TARGET -I/headers -I/headers/csrc -I/headers/csrc/xpu/gdn_attn -I/headers/csrc/xpu/grouped_gemm/xe_2 -I/tla/include -I/tla/tools/util/include -I/tla/examples/common -I/opt/venv/lib/python3.12/site-packages/torch/include -I/opt/venv/lib/python3.12/site-packages/torch/include/torch/csrc/api/include -I/usr/include/python3.12 -I/toolchain/opt/intel/oneapi/compiler/2026.0/include/syclcompat -include /headers/csrc/sycl_first.h -MMD -MF gdn_index64.o.d -c /native/native/gdn_index64.cpp -o gdn_index64.o
+icpx gdn_index64.o -shared -fsycl -fsycl-targets=spir64 -fsycl-max-parallel-link-jobs=2 -Xspirv-translator -spirv-ext=+SPV_INTEL_split_barrier,+SPV_INTEL_2d_block_io,+SPV_INTEL_subgroup_matrix_multiply_accumulate -L/opt/venv/lib/python3.12/site-packages/torch/lib -L/opt/venv/lib/python3.12/site-packages/vllm_xpu_kernels '-Wl,-rpath,$ORIGIN/../torch/lib:$ORIGIN' -Wl,-Bsymbolic -ltorch -ltorch_cpu -ltorch_xpu -lc10 -lc10_xpu -lgdn_attn_kernels_xe_2 -o libgdn_index64.so

@@ -1,0 +1,11 @@
+{
+  "compiler": "retained oneAPI 2026.0.0.20260331 (MTP Phase 6); runtime SYCL remains exact vendor",
+  "compiler_mount": "/home/wulf/Desktop/Qfn-Mtp-vllm33/build/phase6/toolchain",
+  "tla_archive": "/home/wulf/Desktop/Qfn-Mtp-vllm33/build/phase6/inputs/sycl-tla.tar.gz",
+  "tla_archive_sha256": "5938a31e3940d1c90e88d9126788990a25a5e0ac968e53345461459b5ea21218",
+  "tla_expected_source_commit": "87f6850680a580654b9ea2c80dbc01aeb36ad231",
+  "headers": "original DFlash production common/gdn header trees; GDN adds only two zero-length guards",
+  "abi": 1,
+  "target": "spir64",
+  "device_nodes_during_build": false
+}

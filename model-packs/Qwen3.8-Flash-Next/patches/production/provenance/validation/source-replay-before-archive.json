@@ -1,0 +1,65 @@
+{
+  "status": "PASS",
+  "bundle_files_verified": 842,
+  "source_files": 3679,
+  "syntax_files": 3021,
+  "patches": [
+    {
+      "order": 1,
+      "patch": "patch-chain/01-v033-port-metadata-b1.patch",
+      "status": "PASS"
+    },
+    {
+      "order": 2,
+      "patch": "patch-chain/02-shared-gdn.patch",
+      "status": "PASS"
+    },
+    {
+      "order": 3,
+      "patch": "patch-chain/03-query-ordered-hc.patch",
+      "status": "PASS"
+    },
+    {
+      "order": 4,
+      "patch": "patch-chain/04-bf16-repair-standard-eos.patch",
+      "status": "PASS"
+    },
+    {
+      "order": 5,
+      "patch": "patch-chain/05-calibration-bf16-conv.patch",
+      "status": "PASS"
+    },
+    {
+      "order": 6,
+      "patch": "patch-chain/06-compiled-graph-update-copy.patch",
+      "status": "PASS"
+    },
+    {
+      "order": 7,
+      "patch": "patch-chain/07-parallel-ple-exact-ba-hc.patch",
+      "status": "PASS"
+    },
+    {
+      "order": 8,
+      "patch": "patch-chain/08-exact-moe-v1.patch",
+      "status": "PASS"
+    },
+    {
+      "order": 9,
+      "patch": "patch-chain/09-deferred-ple.patch",
+      "status": "PASS"
+    },
+    {
+      "order": 10,
+      "patch": "patch-chain/10-exact-moe-v3.patch",
+      "status": "PASS"
+    }
+  ],
+  "native_families": 17,
+  "calibration_sha256": "f6a104dd32e6a41754a89a2bb1cd3a3f35ec04ef6083c68ffd17e73a75375624",
+  "staging": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/release-prep/validation-v6-source-clean-2",
+  "native_compilation": "NOT RUN by verifier",
+  "full_image_build": "NOT RUN",
+  "bit_identical_image": "NOT DEMONSTRATED",
+  "external_dependencies": "Pinned vendor image, compiler debs, runtime/model assets remain external; see immutable-inputs.json."
+}

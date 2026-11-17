@@ -1,0 +1,160 @@
+{
+  "mount_source": "/mnt/models/intel-qwen38-flash-next-4c67bf686b7f/checkpoint",
+  "files": [
+    {
+      "path": "chat_template.jinja",
+      "size": 8952,
+      "realpath": "/mnt/models/intel-qwen38-flash-next-4c67bf686b7f/checkpoint/chat_template.jinja",
+      "sha256": "c3cf9e34abf4f9e36c2d72165aa9c132d3e2a725b6c2586aaa3a8af9d7a81041"
+    },
+    {
+      "path": "README.md",
+      "size": 2418,
+      "realpath": "/mnt/models/intel-qwen38-flash-next-4c67bf686b7f/checkpoint/README.md",
+      "sha256": "00798492330afbb7285fd9c0deee4fc7ac01bbc197eb49d1d5c868ceafe54293"
+    },
+    {
+      "path": ".gitattributes",
+      "size": 1635,
+      "realpath": "/mnt/models/intel-qwen38-flash-next-4c67bf686b7f/checkpoint/.gitattributes"
+    },
+    {
+      "path": "config.json",
+      "size": 266426,
+      "realpath": "/mnt/models/intel-qwen38-flash-next-4c67bf686b7f/checkpoint/config.json",
+      "sha256": "0fabfa21fab8bfe69f02234f7ae8df4ed91b785fca2e22011c1230f6a07e5329"
+    },
+    {
+      "path": "generation_config.json",
+      "size": 214,
+      "realpath": "/mnt/models/intel-qwen38-flash-next-4c67bf686b7f/checkpoint/generation_config.json",
+      "sha256": "6ef70d6670f24f03a9041724c7663ef26bc1e678d10f79c93fe11c192ba14b7d"
+    },
+    {
+      "path": "config.json.autoround.bak",
+      "size": 266639,
+      "realpath": "/mnt/models/intel-qwen38-flash-next-4c67bf686b7f/checkpoint/config.json.autoround.bak"
+    },
+    {
+      "path": "preprocessor_config.json",
+      "size": 443,
+      "realpath": "/mnt/models/intel-qwen38-flash-next-4c67bf686b7f/checkpoint/preprocessor_config.json",
+      "sha256": "3a159dfec9978a186a72ba085e0ad6a050f3968d8b364218d7bd13f5c89381f2"
+    },
+    {
+      "path": "processor_config.json",
+      "size": 1220,
+      "realpath": "/mnt/models/intel-qwen38-flash-next-4c67bf686b7f/checkpoint/processor_config.json",
+      "sha256": "bfbc24af59a3e73a9cd0653b8d4ae758dfaec4e3e6c15dfb1c6c8ee8d5683c85"
+    },
+    {
+      "path": "quantization_config.json",
+      "size": 94026,
+      "realpath": "/mnt/models/intel-qwen38-flash-next-4c67bf686b7f/checkpoint/quantization_config.json",
+      "sha256": "2371a9d0bed1ff619622ac57aa0e6e5b39688bb834b48d761e90d5834f4cab4b"
+    },
+    {
+      "path": "tokenizer_config.json",
+      "size": 1165,
+      "realpath": "/mnt/models/intel-qwen38-flash-next-4c67bf686b7f/checkpoint/tokenizer_config.json",
+      "sha256": "792fa3f0cb88b111e54ef3134c873531008c4df471d108da17903426e308aa7b"
+    },
+    {
+      "path": "model.safetensors.index.json",
+      "size": 23794460,
+      "realpath": "/mnt/models/intel-qwen38-flash-next-4c67bf686b7f/checkpoint/model.safetensors.index.json"
+    },
+    {
+      "path": "tokenizer.json",
+      "size": 19989325,
+      "realpath": "/mnt/models/intel-qwen38-flash-next-4c67bf686b7f/checkpoint/tokenizer.json",
+      "sha256": "06b9509352d2af50381ab2247e083b80d32d5c0aba91c272ca9ff729b6a0e523"
+    },
+    {
+      "path": "model-00007-of-00017.safetensors",
+      "size": 5370927288,
+      "realpath": "/mnt/models/intel-qwen38-flash-next-4c67bf686b7f/checkpoint/model-00007-of-00017.safetensors"
+    },
+    {
+      "path": "model-00010-of-00017.safetensors",
+      "size": 5370927288,
+      "realpath": "/mnt/models/intel-qwen38-flash-next-4c67bf686b7f/checkpoint/model-00010-of-00017.safetensors"
+    },
+    {
+      "path": "model-00013-of-00017.safetensors",
+      "size": 5370927288,
+      "realpath": "/mnt/models/intel-qwen38-flash-next-4c67bf686b7f/checkpoint/model-00013-of-00017.safetensors"
+    },
+    {
+      "path": "model-00004-of-00017.safetensors",
+      "size": 5370910416,
+      "realpath": "/mnt/models/intel-qwen38-flash-next-4c67bf686b7f/checkpoint/model-00004-of-00017.safetensors"
+    },
+    {
+      "path": "model-00003-of-00017.safetensors",
+      "size": 5370548192,
+      "realpath": "/mnt/models/intel-qwen38-flash-next-4c67bf686b7f/checkpoint/model-00003-of-00017.safetensors"
+    },
+    {
+      "path": "model-00012-of-00017.safetensors",
+      "size": 5370438520,
+      "realpath": "/mnt/models/intel-qwen38-flash-next-4c67bf686b7f/checkpoint/model-00012-of-00017.safetensors"
+    },
+    {
+      "path": "model-00005-of-00017.safetensors",
+      "size": 5370140704,
+      "realpath": "/mnt/models/intel-qwen38-flash-next-4c67bf686b7f/checkpoint/model-00005-of-00017.safetensors"
+    },
+    {
+      "path": "model-00006-of-00017.safetensors",
+      "size": 5370205184,
+      "realpath": "/mnt/models/intel-qwen38-flash-next-4c67bf686b7f/checkpoint/model-00006-of-00017.safetensors"
+    },
+    {
+      "path": "model-00009-of-00017.safetensors",
+      "size": 5370355648,
+      "realpath": "/mnt/models/intel-qwen38-flash-next-4c67bf686b7f/checkpoint/model-00009-of-00017.safetensors"
+    },
+    {
+      "path": "model-00008-of-00017.safetensors",
+      "size": 5344445352,
+      "realpath": "/mnt/models/intel-qwen38-flash-next-4c67bf686b7f/checkpoint/model-00008-of-00017.safetensors"
+    },
+    {
+      "path": "model-00011-of-00017.safetensors",
+      "size": 5324173744,
+      "realpath": "/mnt/models/intel-qwen38-flash-next-4c67bf686b7f/checkpoint/model-00011-of-00017.safetensors"
+    },
+    {
+      "path": "model-00014-of-00017.safetensors",
+      "size": 5342689856,
+      "realpath": "/mnt/models/intel-qwen38-flash-next-4c67bf686b7f/checkpoint/model-00014-of-00017.safetensors"
+    },
+    {
+      "path": "model-00001-of-00017.safetensors",
+      "size": 2899311784,
+      "realpath": "/mnt/models/intel-qwen38-flash-next-4c67bf686b7f/checkpoint/model-00001-of-00017.safetensors"
+    },
+    {
+      "path": "model_extra_tensors.safetensors",
+      "size": 5214492152,
+      "realpath": "/mnt/models/intel-qwen38-flash-next-4c67bf686b7f/checkpoint/model_extra_tensors.safetensors"
+    },
+    {
+      "path": "model-00017-of-00017.safetensors",
+      "size": 1284526608,
+      "realpath": "/mnt/models/intel-qwen38-flash-next-4c67bf686b7f/checkpoint/model-00017-of-00017.safetensors"
+    },
+    {
+      "path": "model-00015-of-00017.safetensors",
+      "size": 5050474736,
+      "realpath": "/mnt/models/intel-qwen38-flash-next-4c67bf686b7f/checkpoint/model-00015-of-00017.safetensors"
+    },
+    {
+      "path": "model-00016-of-00017.safetensors",
+      "size": 102400512256,
+      "realpath": "/mnt/models/intel-qwen38-flash-next-4c67bf686b7f/checkpoint/model-00016-of-00017.safetensors"
+    }
+  ],
+  "weight_hashes": "Not rehashed; pinned revision/inventory and read-only mounted files retained."
+}

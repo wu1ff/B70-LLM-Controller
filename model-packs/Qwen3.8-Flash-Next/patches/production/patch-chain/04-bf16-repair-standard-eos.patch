@@ -1,0 +1,492 @@
+diff --git a/vllm/models/qwen4_exp/nvidia/b70_target_graph.py b/vllm/models/qwen4_exp/nvidia/b70_target_graph.py
+index 4a8dc95..00e98e4 100644
+--- a/vllm/models/qwen4_exp/nvidia/b70_target_graph.py
++++ b/vllm/models/qwen4_exp/nvidia/b70_target_graph.py
+@@ -65,6 +65,10 @@ def native_rows(width):
+     original = comm.all_reduce
+ 
+     def reduce(x):
++        if os.getenv("ASTRA_DFLASH_RAW_REDUCE", "0") == "1":
++            # Buffered native collective, preserving its out-of-place input
++            # contract. Different rank partitions change BF16 reduction order.
++            return original(x)
+         if x.ndim == 2 and x.shape[0] == width and x.dtype == torch.bfloat16:
+             if (
+                 comm.world_size == 4
+@@ -181,7 +185,7 @@ class TargetGraphs:
+ 
+     def run(self, runner, batch, metadata, inputs, eager):
+         # Uniform eight-row verification for one through four requests.
+-        if batch.num_tokens != 8 * batch.num_reqs:
++        if batch.num_tokens != (runner.speculative_config.num_speculative_tokens + 1) * batch.num_reqs:
+             return eager(runner, batch, metadata, inputs)
+         if os.getenv("VLLM_XPU_DFLASH_FIXED_SPLITS", "0") in ("32", "64"):
+             # The target split schedule no longer depends on this host bound.
+@@ -191,7 +195,7 @@ class TargetGraphs:
+             bound = max(
+                 512, 1 << (int(batch.seq_lens_cpu_upper_bound[0]) - 1).bit_length()
+             )
+-        key = (batch.num_reqs, bound)
++        key = (batch.num_reqs, batch.num_tokens, bound)
+         if key in self.disabled:
+             self.fallback("disabled", key)
+             return eager(runner, batch, metadata, inputs)
+diff --git a/vllm/models/qwen4_exp/nvidia/c1_verify.py b/vllm/models/qwen4_exp/nvidia/c1_verify.py
+index df162a0..e846993 100644
+--- a/vllm/models/qwen4_exp/nvidia/c1_verify.py
++++ b/vllm/models/qwen4_exp/nvidia/c1_verify.py
+@@ -22,9 +22,9 @@ def enabled(runner, batch) -> bool:
+         and runner.model_config.hf_text_config.model_type == "qwen4_exp_text"
+         and 1 <= batch.num_reqs <= 4
+         and not batch.has_prefill
+-        and ((batch.num_reqs == 1 and 1 < batch.num_tokens <= 8)
+-             or (batch.num_tokens == 8 * batch.num_reqs
+-                 and (batch.num_scheduled_tokens == 8).all()))
++        and ((batch.num_reqs == 1 and 1 < batch.num_tokens <= spec.num_speculative_tokens + 1)
++             or (batch.num_tokens == (spec.num_speculative_tokens + 1) * batch.num_reqs
++                 and (batch.num_scheduled_tokens == spec.num_speculative_tokens + 1).all()))
+     )
+ 
+ 
+@@ -36,6 +36,9 @@ def canonical_reductions(width):
+     and recurrent kernels remain batched; only these small TP reductions retain
+     the proven one-row collective. Draft execution uses its ordinary reductions.
+     """
++    if os.getenv("ASTRA_DFLASH_RAW_REDUCE", "0") == "1":
++        yield
++        return
+     comm = get_tp_group().device_communicator
+     original = comm.all_reduce
+ 
+@@ -70,6 +73,7 @@ def verify_eager(runner, batch, metadata, model_inputs):
+ 
+ 
+ def verify(runner, batch, metadata, model_inputs):
++    width = runner.speculative_config.num_speculative_tokens + 1
+     seen = getattr(runner, "_dflash_verify_shapes", None)
+     if seen is None:
+         seen = runner._dflash_verify_shapes = set()
+@@ -79,9 +83,9 @@ def verify(runner, batch, metadata, model_inputs):
+         from vllm.logger import init_logger
+         init_logger(__name__).info(
+             "DFlash verification dispatch: requests=%d rows=%d full=%s",
+-            *shape, batch.num_tokens == 8 * batch.num_reqs)
++            *shape, batch.num_tokens == width * batch.num_reqs)
+ 
+-    if batch.num_tokens == 8 * batch.num_reqs and os.getenv("VLLM_XPU_C1_TARGET_GRAPH", "1") == "1":
++    if batch.num_tokens == width * batch.num_reqs and os.getenv("VLLM_XPU_C1_TARGET_GRAPH", "1") == "1":
+         from .b70_target_graph import TargetGraphs
+ 
+         graphs = getattr(runner, "_c1_target_graphs", None)
+diff --git a/vllm/v1/attention/backends/gdn_attn.py b/vllm/v1/attention/backends/gdn_attn.py
+index cba5541..7cfc07b 100644
+--- a/vllm/v1/attention/backends/gdn_attn.py
++++ b/vllm/v1/attention/backends/gdn_attn.py
+@@ -342,7 +342,7 @@ class GDNAttentionMetadataBuilder(AttentionMetadataBuilder[GDNAttentionMetadata]
+             and type(self) is GDNAttentionMetadataBuilder
+             and m.query_start_loc.device.type == "xpu"
+             and spec.method == "dflash"
+-            and spec.num_speculative_tokens == 7
++            and 1 <= spec.num_speculative_tokens <= 7
+             and spec.draft_model_config.architectures == ["DFlash2DraftModel"]
+         ):
+             from .gdn_spec_metadata import try_build_uniform_spec_metadata
+diff --git a/vllm/v1/worker/gpu/sample/sampler.py b/vllm/v1/worker/gpu/sample/sampler.py
+index 4ad5629..1622bd5 100644
+--- a/vllm/v1/worker/gpu/sample/sampler.py
++++ b/vllm/v1/worker/gpu/sample/sampler.py
+@@ -77,7 +77,7 @@ class Sampler:
+ 
+         self.logprob_token_ids_state = LogprobTokenIdsState(max_num_reqs, device)
+         self.thinking_budget_state = ThinkingBudgetState(
+-            req_states, vllm_config.reasoning_config
++            req_states, vllm_config.reasoning_config, vllm_config.model_config
+         )
+         self.trace_replay_state = (
+             TraceReplayState(req_states) if enable_trace_replay else None
+diff --git a/vllm/v1/worker/gpu/sample/thinking_budget.py b/vllm/v1/worker/gpu/sample/thinking_budget.py
+index 48c960c..2acd5f0 100644
+--- a/vllm/v1/worker/gpu/sample/thinking_budget.py
++++ b/vllm/v1/worker/gpu/sample/thinking_budget.py
+@@ -1,5 +1,6 @@
+ # SPDX-License-Identifier: Apache-2.0
+ # SPDX-FileCopyrightText: Copyright contributors to the vLLM project
++import os
+ from typing import TYPE_CHECKING
+ 
+ import numpy as np
+@@ -14,6 +15,7 @@ from vllm.v1.worker.gpu.states import RequestState
+ 
+ if TYPE_CHECKING:
+     from vllm.config.reasoning import ReasoningConfig
++    from vllm.config.model import ModelConfig
+ 
+ _INT32_MAX = np.iinfo(np.int32).max
+ _COLD_SCAN_BLOCK = 1024
+@@ -26,6 +28,7 @@ class ThinkingBudgetState:
+         self,
+         req_states: RequestState,
+         reasoning_config: "ReasoningConfig | None",
++        model_config: "ModelConfig | None" = None,
+     ):
+         self.req_states = req_states
+         self.max_num_reqs = req_states.max_num_reqs
+@@ -47,6 +50,26 @@ class ThinkingBudgetState:
+             else reasoning_config.natural_reasoning_end_token_ids or []
+         )
+         self.enabled = bool(start_ids and end_ids and natural_end_ids)
++        self.require_think_close = os.getenv("B70_THINKING_EOS_GUARD", "0") == "1"
++        self.guard_eos_token_ids = None
++        self.guard_tool_start_id = -1
++        if self.require_think_close:
++            if not self.enabled or model_config is None or reasoning_config.reasoning_parser != "qwen3":
++                raise ValueError("Thinking EOS guard requires initialized Qwen3 reasoning metadata")
++            if len(start_ids) != 1 or len(natural_end_ids) != 1:
++                raise ValueError("Qwen3 EOS guard requires single-token reasoning markers")
++            from vllm.tokenizers import cached_tokenizer_from_config
++            tokenizer = cached_tokenizer_from_config(model_config=model_config)
++            model_eos = model_config.hf_text_config.eos_token_id
++            model_eos = model_eos if isinstance(model_eos, list) else [model_eos]
++            eos_ids = sorted({int(x) for x in [tokenizer.eos_token_id, *model_eos] if x is not None})
++            if not eos_ids or set(eos_ids).intersection(start_ids + natural_end_ids):
++                raise ValueError("Ambiguous EOS/reasoning marker identities")
++            self.guard_eos_token_ids = torch.tensor(eos_ids, dtype=torch.int32, device=self.device)
++            tool_ids = tokenizer.encode("<tool_call>", add_special_tokens=False)
++            if len(tool_ids) != 1 or tokenizer.get_vocab().get("<tool_call>") != tool_ids[0]:
++                raise ValueError("Qwen3 tool transition must be one tokenizer control token")
++            self.guard_tool_start_id = tool_ids[0]
+         if not self.enabled:
+             return
+ 
+@@ -66,6 +89,9 @@ class ThinkingBudgetState:
+         self.cached_scan_pos = torch.zeros(
+             self.max_num_reqs, dtype=torch.int32, device=self.device
+         )
++        self.initial_reasoning_start = torch.full(
++            (self.max_num_reqs,), -2, dtype=torch.int32, device=self.device
++        )
+         self._reset_reqs: list[int] = []
+         self._budget_dirty = False
+ 
+@@ -89,11 +115,12 @@ class ThinkingBudgetState:
+             budget = -1
+         else:
+             budget = min(budget, _INT32_MAX)
++        if use_thinking_budget or self.require_think_close:
+             self._reset_reqs.append(req_idx)
+         if self.thinking_token_budget.np[req_idx] != budget:
+             self.thinking_token_budget.np[req_idx] = budget
+             self._budget_dirty = True
+-        return use_thinking_budget
++        return use_thinking_budget or self.require_think_close
+ 
+     def apply_staged_writes(self) -> None:
+         if not self.enabled:
+@@ -105,6 +132,7 @@ class ThinkingBudgetState:
+             self.cached_last_start.index_fill_(0, idx, -1)
+             self.cached_last_end.index_fill_(0, idx, -1)
+             self.cached_scan_pos.index_fill_(0, idx, 0)
++            self.initial_reasoning_start.index_fill_(0, idx, -2)
+             self._reset_reqs.clear()
+         if self._budget_dirty:
+             self.thinking_token_budget.copy_to_uva()
+@@ -112,7 +140,7 @@ class ThinkingBudgetState:
+ 
+     def apply(self, logits: torch.Tensor, ctx: LogitsContext) -> None:
+         idx_mapping_np = ctx.idx_mapping_np
+-        if not self.enabled or not np.any(self.use_thinking_budget[idx_mapping_np]):
++        if not self.enabled or (not self.require_think_close and not np.any(self.use_thinking_budget[idx_mapping_np])):
+             return
+ 
+         apply_thinking_budget(
+@@ -130,6 +158,10 @@ class ThinkingBudgetState:
+             self.reasoning_start_token_ids,
+             self.natural_reasoning_end_token_ids,
+             self.reasoning_end_token_ids,
++            initial_reasoning_start=self.initial_reasoning_start,
++            prompt_len=self.req_states.prompt_len.gpu,
++            eos_token_ids=self.guard_eos_token_ids if self.require_think_close else None,
++            tool_start_token_id=self.guard_tool_start_id,
+         )
+ 
+ 
+@@ -152,6 +184,41 @@ def _load_effective_token(
+     return tl.load(input_ids_ptr + input_pos)
+ 
+ 
++@triton.jit
++def _initial_open_reasoning_start(
++    all_token_ids_ptr, stride, req_idx, prompt_len, total_len,
++    start_ids_ptr, end_ids_ptr,
++    TOOL_START_ID: tl.constexpr, BLOCK: tl.constexpr,
++):
++    # Resumed prefill may contain accepted output. Determine the initial phase
++    # from the original prompt, then account for any already committed closure.
++    start_id = tl.load(start_ids_ptr)
++    end_id = tl.load(end_ids_ptr)
++    last_start = -1
++    last_end = -1
++    hi = prompt_len
++    while hi > 0 and last_start < 0 and last_end < 0:
++        lo = tl.maximum(hi - BLOCK, 0)
++        offsets = lo + tl.arange(0, BLOCK)
++        tokens = tl.load(all_token_ids_ptr + req_idx * stride + offsets,
++                         mask=offsets < hi, other=-1)
++        last_start = tl.max(tl.where((offsets < hi) & (tokens == start_id), offsets, -1), 0)
++        ended = (tokens == end_id) | (tokens == TOOL_START_ID)
++        last_end = tl.max(tl.where((offsets < hi) & ended, offsets, -1), 0)
++        hi = lo
++    initial = tl.where(last_start > last_end, last_start, -1)
++    lo = prompt_len
++    while initial >= 0 and lo < total_len:
++        offsets = lo + tl.arange(0, BLOCK)
++        tokens = tl.load(all_token_ids_ptr + req_idx * stride + offsets,
++                         mask=offsets < total_len, other=-1)
++        ended = (offsets < total_len) & ((tokens == end_id) | (tokens == TOOL_START_ID))
++        if tl.sum(ended.to(tl.int32), 0) > 0:
++            initial = -1
++        lo += BLOCK
++    return initial
++
++
+ @triton.jit
+ def _update_committed_marker_cache_kernel(
+     req_ids_ptr,
+@@ -159,19 +226,23 @@ def _update_committed_marker_cache_kernel(
+     all_token_ids_ptr,
+     all_token_ids_stride,
+     total_len_ptr,
++    prompt_len_ptr,
+     cached_last_start_ptr,
+     cached_last_end_ptr,
+     cached_scan_pos_ptr,
++    initial_reasoning_start_ptr,
+     reasoning_start_token_ids_ptr,
+     natural_reasoning_end_token_ids_ptr,
+     START_LEN: tl.constexpr,
+     NATURAL_END_LEN: tl.constexpr,
+     MAX_LEN: tl.constexpr,
+     BLOCK: tl.constexpr,
++    EOS_GUARD: tl.constexpr,
++    TOOL_START_ID: tl.constexpr,
+ ):
+     req_state_idx = tl.load(req_ids_ptr + tl.program_id(0))
+     budget = tl.load(thinking_token_budget_ptr + req_state_idx)
+-    if budget < 0:
++    if budget < 0 and not EOS_GUARD:
+         return
+ 
+     total_len = tl.load(total_len_ptr + req_state_idx)
+@@ -179,7 +250,11 @@ def _update_committed_marker_cache_kernel(
+     last_start = tl.load(cached_last_start_ptr + req_state_idx)
+     last_end = tl.load(cached_last_end_ptr + req_state_idx)
+ 
++    initial_start = -2
++    if EOS_GUARD:
++        initial_start = tl.load(initial_reasoning_start_ptr + req_state_idx)
+     if scan_pos > total_len:
++        initial_start = -2
+         scan_pos = 0
+         last_start = -1
+         last_end = -1
+@@ -215,6 +290,10 @@ def _update_committed_marker_cache_kernel(
+                 )
+                 end_match = end_match & (actual == expected)
+ 
++            if EOS_GUARD and TOOL_START_ID >= 0:
++                token = tl.load(all_token_ids_ptr + req_state_idx * all_token_ids_stride + offs,
++                                mask=offs < block_hi, other=-1)
++                end_match = end_match | ((offs < block_hi) & (token == TOOL_START_ID))
+             last_start = tl.max(tl.where(start_match, offs, -1), axis=0)
+             last_end = tl.max(tl.where(end_match, offs, -1), axis=0)
+             block_hi = block_lo
+@@ -242,6 +321,23 @@ def _update_committed_marker_cache_kernel(
+                 if end_match:
+                     last_end = i
+ 
++            if EOS_GUARD and TOOL_START_ID >= 0:
++                token = tl.load(all_token_ids_ptr + req_state_idx * all_token_ids_stride + i)
++                if token == TOOL_START_ID:
++                    last_end = i
++
++    if EOS_GUARD:
++        if initial_start == -2:
++            initial_start = _initial_open_reasoning_start(
++                all_token_ids_ptr, all_token_ids_stride, req_state_idx,
++                tl.load(prompt_len_ptr + req_state_idx), total_len,
++                reasoning_start_token_ids_ptr, natural_reasoning_end_token_ids_ptr,
++                TOOL_START_ID=TOOL_START_ID, BLOCK=BLOCK,
++            )
++        elif initial_start >= 0 and last_end > initial_start:
++            initial_start = -1
++    if EOS_GUARD:
++        tl.store(initial_reasoning_start_ptr + req_state_idx, initial_start)
+     tl.store(cached_last_start_ptr + req_state_idx, last_start)
+     tl.store(cached_last_end_ptr + req_state_idx, last_end)
+     new_scan_pos = total_len - (MAX_LEN - 1)
+@@ -266,6 +362,11 @@ def _thinking_budget_kernel(
+     reasoning_start_token_ids_ptr,
+     natural_reasoning_end_token_ids_ptr,
+     reasoning_end_token_ids_ptr,
++    initial_reasoning_start_ptr,
++    eos_token_ids_ptr,
++    EOS_COUNT: tl.constexpr,
++    EOS_GUARD: tl.constexpr,
++    TOOL_START_ID: tl.constexpr,
+     START_LEN: tl.constexpr,
+     NATURAL_END_LEN: tl.constexpr,
+     END_LEN: tl.constexpr,
+@@ -273,7 +374,7 @@ def _thinking_budget_kernel(
+     token_idx = tl.program_id(0).to(tl.int64)
+     req_state_idx = tl.load(expanded_idx_mapping_ptr + token_idx)
+     budget = tl.load(thinking_token_budget_ptr + req_state_idx)
+-    if budget < 0:
++    if budget < 0 and not EOS_GUARD:
+         return
+ 
+     local_pos = tl.load(expanded_local_pos_ptr + token_idx)
+@@ -324,6 +425,23 @@ def _thinking_budget_kernel(
+         if end_match:
+             last_end = i
+ 
++    if EOS_GUARD:
++        for i in tl.range(total_len, effective_len):
++            token = _load_effective_token(all_token_ids_ptr, all_token_ids_stride,
++                                          input_ids_ptr, cur_req_first_pos,
++                                          req_state_idx, total_len, i)
++            if token == TOOL_START_ID:
++                last_end = i
++        initial_start = tl.load(initial_reasoning_start_ptr + req_state_idx)
++        # Once the initial reasoning segment closes, later literal marker text
++        # in an answer or tool argument cannot reopen this guard.
++        if initial_start >= 0 and last_end < initial_start:
++            for eos_index in tl.static_range(0, EOS_COUNT):
++                eos = tl.load(eos_token_ids_ptr + eos_index)
++                tl.store(logits_ptr + token_idx * logits_stride + eos, -float("inf"))
++
++    if budget < 0:
++        return
+     if last_start < 0 or last_start <= last_end:
+         return
+ 
+@@ -380,7 +498,21 @@ def apply_thinking_budget(
+     reasoning_start_token_ids: torch.Tensor,
+     natural_reasoning_end_token_ids: torch.Tensor,
+     reasoning_end_token_ids: torch.Tensor,
++    *,
++    initial_reasoning_start: torch.Tensor | None = None,
++    prompt_len: torch.Tensor | None = None,
++    eos_token_ids: torch.Tensor | None = None,
++    tool_start_token_id: int = -1,
+ ) -> None:
++    guard = eos_token_ids is not None
++    if prompt_len is None:
++        prompt_len = total_len
++    if guard:
++        assert initial_reasoning_start is not None
++    if initial_reasoning_start is None:
++        initial_reasoning_start = cached_last_start
++    if eos_token_ids is None:
++        eos_token_ids = reasoning_end_token_ids
+     num_tokens = logits.shape[0]
+     start_len = reasoning_start_token_ids.shape[0]
+     natural_end_len = natural_reasoning_end_token_ids.shape[0]
+@@ -392,15 +524,19 @@ def apply_thinking_budget(
+         all_token_ids,
+         all_token_ids.stride(0),
+         total_len,
++        prompt_len,
+         cached_last_start,
+         cached_last_end,
+         cached_scan_pos,
++        initial_reasoning_start,
+         reasoning_start_token_ids,
+         natural_reasoning_end_token_ids,
+         START_LEN=start_len,
+         NATURAL_END_LEN=natural_end_len,
+         MAX_LEN=max(start_len, natural_end_len),
+         BLOCK=_COLD_SCAN_BLOCK,
++        EOS_GUARD=guard,
++        TOOL_START_ID=tool_start_token_id,
+     )
+ 
+     _thinking_budget_kernel[(num_tokens,)](
+@@ -418,6 +554,11 @@ def apply_thinking_budget(
+         reasoning_start_token_ids,
+         natural_reasoning_end_token_ids,
+         reasoning_end_token_ids,
++        initial_reasoning_start,
++        eos_token_ids,
++        EOS_COUNT=eos_token_ids.shape[0],
++        EOS_GUARD=guard,
++        TOOL_START_ID=tool_start_token_id,
+         START_LEN=start_len,
+         NATURAL_END_LEN=natural_end_len,
+         END_LEN=end_len,
+diff --git a/vllm/v1/worker/gpu/spec_decode/dflash/speculator.py b/vllm/v1/worker/gpu/spec_decode/dflash/speculator.py
+index bf1ab83..53f481d 100644
+--- a/vllm/v1/worker/gpu/spec_decode/dflash/speculator.py
++++ b/vllm/v1/worker/gpu/spec_decode/dflash/speculator.py
+@@ -1,6 +1,7 @@
+ # SPDX-License-Identifier: Apache-2.0
+ # SPDX-FileCopyrightText: Copyright contributors to the vLLM project
+ import copy
++import os
+ from typing import Any
+ 
+ import torch
+@@ -62,7 +63,10 @@ class DFlashSpeculator(DraftModelSpeculator):
+         self.supports_mm_inputs = False
+ 
+         # Each request emits exactly (bonus + N mask) query tokens per step.
+-        self.num_query_per_req = 1 + self.num_speculative_steps
++        self.num_query_per_req = int(os.getenv(
++            "ASTRA_DFLASH_QUERY_BLOCK", str(1 + self.num_speculative_steps)))
++        if not 1 + self.num_speculative_steps <= self.num_query_per_req <= 8:
++            raise ValueError("Research query block must cover emitted proposals and fit trained width8")
+ 
+         self.parallel_drafting_token_id = get_parallel_drafting_token_id(
+             self.draft_model_config.hf_config
+@@ -781,7 +785,7 @@ def _prepare_dflash_inputs_kernel(
+     # Otherwise (DFlash default) the anchor is the bonus token and only the mask tokens
+     # at offsets > 0 are sampled from, each AT its own position.
+     sample_off = 0 if SAMPLE_FROM_ANCHOR else 1
+-    is_sample = is_query & (query_off >= sample_off)
++    is_sample = is_query & (query_off >= sample_off) & (query_off < sample_off + num_speculative_steps)
+     sample_idx = req_idx * num_speculative_steps + (query_off - sample_off)
+     sample_pos = query_pos + 1 if SAMPLE_FROM_ANCHOR else query_pos
+     tl.store(out_sample_indices_ptr + sample_idx, query_idx, mask=is_sample)
+diff --git a/vllm/v1/worker/gpu/spec_decode/dflash2/speculator.py b/vllm/v1/worker/gpu/spec_decode/dflash2/speculator.py
+index cc7967c..ba46d69 100644
+--- a/vllm/v1/worker/gpu/spec_decode/dflash2/speculator.py
++++ b/vllm/v1/worker/gpu/spec_decode/dflash2/speculator.py
+@@ -193,7 +193,10 @@ class DFlash2Speculator(DFlashSpeculator):
+     def __init__(self, vllm_config: VllmConfig, device: torch.device):
+         super().__init__(vllm_config, device)
+         draft_config = self.draft_model_config.hf_config.dflash_config
+-        self.top_k = int(draft_config[self._candidate_top_k_key])
++        self.top_k = int(os.getenv("ASTRA_DFLASH_SUPPORT", str(draft_config[self._candidate_top_k_key])))
++        self._astra_score_scale = float(os.getenv("ASTRA_DFLASH_SCORE_SCALE", "1.0"))
++        if not 1 <= self.top_k <= 256 or not 0 < self._astra_score_scale <= 128:
++            raise ValueError("Invalid experimental proposal support/scale")
+         self.candidate_sampler = CandidateSampler(
+             self.max_num_reqs, self.num_speculative_steps, self.top_k, device
+         )
+@@ -267,4 +270,4 @@ class DFlash2Speculator(DFlashSpeculator):
+         ]
+         return self.model.model.candidate_selector(
+             candidate_ids, unary_logits, hidden_states, anchor_token_ids
+-        )
++        ) * self._astra_score_scale
+diff --git a/vllm/v1/worker/gpu/spec_decode/rejection_sampler_utils.py b/vllm/v1/worker/gpu/spec_decode/rejection_sampler_utils.py
+index e81d463..f382731 100644
+--- a/vllm/v1/worker/gpu/spec_decode/rejection_sampler_utils.py
++++ b/vllm/v1/worker/gpu/spec_decode/rejection_sampler_utils.py
+@@ -3,6 +3,7 @@
+ import torch
+ 
+ from vllm.triton_utils import tl, tldevice, triton
++
+ from vllm.v1.spec_decode.fly import compute_fly_entropy
+ from vllm.v1.worker.gpu.sample.gumbel import (
+     gumbel_block_argmax,

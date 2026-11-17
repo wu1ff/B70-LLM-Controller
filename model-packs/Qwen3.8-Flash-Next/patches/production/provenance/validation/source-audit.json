@@ -1,0 +1,22 @@
+{
+  "context_files": 90,
+  "context_mismatches": 0,
+  "manifest_files": 30,
+  "manifest_mismatches": 0,
+  "source_reference_count": 27,
+  "recovered_superseded": [
+    {
+      "layer": 8,
+      "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/expanded-tails/b70_moe_glue.py",
+      "expected": "398fae1127a82cc622e2b09af472a0b1e0864a442b0405a3f6c7e86922104bbe",
+      "current": "5df7da9b774661b30f801d4466d63356e58fa82b9b977177f9163597ee710ece",
+      "status": "RECOVERED_EXACT",
+      "recovered_from": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/expanded-exact-v4/overlay/opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp/nvidia/b70_moe_glue.py",
+      "packaged": "provenance/recovered-sources/398fae1127a82cc622e2b09af472a0b1e0864a442b0405a3f6c7e86922104bbe/b70_moe_glue.py",
+      "recovery_sha256": "398fae1127a82cc622e2b09af472a0b1e0864a442b0405a3f6c7e86922104bbe"
+    }
+  ],
+  "source_gaps": [],
+  "final_overlay_files": 90,
+  "final_mismatches": []
+}

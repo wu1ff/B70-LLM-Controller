@@ -1,0 +1,33 @@
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 101B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/local/dflash2-v033:opt-query-ordered-hc-v3
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [internal] load build context
+#4 transferring context: 378.12kB 0.0s done
+#4 DONE 0.1s
+
+#5 [1/2] FROM docker.io/local/dflash2-v033:opt-query-ordered-hc-v3@sha256:e0c6ee4bdb33bc073a82b86c050aedfa2c93703c6ed80f772b873cafb0b791c6
+#5 resolve docker.io/local/dflash2-v033:opt-query-ordered-hc-v3@sha256:e0c6ee4bdb33bc073a82b86c050aedfa2c93703c6ed80f772b873cafb0b791c6 0.0s done
+#5 CACHED
+
+#6 [2/2] COPY overlay/ /
+#6 DONE 0.0s
+
+#7 exporting to image
+#7 exporting layers 0.1s done
+#7 exporting manifest sha256:85feaf9476b86a3e62a2db4293e190145771f0712aea63ed5bcfa5a6421ca8d3 0.0s done
+#7 exporting config sha256:dbdb7c70771eedacffc70d123f39e72a802c0bfecfd3add69e13c4258b450078 0.0s done
+#7 exporting attestation manifest sha256:23294b4fe2041706261d519cfb2551deff3c7ec20a2f045a8eba74d09db451b7 0.0s done
+#7 exporting manifest list sha256:8ef67bb4a18c5ed47c61f756e011f8c84994c7dc678d09157e2f2428c27a37fe 0.0s done
+#7 naming to docker.io/local/dflash2-v033:bf16-reference-v1 done
+#7 unpacking to docker.io/local/dflash2-v033:bf16-reference-v1 0.1s done
+#7 DONE 0.3s

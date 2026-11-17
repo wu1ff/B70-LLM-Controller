@@ -2,10 +2,14 @@
 # SPDX-FileCopyrightText: Copyright contributors to the vLLM project
 """Backend for GatedDeltaNet attention."""
 
+import math
 from dataclasses import dataclass, replace
 from typing import Literal
 
 import torch
+import os
+
+_DFLASH_FUSED_METADATA = os.getenv("B70_DFLASH_FUSED_GDN_METADATA", "0") == "1"
 
 from vllm._aiter_ops import rocm_aiter_ops
 from vllm.config import VllmConfig
@@ -27,6 +31,47 @@ from vllm.v1.attention.backends.utils import (
     split_decodes_and_prefills,
 )
 from vllm.v1.kv_cache_interface import MambaSpec
+
+# FlashInfer's GDN prefill emits states every N tokens, N a multiple of its
+# 64-token chunk, so checkpoint offsets must be multiples of 64.
+FLASHINFER_GDN_CHECKPOINT_ALIGNMENT = 64
+
+
+def plan_flashinfer_checkpoints(
+    offsets: list[int], query_lens: list[int]
+) -> tuple[int, list[int], list[int]]:
+    """Lay out internal checkpoints as FlashInfer GDN prefill emits them.
+
+    Args:
+        offsets: Checkpoint offset into each checkpoint row's query, 0 for
+            none. The last ``len(query_lens)`` rows are the prefill kernel's.
+        query_lens: Query length of each sequence the prefill kernel runs.
+
+    Returns:
+        ``(every_n_tokens, cu_starts, rows)``: the stride shared by every
+        checkpoint in the batch, cumulative per-sequence checkpoint counts,
+        and the index of each checkpoint row's state among the emitted ones.
+
+    """
+    every_n_tokens = math.gcd(*offsets)
+    cu_starts = [0]
+    for query_len in query_lens:
+        cu_starts.append(cu_starts[-1] + query_len // every_n_tokens)
+    first = len(offsets) - len(query_lens)
+    rows = [0] * len(offsets)
+    for i, offset in enumerate(offsets[first:]):
+        if offset:
+            rows[first + i] = cu_starts[i] + offset // every_n_tokens - 1
+    return every_n_tokens, cu_starts, rows
+
+
+@dataclass
+class GDNFlashInferCheckpointPlan:
+    every_n_tokens: int
+    num_checkpoints: int
+    cu_starts: torch.Tensor
+    # Per checkpoint row, its state among the ``num_checkpoints`` emitted.
+    rows: torch.Tensor
 
 
 class GDNAttentionBackend(AttentionBackend):
@@ -54,6 +99,7 @@ class GDNAttentionMetadata:
     num_actual_tokens: int
 
     checkpoint: MambaPrefillCheckpointMetadata | None = None
+    flashinfer_checkpoint_plan: GDNFlashInferCheckpointPlan | None = None
     has_initial_state: torch.Tensor | None = None
 
     spec_query_start_loc: torch.Tensor | None = None  # shape: [num_spec_decodes + 1,]
@@ -112,10 +158,18 @@ class GDNAttentionMetadataBuilder(AttentionMetadataBuilder[GDNAttentionMetadata]
         )
 
         self.gdn_prefill_backend: Literal[
-            "triton", "flashinfer", "cutedsl", "aiter_flydsl"
+            "triton", "flashinfer", "cutedsl", "aiter_flydsl", "sycl"
         ]
         _, self.gdn_prefill_backend = _resolve_gdn_prefill_backend(vllm_config)
         self._check_chunk_metadata_override(type(self), self.gdn_prefill_backend)
+        # Only the Qwen GDN layer opts in on FlashInfer; KDA layers sharing this
+        # backend export checkpoints their own way.
+        checkpoint_alignment = kv_cache_spec.prefill_checkpoint_alignment
+        self.plan_flashinfer_checkpoints = (
+            self.gdn_prefill_backend == "flashinfer"
+            and checkpoint_alignment is not None
+            and checkpoint_alignment % FLASHINFER_GDN_CHECKPOINT_ALIGNMENT == 0
+        )
 
         if self.speculative_config:
             assert self.speculative_config.num_speculative_tokens is not None
@@ -133,18 +187,31 @@ class GDNAttentionMetadataBuilder(AttentionMetadataBuilder[GDNAttentionMetadata]
         # it.
         self.supports_update_block_table = (
             vllm_config.use_v2_model_runner
-            and device.type in ("cuda", "xpu")
+            and (
+                device.type == "cuda"
+                or (
+                    device.type == "xpu"
+                    and os.getenv("B70_DFLASH_SHARED_GDN_METADATA", "0") == "1"
+                    and self.speculative_config is not None
+                    and self.speculative_config.method == "dflash"
+                    and self.speculative_config.draft_model_config.architectures
+                    == ["DFlash2DraftModel"]
+                )
+            )
             # Not isinstance: KDA's RecoverSSM/checkpoint metadata is per group.
             and type(self) is GDNAttentionMetadataBuilder
         )
         if self.supports_update_block_table:
-            # Opts into MRV2's fused aligned-index precompute.
+            # Original DFlash2 XPU path: one all-group aligned-index launch.
             self.mamba_aligned_state_indices: torch.Tensor | None = None
 
         self.decode_cudagraph_max_bs: int = (
             self.vllm_config.scheduler_config.max_num_seqs * (self.num_spec + 1)
         )
-        if self.compilation_config.max_cudagraph_capture_size is not None:
+        if (
+            self.compilation_config.max_cudagraph_capture_size is not None
+            and not (_DFLASH_FUSED_METADATA and device.type == "xpu")
+        ):
             self.decode_cudagraph_max_bs = min(
                 self.decode_cudagraph_max_bs,
                 self.compilation_config.max_cudagraph_capture_size,
@@ -268,6 +335,22 @@ class GDNAttentionMetadataBuilder(AttentionMetadataBuilder[GDNAttentionMetadata]
         fast_build: bool = False,
     ) -> GDNAttentionMetadata:
         m = common_attn_metadata
+        spec = self.speculative_config
+        if (
+            _DFLASH_FUSED_METADATA
+            and self.use_spec_decode
+            and type(self) is GDNAttentionMetadataBuilder
+            and m.query_start_loc.device.type == "xpu"
+            and spec.method == "dflash"
+            and 1 <= spec.num_speculative_tokens <= 7
+            and spec.draft_model_config.architectures == ["DFlash2DraftModel"]
+        ):
+            from .gdn_spec_metadata import try_build_uniform_spec_metadata
+            metadata = try_build_uniform_spec_metadata(
+                self, m, num_accepted_tokens, num_decode_draft_tokens_cpu
+            )
+            if metadata is not None:
+                return metadata
 
         query_start_loc = m.query_start_loc
         query_start_loc_cpu = m.query_start_loc_cpu
@@ -495,7 +578,10 @@ class GDNAttentionMetadataBuilder(AttentionMetadataBuilder[GDNAttentionMetadata]
                         cu_seqlens=prefill_query_start_loc,
                     )
                 )
-            else:
+            elif self.gdn_prefill_backend != "flashinfer":
+                # FlashInfer's chunk kernel consumes cu_seqlens directly and
+                # never reads chunk_indices/chunk_offsets, so skip the FLA
+                # metadata (CPU compute + H2D copies) entirely.
                 chunk_indices, chunk_offsets = self._build_chunk_metadata(
                     prefill_query_start_loc,
                     prefill_query_start_loc_cpu,
@@ -527,6 +613,25 @@ class GDNAttentionMetadataBuilder(AttentionMetadataBuilder[GDNAttentionMetadata]
             if spec_sequence_masks_cpu is not None:
                 request_rows = (~spec_sequence_masks_cpu).nonzero().flatten().tolist()
             checkpoint = self.checkpoint_builder.build(m, request_rows)
+
+        flashinfer_checkpoint_plan: GDNFlashInferCheckpointPlan | None = None
+        if checkpoint is not None and self.plan_flashinfer_checkpoints:
+            assert checkpoint.offsets is not None
+            assert checkpoint.query_lens is not None
+            # The prefill kernel runs the trailing checkpoint rows.
+            num_prefill_rows = prefill_query_start_loc_cpu.shape[0] - 1
+            every_n_tokens, cu_starts, rows = plan_flashinfer_checkpoints(
+                checkpoint.offsets, checkpoint.query_lens[-num_prefill_rows:]
+            )
+            plan = async_tensor_h2d(
+                cu_starts + rows, query_start_loc.device, torch.int64
+            )
+            flashinfer_checkpoint_plan = GDNFlashInferCheckpointPlan(
+                every_n_tokens=every_n_tokens,
+                num_checkpoints=cu_starts[-1],
+                cu_starts=plan[: len(cu_starts)],
+                rows=plan[len(cu_starts) :],
+            )
 
         # Function code counted on either presency non-spec decode or spec decode,
         # but not both.
@@ -606,6 +711,7 @@ class GDNAttentionMetadataBuilder(AttentionMetadataBuilder[GDNAttentionMetadata]
             num_spec_decode_tokens=num_spec_decode_tokens,
             num_actual_tokens=m.num_actual_tokens,
             checkpoint=checkpoint,
+            flashinfer_checkpoint_plan=flashinfer_checkpoint_plan,
             has_initial_state=has_initial_state,
             chunk_indices=chunk_indices,
             chunk_offsets=chunk_offsets,

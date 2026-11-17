@@ -1,0 +1,29 @@
+{
+  "base": "sha256:8ef67bb4a18c5ed47c61f756e011f8c84994c7dc678d09157e2f2428c27a37fe",
+  "files": [
+    {
+      "path": "v1/worker/gpu/spec_decode/dflash2/speculator.py",
+      "sha256": "2b17d625a3a6cd84ceda7d84ae39ce5322aec22b0a056d87fce92dcca6a4e880"
+    },
+    {
+      "path": "v1/worker/gpu/spec_decode/dflash2/quality_calibration.pt",
+      "sha256": "f6a104dd32e6a41754a89a2bb1cd3a3f35ec04ef6083c68ffd17e73a75375624"
+    },
+    {
+      "path": "model_executor/models/qwen3_dflash2.py",
+      "sha256": "bd6c488f1c2f695ed2ed2a86b3132e1f51efd1e69c3cf789d5cb6f3193360e37"
+    },
+    {
+      "path": "model_executor/models/quality_bf16_conv.py",
+      "sha256": "35c17b63c06b39387dca83ecafeb868900ea9204f87062586e0514821fe9cc75"
+    }
+  ],
+  "components": {
+    "name": "bf16-calconv-frozen-v1",
+    "calibration": true,
+    "conv": true,
+    "hc": false
+  },
+  "builder_sha256": "04aaf732d06890b542051607a147698e68e525a1e4d383dfc3caf79ae4cb63f9",
+  "profile_sha256": "14ce587ad4dd3b9be7e82c90c953e008671c7edc4aa9bfd3b61cb265f70f30e2"
+}

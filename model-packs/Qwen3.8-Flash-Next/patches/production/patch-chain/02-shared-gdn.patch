@@ -1,0 +1,29 @@
+diff --git a/vllm/v1/attention/backends/gdn_attn.py b/vllm/v1/attention/backends/gdn_attn.py
+index 38f7e98..cba5541 100644
+--- a/vllm/v1/attention/backends/gdn_attn.py
++++ b/vllm/v1/attention/backends/gdn_attn.py
+@@ -187,12 +187,22 @@ class GDNAttentionMetadataBuilder(AttentionMetadataBuilder[GDNAttentionMetadata]
+         # it.
+         self.supports_update_block_table = (
+             vllm_config.use_v2_model_runner
+-            and device.type == "cuda"
++            and (
++                device.type == "cuda"
++                or (
++                    device.type == "xpu"
++                    and os.getenv("B70_DFLASH_SHARED_GDN_METADATA", "0") == "1"
++                    and self.speculative_config is not None
++                    and self.speculative_config.method == "dflash"
++                    and self.speculative_config.draft_model_config.architectures
++                    == ["DFlash2DraftModel"]
++                )
++            )
+             # Not isinstance: KDA's RecoverSSM/checkpoint metadata is per group.
+             and type(self) is GDNAttentionMetadataBuilder
+         )
+         if self.supports_update_block_table:
+-            # Opts into MRV2's CUDA-only aligned-index precompute.
++            # Original DFlash2 XPU path: one all-group aligned-index launch.
+             self.mamba_aligned_state_indices: torch.Tensor | None = None
+ 
+         self.decode_cudagraph_max_bs: int = (

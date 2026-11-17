@@ -1,55 +1,77 @@
-# Production source reconstruction
+# Selected v6 source reconstruction
 
-Entry point: `python3 tools/verify.py --staging /tmp/dflash2-clean --report /tmp/dflash2-source.json`.
-Use a new staging directory. Python 3.12+, Git and Bash suffice; no network or GPU.
-The verifier replays the exact 16 original patches and compares all accepted source,
-frontend, helper, dependency and native input hashes. `accepted-overlay/` is comparison
-material, never a replay input. `manifests/patch-series.json` fixes order and strip
-levels. `archive/` is never applied. Keep both native fallback libraries.
-
-This directory starts from the verified Phase 2 portable archive. Its original
-`BUNDLE.md`, native inventory and input lock describe that phase's scope; their
-then-unproved build statements are superseded by `../archive/qualification/phase3/`
-and the Phase 4 live receipts. All twelve custom native outputs matched independently;
-OCI identity differs. The accepted runtime remains frozen.
-
-`tools/build_native.py --plan` lists native recipes. For later source builds it can
-compile/export the twelve libraries using the two pinned OCI inputs. A portable
-`tools/prepare_image.py` stages replayed sources and independently built libraries
-for `build/Dockerfile.runtime`, preserving frontend, shim, baked tests, modes and
-accepted PYTHONPATH. It does not run Docker. Existing Phase 3/4 evidence is used
-for this pack validation; no inference image is rebuilt here.
-
-`manifests/controller-staging.json` records the accepted local image, release version,
-verified immutable public registry reference and Controller transport/storage
-differences. `manifests/qualified-launch.json` records the mount-free launch
-verified by installed b70ctl 1.0.1; `serving-contract.json` retains the original
-standalone capture. The accepted runtime is published unchanged.
-
-The reviewed 57-file notice overlay is incorporated in `distribution-source.tar.gz`.
-`manifests/source-export.json` pins this separately hashed source artifact;
-`tools/verify_notice_export.py --source /tmp/dflash2-clean/reconstructed` verifies
-every exported byte against accepted inputs and the recorded comment insertions.
-`tools/notice_export.py` can regenerate it. This does not alter accepted
-reconstruction or qualify a new executable image. Keep the full enclosing pack
-for original recipes, patches, exact accepted input locks and archival evidence.
-
-For later source builds, the complete assembly sequence from the model-pack root
-is shown below. Native/image compilation is unnecessary for Phase 5 validation;
-the retained independent build/live receipts already supply that evidence.
+Run the offline verifier from any directory, using a new staging directory:
 
 ```sh
-python3 patches/production/tools/build_native.py --output /tmp/dflash2-native
-python3 patches/production/tools/prepare_image.py \
-  --source /tmp/dflash2-clean/reconstructed --native /tmp/dflash2-native \
-  --output /tmp/dflash2-image-context
-docker build --no-cache --platform=linux/amd64 --pull=false --network=none \
-  --provenance=false --tag qwen38-flashnext-dflash2:source-rebuild \
-  /tmp/dflash2-image-context
+python3 /path/to/v033-v6-source/patches/production/tools/verify.py \
+  --staging /tmp/dflash033-source-clean \
+  --report /tmp/dflash033-source-verification.json
 ```
 
-The native output and image context directories must be new. The assembler checks
-all 3454 payload files against the retained Phase 3 hashes before writing a context,
-and preserves installed modes. `manifests/image-payload.json` is the exact inventory;
-the Dockerfile deliberately regenerates runtime bytecode rather than importing
-compiled campaign artifacts. A rebuilt image has its own identity.
+Python 3.12+, Git and Bash suffice. No Docker, network, compiler, GPU, model
+checkpoint or original campaign path is needed. The verifier checks the package
+lock, extracts pinned upstream vLLM and the immutable vendor kernel Python
+baseline, supplies vendor-generated version metadata, checks and applies all ten
+patches in order, and compares the complete resulting 3,679-file source set.
+It checks the exact calibration input, all Python syntax, the 17 native source
+families and recipe syntax, and the selected STANDARD/EOS/profile contract.
+
+`manifests/patch-series.json` is the application order; every patch uses `-p1`.
+These are consolidated installed-source diffs derived from the immutable image
+generations. Original builders, manifests, Dockerfiles, build records and exact
+SLSA/OCI attachments remain under `provenance/`. The historical v0.32 16-patch
+series is reference evidence and is not applied to v0.33. `accepted-overlay/`
+contains the final 44 changed source files for comparison; the verifier never
+uses that directory as a patch replay input.
+
+For later native reconstruction, inspect the plan first:
+
+```sh
+python3 tools/build_native.py --plan
+```
+
+Use the exact vendor image and either the verified retained toolchain or all 15
+separately obtained compiler packages from `manifests/compiler-lock.json`:
+
+```sh
+python3 tools/build_native.py --output /tmp/dflash033-native \
+  --compiler-debs /absolute/path/to/locked-compiler-debs
+# Alternatively: --toolchain /absolute/path/to/verified/extracted/toolchain
+```
+
+The wrapper verifies the toolchain tree, extracts the packaged pinned TLA,
+uses the corrected GDN header tree for GDN and the common tree otherwise, and
+runs the original v0.33 recipes in isolated CPU containers over the exact vendor
+image. No devices or network are attached. Each result must match the installed
+library SHA256. A differing build fails and is retained for inspection. The
+PLE gather recipe is a documented reconstruction whose output was independently
+byte-matched in this task; the original GCC invocation was unavailable.
+
+Stage a new runtime context only after source and native verification:
+
+```sh
+python3 tools/prepare_image.py \
+  --source /tmp/dflash033-source-clean/reconstructed \
+  --native /tmp/dflash033-native --output /tmp/dflash033-image-context
+```
+
+This stages final installed deltas, all 17 native outputs, exact preparation and
+frontend assets, source mirror deltas, and frozen baked image configuration. It
+does not run Docker. The emitted Dockerfile starts from the exact official vendor
+binary image. A future image build uses a new tag and has its own identity:
+
+```sh
+docker build --pull=false --network=none --tag local/dflash033-source:review \
+  /tmp/dflash033-image-context
+```
+
+No such image build was performed here. This flattened reassembly is a source
+build procedure over the vendor image; it does not recreate the historical
+layer/attestation/config identity or demonstrate a bit-identical image.
+
+The final serving profile remains a separate, unchanged file:
+`runtime/profile.json`. Its diagnostic worker modules, exact launcher and full
+Docker contract are included. The profile contains original workspace paths;
+moving those bind paths is a future packaging change. The selected image alone
+does not activate every v6 feature: preserve the profile environment and command.
+No server should be started as part of source verification.

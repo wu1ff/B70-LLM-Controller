@@ -1,0 +1,98 @@
+[
+  {
+    "order": 1,
+    "path": "patch-chain/target-v032.patch",
+    "sha256": "b6907e3ab1921cb136852f9af7a6e65605e200a6ed488597fd7f6e25c5e8d6f6",
+    "strip": 1
+  },
+  {
+    "order": 2,
+    "path": "patch-chain/dflash2-v032.patch",
+    "sha256": "cc9bc66d5645ab293b0c9310c66820f6923e22e0b3998ab7fe2cdd96fa0ae03b",
+    "strip": 1
+  },
+  {
+    "order": 3,
+    "path": "patch-chain/verify-c1-v032.patch",
+    "sha256": "6ab5ddaf5e109b22839622ecbdea463604a83f5039b6b88f86b0c055c7222566",
+    "strip": 1
+  },
+  {
+    "order": 4,
+    "path": "patch-chain/perf-c1-v032.patch",
+    "sha256": "8565a95f99b221a923c6ed4551609a355b58e417ee9ad6d1ac8571c1f3e934ed",
+    "strip": 1
+  },
+  {
+    "order": 5,
+    "path": "patch-chain/fullwidth-c1-v032.patch",
+    "sha256": "412d7cd022a5008e86e23b568ee2df1edf57ccf94f5b64889fd4e58985f50bfb",
+    "strip": 1
+  },
+  {
+    "order": 6,
+    "path": "patch-chain/deep-c1-v032.patch",
+    "sha256": "d1dae47ea1db3e47c3eee1fa68388a5b1458ea8c724955a91c502e66bdd65f6b",
+    "strip": 1
+  },
+  {
+    "order": 7,
+    "path": "patch-chain/mtp7-gap-v032.patch",
+    "sha256": "9106f52abba30649fed4f3f05076de8501147a3fead33a606c02c0f718aa9425",
+    "strip": 1
+  },
+  {
+    "order": 8,
+    "path": "patch-chain/astra500-v032.patch",
+    "sha256": "ce19b3bc0531f86507e734ece0530616a3405b98efeaf2a98ffaa157af33c13e",
+    "strip": 1
+  },
+  {
+    "order": 9,
+    "path": "patch-chain/astra500-structural.patch",
+    "sha256": "b57de90e36b8b1867142c7693885e60413ab83d9993a5fda3fd2fb0cd9379725",
+    "strip": 1
+  },
+  {
+    "order": 10,
+    "path": "patch-chain/astra500-cycle.patch",
+    "sha256": "1650615ea69f3f0eeb3c72cf25566f221383e08ebccf487a6bbf8f39bccee778",
+    "strip": 1
+  },
+  {
+    "order": 11,
+    "path": "patch-chain/astra500-ownership.patch",
+    "sha256": "36887d6cb787f125ccdcb97cce30b85ff180b598973d1ad9864d9d431d8e4919",
+    "strip": 1
+  },
+  {
+    "order": 12,
+    "path": "patch-chain/astra500-beyond.patch",
+    "sha256": "540ef96c87e99fc4617b2b5571526cb31a403da8560ef0cf15b8b8159bfd3ac8",
+    "strip": 1
+  },
+  {
+    "order": 13,
+    "path": "patch-chain/astra500-dominant.patch",
+    "sha256": "8a97ceed1adeb1b4df148e8c2b4f8c735529b6351b3dd03e99900410fd26b0db",
+    "strip": 3
+  },
+  {
+    "order": 14,
+    "path": "patch-chain/prefill-serving.patch",
+    "sha256": "efd7de9122ca30bd9e1723d10b083a156e21a839da6837a544b9a018329878a9",
+    "strip": 1
+  },
+  {
+    "order": 15,
+    "path": "patch-chain/long-prefill.patch",
+    "sha256": "391975bcd98a90a000038283ecb96b98c3cdf26e233cfea97354acfb38b2b4e1",
+    "strip": 1
+  },
+  {
+    "order": 16,
+    "path": "patch-chain/integrated-serving.patch",
+    "sha256": "6cd8586e496f0dcab0513b14742a758dfc1d1348cd7f339bb2f8be42a2d19be7",
+    "strip": 1
+  }
+]

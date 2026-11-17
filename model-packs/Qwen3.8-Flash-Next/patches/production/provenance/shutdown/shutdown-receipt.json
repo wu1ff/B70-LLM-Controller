@@ -1,0 +1,13 @@
+{
+  "container_id": "6d2a920d923b1cad71bda3b137838d408480bdc2eca83f414157c5d8c2fbc5f3",
+  "command": [
+    "docker",
+    "stop",
+    "-t",
+    "30",
+    "6d2a920d923b1cad71bda3b137838d408480bdc2eca83f414157c5d8c2fbc5f3"
+  ],
+  "started_utc": "2026-11-16T23:11:23.602602+00:00",
+  "finished_utc": "2026-11-16T23:11:31.516962+00:00",
+  "returncode": 0
+}

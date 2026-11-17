@@ -18,6 +18,7 @@ torch.ops.load_library(str(Path(__file__).with_name('libdominant_w4_layout.so'))
 torch.ops.load_library(str(Path(__file__).with_name('libserving_prefill.so')))
 torch.ops.load_library(str(Path(__file__).with_name('liblong_prefill_v3.so')))
 _prepared_layers = 0
+_dispatch_seen = set()
 
 
 def exchange(tensor, kind, cpu_group):
@@ -44,6 +45,19 @@ def exchange(tensor, kind, cpu_group):
 
 def prepare(module):
     global _prepared_layers
+    from vllm.logger import init_logger
+    init_logger("vllm.dflash2.cyclic_experts").info(
+        "DFlash ownership input: recipe=%s ep=%s rank=%s experts=%s inter=%s "
+        "w13=%s w2=%s s13=%s s2=%s scale_dtypes=%s,%s activation=%s topk=%s "
+        "biases=%s,%s clamp=%s map=%s",
+        module.recipe, module.ep_size, module.ep_rank, module.num_experts,
+        module.inter_size, tuple(module.w13.shape), tuple(module.w2.shape),
+        tuple(module.gemm1_wei_scales.shape), tuple(module.gemm2_wei_scales.shape),
+        module.gemm1_wei_scales.dtype, module.gemm2_wei_scales.dtype,
+        module.activation, module.n_experts_per_token,
+        module.w13_bias is not None, module.w2_bias is not None,
+        module.gemm1_clamp_limit,
+        None if module.expert_map is None else tuple(module.expert_map.shape))
     if not (
         module.recipe == 'int4' and module.ep_size == 4
         and module.num_experts == 128 and module.inter_size == 640
@@ -88,7 +102,7 @@ def prepare(module):
     _prepared_layers += 1
     if _prepared_layers in (1, 48):
         from vllm.logger import init_logger
-        init_logger(__name__).info(
+        init_logger("vllm.dflash2.cyclic_experts").info(
             'Astra group ownership ready: layers=%d, rank=%d, groups=640, '
             'group_width=128, weight_bytes_unchanged=True',
             _prepared_layers, module.ep_rank)
@@ -96,6 +110,17 @@ def prepare(module):
 
 def apply(module, output, hidden, weights, ids, expert_map, activation_scales):
     local = module._astra_groups
+    rows = hidden.shape[0]
+    if rows not in _dispatch_seen:
+        _dispatch_seen.add(rows)
+        from vllm.logger import init_logger
+        route = ("dominant_w4_layout" if rows == 8 else
+                 "astra_batch" if rows in (16, 24, 32) else
+                 "serving_prefill8" if 0 < rows <= 256 else
+                 "long_prefill_v3" if 0 < rows <= 1024 else "fallback")
+        init_logger("vllm.dflash2.cyclic_experts").info(
+            "DFlash cyclic expert dispatch: rows=%d rank=%d native=%s",
+            rows, module.ep_rank, route)
     assert hidden.dtype == torch.bfloat16 and hidden.shape[1] == 2560
     assert ids.shape == weights.shape == (hidden.shape[0], 10)
     assert expert_map is None and activation_scales is None

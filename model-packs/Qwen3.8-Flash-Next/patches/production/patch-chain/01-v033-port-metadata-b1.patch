@@ -1,0 +1,3230 @@
+diff --git a/vllm/_xpu_ops.py b/vllm/_xpu_ops.py
+index 166534e..68811ee 100644
+--- a/vllm/_xpu_ops.py
++++ b/vllm/_xpu_ops.py
+@@ -2,9 +2,11 @@
+ # SPDX-FileCopyrightText: Copyright contributors to the vLLM project
+ 
+ from collections.abc import Callable
++from pathlib import Path
+ from typing import TYPE_CHECKING
+ 
+ import torch
++import vllm_xpu_kernels
+ from vllm_xpu_kernels.flash_attn_interface import flash_attn_varlen_func
+ from vllm_xpu_kernels.rotary import apply_rotary_emb
+ 
+@@ -16,6 +18,11 @@ from vllm.utils.torch_utils import direct_register_custom_op
+ 
+ logger = init_logger(__name__)
+ 
++# Rebuilt against the pinned 0.1.15.4 headers and Torch 2.14 ABI.
++torch.ops.load_library(
++    str(Path(vllm_xpu_kernels.__file__).with_name("libgdn_index64.so"))
++)
++
+ if TYPE_CHECKING:
+ 
+     def register_fake(fn):
+@@ -230,7 +237,7 @@ def _gdn_attention_core_xpu_impl(
+         self.conv1d.weight.size(0), self.conv1d.weight.size(2)
+     )
+ 
+-    torch.ops._xpu_C.gdn_attention(
++    torch.ops._gdn_index64.gdn_attention(
+         core_attn_out,
+         z,
+         projected_states_qkvz,
+@@ -1076,6 +1083,36 @@ class xpu_ops:
+             assert len(window_size) == 2
+             real_window_size = (window_size[0], window_size[1])  # noqa: F841
+ 
++        from vllm.models.qwen4_exp.nvidia import b70_target_attention
++
++        splits = b70_target_attention.fixed_splits(
++            q,
++            k,
++            v,
++            cu_seqlens_q,
++            seqused_k,
++            block_table,
++            max_seqlen_q,
++            causal,
++            real_window_size,
++            softcap,
++            alibi_slopes,
++            s_aux,
++            return_softmax_lse,
++            q_descale,
++        )
++        if splits is not None:
++            return b70_target_attention.forward(
++                q,
++                k,
++                v,
++                out,
++                seqused_k,
++                block_table,
++                max_seqlen_k,
++                softmax_scale,
++                splits,
++            )
+         return flash_attn_varlen_func(
+             out=out,
+             q=q,
+diff --git a/vllm/model_executor/layers/fused_moe/experts/xpu_moe.py b/vllm/model_executor/layers/fused_moe/experts/xpu_moe.py
+index 35fb916..894cf0c 100644
+--- a/vllm/model_executor/layers/fused_moe/experts/xpu_moe.py
++++ b/vllm/model_executor/layers/fused_moe/experts/xpu_moe.py
+@@ -175,7 +175,8 @@ class XPUExperts(mk.FusedMoEExpertsModular):
+                 gemm1_clamp_limit=self.gemm1_clamp_limit,
+             )
+         assert self.fused_moe_impl is not None
+-        if self.moe_config.ep_size > 1:
++        if (self.moe_config.ep_size > 1
++                and getattr(self.fused_moe_impl, "_astra_groups", None) is None):
+             # Avoid topk_ids = -1, remap them to an
+             # expert not owned by this rank so they are skipped.
+             sentinel = global_num_experts - 1 if self.moe_config.ep_rank == 0 else 0
+diff --git a/vllm/model_executor/layers/linear.py b/vllm/model_executor/layers/linear.py
+index d319547..ba44ba1 100644
+--- a/vllm/model_executor/layers/linear.py
++++ b/vllm/model_executor/layers/linear.py
+@@ -219,6 +219,9 @@ class UnquantizedLinearMethod(LinearMethodBase):
+             # Opt-in: F.linear on XPU is faster with an N-contiguous (N, K) weight
+             # when K > N, but oneDNN's ab-weights matmul is not run-to-run bitwise
+             # bitwise reproducible. Off by default.
++            prepare_hc = getattr(layer, "hc_ksplit_prepare", None)
++            if prepare_hc is not None:
++                prepare_hc()
+             weight = layer.weight.data
+             if (
+                 envs.VLLM_XPU_FORCE_N_CONTIG_WEIGHT
+diff --git a/vllm/model_executor/layers/mamba/gdn/qwen_gdn_linear_attn.py b/vllm/model_executor/layers/mamba/gdn/qwen_gdn_linear_attn.py
+index d9a1ad8..c782bd0 100644
+--- a/vllm/model_executor/layers/mamba/gdn/qwen_gdn_linear_attn.py
++++ b/vllm/model_executor/layers/mamba/gdn/qwen_gdn_linear_attn.py
+@@ -565,6 +565,7 @@ class QwenGatedDeltaNetAttention(GatedDeltaNetAttention):
+     ) -> None:
+         super().__init__(config, vllm_config, prefix)
+ 
++        self._deterministic_prefill_gates = config.model_type == "qwen4_exp_text"
+         self.num_k_heads = config.linear_num_key_heads
+         self.num_v_heads = config.linear_num_value_heads
+         self.head_k_dim = config.linear_key_head_dim
+@@ -1223,7 +1224,21 @@ class QwenGatedDeltaNetAttention(GatedDeltaNetAttention):
+         # Part 1: Input Projection
+         # ============================================================
+         projected_states_qkvz, _ = self.in_proj_qkvz(hidden_states)
+-        projected_states_ba, _ = self.in_proj_ba(hidden_states)
++        if (
++            self._deterministic_prefill_gates
++            and hidden_states.shape[0] > 8
++            and type(self.in_proj_ba.quant_method).__name__ == "UnquantizedLinearMethod"
++            and self.in_proj_ba.weight.dtype == torch.bfloat16
++            and self.in_proj_ba.bias is None
++        ):
++            # oneDNN's 85-row gate GEMM changes results for identical inputs.
++            # Fixed K order makes cached and fresh prefill reproducible.
++            from vllm.models.qwen4_exp.nvidia.b70_hc_gemm import ordered_hc_gemm
++
++            weight = self.in_proj_ba.weight
++            projected_states_ba = ordered_hc_gemm(hidden_states, weight, weight.shape[0])
++        else:
++            projected_states_ba, _ = self.in_proj_ba(hidden_states)
+ 
+         # ============================================================
+         # Part 2: Core Attention
+diff --git a/vllm/model_executor/models/config.py b/vllm/model_executor/models/config.py
+index 91379e1..a8692f9 100644
+--- a/vllm/model_executor/models/config.py
++++ b/vllm/model_executor/models/config.py
+@@ -1048,10 +1048,27 @@ class Qwen4ExpForConditionalGenerationConfig(Qwen3_5ForConditionalGenerationConf
+         if multimodal_config is not None and multimodal_config.language_model_only:
+             _strip_qwen4_exp_mrope(vllm_config.model_config)
+         spec_config = vllm_config.speculative_config
++        if spec_config is not None and spec_config.method == "dflash":
++            draft = spec_config.draft_model_config.hf_config
++            if (
++                draft.architectures != ["DFlash2DraftModel"]
++                or draft.dflash_config.get("target_layer_ids") != [5, 15, 25, 35, 45]
++                or draft.hidden_size != text_config.hidden_size
++                or draft.vocab_size != text_config.vocab_size
++                or text_config.hc_count != 4
++                or text_config.num_hidden_layers != 48
++                or not 1 <= spec_config.num_speculative_tokens
++                < draft.dflash_config.get("block_size", 0)
++            ):
++                raise NotImplementedError(
++                    "Qwen4Exp DFlash2 requires the five-layer HC4 Flash-Next "
++                    "feature contract and proposals within the trained block"
++                )
+         if spec_config is not None and spec_config.method not in {
+             "mtp",
+             "ngram",
+             "ngram_gpu",
++            "dflash",
+         }:
+             raise NotImplementedError(
+                 "Qwen4Exp speculative decoding supports only its native MTP "
+diff --git a/vllm/models/qwen4_exp/__init__.py b/vllm/models/qwen4_exp/__init__.py
+index 9e533e2..8c3e9bb 100644
+--- a/vllm/models/qwen4_exp/__init__.py
++++ b/vllm/models/qwen4_exp/__init__.py
+@@ -27,7 +27,7 @@ def __getattr__(name: str) -> Any:
+     }:
+         from vllm.platforms import current_platform
+ 
+-        if current_platform.is_xpu() or current_platform.is_tpu():
++        if current_platform.is_tpu():
+             raise NotImplementedError("Qwen4Exp currently supports CUDA and ROCm only")
+         if current_platform.is_rocm():
+             from .amd.model import (
+diff --git a/vllm/models/qwen4_exp/common/disk_ple.py b/vllm/models/qwen4_exp/common/disk_ple.py
+new file mode 100644
+index 0000000..4332704
+--- /dev/null
++++ b/vllm/models/qwen4_exp/common/disk_ple.py
+@@ -0,0 +1,462 @@
++# SPDX-License-Identifier: Apache-2.0
++# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
++# Disk transport by Wulf; adapted to v0.33 DFlash2 common PLE with Codex.
++"""Checkpoint-specific BF16 mmap transport; no resident or UVA table allocation."""
++
++import ctypes
++import os
++import threading
++from typing import ClassVar
++
++import torch
++
++from vllm.compilation.breakable_cudagraph import eager_break_during_capture
++from vllm.config import get_current_vllm_config
++from vllm.logger import init_logger
++
++from .ngram_embedding import (
++    Qwen4ExpPLEEmbedding,
++    Qwen4ExpPLEEmbeddingMethod,
++    Qwen4ExpPLEPinnedHostEmbedding,
++    Qwen4ExpPLEUnquantizedEmbeddingMethod,
++)
++
++logger = init_logger(__name__)
++
++# Keep DMA owners alive if a device fence fails. Process teardown is the only
++# safe release in that case; never fall back to a different table mid-forward.
++_disk_bf16_quarantine: list[object] = []
++
++
++def _ple_disk_bf16_enabled() -> bool:
++    return os.environ.get("B70_PLE_DISK_BF16") == "1"
++
++
++def _validate_disk_bf16_config(
++    embedding_method: Qwen4ExpPLEEmbeddingMethod,
++    params_dtype: torch.dtype,
++    max_total_tokens: int,
++) -> int:
++    config = get_current_vllm_config()
++    parallel = config.parallel_config
++    scheduler = config.scheduler_config
++    if os.environ.get("B70_PLE_DIRECT_PINNED") == "1":
++        raise ValueError("Disk BF16 PLE and #008 direct-pinned loading are exclusive")
++    if any(
++        os.environ.get(name) == "1"
++        for name in (
++            "B70_PLE_FP8",
++            "B70_PLE_INT8",
++            "B70_PLE_INT8_NVME",
++            "B70_PLE_INT8_NVME_LOOKAHEAD",
++        )
++    ):
++        raise ValueError("Disk BF16 PLE cannot enable another PLE storage gate")
++    if (
++        not _is_xpu()
++        or params_dtype != torch.bfloat16
++        or not isinstance(embedding_method, Qwen4ExpPLEUnquantizedEmbeddingMethod)
++        or not os.environ.get("PLE_TABLE_PATH")
++        or parallel.tensor_parallel_size != 4
++        or not parallel.enable_expert_parallel
++        or parallel.pipeline_parallel_size != 1
++        or parallel.data_parallel_size != 1
++        or parallel.use_ubatching
++        or parallel.use_sequence_parallel_moe
++        or parallel.enable_hc_sp
++        or parallel.decode_context_parallel_size != 1
++        or parallel.prefill_context_parallel_size != 1
++        or scheduler.max_num_seqs != 4
++        or getattr(config.cache_config, "kv_offloading_size", None)
++    ):
++        raise ValueError(
++            "Disk BF16 PLE requires the frozen XPU BF16 "
++            "TP4+EP/PP1/DP1, four-slot contract"
++        )
++    # Resolve the actual scheduler, including the default async subclass.
++    # Exact class identities reject arbitrary subclasses and method overrides.
++    from vllm.v1.core.sched.async_scheduler import AsyncScheduler
++    from vllm.v1.core.sched.scheduler import Scheduler
++
++    resolved = scheduler.get_scheduler_cls()
++    if (
++        resolved not in (Scheduler, AsyncScheduler)
++        or resolved.schedule is not Scheduler.schedule
++        or resolved._mamba_block_aligned_split
++        is not Scheduler._mamba_block_aligned_split
++    ):
++        raise ValueError(
++            "Disk BF16 PLE requires the retained aggregate-budget scheduler contract"
++        )
++    mbt = scheduler.max_num_batched_tokens
++    if scheduler.max_num_scheduled_tokens not in (None, mbt):
++        raise ValueError("Disk BF16 PLE requires the original aggregate budget")
++    spec = config.speculative_config
++    if spec is not None:
++        draft = spec.draft_model_config
++        if (
++            spec.method != "dflash"
++            or draft.architectures != ["DFlash2DraftModel"]
++            or draft.dtype != torch.bfloat16
++            or draft.quantization is not None
++            or spec.draft_parallel_config.tensor_parallel_size != 4
++            or not 1 <= spec.num_speculative_tokens
++            < spec.draft_model_config.hf_config.dflash_config.get("block_size", 0)
++            or spec.draft_sample_method != "probabilistic"
++            or spec.rejection_sample_method != "standard"
++            or spec.uses_dynamic_speculative_decoding()
++            or spec.enable_adaptive_verification
++        ):
++            raise ValueError(
++                "Disk PLE speculation requires BF16 TP4 DFlash2, trained-width "
++                "proposals, conditional probabilistic drafting and standard rejection"
++            )
++    captures = config.compilation_config.cudagraph_capture_sizes or []
++    capacity = max([max_total_tokens, *captures])
++    if (
++        mbt != 1024
++        or max_total_tokens != mbt
++        or capacity != mbt
++        or any(not isinstance(n, int) or n <= 0 or n > mbt for n in captures)
++    ):
++        raise ValueError(
++            "Disk BF16 PLE effective dispatch/capture capacity must equal MBT"
++        )
++    return capacity
++
++
++def _protect_disk_bf16_mapping(
++    table: torch.Tensor, path: str, file_stat: os.stat_result
++) -> None:
++    """Make the torch-owned file mapping read-only, without touching its pages."""
++    page_size = os.sysconf("SC_PAGE_SIZE")
++    start = table.data_ptr() // page_size * page_size
++    end = (
++        (table.data_ptr() + table.numel() * table.element_size() + page_size - 1)
++        // page_size
++        * page_size
++    )
++    stat = os.stat(path)
++    if (stat.st_dev, stat.st_ino, stat.st_size) != (
++        file_stat.st_dev,
++        file_stat.st_ino,
++        file_stat.st_size,
++    ):
++        raise ValueError("Intel PLE file changed during mmap setup")
++    cursor = start
++    with open("/proc/self/maps") as maps:
++        for line in maps:
++            fields = line.split(maxsplit=5)
++            left, right = (int(value, 16) for value in fields[0].split("-"))
++            if right <= cursor or left >= end:
++                continue
++            major, minor = (int(value, 16) for value in fields[3].split(":"))
++            if (
++                left > cursor
++                or "p" not in fields[1]
++                or int(fields[4]) != stat.st_ino
++                or os.makedev(major, minor) != stat.st_dev
++            ):
++                raise ValueError(
++                    "PLE tensor is not a private mmap of the selected BF16 file"
++                )
++            cursor = min(right, end)
++    if cursor != end:
++        raise ValueError("PLE tensor mapping does not cover the selected BF16 table")
++    libc = ctypes.CDLL(None, use_errno=True)
++    libc.mprotect.argtypes = [ctypes.c_void_p, ctypes.c_size_t, ctypes.c_int]
++    libc.mprotect.restype = ctypes.c_int
++    if libc.mprotect(start, end - start, 1) != 0:  # PROT_READ
++        raise OSError(ctypes.get_errno(), "Cannot protect BF16 PLE mmap")
++
++
++def _is_xpu() -> bool:
++    from vllm.platforms import current_platform
++
++    return current_platform.is_xpu()
++
++
++class Qwen4ExpPLEDiskBF16Embedding(Qwen4ExpPLEPinnedHostEmbedding):
++    """Immutable torch mmap plus one serialized, bounded XPU DMA stage.
++
++    The common prefetch consumer reduces owned rows and copies them into
++    graph-owned output. The producer runs before forward or FULL replay.
++    """
++
++    disk_bf16: ClassVar[bool] = True
++
++    def __init__(
++        self,
++        num_embeddings: int,
++        embedding_dim: int,
++        *,
++        params_dtype: torch.dtype,
++        padding_size: int,
++        prefix: str,
++        embedding_method: Qwen4ExpPLEEmbeddingMethod,
++        num_ngram_heads: int = 1,
++        max_total_tokens: int = 0,
++        data_parallel_rank: int = 0,
++        reduce_results: bool = True,
++    ) -> None:
++        capacity = _validate_disk_bf16_config(
++            embedding_method, params_dtype, max_total_tokens
++        )
++        if (num_embeddings, embedding_dim, num_ngram_heads) != (320001536, 160, 16):
++            raise ValueError("Disk BF16 PLE requires the original B70 table layout")
++        if not reduce_results:
++            raise ValueError("Disk BF16 PLE requires the original non-SP reduction")
++        Qwen4ExpPLEEmbedding.__init__(
++            self,
++            num_embeddings,
++            embedding_dim,
++            params_dtype=params_dtype,
++            padding_size=padding_size,
++            prefix=prefix,
++            embedding_method=embedding_method,
++            num_ngram_heads=num_ngram_heads,
++            max_total_tokens=max_total_tokens,
++            data_parallel_rank=data_parallel_rank,
++            reduce_results=reduce_results,
++        )
++        if self.etp_data_parallel_size != 1 or self.tp_size != 4:
++            raise ValueError("Disk BF16 PLE requires ETP=TP=4")
++        self._stream_mod = torch.xpu
++        self._capacity = capacity
++        self._heads = num_ngram_heads
++        self._output_dim = num_ngram_heads * embedding_dim
++        self._prefetch_buffer = torch.empty(
++            capacity,
++            num_ngram_heads,
++            embedding_dim,
++            dtype=params_dtype,
++            device="xpu",
++        )
++        self._stage = torch.empty(
++            capacity,
++            num_ngram_heads,
++            embedding_dim,
++            dtype=params_dtype,
++            device="cpu",
++            pin_memory=True,
++        )
++        if not self._stage.is_pinned():
++            raise RuntimeError("Disk BF16 PLE stage failed to pin on XPU")
++        self._mmap_owner = None
++        self._table = None
++        self._pending = False
++        self._copy_event = torch.xpu.Event()
++        self._owner_stream = None
++        self._owner_thread = None
++        self._lock = threading.Lock()
++        self._failed = False
++        self._closed = False
++        self._prepared_tokens = 0
++
++    def allocate_embedding_weight(
++        self, num_embeddings: int, embedding_dim: int, dtype: torch.dtype
++    ) -> torch.Tensor:
++        # Metadata/loaded-name compatibility only: never reserve a TP shard.
++        return torch.empty(0, embedding_dim, dtype=dtype, device="cpu")
++
++    def weight_loader(self, *args, **kwargs) -> None:
++        raise RuntimeError("Disk BF16 PLE rejects checkpoint row-shards and reloads")
++
++    def load_mmap(self, path: str) -> None:
++        if self._mmap_owner is not None or self._closed or self._failed:
++            raise RuntimeError("Disk BF16 PLE rejects mmap reload")
++        from ..intel_checkpoint import map_ple_table
++
++        owner = map_ple_table(path)
++        table = owner["table"]
++        if (
++            not isinstance(table, torch.Tensor)
++            or table.device.type != "cpu"
++            or table.dtype != torch.bfloat16
++            or tuple(table.shape) != (self.org_vocab_size, self.embedding_dim)
++            or not table.is_contiguous()
++            or table.requires_grad
++            or table.is_pinned()
++        ):
++            raise ValueError("Disk BF16 PLE requires a contiguous CPU BF16 table")
++        _protect_disk_bf16_mapping(table, path, owner["file_stat"])
++        self._mmap_owner = owner
++        self._table = table
++        logger.info(
++            "Disk BF16 PLE mmap ready: shape=%s, capacity=%d, pinned_stage_bytes=%d, "
++            "weight_elements=%d, tp_range=[%d,%d)",
++            tuple(table.shape),
++            self._capacity,
++            self._stage.numel() * self._stage.element_size(),
++            self.weight.numel(),
++            self.shard_indices.org_vocab_start_index,
++            self.shard_indices.org_vocab_end_index,
++        )
++
++    def _check_capacity(self, num_tokens: int) -> None:
++        if not 0 <= num_tokens <= self._capacity:
++            raise ValueError(
++                f"Disk BF16 PLE stage overflow: {num_tokens} > {self._capacity}"
++            )
++        if self._closed or self._failed:
++            raise RuntimeError("Disk BF16 PLE stage is closed or quarantined")
++        if self._stream_mod.is_current_stream_capturing():
++            raise RuntimeError("Disk BF16 PLE cannot prepare host rows inside capture")
++
++    def _wait_for_stage(self) -> None:
++        if self._pending:
++            try:
++                self._copy_event.synchronize()
++            except BaseException:
++                self._failed = True
++                _disk_bf16_quarantine.append(self)
++                raise
++            self._pending = False
++
++    def _fill_stage(
++        self,
++        ids_cpu: torch.Tensor,
++        num_tokens: int,
++        is_padding_cpu: torch.Tensor | None,
++        num_tokens_padded: int,
++    ) -> None:
++        """CPU-only selected-row gather; pads/non-owned contributions are zero."""
++        # Only this prefix is copied to the device producer for this dispatch.
++        # Clear padded rows as well as actual rows, preserving graph padding.
++        self._stage[:num_tokens_padded].zero_()
++        ids = ids_cpu[:num_tokens].reshape(-1)
++        active = torch.ones_like(ids, dtype=torch.bool)
++        if is_padding_cpu is not None:
++            active = (~is_padding_cpu[:num_tokens]).repeat_interleave(self._heads)
++        active_ids = ids[active]
++        if active_ids.numel() and (
++            active_ids.min() < 0 or active_ids.max() >= self.org_vocab_size
++        ):
++            raise ValueError("Disk BF16 PLE received an out-of-table row ID")
++        owned = (
++            active
++            & (ids >= self.shard_indices.org_vocab_start_index)
++            & (ids < self.shard_indices.org_vocab_end_index)
++        )
++        # Advanced indexing allocates at most dispatch capacity, never a shard.
++        stage = self._stage[:num_tokens].view(-1, self.embedding_dim)
++        stage[owned] = self._table[ids[owned]]
++
++    def prepare(
++        self,
++        ngram_ids: torch.Tensor | None,
++        num_tokens: int,
++        num_tokens_padded: int,
++        *,
++        is_padding: torch.Tensor | None = None,
++    ) -> None:
++        """Refresh the fixed GPU producer outside forward, including FULL replay."""
++        self._check_capacity(num_tokens_padded)
++        if not 0 <= num_tokens <= num_tokens_padded:
++            raise ValueError("Disk BF16 PLE invalid actual/padded token counts")
++        if not self._lock.acquire(blocking=False):
++            raise RuntimeError("Concurrent Disk BF16 PLE stage preparation")
++        try:
++            stream = self._stream_mod.current_stream()
++            thread = threading.get_ident()
++            # The worker RPC loop serializes prepare -> forward/replay. Host
++            # ownership may change only between these submitted dispatches.
++            # Recheck after acquiring the lock: close/failure may have raced us.
++            self._check_capacity(num_tokens_padded)
++            self._wait_for_stage()  # CPU DMA source must be safe before refill.
++            if self._owner_stream is not None and (
++                stream != self._owner_stream or thread != self._owner_thread
++            ):
++                # The copy event precedes the model's GPU reads. Drain the OLD
++                # stream as well, including FULL replay which bypasses Python.
++                # This occurs only on ownership changes, outside capture; the
++                # ordinary same-owner path retains current-stream ordering.
++                try:
++                    self._owner_stream.synchronize()
++                except BaseException:
++                    self._failed = True
++                    _disk_bf16_quarantine.append(self)
++                    raise
++            # Publish the new owner only after both fences have succeeded.
++            self._owner_stream, self._owner_thread = stream, thread
++            if ngram_ids is None:
++                # Deterministic dummy contents before warmup/capture; no table IO.
++                self._stage[:num_tokens_padded].zero_()
++            else:
++                if (
++                    self._table is None
++                    or ngram_ids.dtype != torch.int64
++                    or tuple(ngram_ids.shape) != (num_tokens_padded, self._heads)
++                    or ngram_ids.device != self._prefetch_buffer.device
++                ):
++                    raise ValueError("Disk BF16 PLE missing mmap or invalid IDs")
++                if is_padding is not None and (
++                    is_padding.dtype != torch.bool
++                    or tuple(is_padding.shape) != (num_tokens_padded,)
++                    or is_padding.device != self._prefetch_buffer.device
++                ):
++                    raise ValueError("Disk BF16 PLE invalid padding mask")
++                ids_cpu = ngram_ids.to(device="cpu", non_blocking=False)
++                is_padding_cpu = (
++                    is_padding.to(device="cpu", non_blocking=False)
++                    if is_padding is not None
++                    else None
++                )
++                self._fill_stage(ids_cpu, num_tokens, is_padding_cpu, num_tokens_padded)
++            if num_tokens_padded:
++                # Same-stream ordering prevents overwrite while a previous graph
++                # reads the GPU buffer. The event protects the CPU source.
++                self._pending = True
++                try:
++                    self._prefetch_buffer[:num_tokens_padded].copy_(
++                        self._stage[:num_tokens_padded], non_blocking=True
++                    )
++                    self._copy_event.record(stream)
++                except BaseException:
++                    self._failed = True
++                    _disk_bf16_quarantine.append(self)
++                    raise
++            self._prepared_tokens = num_tokens_padded
++        finally:
++            self._lock.release()
++
++    def start_prefetch(self, ngram_ids: torch.Tensor) -> None:
++        # Disk IDs and DMA are prepared by ModelState, outside captured forward.
++        return None
++
++    @eager_break_during_capture
++    def _finalize_prefetch(
++        self, prefetch_output: torch.Tensor, output: torch.Tensor
++    ) -> None:
++        if self._closed or self._failed or self._prepared_tokens != output.shape[0]:
++            raise RuntimeError("Disk BF16 PLE consumer has no prepared dispatch")
++        embeddings = self._reduce_etp_embeddings(prefetch_output[: output.shape[0]])
++        output.copy_(embeddings.flatten(-2))
++
++    def close(self) -> None:
++        # Worker lifetime owns all buffers. Explicit teardown fences before free.
++        if getattr(self, "_closed", True):
++            return
++        if not self._lock.acquire(blocking=False):
++            raise RuntimeError("Cannot close a busy Disk BF16 PLE stage")
++        try:
++            if self._failed:
++                raise RuntimeError("Cannot release a quarantined Disk BF16 PLE stage")
++            self._wait_for_stage()
++            # Also drain graph readers of the GPU destination.
++            if self._owner_stream is not None:
++                try:
++                    self._owner_stream.synchronize()
++                except BaseException:
++                    self._failed = True
++                    _disk_bf16_quarantine.append(self)
++                    raise
++            self._closed = True
++        finally:
++            self._lock.release()
++
++    def __del__(self):
++        try:
++            self.close()
++        except BaseException:
++            _disk_bf16_quarantine.append(self)
+diff --git a/vllm/models/qwen4_exp/intel_checkpoint.py b/vllm/models/qwen4_exp/intel_checkpoint.py
+new file mode 100644
+index 0000000..863b271
+--- /dev/null
++++ b/vllm/models/qwen4_exp/intel_checkpoint.py
+@@ -0,0 +1,82 @@
++# Copyright Wulf. Qwen model data remains under the Qwen Community License 1.0.
++# Adapted for the v0.33 source port for Wulf with Codex.
++"""Pinned Intel PLE layout and bounded private mapping; no model conversion."""
++
++import json
++import mmap
++import os
++import struct
++from typing import BinaryIO
++
++PLE_FILE = "model-00016-of-00017.safetensors"
++PLE_PREFIX = "model.language_model.layers.1.ple.ple_embedding.ngram_embedding.shard_"
++PLE_ROWS = 2500012
++PLE_WIDTH = 160
++PLE_SHARDS = 128
++PLE_BYTES = PLE_ROWS * PLE_WIDTH * 2
++PLE_OFFSET = 20736
++PLE_FILE_BYTES = 102400512256
++
++
++def _unique_header(pairs: list[tuple[str, object]]) -> dict:
++    header: dict = {}
++    for key, value in pairs:
++        if key in header:
++            raise ValueError("Duplicate Intel PLE header key: " + key)
++        header[key] = value
++    return header
++
++
++def _ple_layout(stream: BinaryIO) -> tuple[int, int, int]:
++    """Reject changed dtype, numeric shard order, gaps, overlaps and truncation."""
++    if os.fstat(stream.fileno()).st_size != PLE_FILE_BYTES:
++        raise ValueError("Intel PLE file size differs from the pinned layout")
++    size = struct.unpack("<Q", stream.read(8))[0]
++    if size != PLE_OFFSET - 8:
++        raise ValueError("Intel PLE header size differs from the pinned layout")
++    header = json.loads(stream.read(size), object_pairs_hook=_unique_header)
++    names = {f"{PLE_PREFIX}{i}.weight" for i in range(PLE_SHARDS)}
++    if set(header) - {"__metadata__"} != names:
++        raise ValueError("Intel PLE tensor inventory differs from the pinned layout")
++    for i in range(PLE_SHARDS):
++        entry = header[f"{PLE_PREFIX}{i}.weight"]
++        if (
++            entry["dtype"] != "BF16"
++            or entry["shape"] != [PLE_ROWS, PLE_WIDTH]
++            or entry["data_offsets"] != [i * PLE_BYTES, (i + 1) * PLE_BYTES]
++        ):
++            raise ValueError("Invalid Intel PLE numeric shard layout: " + str(i))
++    if PLE_OFFSET + PLE_SHARDS * PLE_BYTES != PLE_FILE_BYTES:
++        raise ValueError("Intel PLE payload does not exactly fill the pinned file")
++    return PLE_OFFSET, PLE_SHARDS * PLE_ROWS, PLE_WIDTH
++
++
++def ple_layout(path: str | os.PathLike) -> tuple[int, int, int]:
++    with open(path, "rb") as stream:
++        return _ple_layout(stream)
++
++
++def map_ple_table(path: str | os.PathLike) -> dict:
++    """Return the tensor and mapping owner for immediate read-only protection.
++
++    A private writable view lets torch.frombuffer construct the tensor. The
++    caller must mprotect it before lookup; neither step touches table pages.
++    """
++    import torch
++
++    with open(path, "rb") as stream:
++        offset, rows, width = _ple_layout(stream)
++        aligned = offset // mmap.ALLOCATIONGRANULARITY * mmap.ALLOCATIONGRANULARITY
++        delta = offset - aligned
++        owner = mmap.mmap(
++            stream.fileno(),
++            delta + rows * width * 2,
++            flags=mmap.MAP_PRIVATE,
++            prot=mmap.PROT_READ | mmap.PROT_WRITE,
++            offset=aligned,
++        )
++        file_stat = os.fstat(stream.fileno())
++    table = torch.frombuffer(
++        owner, dtype=torch.bfloat16, count=rows * width, offset=delta
++    ).view(rows, width)
++    return {"mapping": owner, "table": table, "file_stat": file_stat}
+diff --git a/vllm/models/qwen4_exp/nvidia/b70_c1_graph.py b/vllm/models/qwen4_exp/nvidia/b70_c1_graph.py
+new file mode 100644
+index 0000000..c23dff7
+--- /dev/null
++++ b/vllm/models/qwen4_exp/nvidia/b70_c1_graph.py
+@@ -0,0 +1,59 @@
++# SPDX-License-Identifier: Apache-2.0
++"""C1 graphs for stateless HC math; communication and hybrid state stay eager."""
++
++import os
++import threading
++from contextlib import contextmanager
++
++import torch
++
++_scope = threading.local()
++
++
++@contextmanager
++def hc_graph_scope(width):
++    previous = getattr(_scope, "active", False)
++    _scope.active = width in (4, 8) and os.getenv("VLLM_XPU_C1_HC_GRAPH", "1") == "1"
++    try:
++        yield
++    finally:
++        _scope.active = previous
++
++
++def replay_hc(module, name, forward, args):
++    """Return a fixed-address HC result, or use eager outside the C1 scope."""
++    from .b70_prefill_hc import prefill_hc
++
++    prefilled = prefill_hc(module, name, forward, args)
++    if prefilled is not None:
++        return prefilled
++    if not getattr(_scope, "active", False) or torch.xpu.is_current_stream_capturing():
++        return forward(*args)
++    entries = getattr(module, "_c1_hc_graphs", None)
++    if entries is None:
++        entries = module._c1_hc_graphs = {}
++    signature = tuple(
++        (tuple(x.shape), x.dtype, x.device) if x is not None else None for x in args
++    )
++    entry = entries.get(name)
++    if entry is not None and entry["signature"] != signature:
++        return forward(*args)
++    if entry is None:
++        if not hasattr(_scope, "pool"):
++            _scope.pool = torch.xpu.graph_pool_handle()
++        inputs = tuple(x.clone() if x is not None else None for x in args)
++        # HC is stateless: warmup and capture cannot advance target caches.
++        forward(*inputs)
++        graph = torch.xpu.XPUGraph()
++        with torch.xpu.graph(graph, pool=_scope.pool):
++            output = forward(*inputs)
++        entry = entries[name] = dict(
++            signature=signature, inputs=inputs, output=output, graph=graph, replays=0
++        )
++    else:
++        for destination, source in zip(entry["inputs"], args):
++            if destination is not None:
++                destination.copy_(source)
++    entry["graph"].replay()
++    entry["replays"] += 1
++    return entry["output"]
+diff --git a/vllm/models/qwen4_exp/nvidia/b70_disk.py b/vllm/models/qwen4_exp/nvidia/b70_disk.py
+new file mode 100644
+index 0000000..66ddf0c
+--- /dev/null
++++ b/vllm/models/qwen4_exp/nvidia/b70_disk.py
+@@ -0,0 +1,2 @@
++"""DFlash2 disk PLE uses the v0.33 common prefetch interface."""
++from ..common.disk_ple import Qwen4ExpPLEDiskBF16Embedding
+diff --git a/vllm/models/qwen4_exp/nvidia/b70_hc_gemm.py b/vllm/models/qwen4_exp/nvidia/b70_hc_gemm.py
+new file mode 100644
+index 0000000..7b2814f
+--- /dev/null
++++ b/vllm/models/qwen4_exp/nvidia/b70_hc_gemm.py
+@@ -0,0 +1,203 @@
++# SPDX-License-Identifier: Apache-2.0
++"""Fixed-order BF16 HC down projection with FP32 accumulation."""
++
++import os
++from pathlib import Path
++
++import torch
++
++from vllm.triton_utils import tl, triton
++
++_large_hc = None
++
++
++@triton.jit(do_not_specialize=["M"])
++def _ordered_hc_gemm(
++    x,
++    weight,
++    output,
++    M,
++    N: tl.constexpr,
++    K: tl.constexpr,
++    XS0: tl.constexpr,
++    XS1: tl.constexpr,
++    WS0: tl.constexpr,
++    WS1: tl.constexpr,
++    VALID_N: tl.constexpr,
++    BM: tl.constexpr = 16,
++    BN: tl.constexpr = 32,
++    BK: tl.constexpr = 128,
++):
++    rows = tl.program_id(0) * BM + tl.arange(0, BM)
++    cols = tl.program_id(1) * BN + tl.arange(0, BN)
++    inner = tl.arange(0, BK)
++    accumulator = tl.zeros((BM, BN), tl.float32)
++    for step in range(triton.cdiv(K, BK)):
++        kk = step * BK + inner
++        a = tl.load(
++            x + rows[:, None] * XS0 + kk[None, :] * XS1,
++            (rows[:, None] < M) & (kk[None, :] < K),
++            other=0,
++        )
++        b = tl.load(
++            weight + cols[None, :] * WS0 + kk[:, None] * WS1,
++            (cols[None, :] < VALID_N) & (kk[:, None] < K),
++            other=0,
++        )
++        accumulator += tl.dot(a, b)
++    tl.store(
++        output + rows[:, None] * N + cols[None, :],
++        accumulator,
++        (rows[:, None] < M) & (cols[None, :] < N),
++    )
++
++
++def ordered_hc_gemm(x, weight, valid_columns):
++    global _large_hc
++    assert x.dtype == weight.dtype == torch.bfloat16
++    rows, inner = x.shape
++    columns = weight.shape[0]
++    assert inner == weight.shape[1] and 0 < valid_columns <= columns
++    if (
++        256 < rows <= 1024
++        and inner == 10240
++        and columns in (320, 336)
++        and valid_columns == (324 if columns == 336 else 320)
++        and x.device.type == "xpu"
++        and x.is_contiguous()
++        and weight.is_contiguous()
++    ):
++        # Block loads and DPAS consume the existing BF16 checkpoint layout.
++        # The native FP32 accumulation matches the ordered projection exactly;
++        # neither a transposed weight copy nor padded token rows are needed.
++        if _large_hc is None:
++            import vllm_xpu_kernels
++
++            torch.ops.load_library(str(
++                Path(vllm_xpu_kernels.__file__).with_name("liblong_hc.so")
++            ))
++            _large_hc = torch.ops.long_hc.forward
++        return _large_hc(x, weight, valid_columns, 1)
++    if (
++        (1 <= rows <= 8 or (9 <= rows <= 32 and inner == 10240))
++        and x.stride(1) == weight.stride(1) == 1
++        and os.getenv("VLLM_XPU_C1_PARALLEL_HC", "1") == "1"
++    ):
++        return parallel_hc_gemm(x, weight, valid_columns)
++    output = torch.empty((rows, columns), device=x.device, dtype=x.dtype)
++    # Preserve fixed K ordering; wide prefill tiles share more weight loads.
++    bm, bn = (32, 64) if rows >= 256 and inner == 10240 else (16, 32)
++    _ordered_hc_gemm[(triton.cdiv(rows, bm), triton.cdiv(columns, bn))](
++        x,
++        weight,
++        output,
++        rows,
++        columns,
++        inner,
++        *x.stride(),
++        *weight.stride(),
++        valid_columns,
++        BM=bm, BN=bn,
++        num_warps=4,
++        num_stages=2,
++    )
++    return output
++
++
++@triton.jit
++def _hc_partials(
++    x,
++    weight,
++    partials,
++    M: tl.constexpr,
++    N: tl.constexpr,
++    K: tl.constexpr,
++    VALID_N: tl.constexpr,
++    XS: tl.constexpr,
++    WS: tl.constexpr,
++):
++    rows = tl.arange(0, 16)
++    cols = tl.program_id(1) * 32 + tl.arange(0, 32)
++    kk = tl.program_id(0) * 128 + tl.arange(0, 128)
++    a = tl.load(
++        x + rows[:, None] * XS + kk[None, :],
++        (rows[:, None] < M) & (kk[None, :] < K),
++        other=0,
++    )
++    b = tl.load(
++        weight + cols[None, :] * WS + kk[:, None],
++        (cols[None, :] < VALID_N) & (kk[:, None] < K),
++        other=0,
++    )
++    value = tl.dot(a, b)
++    tl.store(
++        partials + tl.program_id(0) * M * N + rows[:, None] * N + cols[None, :],
++        value,
++        (rows[:, None] < M) & (cols[None, :] < N),
++    )
++
++
++@triton.jit
++def _hc_finish(partials, output, M: tl.constexpr, N: tl.constexpr, TILES: tl.constexpr):
++    offsets = tl.program_id(0) * 256 + tl.arange(0, 256)
++    value = tl.full((256,), 0, tl.float32)
++    for step in range(TILES):
++        value += tl.load(partials + step * M * N + offsets, offsets < M * N, other=0)
++    tl.store(output + offsets, value, offsets < M * N)
++
++
++@triton.jit
++def _hc_partials_batched(x, weight, out, M: tl.constexpr, N: tl.constexpr, K: tl.constexpr,
++             VALID: tl.constexpr, XS: tl.constexpr, WS: tl.constexpr,
++             BK: tl.constexpr, BN: tl.constexpr):
++    rows = tl.program_id(2) * 16 + tl.arange(0, 16)
++    cols = tl.program_id(1) * BN + tl.arange(0, BN)
++    kk = tl.program_id(0) * BK + tl.arange(0, BK)
++    a = tl.load(x + rows[:, None] * XS + kk[None, :],
++                (rows[:, None] < M) & (kk[None, :] < K), other=0)
++    b = tl.load(weight + cols[None, :] * WS + kk[:, None],
++                (cols[None, :] < VALID) & (kk[:, None] < K), other=0)
++    y = tl.dot(a, b)
++    tl.store(out + tl.program_id(0) * M * N + rows[:, None] * N + cols[None, :],
++             y, (rows[:, None] < M) & (cols[None, :] < N))
++
++
++def parallel_hc_gemm(x, weight, valid_columns):
++    """BF16 products with deterministic, batch-invariant FP32 tile summation.
++
++    This changes the FP32 addition order from the serial K-loop. It preserves
++    BF16 inputs/output and avoids both atomics and width-dependent reductions.
++    """
++    rows, inner = x.shape
++    columns = weight.shape[0]
++    block_k = 64 if rows > 8 else 128
++    tiles = triton.cdiv(inner, block_k)
++    partials = torch.empty((tiles, rows, columns), dtype=torch.float32, device=x.device)
++    output = torch.empty((rows, columns), dtype=x.dtype, device=x.device)
++    if rows > 8:
++        _hc_partials_batched[(tiles, triton.cdiv(columns, 32), triton.cdiv(rows, 16))](
++            x, weight, partials, rows, columns, inner, valid_columns,
++            x.stride(0), weight.stride(0), block_k, 32, num_warps=4,
++        )
++    else:
++        _hc_partials[(tiles, triton.cdiv(columns, 32))](
++            x,
++            weight,
++            partials,
++            rows,
++            columns,
++            inner,
++            valid_columns,
++            x.stride(0),
++            weight.stride(0),
++            num_warps=4,
++        )
++    _hc_finish[(triton.cdiv(rows * columns, 256),)](
++        partials,
++        output,
++        rows,
++        columns,
++        tiles,
++        num_warps=4,
++    )
++    return output
+diff --git a/vllm/models/qwen4_exp/nvidia/b70_hyperconnection.py b/vllm/models/qwen4_exp/nvidia/b70_hyperconnection.py
+new file mode 100644
+index 0000000..4fe2515
+--- /dev/null
++++ b/vllm/models/qwen4_exp/nvidia/b70_hyperconnection.py
+@@ -0,0 +1,375 @@
++# Modified by Wulf for B70 Flash-Next Disk; upstream terms are retained.
++# SPDX-License-Identifier: Apache-2.0
++# SPDX-FileCopyrightText: Copyright contributors to the vLLM project
++"""HyperConnection (Gated Residual) utilities — NVIDIA model variant.
++
++Implements the HyperConnection residual scheme proposed in
++"HyperConnections" (https://arxiv.org/abs/2409.19606). This NVIDIA variant
++delays each HC combine to the following HC mix boundary. HC glue kernels,
++including fused combine+RMSNorm, live in ``ops/hc.py``; projections remain
++standard vLLM Linear modules.
++
++Hidden states between layers have shape ``[..., HC*HS]`` with HS inner
++(HC outer, HS inner — checkpoint-native layout).
++
++Typical usage inside a transformer decoder layer::
++
++    self.attn_hc = GatedResidual(hc_config)
++
++    hidden_states, block_input, injection = self.attn_hc.mix(hidden_states)
++    attention_output = attention(block_input)
++    hidden_states, block_input, injection = self.mlp_hc.combine_and_mix(
++        hidden_states, attention_output, injection
++    )
++"""
++
++import torch
++import torch.nn.functional as F
++from torch import nn
++
++from vllm.config import get_current_vllm_config
++from vllm.logger import init_logger
++from vllm.model_executor.layers.linear import (
++    MergedColumnParallelLinear,
++    ReplicatedLinear,
++)
++from vllm.model_executor.models.utils import maybe_prefix
++
++from ..common.hyperconnection import (
++    GroupedGemmaRMSNorm,
++    HyperConnectionConfig,
++)
++from .ops.hc import (
++    grouped_gemma_rmsnorm,
++    hc_combine,
++    hc_combine_norm,
++    hc_gate_mix,
++    hc_silu,
++)
++
++logger = init_logger(__name__)
++
++
++def _is_xpu() -> bool:
++    from vllm.platforms import current_platform
++
++    return current_platform.is_xpu()
++
++
++# ---------------------------------------------------------------------------
++# XPU HC down-GEMM determinism (K-split)
++#
++# The skinny BF16 HC down projection (K = hyper_hidden_size = 10240 -> N in
++# {336 merged, 320 final mixer}) is run-to-run racy on XPU for row widths
++# > 64: the oneDNN accumulation re-samples its split-K draw every execution,
++# which is what made PIECEWISE-256 prefill replay diverge from eager
++# (bitwise-equal inputs, few-ULP output flips). Replacing the single GEMM
++# with two K=5120 GEMMs over contiguous weight halves is bitwise-deterministic
++# in eager, fresh-clone and graph capture+replay at every width tested
++# (M in {64, 128, 256}; 0/512 flips at M=256). See
++# docs/HC_DOWN_GEMM_FIX_RECON.md for the offline campaign.
++#
++# The v0.32 Torch 2.14 BF16 path also changes valid outputs at M=1.
++# DFlash2 therefore uses an explicitly ordered projection at every width.
++# The legacy target-only split policy below remains unchanged.
++# CUDA is untouched: the halves are prepared only on XPU
++# (UnquantizedLinearMethod.process_weights_after_loading calls the
++# ``hc_ksplit_prepare`` marker set below), so the split branch is never
++# armed on non-XPU platforms.
++# ---------------------------------------------------------------------------
++_HC_KSPLIT_MAX_STOCK_WIDTH = 64
++_HC_KSPLIT_WIDTHS_LOGGED: set[int] = set()
++
++
++# ---------------------------------------------------------------------------
++# Gated-residual variant
++# ---------------------------------------------------------------------------
++class GatedResidual(nn.Module):
++    """Gated HyperConnection with learnable low-rank mixing and injection.
++
++    ``combine_and_mix()`` runs the pre pipeline (grouped GemmaRMSNorm -> merged
++    low-rank down+inject GEMM -> silu -> up GEMM -> sigmoid -> gated mean
++    over the HC streams). When passed a pending block output, it fuses its
++    residual combine with the RMSNorm. A missing injection selects unit-weight
++    combine. Final mixers use ``use_combine=False`` and do not produce a new
++    injection.
++
++    Weights: the norm owns the grouped GemmaRMSNorm affine; the projections
++    are vLLM Linear modules (merged replicated linear for down+inject), so
++    GEMM dispatch (e.g. the low-latency skinny GEMM) applies through the
++    standard quant_method mechanism.
++    """
++
++    def __init__(
++        self,
++        config: HyperConnectionConfig,
++        use_combine: bool = True,
++        prefix: str = "",
++    ) -> None:
++        super().__init__()
++        self.config = config
++        self.lora_rank = config.hc_lowrank
++        self.hc_count = config.hc_count
++        self.hidden_size = config.hidden_size
++        self.use_combine = use_combine
++        self._astra_hc_up_weight = None
++        self._astra_hc_up_prepared = False
++        spec = get_current_vllm_config().speculative_config
++        self._ordered_hc = (
++            spec is not None
++            and spec.method == "dflash"
++            and spec.draft_model_config.architectures == ["DFlash2DraftModel"]
++            and config.params_dtype == torch.bfloat16
++            and _is_xpu()
++        )
++        if self._ordered_hc:
++            logger.info_once(
++                "DFlash2 target HC uses fixed-order BF16 down projection "
++                "with FP32 accumulation"
++            )
++
++        norm_size = (
++            self.hyper_hidden_size if config.hc_per_branch_norm else config.hidden_size
++        )
++        group_size = config.hidden_size if config.hc_per_branch_norm else None
++        # Normalize each H-sized HC stream independently while retaining a
++        # separate affine weight for every element of the HC*H layout.
++        self.hc_norm = GroupedGemmaRMSNorm(
++            norm_size,
++            eps=config.rms_norm_eps,
++            group_size=group_size,
++            dtype=config.params_dtype,
++        )
++
++        # -- vLLM Linear weights --------------------------------------------
++        # The merged skinny-GEMM shape is physically padded to 16 rows to ensure
++        # good alignment and performant implementation chosen by CuBLAS heuristics.
++        self.pad_size = (-(self.lora_rank + self.hc_count)) % 16 if use_combine else 0
++        if use_combine:
++            self.input_mix_weight_down_block_inject = MergedColumnParallelLinear(
++                self.hyper_hidden_size,
++                [self.lora_rank, self.hc_count]
++                + ([self.pad_size] if self.pad_size else []),
++                bias=False,
++                params_dtype=config.params_dtype,
++                quant_config=None,
++                prefix=maybe_prefix(prefix, "input_mix_weight_down_block_inject"),
++                return_bias=False,
++                disable_tp=True,
++            )
++        else:
++            self.input_mix_weight_down = ReplicatedLinear(
++                self.hyper_hidden_size,
++                self.lora_rank,
++                bias=False,
++                params_dtype=config.params_dtype,
++                quant_config=None,
++                prefix=maybe_prefix(prefix, "input_mix_weight_down"),
++                return_bias=False,
++            )
++        self.input_mix_weight_up = ReplicatedLinear(
++            self.lora_rank,
++            self.hyper_hidden_size,
++            bias=False,
++            params_dtype=config.params_dtype,
++            quant_config=None,
++            prefix=maybe_prefix(prefix, "input_mix_weight_up"),
++            return_bias=False,
++        )
++
++        # -- XPU deterministic K-split state --------------------------------
++        # Contiguous K=5120 halves of the down weight, prepared once at load
++        # time on XPU only (see _prepare_kdown_ksplit). ``None`` everywhere
++        # else, which keeps the stock single GEMM armed.
++        self._kdown_lo: torch.Tensor | None = None
++        self._kdown_hi: torch.Tensor | None = None
++        self._kdown_k = 0
++        down_linear = (
++            self.input_mix_weight_down_block_inject
++            if use_combine
++            else self.input_mix_weight_down
++        )
++        # Marker consumed by
++        # UnquantizedLinearMethod.process_weights_after_loading (XPU only).
++        down_linear.hc_ksplit_prepare = self._prepare_kdown_ksplit
++
++    def _prepare_kdown_ksplit(self) -> None:
++        """One-time contiguous K-half prep for the deterministic XPU split."""
++        if self._ordered_hc or self._kdown_lo is not None:
++            return
++        down_linear = (
++            self.input_mix_weight_down_block_inject
++            if self.use_combine
++            else self.input_mix_weight_down
++        )
++        weight = down_linear.weight
++        if weight is None or weight.ndim != 2 or weight.shape[1] % 2 != 0:
++            logger.debug(
++                "HC down GEMM %s: unexpected weight geometry %s; K-split left disarmed",
++                type(down_linear).__name__,
++                None if weight is None else tuple(weight.shape),
++            )
++            return
++        self._kdown_k = weight.shape[1] // 2
++        self._kdown_lo = weight.data[:, : self._kdown_k].contiguous()
++        self._kdown_hi = weight.data[:, self._kdown_k :].contiguous()
++        logger.debug(
++            "HC down GEMM: K-split halves prepared (K=%d -> 2x%d, N=%d)",
++            weight.shape[1],
++            self._kdown_k,
++            weight.shape[0],
++        )
++
++    def _mix_up(self, lora: torch.Tensor, normalized: torch.Tensor) -> torch.Tensor:
++        if self._ordered_hc and not self._astra_hc_up_prepared:
++            from vllm_xpu_kernels.astra_structural import prepare_hc_weight
++
++            # Resolve the supported checkpoint layout before graph capture.
++            # This aliases the loaded weight and allocates no duplicate table.
++            self._astra_hc_up_weight = prepare_hc_weight(self.input_mix_weight_up.weight)
++            self._astra_hc_up_prepared = True
++        if self._astra_hc_up_weight is not None and 1 <= lora.shape[0] <= 8:
++            from vllm_xpu_kernels.astra_structural import hc_up_mix
++
++            return hc_up_mix(lora, self._astra_hc_up_weight, normalized)
++        return hc_gate_mix(normalized, self.input_mix_weight_up(lora), self.hc_count)
++
++    def _down_gemm(self, xn: torch.Tensor) -> torch.Tensor:
++        """Use ordered DFlash2 projection or the legacy target-only policy."""
++        if self._ordered_hc:
++            from .b70_hc_gemm import ordered_hc_gemm
++
++            linear = (
++                self.input_mix_weight_down_block_inject
++                if self.use_combine
++                else self.input_mix_weight_down
++            )
++            valid = self.lora_rank + (self.hc_count if self.use_combine else 0)
++            return ordered_hc_gemm(xn, linear.weight, valid)
++        if (
++            self._kdown_lo is not None
++            and _is_xpu()
++            and xn.shape[0] > _HC_KSPLIT_MAX_STOCK_WIDTH
++        ):
++            width = xn.shape[0]
++            if width not in _HC_KSPLIT_WIDTHS_LOGGED:
++                _HC_KSPLIT_WIDTHS_LOGGED.add(width)
++                logger.info(
++                    "HC down GEMM: deterministic K-split engaged at row width "
++                    "%d (stock single GEMM only at widths <= %d)",
++                    width,
++                    _HC_KSPLIT_MAX_STOCK_WIDTH,
++                )
++            return F.linear(xn[..., : self._kdown_k], self._kdown_lo) + F.linear(
++                xn[..., self._kdown_k :], self._kdown_hi
++            )
++        if self.use_combine:
++            return self.input_mix_weight_down_block_inject(xn)
++        return self.input_mix_weight_down(xn)
++
++    def mix(
++        self, hidden_states: torch.Tensor
++    ) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor | None]:
++        if self._ordered_hc:
++            from .b70_c1_graph import replay_hc
++
++            return replay_hc(self, "mix", self._mix_eager, (hidden_states,))
++        return self._mix_eager(hidden_states)
++
++    def _mix_eager(
++        self, hidden_states: torch.Tensor
++    ) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor | None]:
++        xn = grouped_gemma_rmsnorm(
++            hidden_states,
++            self.hc_norm.weight,
++            self.config.rms_norm_eps,
++            self.hc_count,
++        )
++
++        if self.use_combine:
++            # produce injection logits for combine
++            split_sizes = [self.lora_rank, self.hc_count, self.pad_size]
++            down_and_injection = self._down_gemm(xn)
++            lora, injection, _ = down_and_injection.split(split_sizes, dim=-1)
++        else:
++            lora = self._down_gemm(xn)
++            injection = None
++
++        lora = hc_silu(lora, self.hc_count)
++        block_input = self._mix_up(lora, xn)
++
++        return hidden_states, block_input, injection
++
++    def combine_and_mix(
++        self,
++        hidden_states: torch.Tensor,
++        prev_block_output: torch.Tensor,
++        prev_injection: torch.Tensor | None,
++    ) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor | None]:
++        if self._ordered_hc:
++            from .b70_c1_graph import replay_hc
++
++            return replay_hc(
++                self,
++                "combine_and_mix",
++                self._combine_and_mix_eager,
++                (hidden_states, prev_block_output, prev_injection),
++            )
++        return self._combine_and_mix_eager(
++            hidden_states, prev_block_output, prev_injection
++        )
++
++    def _combine_and_mix_eager(
++        self,
++        hidden_states: torch.Tensor,
++        prev_block_output: torch.Tensor,
++        prev_injection: torch.Tensor | None,
++    ) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor | None]:
++        """Consume a pending combine, then prepare the next block input.
++
++        ``hidden_states`` is the multi-stream state from before the pending
++        block's mix. Its combine with ``block_output`` is fused with this
++        module's input RMSNorm. A missing injection applies the block output
++        to every stream with unit weight.
++        """
++        hidden_states, xn = hc_combine_norm(
++            hidden_states,
++            prev_block_output,
++            prev_injection,
++            self.hc_norm.weight,
++            self.config.rms_norm_eps,
++            self.hc_count,
++        )
++
++        if self.use_combine:
++            # produce injection logits for combine
++            split_sizes = [self.lora_rank, self.hc_count, self.pad_size]
++            down_and_injection = self._down_gemm(xn)
++            lora, injection, _ = down_and_injection.split(split_sizes, dim=-1)
++        else:
++            lora = self._down_gemm(xn)
++            injection = None
++
++        lora = hc_silu(lora, self.hc_count)
++        block_input = self._mix_up(lora, xn)
++
++        return hidden_states, block_input, injection
++
++    def combine(
++        self,
++        hidden_states: torch.Tensor,
++        block_output: torch.Tensor,
++        injection: torch.Tensor | None,
++    ) -> torch.Tensor:
++        return hc_combine(hidden_states, block_output, injection, self.hc_count)
++
++    @property
++    def hyper_hidden_size(self) -> int:
++        return self.hc_count * self.hidden_size
++
++
++__all__ = [
++    "GatedResidual",
++    "GroupedGemmaRMSNorm",
++    "HyperConnectionConfig",
++]
+diff --git a/vllm/models/qwen4_exp/nvidia/b70_prefill_hc.py b/vllm/models/qwen4_exp/nvidia/b70_prefill_hc.py
+new file mode 100644
+index 0000000..a7eb642
+--- /dev/null
++++ b/vllm/models/qwen4_exp/nvidia/b70_prefill_hc.py
+@@ -0,0 +1,71 @@
++"""Experimental bounded shared storage for stateless prefill graph regions."""
++import torch
++import torch.distributed as dist
++from vllm.distributed import get_tp_group
++
++class Regions:
++    def __init__(self):
++        self.pool=torch.xpu.graph_pool_handle();self.inputs={};self.outputs={};self.entries={};self.checks=[]
++    def call(self,module,name,fn,args):
++        m=args[0].shape[0]
++        if m <= 32 or m > 256 or torch.xpu.is_current_stream_capturing():
++            return fn(*args)
++        bucket = 256
++        key=(id(module),name,bucket,tuple(x is None for x in args))
++        stat=[]
++        for i,x in enumerate(args):
++            if x is None:stat.append(None);continue
++            signature=(name,i,tuple(x.shape[1:]),x.dtype,x.device)
++            if signature not in self.inputs:self.inputs[signature]=torch.empty((256,*x.shape[1:]),dtype=x.dtype,device=x.device)
++            y=self.inputs[signature][:bucket];y[:m].copy_(x)
++            if m<bucket:y[m:].zero_()
++            stat.append(y)
++        entry=self.entries.get(key)
++        if entry is None:
++            expected=fn(*stat);single=isinstance(expected,torch.Tensor)
++            values=(expected,) if single else expected
++            expected=tuple(x.clone() if x is not None else None for x in values)
++            outputs=[]
++            for i,x in enumerate(values):
++                if x is None:outputs.append(None);continue
++                signature=(name,i,tuple(x.shape[1:]),x.dtype,x.device)
++                if signature not in self.outputs:self.outputs[signature]=torch.empty((256,*x.shape[1:]),dtype=x.dtype,device=x.device)
++                outputs.append(self.outputs[signature][:bucket])
++            del values
++            graph=torch.xpu.XPUGraph()
++            with torch.xpu.graph(graph,pool=self.pool):
++                value=fn(*stat);values=(value,) if single else value
++                for dst,src in zip(outputs,values):
++                    if dst is not None:dst.copy_(src)
++            del value,values
++            graph.replay();torch.xpu.synchronize()
++            passed=all(torch.equal(a,b) if a is not None else b is None for a,b in zip(expected,outputs))
++            verdict=torch.tensor(int(passed),dtype=torch.int32);dist.all_reduce(verdict,op=dist.ReduceOp.MIN,group=get_tp_group().cpu_group)
++            self.checks.append(dict(name=name,bucket=bucket,passed=bool(verdict.item())))
++            assert verdict.item(),self.checks[-1]
++            entry=self.entries[key]=(graph,outputs,single)
++        else:entry[0].replay()
++        result=tuple(x[:m] if x is not None else None for x in entry[1])
++        return result[0] if entry[2] else result
++
++
++_regions = None
++
++def prefill_hc(module, name, fn, args):
++    global _regions
++    rows = args[0].shape[0]
++    if rows <= 32 or torch.xpu.is_current_stream_capturing():
++        return None
++    if _regions is None:
++        _regions = Regions()
++    if rows > 256:
++        # Profile-time initialization accounts bounded persistent storage before
++        # KV sizing. These operations are stateless and preserve the inputs.
++        warmed = getattr(module, "_prefill_hc_warmed", set())
++        if name not in warmed:
++            for width in (256,):
++                _regions.call(module, name, fn, tuple(torch.zeros_like(x[:width]) if x is not None else None for x in args))
++            warmed.add(name)
++            module._prefill_hc_warmed = warmed
++        return None
++    return _regions.call(module, name, fn, args)
+diff --git a/vllm/models/qwen4_exp/nvidia/b70_target_attention.py b/vllm/models/qwen4_exp/nvidia/b70_target_attention.py
+new file mode 100644
+index 0000000..f18f7d8
+--- /dev/null
++++ b/vllm/models/qwen4_exp/nvidia/b70_target_attention.py
+@@ -0,0 +1,98 @@
++# SPDX-License-Identifier: Apache-2.0
++"""Batch-invariant native BF16 attention for the C1 DFlash2 target."""
++
++import os
++
++import torch
++
++
++def fixed_splits(
++    q,
++    k,
++    v,
++    cu,
++    used,
++    blocks,
++    max_query,
++    causal,
++    window,
++    softcap,
++    alibi,
++    sink,
++    return_lse,
++    q_descale=None,
++):
++    value = os.getenv("VLLM_XPU_DFLASH_FIXED_SPLITS", "0")
++    if value not in ("32", "64"):
++        return None
++    if (
++        blocks is None
++        or used is None
++        or not causal
++        or return_lse
++        or alibi is not None
++        or sink is not None
++        or softcap not in (None, 0.0)
++        or q_descale is not None
++        or tuple(window) != (-1, -1)
++        or q.dtype != torch.bfloat16
++        or k.dtype != q.dtype
++        or v.dtype != q.dtype
++        or not 1 <= used.numel() <= 4
++        or cu.numel() != used.numel() + 1
++        or not 1 <= max_query <= 8
++        or q.shape != (max_query * used.numel(), 6, 256)
++        or k.ndim != 4
++        or k.shape[1:] != (832, 1, 256)
++        or v.shape != k.shape
++        or blocks.dtype != torch.int32
++    ):
++        return None
++    return int(value)
++
++
++def forward(q, k, v, out, used, blocks, max_seq_len, scale, splits):
++    # A fixed allocation and reduction schedule serves both one-token decode
++    # and verification. Live per-position lengths retain causal masking and
++    # the native short-sequence single-split rule in eager and graph replay.
++    width = q.shape[0]
++    if scale is None:
++        scale = q.shape[-1] ** -0.5
++    cu = torch.arange(width + 1, dtype=torch.int32, device=q.device)
++    dummy = torch.zeros_like(cu)
++    per_request = width // used.numel()
++    positions = torch.arange(per_request, dtype=used.dtype, device=q.device)
++    lengths = (used.reshape(-1, 1) - (per_request - 1 - positions)).reshape(-1).clamp_min(1).int()
++    tables = blocks.repeat_interleave(per_request, dim=0)
++    result, _ = torch.ops._vllm_fa2_C.varlen_fwd(
++        q,
++        k,
++        v,
++        out,
++        cu,
++        dummy,
++        lengths,
++        None,
++        tables,
++        None,
++        1,
++        max_seq_len,
++        0.0,
++        None,
++        None,
++        None,
++        scale,
++        None,
++        False,
++        False,
++        -1,
++        -1,
++        0.0,
++        False,
++        None,
++        splits,
++        False,
++        None,
++        None,
++    )
++    return result
+diff --git a/vllm/models/qwen4_exp/nvidia/b70_target_graph.py b/vllm/models/qwen4_exp/nvidia/b70_target_graph.py
+new file mode 100644
+index 0000000..4a8dc95
+--- /dev/null
++++ b/vllm/models/qwen4_exp/nvidia/b70_target_graph.py
+@@ -0,0 +1,300 @@
++# SPDX-License-Identifier: Apache-2.0
++"""C1 target replay with native row collectives and live hybrid-state metadata."""
++
++import copy
++import dataclasses
++import os
++from contextlib import contextmanager
++
++import torch
++import torch.distributed as dist
++
++from vllm.distributed import get_tp_group
++from vllm.forward_context import get_forward_context
++from vllm.logger import init_logger
++
++logger = init_logger(__name__)
++
++
++def state_routes(runner, metadata):
++    context = runner.vllm_config.compilation_config.static_forward_context
++    grouped = {}
++    for name, meta in metadata.items():
++        cache = getattr(context[name], "kv_cache", None)
++        indices = getattr(meta, "spec_state_indices_tensor", None)
++        if not isinstance(cache, (tuple, list)) or indices is None:
++            continue
++        indices = indices.flatten().long()
++        for tensor in cache:
++            key = (tensor.data_ptr(), tuple(tensor.shape), tuple(tensor.stride()))
++            if key not in grouped:
++                grouped[key] = (name, tensor, [])
++            grouped[key][2].append(indices)
++    return [
++        (name, tensor, torch.cat(indices).unique())
++        for name, tensor, indices in grouped.values()
++    ]
++
++
++def save(routes):
++    return [tensor[indices].clone() for _, tensor, indices in routes]
++
++
++def restore(routes, values):
++    for (_, tensor, indices), value in zip(routes, values):
++        tensor[indices] = value
++
++
++def clone_output(value):
++    if isinstance(value, torch.Tensor):
++        return value.clone()
++    return type(value)(clone_output(x) for x in value)
++
++
++def compare(a, b):
++    if isinstance(a, torch.Tensor):
++        return torch.equal(a, b)
++    return all(compare(x, y) for x, y in zip(a, b))
++
++
++@contextmanager
++def native_rows(width):
++    from vllm.distributed import get_tp_group
++
++    comm = get_tp_group().device_communicator
++    original = comm.all_reduce
++
++    def reduce(x):
++        if x.ndim == 2 and x.shape[0] == width and x.dtype == torch.bfloat16:
++            if (
++                comm.world_size == 4
++                and width % 8 == 0
++                and x.shape[1] == 2560
++                and os.getenv("CCL_SYCL_ALLREDUCE_LL_THRESHOLD") == "65536"
++                and os.getenv("VLLM_XPU_C1_PARTITIONED_REDUCE", "1") == "1"
++            ):
++                # The native ring changes its BF16 summation order by partition.
++                # Keep each row's quarters in the same rank-owned partition.
++                # Full 8/16/24/32-row batches preserve this partition order.
++                packed = x.reshape(width, 4, -1).transpose(0, 1).contiguous()
++                dist.all_reduce(packed, group=comm.device_group)
++                return packed.transpose(0, 1).contiguous().reshape_as(x)
++            return torch.cat([original(row) for row in x.split(1)])
++        return original(x)
++
++    comm.all_reduce = reduce
++    try:
++        yield
++    finally:
++        comm.all_reduce = original
++
++
++def stage(value, memo, bound):
++    if id(value) in memo:
++        return memo[id(value)]
++    if isinstance(value, torch.Tensor):
++        result = value.clone()
++    elif isinstance(value, dict):
++        result = {k: stage(v, memo, bound) for k, v in value.items()}
++    elif dataclasses.is_dataclass(value):
++        result = copy.copy(value)
++        for field in dataclasses.fields(value):
++            v = getattr(value, field.name)
++            setattr(result, field.name, stage(v, memo, bound))
++        if hasattr(result, "max_seq_len"):
++            result.max_seq_len = bound
++    elif isinstance(value, (tuple, list)):
++        result = type(value)(stage(v, memo, bound) for v in value)
++    else:
++        return value
++    memo[id(value)] = result
++    return result
++
++
++def update(destination, source, seen):
++    """Validate the schema, then submit required device copies together."""
++    destinations, sources = [], []
++    def visit(destination, source):
++        if id(destination) in seen:
++            return
++        seen.add(id(destination))
++        if isinstance(destination, torch.Tensor):
++            assert destination.shape == source.shape and destination.dtype == source.dtype
++            assert destination.device == source.device
++            if destination.device.type == "xpu":
++                destinations.append(destination)
++                sources.append(source)
++            else:
++                destination.copy_(source)
++        elif isinstance(destination, dict):
++            assert destination.keys() == source.keys()
++            for key in destination:
++                visit(destination[key], source[key])
++        elif dataclasses.is_dataclass(destination):
++            for field in dataclasses.fields(destination):
++                if field.name == "max_seq_len":
++                    assert getattr(source, field.name) <= destination.max_seq_len
++                    continue
++                visit(getattr(destination, field.name), getattr(source, field.name))
++        elif isinstance(destination, (tuple, list)):
++            assert len(destination) == len(source)
++            for a, b in zip(destination, source):
++                visit(a, b)
++        else:
++            assert destination == source, (destination, source)
++    visit(destination, source)
++    if destinations:
++        torch._foreach_copy_(destinations, sources)
++
++
++@contextmanager
++def staged_context(context, metadata, slots, padding):
++    previous = context.attn_metadata, context.slot_mapping, context.is_padding
++    context.attn_metadata, context.slot_mapping, context.is_padding = (
++        metadata,
++        slots,
++        padding,
++    )
++    try:
++        yield
++    finally:
++        context.attn_metadata, context.slot_mapping, context.is_padding = previous
++
++
++class TargetGraphs:
++    def __init__(self):
++        self.entries = {}
++        self.disabled = set()
++        self.replays = 0
++        self.fallbacks = 0
++        self.fallback_reasons = {}
++        self.pool = torch.xpu.graph_pool_handle()
++        self.live_checks = {}
++        self.verify_live = os.getenv("B70_DFLASH_LIVE_GRAPH_CHECKS", "0") == "1"
++
++    def fallback(self, reason, key):
++        self.fallbacks += 1
++        count = self.fallback_reasons.get(reason, 0) + 1
++        self.fallback_reasons[reason] = count
++        if count == 1 or count % 1024 == 0:
++            logger.warning("Target graph fallback: key=%s reason=%s count=%d", key, reason, count)
++
++    def run(self, runner, batch, metadata, inputs, eager):
++        # Uniform eight-row verification for one through four requests.
++        if batch.num_tokens != 8 * batch.num_reqs:
++            return eager(runner, batch, metadata, inputs)
++        if os.getenv("VLLM_XPU_DFLASH_FIXED_SPLITS", "0") in ("32", "64"):
++            # The target split schedule no longer depends on this host bound.
++            # One graph follows live device lengths across context boundaries.
++            bound = runner.model_config.max_model_len
++        else:
++            bound = max(
++                512, 1 << (int(batch.seq_lens_cpu_upper_bound[0]) - 1).bit_length()
++            )
++        key = (batch.num_reqs, bound)
++        if key in self.disabled:
++            self.fallback("disabled", key)
++            return eager(runner, batch, metadata, inputs)
++        context = get_forward_context()
++        # The runner's forward context includes target AND draft metadata.
++        # Only bind consumers in this target model: draft softmax workspaces
++        # and mappings are neither inputs nor outputs of the target graph.
++        names = getattr(self, "target_context_names", None)
++        if names is None:
++            modules = set(runner.model.modules())
++            names = self.target_context_names = frozenset(
++                name for name, module in runner.vllm_config.compilation_config.static_forward_context.items()
++                if module in modules
++            )
++            assert names and all(name in names for name in metadata if name.startswith("language_model."))
++        target_metadata = {name: value for name, value in metadata.items() if name in names}
++        target_slots = {name: value for name, value in context.slot_mapping.items() if name in names}
++        current = (inputs, target_metadata, target_slots, context.is_padding)
++        entry = self.entries.get(key)
++        if entry is not None:
++            try:
++                update(entry[2], current, set())
++            except (AssertionError, TypeError, AttributeError) as exc:
++                self.fallback(type(exc).__name__ + ": " + str(exc), key)
++                return eager(runner, batch, metadata, inputs)
++            check = self.verify_live and self.live_checks.get(key, 0) < 2
++            if check:
++                routes = state_routes(runner, metadata)
++                initial = save(routes)
++                expected = clone_output(eager(runner, batch, metadata, inputs))
++                expected_state = save(routes)
++                restore(routes, initial)
++            entry[0].replay()
++            if check:
++                torch.xpu.synchronize()
++                passed = compare(expected, entry[1]) and all(
++                    torch.equal(value, tensor[indices])
++                    for (_, tensor, indices), value in zip(routes, expected_state)
++                )
++                verdict = torch.tensor(int(passed), dtype=torch.int32)
++                dist.all_reduce(verdict, op=dist.ReduceOp.MIN,
++                                group=get_tp_group().cpu_group)
++                self.live_checks[key] = self.live_checks.get(key, 0) + 1
++                logger.info("DFlash changed-input graph check: key=%s pass=%s check=%d",
++                            key, bool(verdict.item()), self.live_checks[key])
++                if not verdict.item():
++                    restore(routes, expected_state)
++                    self.disabled.add(key)
++                    self.fallback("live_equality_failure", key)
++                    return expected
++            self.replays += 1
++            if self.replays % 1024 == 0:
++                logger.info("Target graph counters: replays=%d fallbacks=%d key=%s",
++                            self.replays, self.fallbacks, key)
++            return entry[1]
++
++        # Capture must never advance the accepted-prefix state. Several layers
++        # share cache arenas: union every layer's indices before saving them.
++        routes = state_routes(runner, metadata)
++        initial = save(routes)
++        expected = clone_output(eager(runner, batch, metadata, inputs))
++        expected_state = save(routes)
++        restore(routes, initial)
++        static = stage(current, {}, bound)
++        model_inputs, model_metadata, slots, padding = static
++        try:
++            with (
++                staged_context(context, model_metadata, slots, padding),
++                native_rows(batch.num_tokens),
++            ):
++                runner.model(**model_inputs)
++                torch.xpu.synchronize()
++                restore(routes, initial)
++                graph = torch.xpu.XPUGraph()
++                with torch.xpu.graph(graph, pool=self.pool):
++                    output = runner.model(**model_inputs)
++            restore(routes, initial)
++            del initial
++            graph.replay()
++            torch.xpu.synchronize()
++            # Check every state exactly without another full observed-state copy.
++            passed = compare(expected, output) and all(
++                torch.equal(value, tensor[indices])
++                for (_, tensor, indices), value in zip(routes, expected_state)
++            )
++            verdict = torch.tensor(int(passed), dtype=torch.int32)
++            dist.all_reduce(
++                verdict, op=dist.ReduceOp.MIN, group=get_tp_group().cpu_group
++            )
++            if verdict.item():
++                self.entries[key] = (graph, output, static)
++                self.replays += 1
++                logger.info(
++                    "Target graph ready: requests=%d, width=%d, context bound=%d",
++                    batch.num_reqs, batch.num_tokens, bound
++                )
++                return output
++            logger.warning(
++                "C1 target graph differs from eager at bound %d; using eager", bound
++            )
++        except Exception:
++            logger.exception("C1 target graph capture failed at bound %d", bound)
++        restore(routes, expected_state)
++        self.disabled.add(key)
++        self.fallback("capture_or_equality_failure", key)
++        return expected
+diff --git a/vllm/models/qwen4_exp/nvidia/c1_verify.py b/vllm/models/qwen4_exp/nvidia/c1_verify.py
+new file mode 100644
+index 0000000..df162a0
+--- /dev/null
++++ b/vllm/models/qwen4_exp/nvidia/c1_verify.py
+@@ -0,0 +1,91 @@
++# SPDX-License-Identifier: Apache-2.0
++"""Eager C1 DFlash2 verification with native speculative prefix-state kernels."""
++
++import os
++from contextlib import contextmanager
++
++import torch
++import torch.distributed as dist
++
++from vllm.distributed import get_tp_group
++
++from .b70_c1_graph import hc_graph_scope
++
++
++def enabled(runner, batch) -> bool:
++    spec = runner.speculative_config
++    return (
++        spec is not None
++        and spec.method == "dflash"
++        and spec.draft_model_config.architectures == ["DFlash2DraftModel"]
++        and runner.device.type == "xpu"
++        and runner.model_config.hf_text_config.model_type == "qwen4_exp_text"
++        and 1 <= batch.num_reqs <= 4
++        and not batch.has_prefill
++        and ((batch.num_reqs == 1 and 1 < batch.num_tokens <= 8)
++             or (batch.num_tokens == 8 * batch.num_reqs
++                 and (batch.num_scheduled_tokens == 8).all()))
++    )
++
++
++@contextmanager
++def canonical_reductions(width):
++    """Keep C1's BF16 XCCL message width while batching target computation.
++
++    XCCL changes the BF16 reduction order with the number of rows. Local GEMMs
++    and recurrent kernels remain batched; only these small TP reductions retain
++    the proven one-row collective. Draft execution uses its ordinary reductions.
++    """
++    comm = get_tp_group().device_communicator
++    original = comm.all_reduce
++
++    def reduce(input_):
++        if (
++            input_.dtype == torch.bfloat16
++            and input_.ndim == 2
++            and input_.shape[0] == width
++        ):
++            output = input_.clone()
++            # XCCL keeps each row's arithmetic, while grouping submission and
++            # completion. This collective remains outside every captured graph.
++            with dist._coalescing_manager(
++                group=comm.device_group, device=input_.device
++            ):
++                for row in output.split(1):
++                    dist.all_reduce(row, group=comm.device_group)
++            return output
++        return original(input_)
++
++    comm.all_reduce = reduce
++    try:
++        yield
++    finally:
++        comm.all_reduce = original
++
++
++def verify_eager(runner, batch, metadata, model_inputs):
++    """Run anchor plus proposals once and retain every native accepted prefix."""
++    with canonical_reductions(batch.num_tokens), hc_graph_scope(batch.num_tokens):
++        return runner.model(**model_inputs)
++
++
++def verify(runner, batch, metadata, model_inputs):
++    seen = getattr(runner, "_dflash_verify_shapes", None)
++    if seen is None:
++        seen = runner._dflash_verify_shapes = set()
++    shape = (batch.num_reqs, batch.num_tokens)
++    if shape not in seen:
++        seen.add(shape)
++        from vllm.logger import init_logger
++        init_logger(__name__).info(
++            "DFlash verification dispatch: requests=%d rows=%d full=%s",
++            *shape, batch.num_tokens == 8 * batch.num_reqs)
++
++    if batch.num_tokens == 8 * batch.num_reqs and os.getenv("VLLM_XPU_C1_TARGET_GRAPH", "1") == "1":
++        from .b70_target_graph import TargetGraphs
++
++        graphs = getattr(runner, "_c1_target_graphs", None)
++        if graphs is None:
++            graphs = runner._c1_target_graphs = TargetGraphs()
++        return graphs.run(runner, batch, metadata, model_inputs, verify_eager)
++    return verify_eager(runner, batch, metadata, model_inputs)
+diff --git a/vllm/models/qwen4_exp/nvidia/dflash2_features.py b/vllm/models/qwen4_exp/nvidia/dflash2_features.py
+new file mode 100644
+index 0000000..c4da58c
+--- /dev/null
++++ b/vllm/models/qwen4_exp/nvidia/dflash2_features.py
+@@ -0,0 +1,52 @@
++# SPDX-License-Identifier: Apache-2.0
++"""DFlash2 features from completed Qwen4Exp hyper-connection layers."""
++
++import torch
++
++from vllm.model_executor.models.interfaces import EagleModelMixin
++
++TARGET_LAYER_IDS = (5, 15, 25, 35, 45)
++# vLLM converts DFlash's completed zero-based layer IDs to these boundaries.
++AUX_LAYER_BOUNDARIES = tuple(i + 1 for i in TARGET_LAYER_IDS)
++
++
++class DFlash2FeatureCapture(EagleModelMixin):
++    def _set_aux_hidden_state_layers(self, layers: tuple[int, ...]) -> None:
++        if layers and tuple(layers) != AUX_LAYER_BOUNDARIES:
++            raise ValueError(
++                "Flash-Next DFlash2 requires completed layers 5/15/25/35/45 "
++                "as vLLM boundaries 6/16/26/36/46"
++            )
++        if layers and (
++            self.config.hc_count != 4
++            or self.config.hidden_size != 2560
++            or self.start_layer != 0
++            or self.end_layer != 48
++            or self.use_hc_sequence_parallel
++        ):
++            raise ValueError("DFlash2 capture requires unsharded HC4/H2560, PP1")
++        super()._set_aux_hidden_state_layers(layers)
++
++    def capture_completed_layer(
++        self,
++        aux_hidden_states: list[torch.Tensor],
++        layer_idx: int,
++        layer: torch.nn.Module,
++        hidden_states: torch.Tensor,
++        block_output: torch.Tensor | None,
++        injection: torch.Tensor | None,
++    ) -> None:
++        if layer_idx + 1 not in self.aux_hidden_state_layers:
++            return
++        # A decoder returns a delayed MLP injection. Materialize it for the
++        # feature without consuming or modifying the tuple passed downstream.
++        completed = hidden_states
++        if block_output is not None:
++            completed = layer.mlp_hyper_connection.combine(
++                hidden_states, block_output, injection
++            )
++        # HC is the outer axis; TP4 owns replicated full-width token rows.
++        # mean allocates independent storage, so later workspace reuse cannot
++        # overwrite these snapshots. Preserve packed token order verbatim.
++        feature = completed.unflatten(-1, (4, 2560)).mean(dim=-2)
++        aux_hidden_states.append(feature)
+diff --git a/vllm/models/qwen4_exp/nvidia/model.py b/vllm/models/qwen4_exp/nvidia/model.py
+index a5afd6b..262ad64 100644
+--- a/vllm/models/qwen4_exp/nvidia/model.py
++++ b/vllm/models/qwen4_exp/nvidia/model.py
+@@ -38,6 +38,7 @@ from vllm.model_executor.models.interfaces import (
+     IsHybrid,
+     MixtureOfExperts,
+     MultiModalEmbeddings,
++    SupportsEagle3,
+     SupportsHCSP,
+     SupportsLoRA,
+     SupportsMRoPE,
+@@ -77,13 +78,19 @@ from vllm.models.common.ops.sequence_parallel import (
+ )
+ from vllm.multimodal import MULTIMODAL_REGISTRY
+ from vllm.multimodal.inputs import MultiModalFeatureSpec
++from vllm.platforms import current_platform
+ from vllm.sequence import IntermediateTensors
+ from vllm.tokenizers.registry import cached_tokenizer_from_config
+ from vllm.v1.attention.backends.registry import MambaAttentionBackendEnum
+ from vllm.v1.kv_cache_interface import MambaSpec
+ 
+ from ..common.hyperconnection import is_hc_sequence_parallel_enabled
+-from .hyperconnection import GatedResidual, HyperConnectionConfig
++if current_platform.is_xpu():
++    from .b70_hyperconnection import GatedResidual, HyperConnectionConfig
++else:
++    from .hyperconnection import GatedResidual, HyperConnectionConfig
++from .dflash2_features import AUX_LAYER_BOUNDARIES, DFlash2FeatureCapture
++
+ from .low_latency_gemm import enable_qwen4_exp_low_latency_gemm
+ from .ops.cute_dsl.hc_down_silu import request_hc_down_silu_warmup
+ from .ple_layer import Qwen4ExpPLELayer
+@@ -404,7 +411,7 @@ class Qwen4ExpMixtureOfExperts(MixtureOfExperts):
+             moe.experts.update_expert_map()
+ 
+ 
+-class Qwen4ExpModel(nn.Module):
++class Qwen4ExpModel(nn.Module, DFlash2FeatureCapture):
+     hf_to_vllm_mapper = Qwen3_5Model.hf_to_vllm_mapper | _EXTRA_WEIGHTS_MAPPER
+ 
+     def __init__(self, *, vllm_config: VllmConfig, prefix: str = "") -> None:
+@@ -540,6 +547,7 @@ class Qwen4ExpModel(nn.Module):
+                 raise ValueError("pipeline stage requires intermediate tensors")
+             hidden_states = intermediate_tensors["hidden_states"]
+ 
++        aux_hidden_states: list[torch.Tensor] = []
+         full_num_tokens = positions.shape[-1]
+         block_output = None
+         injection = None
+@@ -596,6 +604,14 @@ class Qwen4ExpModel(nn.Module):
+                 block_output = None
+                 injection = None
+                 hidden_states = hidden_states + deepstack_embed
++            self.capture_completed_layer(
++                aux_hidden_states,
++                layer_idx,
++                layer,
++                hidden_states,
++                block_output,
++                injection,
++            )
+ 
+         if not get_pp_group().is_last_rank:
+             # PP transports one tensor, not the delayed HC tuple. Materialize
+@@ -637,6 +653,8 @@ class Qwen4ExpModel(nn.Module):
+             # this tensor is needed by the final mixer regardless).
+             num_tokens = multi_hidden.shape[0]
+             self._mtp_hidden_buffer[:num_tokens].copy_(multi_hidden)
++        if self.aux_hidden_state_layers:
++            return sample_hidden_states, aux_hidden_states
+         return sample_hidden_states
+ 
+     def load_weights(self, weights: Iterable[tuple[str, torch.Tensor]]) -> set[str]:
+@@ -646,6 +664,11 @@ class Qwen4ExpModel(nn.Module):
+                 weight,
+             )
+             for name, weight in weights
++            if not (
++                current_platform.is_xpu()
++                and getattr(self.config, "indexer_n_heads", None) is None
++                and ".self_attn.indexer." in name
++            )
+         )
+         weights = maybe_fuse_shared_experts(
+             weights,
+@@ -685,6 +708,7 @@ class Qwen4ExpModel(nn.Module):
+ 
+ class Qwen4ExpForCausalLM(
+     nn.Module,
++    SupportsEagle3,
+     HasInnerState,
+     SupportsHCSP,
+     SupportsLoRA,
+@@ -738,7 +762,7 @@ class Qwen4ExpForCausalLM(
+         )
+         self.set_moe_parameters(self.model.layers)
+         enable_qwen4_exp_low_latency_gemm(self, self.model_config.dtype)
+-        if self.model_config.dtype == torch.bfloat16:
++        if self.model_config.dtype == torch.bfloat16 and current_platform.is_cuda():
+             # Precompile the fused HC down+SiLU kernels for every CUDA-graph
+             # capture size in the fused dispatch range, so no CuTe-DSL JIT
+             # happens during graph capture.
+@@ -749,6 +773,9 @@ class Qwen4ExpForCausalLM(
+                 self.config.hidden_size * self.config.hc_count,
+             )
+ 
++    def get_eagle3_default_aux_hidden_state_layers(self) -> tuple[int, ...]:
++        return AUX_LAYER_BOUNDARIES
++
+     @staticmethod
+     def get_model_state_cls():
+         from .model_state import Qwen4ExpModelState
+@@ -954,6 +981,9 @@ class Qwen4ExpForConditionalGeneration(
+         ],
+     }
+ 
++    def get_eagle3_default_aux_hidden_state_layers(self) -> tuple[int, ...]:
++        return AUX_LAYER_BOUNDARIES
++
+     @staticmethod
+     def get_model_state_cls():
+         from .model_state import Qwen4ExpModelState
+diff --git a/vllm/models/qwen4_exp/nvidia/model_state.py b/vllm/models/qwen4_exp/nvidia/model_state.py
+index 2461685..8895f24 100644
+--- a/vllm/models/qwen4_exp/nvidia/model_state.py
++++ b/vllm/models/qwen4_exp/nvidia/model_state.py
+@@ -1,3 +1,4 @@
++# Modified by Wulf for B70 Flash-Next Disk; upstream terms are retained.
+ # SPDX-License-Identifier: Apache-2.0
+ # SPDX-FileCopyrightText: Copyright contributors to the vLLM project
+ """Model-runner state for Qwen4Exp PLE inputs."""
+@@ -26,6 +27,20 @@ class Qwen4ExpModelState(MambaHybridModelState):
+     ) -> None:
+         super().__init__(vllm_config, model, encoder_cache, device)
+         config = self.model_config.hf_text_config
++        from .ngram_embedding import (
++            Qwen4ExpNGramEmbedding,
++        )
++
++        from ..common.disk_ple import Qwen4ExpPLEDiskBF16Embedding
++
++        self._disk_ple_modules = tuple(
++            module
++            for module in model.modules()
++            if isinstance(module, Qwen4ExpNGramEmbedding)
++            and isinstance(module.ngram_embedding, Qwen4ExpPLEDiskBF16Embedding)
++        )
++        if self._disk_ple_modules and len(self._disk_ple_modules) != 1:
++            raise RuntimeError("Disk BF16 PLE requires exactly one target PLE module")
+         self.uses_ngram_embedding = bool(config.ple_layer_ids)
+         if not self.uses_ngram_embedding:
+             self.ngram_context_len = 0
+@@ -110,6 +125,27 @@ class Qwen4ExpModelState(MambaHybridModelState):
+             query_start_loc=query_start_loc,
+             ngram_context=self._prepare_ngram_context(input_batch, req_states),
+         )
++        for module in self._disk_ple_modules:
++            num_tokens_padded = input_batch.num_tokens_after_padding
++            module.ngram_embedding._check_capacity(num_tokens_padded)
++            if input_batch.input_ids.shape[0] != num_tokens_padded:
++                raise ValueError("Disk BF16 PLE input length differs from dispatch")
++            if num_tokens_padded == 0:
++                module.ngram_embedding.prepare(None, 0, 0)
++                continue
++            # Existing GPU IDs use the authoritative committed context above.
++            # This producer runs before FULL replay as well as ordinary forward.
++            ids = module.compute_ngram_ids(
++                input_batch.input_ids,
++                query_start_loc,
++                model_inputs["ngram_context"],
++            )
++            module.ngram_embedding.prepare(
++                ids,
++                input_batch.num_tokens,
++                num_tokens_padded,
++                is_padding=input_batch.is_padding,
++            )
+         return model_inputs
+ 
+     def prepare_dummy_inputs(
+@@ -141,6 +177,8 @@ class Qwen4ExpModelState(MambaHybridModelState):
+             query_start_loc=query_start_loc,
+             ngram_context=ngram_context,
+         )
++        for module in self._disk_ple_modules:
++            module.ngram_embedding.prepare(None, 0, num_tokens)
+         return model_inputs
+ 
+ 
+diff --git a/vllm/models/qwen4_exp/nvidia/ngram_embedding.py b/vllm/models/qwen4_exp/nvidia/ngram_embedding.py
+index 7b0d9ed..94e4045 100644
+--- a/vllm/models/qwen4_exp/nvidia/ngram_embedding.py
++++ b/vllm/models/qwen4_exp/nvidia/ngram_embedding.py
+@@ -2,6 +2,7 @@
+ # SPDX-FileCopyrightText: Copyright contributors to the vLLM project
+ """Qwen4Exp n-gram embeddings with device and pinned-host storage."""
+ 
++import os
+ from collections.abc import Iterable
+ 
+ import torch
+@@ -29,6 +30,7 @@ from ..common.ngram_embedding import (
+     Qwen4ExpPLEUnquantizedEmbeddingMethod,
+ )
+ from ..common.ops.ple import ple_ngram_ids
++from ..common.disk_ple import Qwen4ExpPLEDiskBF16Embedding
+ 
+ logger = init_logger(__name__)
+ 
+@@ -219,6 +221,10 @@ class Qwen4ExpNGramEmbedding(nn.Module):
+             if engram_config is not None and engram_config.cpu_offload
+             else Qwen4ExpPLEDeviceEmbedding
+         )
++        if os.environ.get("B70_PLE_DISK_BF16") == "1":
++            if self.use_sequence_parallel:
++                raise ValueError("Disk BF16 PLE requires the original non-SP layout")
++            embedding_cls = Qwen4ExpPLEDiskBF16Embedding
+         # A TP reduce-scatter covers all vocabulary owners only when ETP=TP.
+         self.use_reduce_scatter = (
+             self.use_sequence_parallel
+@@ -236,7 +242,9 @@ class Qwen4ExpNGramEmbedding(nn.Module):
+             data_parallel_rank=data_parallel_rank,
+             reduce_results=not self.use_reduce_scatter,
+         )
+-        if self.ngram_embedding.supports_prefetch:
++        if self.ngram_embedding.supports_prefetch and not isinstance(
++            self.ngram_embedding, Qwen4ExpPLEDiskBF16Embedding
++        ):
+             # The side-stream lookup outlives eager-break args, whose
+             # graph-pool storage later segments may reuse.
+             self._prefetch_ids = torch.empty(
+@@ -405,6 +413,8 @@ class Qwen4ExpNGramEmbedding(nn.Module):
+     ) -> None:
+         """Start the pinned lookup while the preceding decoder layer runs."""
+         embedding = self.ngram_embedding
++        if isinstance(embedding, Qwen4ExpPLEDiskBF16Embedding):
++            return  # ModelState staged the authoritative inputs before replay.
+         if not embedding.supports_prefetch:
+             return
+         ngram_ids = self.compute_ngram_ids(
+@@ -417,11 +427,19 @@ class Qwen4ExpNGramEmbedding(nn.Module):
+ 
+     def load_weights(self, weights: Iterable[tuple[str, torch.Tensor]]) -> set[str]:
+         """Load hash buffers and checkpoint-split embedding rows."""
++        disk = isinstance(self.ngram_embedding, Qwen4ExpPLEDiskBF16Embedding)
++        if disk:
++            if getattr(self, "_disk_load_started", False):
++                raise RuntimeError("Disk BF16 PLE rejects weight/hash reload")
++            self._disk_load_started = True
+         persistent_buffers = {
+             "layer_multipliers": self.layer_multipliers,
+             "ngram_heads_offsets": self.ngram_heads_offsets,
+             "ngram_heads_vocab_sizes": self.ngram_heads_vocab_sizes,
+         }
++        disk = isinstance(self.ngram_embedding, Qwen4ExpPLEDiskBF16Embedding)
++        if disk and self.ngram_embedding._mmap_owner is not None:
++            raise RuntimeError("Disk BF16 PLE rejects reload")
+         loaded: set[str] = set()
+         regular_weights: list[tuple[str, torch.Tensor]] = []
+         shard_prefix = "ngram_embedding.shard_"
+@@ -437,6 +455,8 @@ class Qwen4ExpNGramEmbedding(nn.Module):
+         ) // self.split_ngram_parts
+ 
+         for name, loaded_weight in weights:
++            if disk and name.startswith("ngram_embedding."):
++                raise RuntimeError("Disk PLE rows must not enter the model loader")
+             leaf_name = name.rsplit(".", 1)[-1]
+             if leaf_name.startswith("hashstats_") or leaf_name == "token_lookup":
+                 continue
+@@ -499,4 +519,9 @@ class Qwen4ExpNGramEmbedding(nn.Module):
+ 
+         if regular_weights:
+             loaded.update(AutoWeightsLoader(self).load_weights(regular_weights))
++        if disk:
++            if not persistent_buffers.keys() <= loaded:
++                raise ValueError("Disk BF16 PLE requires all checkpoint hash buffers")
++            self.ngram_embedding.load_mmap(os.environ["PLE_TABLE_PATH"])
++            loaded.add("ngram_embedding.weight")
+         return loaded
+diff --git a/vllm/v1/attention/backends/gdn_attn.py b/vllm/v1/attention/backends/gdn_attn.py
+index 660ef53..38f7e98 100644
+--- a/vllm/v1/attention/backends/gdn_attn.py
++++ b/vllm/v1/attention/backends/gdn_attn.py
+@@ -7,6 +7,9 @@ from dataclasses import dataclass, replace
+ from typing import Literal
+ 
+ import torch
++import os
++
++_DFLASH_FUSED_METADATA = os.getenv("B70_DFLASH_FUSED_GDN_METADATA", "0") == "1"
+ 
+ from vllm._aiter_ops import rocm_aiter_ops
+ from vllm.config import VllmConfig
+@@ -195,7 +198,10 @@ class GDNAttentionMetadataBuilder(AttentionMetadataBuilder[GDNAttentionMetadata]
+         self.decode_cudagraph_max_bs: int = (
+             self.vllm_config.scheduler_config.max_num_seqs * (self.num_spec + 1)
+         )
+-        if self.compilation_config.max_cudagraph_capture_size is not None:
++        if (
++            self.compilation_config.max_cudagraph_capture_size is not None
++            and not (_DFLASH_FUSED_METADATA and device.type == "xpu")
++        ):
+             self.decode_cudagraph_max_bs = min(
+                 self.decode_cudagraph_max_bs,
+                 self.compilation_config.max_cudagraph_capture_size,
+@@ -319,6 +325,22 @@ class GDNAttentionMetadataBuilder(AttentionMetadataBuilder[GDNAttentionMetadata]
+         fast_build: bool = False,
+     ) -> GDNAttentionMetadata:
+         m = common_attn_metadata
++        spec = self.speculative_config
++        if (
++            _DFLASH_FUSED_METADATA
++            and self.use_spec_decode
++            and type(self) is GDNAttentionMetadataBuilder
++            and m.query_start_loc.device.type == "xpu"
++            and spec.method == "dflash"
++            and spec.num_speculative_tokens == 7
++            and spec.draft_model_config.architectures == ["DFlash2DraftModel"]
++        ):
++            from .gdn_spec_metadata import try_build_uniform_spec_metadata
++            metadata = try_build_uniform_spec_metadata(
++                self, m, num_accepted_tokens, num_decode_draft_tokens_cpu
++            )
++            if metadata is not None:
++                return metadata
+ 
+         query_start_loc = m.query_start_loc
+         query_start_loc_cpu = m.query_start_loc_cpu
+diff --git a/vllm/v1/attention/backends/gdn_spec_metadata.py b/vllm/v1/attention/backends/gdn_spec_metadata.py
+new file mode 100644
+index 0000000..6a8aec4
+--- /dev/null
++++ b/vllm/v1/attention/backends/gdn_spec_metadata.py
+@@ -0,0 +1,160 @@
++# SPDX-License-Identifier: Apache-2.0
++# Modified from Wulf's frozen MTP5 XPU staging for v0.33 with Codex.
++"""Per-builder XPU GDN staging with actual lengths and maximum reservations.
++
++The ALIGN gather follows vLLM PR 38020. Mixed, prefill and unsupported
++layouts use the released builder, including its group-specific checkpoints.
++"""
++
++import numpy as np
++from vllm.logger import init_logger
++_reported = False
++
++from vllm.triton_utils import tl, triton
++
++
++@triton.jit
++def _stage(
++    BT,
++    SEQ,
++    QSL,
++    ACC,
++    STATE,
++    MASK,
++    TOKENS,
++    OUT_QSL,
++    OUT_ACC,
++    BT_STRIDE: tl.constexpr,
++    BT_COL: tl.constexpr,
++    SEQ_STRIDE: tl.constexpr,
++    QSL_STRIDE: tl.constexpr,
++    ACC_STRIDE: tl.constexpr,
++    STATE_STRIDE: tl.constexpr,
++    BLOCK_SIZE: tl.constexpr,
++    K: tl.constexpr,
++    N: tl.constexpr,
++    ACTIVE: tl.constexpr,
++    NUM_TOKENS: tl.constexpr,
++    TILE: tl.constexpr,
++):
++    x = tl.arange(0, TILE)
++    row = x // K
++    col = x % K
++    seq = tl.load(SEQ + row * SEQ_STRIDE, mask=row < ACTIVE, other=0)
++    start = tl.maximum((seq - 1) // BLOCK_SIZE, 0)
++    state = tl.load(
++        BT + row * BT_STRIDE + (start + col) * BT_COL, mask=row < ACTIVE, other=0
++    )
++    tl.store(STATE + row * STATE_STRIDE + col, state, mask=row < N)
++    tl.store(TOKENS + x, x, mask=x < NUM_TOKENS)
++    tl.store(MASK + x, x < ACTIVE, mask=x < N)
++    acc = tl.load(ACC + x * ACC_STRIDE, mask=x < ACTIVE, other=1)
++    tl.store(OUT_ACC + x, acc, mask=x < N)
++    q = tl.load(QSL + tl.minimum(x, ACTIVE) * QSL_STRIDE, mask=x <= N, other=0)
++    tl.store(OUT_QSL + x, q, mask=x <= N)
++
++
++def eligible(b, m, d):
++    """Accept DFlash actual widths 1–8 with trailing zero-length padding."""
++    if (
++        not b.use_spec_decode
++        or d is None
++        or d.device.type != "cpu"
++        or b.vllm_config.cache_config.mamba_cache_mode != "align"
++    ):
++        return None
++    n = m.num_reqs
++    if (
++        n == 0
++        or n > b.decode_cudagraph_max_bs
++        or b.kv_cache_spec.num_speculative_blocks < b.num_spec
++        or m.block_table_tensor.shape[0] != n
++        or m.seq_lens.shape[0] != n
++        or m.block_table_tensor.device != m.query_start_loc.device
++        or m.seq_lens.device != m.query_start_loc.device
++    ):
++        return None
++    dc = d.numpy()
++    q = m.query_start_loc_cpu.numpy()
++    if len(dc) != n or len(q) != n + 1:
++        return None
++    active = int(np.count_nonzero(dc >= 0))
++    query_len = int(dc[0]) + 1 if active else 0
++    if (
++        active == 0
++        or active * query_len > b.decode_cudagraph_max_bs
++        or active * query_len > m.num_actual_tokens
++        or not 1 <= query_len <= b.num_spec + 1
++        or not np.all(dc[:active] == query_len - 1)
++        or not np.all(dc[active:] < 0)
++        or not np.all(np.diff(q[: active + 1]) == query_len)
++        or not np.all(q[active:] == active * query_len)
++        or q[0] != 0
++    ):
++        return None
++    return active, query_len
++
++
++def try_build_uniform_spec_metadata(b, m, num_accepted_tokens, draft_counts_cpu):
++    shape = eligible(b, m, draft_counts_cpu)
++    if shape is None:
++        return None
++    active, query_len = shape
++    global _reported
++    if not _reported:
++        _reported = True
++        init_logger(__name__).info(
++            "DFlash per-builder GDN metadata active: reserved=%d actual_width=%d requests=%d",
++            b.num_spec + 1, query_len, m.num_reqs)
++    assert num_accepted_tokens is not None
++    assert num_accepted_tokens.shape[0] >= active
++    assert num_accepted_tokens.device == m.query_start_loc.device
++    n = m.num_reqs
++    # State columns always follow maximum depth, including at actual K0/K3.
++    reserved = b.num_spec + 1
++    nt = active * query_len
++    _stage[(1,)](
++        m.block_table_tensor,
++        m.seq_lens,
++        m.query_start_loc,
++        num_accepted_tokens,
++        b.spec_state_indices_tensor,
++        b.spec_sequence_masks,
++        b.spec_token_indx,
++        b.spec_query_start_loc,
++        b.num_accepted_tokens,
++        m.block_table_tensor.stride(0),
++        m.block_table_tensor.stride(1),
++        m.seq_lens.stride(0),
++        m.query_start_loc.stride(0),
++        num_accepted_tokens.stride(0),
++        b.spec_state_indices_tensor.stride(0),
++        b.kv_cache_spec.block_size,
++        reserved,
++        n,
++        active,
++        nt,
++        triton.next_power_of_2(max(n * reserved, n + 1)),
++        num_warps=4,
++    )
++    from vllm.v1.attention.backends.gdn_attn import GDNAttentionMetadata
++
++    # This branch has no prefill rows, so checkpoint fields keep their released
++    # None defaults. No metadata or state indices are shared across groups.
++    return GDNAttentionMetadata(
++        num_prefills=0,
++        num_prefill_tokens=0,
++        num_decodes=0,
++        num_decode_tokens=0,
++        num_spec_decodes=active,
++        num_spec_decode_tokens=nt,
++        num_actual_tokens=m.num_actual_tokens,
++        spec_query_start_loc=b.spec_query_start_loc[: n + 1],
++        spec_state_indices_tensor=b.spec_state_indices_tensor[:n],
++        spec_sequence_masks=b.spec_sequence_masks[:n],
++        spec_sequence_masks_cpu=draft_counts_cpu >= 0,
++        spec_token_indx=b.spec_token_indx[:nt],
++        non_spec_token_indx=b.non_spec_token_indx[:0],
++        num_accepted_tokens=b.num_accepted_tokens[:n],
++        uniform_spec_sequence_length=query_len,
++    )
+diff --git a/vllm/v1/core/sched/scheduler.py b/vllm/v1/core/sched/scheduler.py
+index d35b7df..a205762 100644
+--- a/vllm/v1/core/sched/scheduler.py
++++ b/vllm/v1/core/sched/scheduler.py
+@@ -1050,6 +1050,7 @@ class Scheduler(SchedulerInterface):
+         if not preempted_reqs and self._pause_state != PauseState.PAUSED_ALL:
+             step_skipped_waiting: deque[Request] = deque()
+             step_skipped_kv_holding: deque[Request] = deque()
++            alignment_reserved_slot = 0
+ 
+             def skip_request(from_queue: RequestQueue) -> None:
+                 request_to_skip = from_queue.pop_request()
+@@ -1070,7 +1071,7 @@ class Scheduler(SchedulerInterface):
+                 # Paused streaming sessions (WAITING_FOR_STREAMING_REQ) are not
+                 # in `running` but still hold a model-runner request slot.
+                 num_running = len(self.running) + self.num_waiting_for_streaming_input
+-                if num_running >= self.max_num_active_reqs:
++                if num_running >= self.max_num_active_reqs - alignment_reserved_slot:
+                     break
+ 
+                 request = request_queue.peek_request()
+@@ -1355,6 +1356,17 @@ class Scheduler(SchedulerInterface):
+                             num_external_computed_tokens,
+                         )
+                         if num_new_tokens == 0:
++                            # An aligned chunk cannot use the remaining budget.
++                            # Reuse the skipped-request queue and keep a slot for
++                            # its first request when its next chunk can fit.
++                            if (
++                                num_scheduled_tokens
++                                and num_running < self.max_num_active_reqs - 1
++                                and not self._holds_kv_blocks(request)
++                            ):
++                                alignment_reserved_slot = 1
++                                skip_request(request_queue)
++                                continue
+                             break
+                         if (
+                             pad_spec_decode
+diff --git a/vllm/v1/sample/ops/topk_topp_triton.py b/vllm/v1/sample/ops/topk_topp_triton.py
+old mode 100755
+new mode 100644
+index 870aba0..fa4ab23
+--- a/vllm/v1/sample/ops/topk_topp_triton.py
++++ b/vllm/v1/sample/ops/topk_topp_triton.py
+@@ -103,7 +103,7 @@ def _update_min_larger_stats(data, above_mask, min_larger, num_min_larger, senti
+     return min_larger, num_min_larger
+ 
+ 
+-@triton.jit(do_not_specialize_on_alignment=["BATCH_SIZE"])
++@triton.jit(do_not_specialize=["BATCH_SIZE"])
+ def _topk_topp_kernel(
+     LOGITS,
+     LOGITS_STRIDE_0,
+diff --git a/vllm/v1/worker/gpu/astra_greedy.py b/vllm/v1/worker/gpu/astra_greedy.py
+new file mode 100644
+index 0000000..bffae47
+--- /dev/null
++++ b/vllm/v1/worker/gpu/astra_greedy.py
+@@ -0,0 +1,198 @@
++# SPDX-License-Identifier: Apache-2.0
++"""Vocab-parallel greedy verification with the ordinary proposal/state protocol."""
++
++import os
++import numpy as np
++import torch
++from vllm.triton_utils import triton, tl
++from vllm.v1.worker.gpu.sample.output import SamplerOutput
++
++
++@triton.jit
++def _partials(
++    logits,
++    pairs,
++    M: tl.constexpr,
++    N: tl.constexpr,
++    VALID: tl.constexpr,
++    START: tl.constexpr,
++    BLOCK: tl.constexpr,
++):
++    row = tl.program_id(0)
++    tile = tl.program_id(1)
++    cols = tile * BLOCK + tl.arange(0, BLOCK)
++    values = tl.load(logits + row * N + cols, cols < N, other=-float("inf")).to(
++        tl.float32
++    )
++    values = tl.where(cols < VALID, values, -float("inf"))
++    maximum = tl.max(values, 0)
++    index = tl.min(
++        tl.where((values == maximum) & (cols < VALID), cols + START, 16777215), 0
++    )
++    offset = (row * tl.cdiv(N, BLOCK) + tile) * 2
++    tl.store(pairs + offset, maximum)
++    tl.store(pairs + offset + 1, index.to(tl.float32))
++
++
++@triton.jit
++def _select_and_verify(
++    pairs,
++    cu,
++    logits_indices,
++    input_ids,
++    positions,
++    local_pos,
++    idx_mapping,
++    seq_lens,
++    prefill_lens,
++    out,
++    sampled,
++    rejected,
++    M: tl.constexpr,
++    TILES: tl.constexpr,
++    TP: tl.constexpr,
++    PAIRS: tl.constexpr,
++):
++    req = tl.program_id(0)
++    start = tl.load(cu + req)
++    end = tl.load(cu + req + 1)
++    n = end - start
++    rows = tl.arange(0, 8)
++    cols = tl.arange(0, PAIRS)
++    rank = cols // TILES
++    tile = cols % TILES
++    offset = ((rank[None, :] * M + start + rows[:, None]) * TILES + tile[None, :]) * 2
++    mask = (rows[:, None] < n) & (cols[None, :] < TP * TILES)
++    values = tl.load(pairs + offset, mask, other=-float("inf"))
++    ids = tl.load(pairs + offset + 1, mask, other=16777215.0).to(tl.int32)
++    maximum = tl.max(values, 1)
++    top = tl.min(tl.where(values == maximum[:, None], ids, 16777215), 1)
++    state_idx = tl.load(idx_mapping + req)
++    prefill = tl.load(prefill_lens + state_idx)
++    ix = tl.load(logits_indices + start + rows + 1, rows < n - 1, other=0)
++    draft = tl.load(input_ids + ix, rows < n - 1, other=-1)
++    pos = tl.load(positions + ix, rows < n - 1, other=0)
++    local = tl.load(local_pos + start + rows + 1, rows < n - 1, other=0)
++    placeholder = (local > 0) & (pos - local < prefill)
++    mismatch = (rows < n - 1) & ((draft != top) | (draft < 0) | placeholder)
++    first_rejected = tl.min(tl.where(mismatch, rows, n - 1), 0)
++    count = first_rejected + 1
++    prefilling = tl.load(seq_lens + req) < prefill
++    tl.store(out + req * 8 + rows, tl.where(rows < count, top, -1))
++    tl.store(sampled + req, tl.where(prefilling, 0, count))
++    tl.store(rejected + req, tl.where(prefilling, 0, n - count))
++
++
++def eligible(runner, batch, grammar):
++    if os.getenv("VLLM_XPU_ASTRA_GREEDY", "1") != "1":
++        return False
++    sampler = runner.sampler
++    reject = runner.rejection_sampler
++    if (
++        grammar is not None
++        or runner.batch_sharder is not None
++        or sampler is None
++        or reject is None
++        or batch.num_reqs < 1
++        or batch.num_draft_tokens < 1
++    ):
++        return False
++    if (
++        reject.num_speculative_steps != 7
++        or reject.enable_adaptive_verification
++        or reject.synthetic_conditional_rates is not None
++        or reject.use_block_verification
++        or reject.watermark_key is not None
++        or sampler.compute_nans
++        or sampler.return_sampling_mask
++        or sampler.trace_replay_state is not None
++    ):
++        return False
++    idx = batch.idx_mapping_np
++    if np.any(idx < 0):
++        return False
++    if not np.all(sampler.sampling_states.temperature.np[idx] == 0):
++        return False
++    if np.any(sampler.needs_logits_processing[idx]):
++        return False
++    if sampler.get_logprobs_dims(idx) is not None:
++        return False
++    lengths = np.diff(batch.cu_num_logits_np)
++    if np.any(lengths < 1) or np.any(lengths > 8):
++        return False
++    lm = getattr(runner.model, "language_model", None)
++    if lm is None or not hasattr(lm, "lm_head") or not hasattr(lm, "logits_processor"):
++        return False
++    head = lm.lm_head
++    if getattr(head, "num_added_embeddings", 0) != 0:
++        return False
++    # The ordinary verifier truncates to the common target/draft vocabulary.
++    # Keep that path for models whose vocabularies differ or are remapped.
++    draft_logits = getattr(runner.speculator, "draft_logits", None)
++    if (
++        draft_logits is None
++        or draft_logits.shape[-1] != runner.vocab_size
++        or head.org_vocab_size != runner.vocab_size
++        or lm.logits_processor.org_vocab_size != runner.vocab_size
++        or lm.logits_processor.logits_as_input
++    ):
++        return False
++    return (
++        lm.logits_processor.scale == 1.0
++        and lm.logits_processor.soft_cap is None
++        and runner.vocab_size < 2**24
++    )
++
++
++def sample(runner, hidden, batch):
++    from vllm.distributed import get_tp_group
++    import torch.distributed as dist
++
++    model = runner.model.language_model
++    selected = hidden[batch.logits_indices]
++    head = model.lm_head
++    logits = model.logits_processor._apply_head(head, selected, None)
++    rows, columns = logits.shape
++    tiles = triton.cdiv(columns, 4096)
++    pairs = torch.empty((rows, tiles, 2), dtype=torch.float32, device=hidden.device)
++    _partials[(rows, tiles)](
++        logits,
++        pairs,
++        rows,
++        columns,
++        head.shard_indices.org_vocab_end_index
++        - head.shard_indices.org_vocab_start_index,
++        head.shard_indices.org_vocab_start_index,
++        4096,
++        num_warps=4,
++    )
++    # Keep rank-major layout to avoid an all-gather transpose/copy.
++    tp = head.tp_size
++    gathered = torch.empty(
++        (tp * rows, tiles, 2), dtype=pairs.dtype, device=hidden.device
++    )
++    dist.all_gather_into_tensor(gathered, pairs, group=get_tp_group().device_group)
++    out = torch.empty((batch.num_reqs, 8), dtype=torch.int64, device=hidden.device)
++    count = torch.empty((batch.num_reqs,), dtype=torch.int32, device=hidden.device)
++    rejected = torch.empty_like(count)
++    _select_and_verify[(batch.num_reqs,)](
++        gathered,
++        batch.cu_num_logits,
++        batch.logits_indices,
++        batch.input_ids,
++        batch.positions,
++        batch.expanded_local_pos,
++        batch.idx_mapping,
++        batch.seq_lens,
++        runner.sampler.req_states.prefill_len.gpu,
++        out,
++        count,
++        rejected,
++        rows,
++        tiles,
++        tp,
++        triton.next_power_of_2(tp * tiles),
++        num_warps=4,
++    )
++    result = SamplerOutput(out, None, None, count, rejected)
++    return result, count, rejected
+diff --git a/vllm/v1/worker/gpu/model_runner.py b/vllm/v1/worker/gpu/model_runner.py
+index df254fe..a97e7c0 100644
+--- a/vllm/v1/worker/gpu/model_runner.py
++++ b/vllm/v1/worker/gpu/model_runner.py
+@@ -1636,6 +1636,10 @@ class GPUModelRunner(LoRAModelRunnerMixin):
+         input_batch: InputBatch,
+         grammar_output: GrammarOutput | None,
+     ) -> tuple[SamplerOutput, torch.Tensor, torch.Tensor]:
++        from vllm.v1.worker.gpu.astra_greedy import eligible, sample as greedy_sample
++        if eligible(self, input_batch, grammar_output):
++            return greedy_sample(self, hidden_states, input_batch)
++
+         shard_metadata = None
+         global_input_batch = input_batch
+         if self.batch_sharder is not None:
+@@ -2094,7 +2098,14 @@ class GPUModelRunner(LoRAModelRunnerMixin):
+                     )
+                 else:
+                     # Eager (NONE): call the raw model directly.
+-                    model_output = self.model(**model_inputs)
++                    from vllm.models.qwen4_exp.nvidia import c1_verify
++
++                    if c1_verify.enabled(self, input_batch):
++                        model_output = c1_verify.verify(
++                            self, input_batch, attn_metadata, model_inputs
++                        )
++                    else:
++                        model_output = self.model(**model_inputs)
+ 
+         self.kv_connector.finish_forward()
+ 
+diff --git a/vllm/v1/worker/gpu/sample/xpu_filter_warmup.py b/vllm/v1/worker/gpu/sample/xpu_filter_warmup.py
+new file mode 100644
+index 0000000..b01d0f4
+--- /dev/null
++++ b/vllm/v1/worker/gpu/sample/xpu_filter_warmup.py
+@@ -0,0 +1,26 @@
++"""Bounded initialized warmup for the XPU DFlash2 sampling filter."""
++import time
++import torch
++from vllm.logger import init_logger
++
++@torch.inference_mode()
++def warmup_filter(runner):
++    spec = runner.speculative_config
++    if (spec is None or spec.method != "dflash"
++        or runner.model_config.hf_text_config.model_type != "qwen4_exp_text"):
++        return
++    from vllm.v1.sample.ops.topk_topp_triton import apply_top_k_top_p_triton
++    started = time.perf_counter()
++    before = torch.xpu.memory_allocated()
++    # Dedicated initialized tensors; no live request, KV, RNG or sampler state.
++    logits = torch.arange(runner.vocab_size, device=runner.device,
++                          dtype=torch.float32).unsqueeze(0) / runner.vocab_size
++    k = torch.full((1,), 20, device=runner.device, dtype=torch.int32)
++    p = torch.full((1,), .95, device=runner.device, dtype=torch.float32)
++    for topk, topp in ((k, p), (k, None), (None, p)):
++        apply_top_k_top_p_triton(logits.clone(), topk, topp)
++    torch.xpu.synchronize()
++    del logits, k, p
++    init_logger(__name__).info(
++        "Initialized XPU filter warmup: %.3f s, retained tensor bytes=%d",
++        time.perf_counter() - started, torch.xpu.memory_allocated() - before)
+diff --git a/vllm/v1/worker/gpu_worker.py b/vllm/v1/worker/gpu_worker.py
+index 8724faf..ac75fa7 100644
+--- a/vllm/v1/worker/gpu_worker.py
++++ b/vllm/v1/worker/gpu_worker.py
+@@ -1105,6 +1105,10 @@ class Worker(WorkerBase):
+ 
+             trigger_inductor_lazy_init(self.device)
+ 
++        if self.device.type == "xpu" and self.use_v2_model_runner:
++            from vllm.v1.worker.gpu.sample.xpu_filter_warmup import warmup_filter
++            warmup_filter(self.model_runner)
++
+         # All warmup is done — start monitoring for unexpected JIT
+         # compilations that would cause latency spikes during inference.
+         self._maybe_activate_jit_monitor()
+diff --git a/vllm/v1/worker/mamba_utils.py b/vllm/v1/worker/mamba_utils.py
+index a3b4eab..9493b98 100644
+--- a/vllm/v1/worker/mamba_utils.py
++++ b/vllm/v1/worker/mamba_utils.py
+@@ -1110,7 +1110,7 @@ class MambaSpecDecodeGPUContext:
+     ) -> torch.Tensor:
+         """Compute every Mamba group's aligned physical state IDs in one launch."""
+         assert self.is_initialized
+-        assert seq_lens.is_cuda
++        assert seq_lens.device.type in ("cuda", "xpu")
+         assert 0 <= num_reqs <= seq_lens.shape[0]
+         assert self.aligned_state_indices is not None
+         assert num_reqs <= self.aligned_state_indices.shape[1]
+diff --git a/vllm_xpu_kernels/astra500_moe.py b/vllm_xpu_kernels/astra500_moe.py
+new file mode 100644
+index 0000000..2ad1058
+--- /dev/null
++++ b/vllm_xpu_kernels/astra500_moe.py
+@@ -0,0 +1,31 @@
++# SPDX-License-Identifier: Apache-2.0
++"""Measured BF16/W4 small-batch GEMM with a 64-element inner tile."""
++
++from pathlib import Path
++
++import torch
++
++torch.ops.load_library(str(Path(__file__).with_name("libastra_moe.so")))
++
++
++def astra_grouped_gemm(**kwargs):
++    a, weight, scales, out = (
++        kwargs["ptr_A"], kwargs["ptr_B"], kwargs.get("ptr_B_scale"), kwargs["ptr_D"]
++    )
++    if (
++        a.dtype == torch.bfloat16
++        and weight.dtype == torch.int8
++        and a.shape[0] <= 320
++        and scales is not None
++        and scales.dtype == torch.bfloat16
++        and scales.ndim == 3
++        and scales.shape[2] * 128 == kwargs["K"]
++        and kwargs.get("ptr_bias") is None
++        and kwargs.get("ptr_A_scale") is None
++    ):
++        torch.ops.astra_moe_k.grouped(
++            a, weight, scales, out, kwargs["rows_per_expert"],
++            kwargs["N"], kwargs["K"], kwargs["num_experts"], 6,
++        )
++        return out
++    return torch.ops._xpu_C.cutlass_grouped_gemm_interface(**kwargs)
+diff --git a/vllm_xpu_kernels/astra_ownership.py b/vllm_xpu_kernels/astra_ownership.py
+new file mode 100644
+index 0000000..be07f01
+--- /dev/null
++++ b/vllm_xpu_kernels/astra_ownership.py
+@@ -0,0 +1,193 @@
++# SPDX-License-Identifier: Apache-2.0
++"""Cyclic ownership of intact 128-wide expert groups, with unchanged W4 data.
++
++Global group 5*expert+group is owned by its index modulo four. Every rank
++stores 640 groups: exactly the bytes of the former 128 complete experts.
++Redistribution happens once, before graph capture or KV capacity allocation.
++"""
++import copy
++from pathlib import Path
++
++import torch
++import torch.distributed as dist
++
++torch.ops.load_library(str(Path(__file__).with_name('libastra_groups.so')))
++torch.ops.load_library(str(Path(__file__).with_name('libastra_batch.so')))
++torch.ops.load_library(str(Path(__file__).with_name('libbeyond_prefill.so')))
++torch.ops.load_library(str(Path(__file__).with_name('libdominant_w4_layout.so')))
++torch.ops.load_library(str(Path(__file__).with_name('libserving_prefill.so')))
++torch.ops.load_library(str(Path(__file__).with_name('liblong_prefill_v3.so')))
++_prepared_layers = 0
++_dispatch_seen = set()
++
++
++def exchange(tensor, kind, cpu_group):
++    """Return this rank's groups in global-ID order using one CPU all-to-all."""
++    cpu = tensor.detach().cpu()
++    if kind in ('w1', 's1'):
++        last = cpu.shape[-1]
++        groups = cpu.reshape(128, 2, 5, 128, last).permute(0, 2, 1, 3, 4)
++        groups = groups.contiguous().reshape(640, 256, last)
++    elif kind == 'w2':
++        groups = cpu.reshape(128, 2560, 5, 64).permute(0, 2, 1, 3)
++        groups = groups.contiguous().reshape(640, 2560, 64)
++    else:
++        assert kind == 's2'
++        groups = cpu.permute(0, 2, 1).contiguous().reshape(640, 2560, 1)
++    # Each original rank's 640 consecutive global groups contributes 160 to
++    # every destination. Receive order is source rank, hence global ID order.
++    send = groups.reshape(160, 4, *groups.shape[1:]).transpose(0, 1)
++    send = send.contiguous().reshape_as(groups)
++    receive = torch.empty_like(groups)
++    dist.all_to_all_single(receive, send, group=cpu_group)
++    return receive
++
++
++def prepare(module):
++    global _prepared_layers
++    from vllm.logger import init_logger
++    init_logger("vllm.dflash2.cyclic_experts").info(
++        "DFlash ownership input: recipe=%s ep=%s rank=%s experts=%s inter=%s "
++        "w13=%s w2=%s s13=%s s2=%s scale_dtypes=%s,%s activation=%s topk=%s "
++        "biases=%s,%s clamp=%s map=%s",
++        module.recipe, module.ep_size, module.ep_rank, module.num_experts,
++        module.inter_size, tuple(module.w13.shape), tuple(module.w2.shape),
++        tuple(module.gemm1_wei_scales.shape), tuple(module.gemm2_wei_scales.shape),
++        module.gemm1_wei_scales.dtype, module.gemm2_wei_scales.dtype,
++        module.activation, module.n_experts_per_token,
++        module.w13_bias is not None, module.w2_bias is not None,
++        module.gemm1_clamp_limit,
++        None if module.expert_map is None else tuple(module.expert_map.shape))
++    if not (
++        module.recipe == 'int4' and module.ep_size == 4
++        and module.num_experts == 128 and module.inter_size == 640
++        and module.w13.shape == (128, 1280, 1280)
++        and module.w2.shape == (128, 2560, 320)
++        and module.gemm1_wei_scales.shape == (128, 1280, 20)
++        and module.gemm2_wei_scales.shape == (128, 2560, 5)
++        and module.gemm1_wei_scales.dtype == torch.bfloat16
++        and module.gemm2_wei_scales.dtype == torch.bfloat16
++        and module.activation == 'silu' and module.n_experts_per_token == 10
++        and module.w13_bias is None and module.w2_bias is None
++        and not module.gemm1_clamp_limit and module.expert_map is not None
++    ):
++        return
++    expected = torch.full((512,), -1, dtype=torch.int32)
++    expected[module.ep_rank * 128:(module.ep_rank + 1) * 128] = torch.arange(128)
++    if not torch.equal(module.expert_map.cpu(), expected):
++        return
++    from vllm.distributed import get_tp_group
++    group = get_tp_group()
++    assert group.world_size == 4 and group.rank_in_group == module.ep_rank
++    tensors = [module.w13, module.gemm1_wei_scales,
++               module.w2, module.gemm2_wei_scales]
++    shapes = [(640, 256, 1280), (640, 256, 20),
++              (640, 2560, 64), (640, 2560, 1)]
++    for kind, tensor in zip(('w1', 's1', 'w2', 's2'), tensors):
++        received = exchange(tensor, kind, group.cpu_group)
++        assert received.numel() == tensor.numel() and received.dtype == tensor.dtype
++        # Keep the existing allocation and Parameter aliases; no extra device
++        # weight table survives this copy and no quantization is performed.
++        tensor.copy_(received.reshape_as(tensor))
++    local = copy.copy(module)
++    local.w13, local.gemm1_wei_scales, local.w2, local.gemm2_wei_scales = [
++        tensor.view(shape) for tensor, shape in zip(tensors, shapes)]
++    local.num_experts = local.local_experts_num = local.total_experts_num = 640
++    local.inter_size = 128
++    local.n_experts_per_token = 20
++    local.ep_size = 1
++    local.expert_map = None
++    local._astra_groups = None
++    module._astra_groups = local
++    _prepared_layers += 1
++    if _prepared_layers in (1, 48):
++        from vllm.logger import init_logger
++        init_logger("vllm.dflash2.cyclic_experts").info(
++            'Astra group ownership ready: layers=%d, rank=%d, groups=640, '
++            'group_width=128, weight_bytes_unchanged=True',
++            _prepared_layers, module.ep_rank)
++
++
++def apply(module, output, hidden, weights, ids, expert_map, activation_scales):
++    local = module._astra_groups
++    rows = hidden.shape[0]
++    if rows not in _dispatch_seen:
++        _dispatch_seen.add(rows)
++        from vllm.logger import init_logger
++        route = ("dominant_w4_layout" if rows == 8 else
++                 "astra_batch" if rows in (16, 24, 32) else
++                 "serving_prefill8" if 0 < rows <= 256 else
++                 "long_prefill_v3" if 0 < rows <= 1024 else "fallback")
++        init_logger("vllm.dflash2.cyclic_experts").info(
++            "DFlash cyclic expert dispatch: rows=%d rank=%d native=%s",
++            rows, module.ep_rank, route)
++    assert hidden.dtype == torch.bfloat16 and hidden.shape[1] == 2560
++    assert ids.shape == weights.shape == (hidden.shape[0], 10)
++    assert expert_map is None and activation_scales is None
++    if hidden.shape[0] == 8:
++        torch.ops.dominant_w4_layout.forward(
++            hidden, local.w13, local.gemm1_wei_scales,
++            local.w2, local.gemm2_wei_scales, ids, weights, module.ep_rank, output, 1)
++        return
++    if hidden.shape[0] in (16, 24, 32):
++        # Compact actual token rows across requests, retaining their reuse.
++        # The native path fuses route metadata, gate/up/activation and gather;
++        # the outer consumer still reduces the entire block exactly once.
++        torch.ops.astra_batch.forward(
++            hidden, local.w13, local.gemm1_wei_scales,
++            local.w2, local.gemm2_wei_scales, ids, weights, module.ep_rank, output)
++        return
++    if 0 < hidden.shape[0] <= 256:
++        # Short prefills have few rows per expert; avoid 32-row tile padding.
++        torch.ops.serving_prefill8.forward(
++            hidden, local.w13, local.gemm1_wei_scales,
++            local.w2, local.gemm2_wei_scales, ids, weights, module.ep_rank, output)
++        return
++    if 0 < hidden.shape[0] <= 1024:
++        # One input row per routed expert is shared by that expert's one or
++        # two owned groups. Gate/up coexecution writes only the activation.
++        # Keep C1 and C2-C4's specialized paths above; no extra collective.
++        # Share route metadata across eight adjacent output columns. Keep the
++        # existing group weights, BF16 partials and ordered FP32 route sum.
++        torch.ops.long_prefill_v3.forward(
++            hidden, local.w13, local.gemm1_wei_scales,
++            local.w2, local.gemm2_wei_scales, ids, weights, module.ep_rank, output, 0)
++        return
++    # Each selected expert has one group here, plus a second for one rank.
++    # Expand to at most 20 local routes, not 50 global virtual-expert routes.
++    first = (module.ep_rank - ids.remainder(4)).remainder(4)
++    slot = (5 * ids + first) // 4
++    local_ids = torch.stack((slot, torch.where(first == 0, slot + 1, -1)), dim=-1)
++    local_ids = local_ids.flatten(1)
++    valid = ids.repeat_interleave(2, dim=1) >= 0
++    local_ids = torch.where(valid, local_ids, -1)
++    local_weights = weights.repeat_interleave(2, dim=1)
++    fallback(local, output, hidden, local_weights, local_ids)
++
++
++def fallback(local, output, hidden, weights, ids):
++    """The existing remap/GEMM/gather operations specialized for 20 routes."""
++    rows = hidden.shape[0]
++    remapped = torch.empty((rows * 20, 2560), device=hidden.device, dtype=hidden.dtype)
++    counts = torch.zeros(640, device=hidden.device, dtype=torch.int32)
++    inverse = torch.empty((rows, 20), device=hidden.device, dtype=torch.int32)
++    torch.ops.astra_groups_v2.remap(
++        hidden, None, remapped, None, None, counts, inverse, ids, 640, 640)
++    up = torch.empty((rows * 20, 256), device=hidden.device, dtype=hidden.dtype)
++    act = torch.empty((rows * 20, 128), device=hidden.device, dtype=hidden.dtype)
++    down = torch.empty_like(remapped)
++
++    def gemm(x, weight, scales, out, n, k):
++        if rows <= 32:
++            torch.ops.astra_moe_k.grouped(
++                x, weight, scales, out, counts, n, k, 640, 6)
++        else:
++            torch.ops._xpu_C.cutlass_grouped_gemm_interface(
++                ptr_A=x, ptr_A_scale=None, ptr_B=weight, ptr_B_scale=scales,
++                ptr_bias=None, ptr_D=out, rows_per_expert=counts,
++                N=n, K=k, num_experts=640)
++
++    gemm(remapped, local.w13, local.gemm1_wei_scales, up, 256, 2560)
++    torch.ops._C.silu_and_mul(act, up)
++    gemm(act, local.w2, local.gemm2_wei_scales, down, 2560, 128)
++    torch.ops.astra_groups_v2.gather(output, down, weights, inverse, 640)
+diff --git a/vllm_xpu_kernels/astra_structural.py b/vllm_xpu_kernels/astra_structural.py
+new file mode 100644
+index 0000000..20f75b0
+--- /dev/null
++++ b/vllm_xpu_kernels/astra_structural.py
+@@ -0,0 +1,47 @@
++# SPDX-License-Identifier: Apache-2.0
++"""Native HC fusion and direct-token W4A16 MoE verification."""
++
++from pathlib import Path
++import os
++
++import torch
++
++_directory = Path(__file__).parent
++torch.ops.load_library(str(_directory / "libastra_hc.so"))
++torch.ops.load_library(str(_directory / "libastra_direct.so"))
++
++
++def prepare_hc_weight(weight):
++    if (os.getenv("VLLM_XPU_ASTRA_HC_FUSION", "1") == "1"
++            and weight.device.type == "xpu" and weight.dtype == torch.bfloat16
++            and weight.shape == (10240, 320)):
++        # The native kernel addresses each stream directly; retain only a view.
++        return weight.detach()
++    return None
++
++
++def hc_up_mix(lora, weight, normalized):
++    output = torch.empty((lora.shape[0], 2560), device=lora.device, dtype=lora.dtype)
++    torch.ops.astra_hc_v3.up(lora, weight, normalized, output)
++    return output
++
++
++def direct_moe(module, output, hidden, weights, ids, expert_map, activation_scales):
++    if not (
++        os.getenv("VLLM_XPU_ASTRA_DIRECT_MOE", "1") == "1"
++        and hidden.shape == (8, 2560) and hidden.dtype == torch.bfloat16
++        and module.recipe == "int4" and module.inter_size == 640
++        and module.num_experts == 128 and module.activation == "silu"
++        and module.w13_bias is None and module.w2_bias is None
++        and not module.gemm1_clamp_limit and activation_scales is None
++        and ids.shape == (8, 10) and weights.dtype == torch.float32
++    ):
++        return False
++    mapping = module.expert_map if expert_map is None else expert_map
++    if mapping is None or mapping.numel() != 512:
++        return False
++    torch.ops.astra_direct_v2.forward(
++        hidden, module.w13, module.gemm1_wei_scales, module.w2,
++        module.gemm2_wei_scales, ids, weights, mapping, output,
++    )
++    return True
+diff --git a/vllm_xpu_kernels/fused_moe_interface.py b/vllm_xpu_kernels/fused_moe_interface.py
+index 629cef3..765d277 100644
+--- a/vllm_xpu_kernels/fused_moe_interface.py
++++ b/vllm_xpu_kernels/fused_moe_interface.py
+@@ -4,6 +4,10 @@ from typing import Optional
+ 
+ import torch
+ 
++from .astra500_moe import astra_grouped_gemm
++from .astra_structural import direct_moe
++from .astra_ownership import prepare as prepare_ownership, apply as apply_ownership
++
+ try:
+     from . import _C  # noqa: F401
+     from . import _moe_C  # noqa: F401
+@@ -310,6 +314,7 @@ class XpuFusedMoe:
+         else:
+             self.total_experts_num = self.num_experts * self.ep_size
+         self.local_experts_num = self.num_experts
++        prepare_ownership(self)
+ 
+     def apply(
+         self,
+@@ -366,6 +371,12 @@ class XpuFusedMoe:
+         expert_map=None,
+         a1q_scale=None,
+     ):
++        if getattr(self, "_astra_groups", None) is not None:
++            return apply_ownership(self, output, hidden_states, topk_weights,
++                                   topk_ids, expert_map, a1q_scale)
++        if direct_moe(self, output, hidden_states, topk_weights, topk_ids,
++                      expert_map, a1q_scale):
++            return
+         num_rows, hidden_size = hidden_states.shape
+         num_moe_inputs = self.n_experts_per_token * num_rows
+         act_quant = a1q_scale is not None
+@@ -421,7 +432,7 @@ class XpuFusedMoe:
+         gemm1_output = torch.empty((num_moe_inputs, 2 * self.inter_size),
+                                 dtype=output.dtype,
+                                 device=output.device)
+-        torch.ops._xpu_C.cutlass_grouped_gemm_interface(
++        astra_grouped_gemm(
+             ptr_A=remapped_hidden_states,
+             ptr_A_scale=remapped_scales,
+             ptr_B=self.w13,
+@@ -475,7 +486,7 @@ class XpuFusedMoe:
+                 gemm2_act_scale = None
+         else:
+             gemm2_act_scale = None
+-        torch.ops._xpu_C.cutlass_grouped_gemm_interface(
++        astra_grouped_gemm(
+             ptr_A=act_output,
+             ptr_A_scale=gemm2_act_scale,
+             ptr_B=self.w2,

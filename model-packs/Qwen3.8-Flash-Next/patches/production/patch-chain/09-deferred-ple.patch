@@ -1,0 +1,136 @@
+diff --git a/vllm/models/qwen4_exp/nvidia/b70_defer_ple.py b/vllm/models/qwen4_exp/nvidia/b70_defer_ple.py
+new file mode 100644
+index 0000000..563944b
+--- /dev/null
++++ b/vllm/models/qwen4_exp/nvidia/b70_defer_ple.py
+@@ -0,0 +1,97 @@
++# SPDX-License-Identifier: Apache-2.0
++"""Defer the Disk-PLE prepare of C1-verify batches past the target-graph input update.
++
++Host ordering change only (B70 DFlash2 v0.33 experiment; env B70_DFLASH_DEFER_PLE=1).
++Normally Qwen4ExpModelState.prepare_inputs runs the PLE prepare (blocking D2H of the
++n-gram IDs, CPU row gather, async H2D) and only then does TargetGraphs.run copy the
++graph inputs (~0.27 ms host) and replay, all while the GPU sits idle. Here the prepare
++arguments of a C1-verify batch are stashed; TargetGraphs' update() enqueues its input
++copies first (overlapping the GPU's draft work), then the stashed prepare runs, then the
++graph replays. Every device operation is unchanged and stays on the same stream; the
++eager/capture paths (c1_verify.verify_eager) flush the stash before any forward.
++`ENABLED` is a runtime switch (default True when installed) for matched A/B tests.
++"""
++import os
++import threading
++from types import SimpleNamespace
++
++ENABLED = True
++_local = threading.local()
++_installed = False
++stats = dict(deferred=0, flushed_update=0, flushed_eager=0, flushed_stale=0)
++
++
++def _pending():
++    p = getattr(_local, "pending", None)
++    if p is None:
++        p = _local.pending = []
++    return p
++
++
++def flush(kind="flushed_update"):
++    pend = _pending()
++    while pend:
++        prepare, module, args, kwargs = pend.pop(0)
++        prepare(module, *args, **kwargs)
++        stats[kind] += 1
++
++
++def install(state_cls):
++    global _installed
++    if _installed:
++        return
++    from ..common.disk_ple import Qwen4ExpPLEDiskBF16Embedding as Embedding
++    from . import b70_target_graph as tg
++    from . import c1_verify as cv
++
++    orig_prepare_inputs = state_cls.prepare_inputs
++    orig_prepare = Embedding.prepare
++    orig_update = tg.update
++    orig_verify_eager = cv.verify_eager
++
++    def prepare_inputs(self, input_batch, req_states):
++        _local.batch = (self, input_batch)
++        try:
++            return orig_prepare_inputs(self, input_batch, req_states)
++        finally:
++            _local.batch = None
++
++    def _eligible(state, batch):
++        spec = state.vllm_config.speculative_config
++        if spec is None:
++            return False
++        runner = SimpleNamespace(speculative_config=spec, device=state.device,
++                                 model_config=state.model_config)
++        return (
++            cv.enabled(runner, batch)
++            and batch.num_tokens == (spec.num_speculative_tokens + 1) * batch.num_reqs
++            and os.getenv("VLLM_XPU_C1_TARGET_GRAPH", "1") == "1"
++        )
++
++    def prepare(self, ngram_ids, num_tokens, num_tokens_padded, *, is_padding=None):
++        current = getattr(_local, "batch", None)
++        if ENABLED and current is not None and ngram_ids is not None and _eligible(*current):
++            pend = _pending()
++            if pend:  # never expected: keep the stage consistent anyway
++                flush("flushed_stale")
++            pend.append((orig_prepare, self, (ngram_ids, num_tokens, num_tokens_padded),
++                         dict(is_padding=is_padding)))
++            stats["deferred"] += 1
++            return None
++        return orig_prepare(self, ngram_ids, num_tokens, num_tokens_padded, is_padding=is_padding)
++
++    def update(destination, source, seen):
++        try:
++            return orig_update(destination, source, seen)
++        finally:
++            flush("flushed_update")
++
++    def verify_eager(runner, batch, metadata, model_inputs):
++        flush("flushed_eager")
++        return orig_verify_eager(runner, batch, metadata, model_inputs)
++
++    state_cls.prepare_inputs = prepare_inputs
++    Embedding.prepare = prepare
++    tg.update = update
++    cv.verify_eager = verify_eager
++    _installed = True
+diff --git a/vllm/models/qwen4_exp/nvidia/b70_moe_glue.py b/vllm/models/qwen4_exp/nvidia/b70_moe_glue.py
+index feb5b01..81ab83c 100644
+--- a/vllm/models/qwen4_exp/nvidia/b70_moe_glue.py
++++ b/vllm/models/qwen4_exp/nvidia/b70_moe_glue.py
+@@ -109,6 +109,11 @@ def wrap_block_forward(forward):
+         if getattr(self, "_b70_moe_glue", None) is None and not getattr(self, "_b70_moe_glue_checked", False):
+             self._b70_moe_glue_checked = True
+             install(self)
++        glue = getattr(self, "_b70_moe_glue", None)
++        if glue is not None:
++            # A stash may only be consumed within the block call that produced it
++            # (defensive: block inputs can be fixed-address tensors across steps).
++            glue["state"].clear()
+         return forward(self, hidden_states, *args, **kwargs)
+     wrapped.__wrapped__ = forward
+     return wrapped
+diff --git a/vllm/models/qwen4_exp/nvidia/model_state.py b/vllm/models/qwen4_exp/nvidia/model_state.py
+index 8895f24..f797676 100644
+--- a/vllm/models/qwen4_exp/nvidia/model_state.py
++++ b/vllm/models/qwen4_exp/nvidia/model_state.py
+@@ -183,3 +183,12 @@ class Qwen4ExpModelState(MambaHybridModelState):
+ 
+ 
+ __all__ = ["Qwen4ExpModelState"]
++
++
++# --- B70 expanded campaign 2026-11-16: deferred Disk-PLE prepare (env-gated) --
++# B70_DFLASH_DEFER_PLE=1: C1-verify batches run the PLE prepare after the target
++# graph's input update instead of before it (host ordering only); see b70_defer_ple.py.
++if __import__("os").getenv("B70_DFLASH_DEFER_PLE", "0") == "1":
++    from .b70_defer_ple import install as _b70_install_defer_ple
++
++    _b70_install_defer_ple(Qwen4ExpModelState)

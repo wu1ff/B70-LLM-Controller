@@ -22,9 +22,9 @@ def enabled(runner, batch) -> bool:
         and runner.model_config.hf_text_config.model_type == "qwen4_exp_text"
         and 1 <= batch.num_reqs <= 4
         and not batch.has_prefill
-        and ((batch.num_reqs == 1 and 1 < batch.num_tokens <= 8)
-             or (batch.num_tokens == 8 * batch.num_reqs
-                 and (batch.num_scheduled_tokens == 8).all()))
+        and ((batch.num_reqs == 1 and 1 < batch.num_tokens <= spec.num_speculative_tokens + 1)
+             or (batch.num_tokens == (spec.num_speculative_tokens + 1) * batch.num_reqs
+                 and (batch.num_scheduled_tokens == spec.num_speculative_tokens + 1).all()))
     )
 
 
@@ -36,6 +36,9 @@ def canonical_reductions(width):
     and recurrent kernels remain batched; only these small TP reductions retain
     the proven one-row collective. Draft execution uses its ordinary reductions.
     """
+    if os.getenv("ASTRA_DFLASH_RAW_REDUCE", "0") == "1":
+        yield
+        return
     comm = get_tp_group().device_communicator
     original = comm.all_reduce
 
@@ -70,7 +73,19 @@ def verify_eager(runner, batch, metadata, model_inputs):
 
 
 def verify(runner, batch, metadata, model_inputs):
-    if batch.num_tokens == 8 * batch.num_reqs and os.getenv("VLLM_XPU_C1_TARGET_GRAPH", "1") == "1":
+    width = runner.speculative_config.num_speculative_tokens + 1
+    seen = getattr(runner, "_dflash_verify_shapes", None)
+    if seen is None:
+        seen = runner._dflash_verify_shapes = set()
+    shape = (batch.num_reqs, batch.num_tokens)
+    if shape not in seen:
+        seen.add(shape)
+        from vllm.logger import init_logger
+        init_logger(__name__).info(
+            "DFlash verification dispatch: requests=%d rows=%d full=%s",
+            *shape, batch.num_tokens == width * batch.num_reqs)
+
+    if batch.num_tokens == width * batch.num_reqs and os.getenv("VLLM_XPU_C1_TARGET_GRAPH", "1") == "1":
         from .b70_target_graph import TargetGraphs
 
         graphs = getattr(runner, "_c1_target_graphs", None)

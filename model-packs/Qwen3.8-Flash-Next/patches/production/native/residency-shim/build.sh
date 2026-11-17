@@ -1,0 +1,5 @@
+set -euxo pipefail
+cd /outputs
+export PATH=/toolchain/opt/intel/oneapi/compiler/2026.0/bin:/opt/venv/bin:/usr/bin:/bin
+export LD_LIBRARY_PATH=/toolchain/opt/intel/oneapi/compiler/2026.0/lib:/toolchain/opt/intel/oneapi/tbb/2023.0/lib:/opt/venv/lib:/usr/local/lib
+gcc -std=c11 -O2 -fPIC -shared -Wall -Wextra -Werror /native/residency-shim/l0_peer_residency_shim.c -o libl0_peer_residency_shim.so -lze_loader -ldl -pthread

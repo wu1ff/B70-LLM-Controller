@@ -1,0 +1,87 @@
+{
+  "Id": "sha256:010bdc441c72ee222f459d3b688bb41317525f1bd7223afe6218490b0c526832",
+  "RepoTags": [
+    "local/dflash2-v033:vendor-exact"
+  ],
+  "RepoDigests": [
+    "local/dflash2-v033@sha256:010bdc441c72ee222f459d3b688bb41317525f1bd7223afe6218490b0c526832"
+  ],
+  "Comment": "buildkit.dockerfile.v0",
+  "Created": "2026-11-01T09:33:44.19077201Z",
+  "Config": {
+    "Env": [
+      "PATH=/opt/venv/bin:/root/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+      "DEBIAN_FRONTEND=noninteractive",
+      "VIRTUAL_ENV=/opt/venv",
+      "UV_PYTHON_INSTALL_DIR=/opt/uv/python",
+      "UV_HTTP_TIMEOUT=500",
+      "PIP_EXTRA_INDEX_URL=https://download.pytorch.org/whl/xpu",
+      "UV_EXTRA_INDEX_URL=https://download.pytorch.org/whl/xpu",
+      "UV_INDEX_STRATEGY=unsafe-best-match",
+      "UV_LINK_MODE=copy",
+      "LD_LIBRARY_PATH=/opt/ucx/lib:/opt/venv/lib:/usr/local/lib",
+      "UV_COMPILE_BYTECODE=1",
+      "VLLM_TARGET_DEVICE=xpu",
+      "VLLM_WORKER_MULTIPROC_METHOD=spawn"
+    ],
+    "Entrypoint": [
+      "vllm",
+      "serve"
+    ],
+    "WorkingDir": "/workspace/vllm",
+    "Labels": {
+      "org.opencontainers.image.version": "24.04"
+    },
+    "ArgsEscaped": true,
+    "Shell": [
+      "bash",
+      "-c"
+    ]
+  },
+  "Architecture": "amd64",
+  "Os": "linux",
+  "Size": 5212361080,
+  "RootFS": {
+    "Type": "layers",
+    "Layers": [
+      "sha256:bec87777bc2fb2edcdf9af11df1531469e7df911309c1413082b18fcb8610278",
+      "sha256:2b9d5d56cf447dc13484a3285e1160f35190a1e2552f0677e1fb93d7e3336e81",
+      "sha256:22d8c223048c3cd970e665bd8cd0993eb9683dbf9a2fb6ef2fd0c52a024ac699",
+      "sha256:c3e6fcbb18f2c5bb6d3638bd1fae19fa63a371e039f52aa81e5c58219a32ac0d",
+      "sha256:3f3c0e37a77efec6fa67b3a603fbe60f21cfc7d219272397e2ac2dc66b1ff69f",
+      "sha256:68541b97f05304a1c8ba7dfdba045456dc753f320a7951415ff2b482f148ced1",
+      "sha256:4ddccd87e98d153883f36ee91c4a28b0fe11b2c54879aede389b6546a82e179b",
+      "sha256:9a33d53a1b2a2d233697edfbb8c48ac339832d23e089721bde3912209f3ac41a",
+      "sha256:39ee9e1188a05bf4566037e33230d9331a17d78ea9948f94eff4b8e01b365898",
+      "sha256:aeb2d4edbb5fd0bd191e298b2f471d75682938455a7256b40487217a8c230102",
+      "sha256:a865e021ddcb49a0952769d0275c59ec89bff688bb330f34c846363d45899288",
+      "sha256:bf15199a20e03ac74b6c6cc3071f596fabed81ccbb05b7c188a45f3d4a5759c8",
+      "sha256:892ad76f49ce5e7c9624c3fd17a8f7c26116974caa90c20663b16c8d38ee4cdb",
+      "sha256:37add4e396896b2e7bcf195d2460a4eed0d5e4b3846278b6fef996b7b326d991",
+      "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+      "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+      "sha256:495b02c4ec1efd3b053290e47dea78311bab20289dca31508d999a77dbfeedb4",
+      "sha256:980405509faebdf97bd9419b812ceea618807535fb9709f96d180e4955c7a568",
+      "sha256:aa279794cc0d0bbb2d136cb771081920a937a9e923ae87ccaf4234ec382a07f5"
+    ]
+  },
+  "Metadata": {
+    "LastTagTime": "2026-11-12T04:09:06.902521821Z"
+  },
+  "Descriptor": {
+    "mediaType": "application/vnd.docker.distribution.manifest.v2+json",
+    "digest": "sha256:010bdc441c72ee222f459d3b688bb41317525f1bd7223afe6218490b0c526832",
+    "size": 4318,
+    "annotations": {
+      "io.containerd.image.name": "local/dflash2-v033:vendor-exact",
+      "org.opencontainers.image.ref.name": "local/dflash2-v033:vendor-exact"
+    }
+  },
+  "Identity": {
+    "Pull": [
+      {
+        "Repository": "docker.io/local/dflash2-v033"
+      }
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "installed_path": "/opt/venv/lib/python3.12/site-packages/vllm/v1/worker/gpu/spec_decode/dflash2/quality_calibration.pt",
+  "source_asset": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/runtime/dflash-bf16-reference-20261113/proposal-calibration-v1/params.pt",
+  "sha256": "f6a104dd32e6a41754a89a2bb1cd3a3f35ec04ef6083c68ffd17e73a75375624",
+  "size": 1570,
+  "expected_shape": [
+    7,
+    2
+  ],
+  "builder": "provenance/builders/build_bf16_tuned.py --calibration --conv",
+  "training_script_sha256": "50621c7ce4e1b85c7e3d85c622c92dff84d3843bba52c029b7630c2a62d84d41",
+  "build_dependency": "Exact serialized calibration tensor is supplied. Fitting/training data is not needed to assemble v6 and no refitting was performed. Historical script references /work/proposal-pairs/proposal-data-v1; a fresh fit is not claimed to reproduce these exact serialized bytes."
+}

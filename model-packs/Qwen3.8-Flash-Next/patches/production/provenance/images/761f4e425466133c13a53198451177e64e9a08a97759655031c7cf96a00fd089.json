@@ -1,0 +1,156 @@
+{
+  "Id": "sha256:761f4e425466133c13a53198451177e64e9a08a97759655031c7cf96a00fd089",
+  "RepoTags": [
+    "local/dflash2-v033:expanded-exact-v4"
+  ],
+  "RepoDigests": [
+    "local/dflash2-v033@sha256:761f4e425466133c13a53198451177e64e9a08a97759655031c7cf96a00fd089"
+  ],
+  "Comment": "buildkit.dockerfile.v0",
+  "Created": "2026-11-15T18:44:30.559140719-07:00",
+  "Config": {
+    "Env": [
+      "PATH=/opt/venv/bin:/root/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+      "DEBIAN_FRONTEND=noninteractive",
+      "VIRTUAL_ENV=/opt/venv",
+      "UV_PYTHON_INSTALL_DIR=/opt/uv/python",
+      "UV_HTTP_TIMEOUT=500",
+      "PIP_EXTRA_INDEX_URL=https://download.pytorch.org/whl/xpu",
+      "UV_EXTRA_INDEX_URL=https://download.pytorch.org/whl/xpu",
+      "UV_INDEX_STRATEGY=unsafe-best-match",
+      "UV_LINK_MODE=copy",
+      "LD_LIBRARY_PATH=/opt/ucx/lib:/opt/venv/lib:/usr/local/lib",
+      "UV_COMPILE_BYTECODE=1",
+      "VLLM_TARGET_DEVICE=xpu",
+      "VLLM_WORKER_MULTIPROC_METHOD=spawn",
+      "CCL_SYCL_ALLREDUCE_TMP_BUF=1",
+      "HF_HUB_OFFLINE=1",
+      "LD_PRELOAD=/opt/b70-residency-shim/libl0_peer_residency_shim.so",
+      "TMPDIR=/work/tmp",
+      "TRANSFORMERS_OFFLINE=1",
+      "XDG_CACHE_HOME=/work/xdg-cache",
+      "CCL_SYCL_ALLGATHERV_TMP_BUF=1",
+      "CCL_SYCL_ALLREDUCE_LL_THRESHOLD=65536",
+      "VLLM_CACHE_ROOT=/work/vllm-cache",
+      "HF_DATASETS_OFFLINE=1",
+      "TRITON_CACHE_DIR=/work/triton-cache",
+      "VLLM_XPU_DFLASH_FIXED_SPLITS=32",
+      "ZE_FLAT_DEVICE_HIERARCHY=FLAT",
+      "B70_PLE_DISK_BF16=1",
+      "HF_HOME=/work/hf-cache",
+      "PLE_TABLE_PATH=/models/model-00016-of-00017.safetensors",
+      "VLLM_USE_V2_MODEL_RUNNER=1",
+      "ZE_AFFINITY_MASK=0,1,2,3",
+      "VLLM_XPU_INC_WNA16_BACKEND=w4a16",
+      "B70_DFLASH_LIVE_GRAPH_CHECKS=1",
+      "B70_DFLASH_FUSED_GDN_METADATA=1",
+      "B70_DFLASH_SHARED_GDN_METADATA=1"
+    ],
+    "Entrypoint": [
+      "/opt/b70-flashnext/prepare-serve.sh"
+    ],
+    "Cmd": [
+      "vllm",
+      "serve",
+      "/models",
+      "--host",
+      "0.0.0.0",
+      "--port",
+      "8000",
+      "--dtype",
+      "bfloat16",
+      "--enable-expert-parallel",
+      "--max-num-seqs",
+      "4",
+      "--max-num-batched-tokens",
+      "1024",
+      "--gpu-memory-utilization",
+      "0.91",
+      "--limit-mm-per-prompt",
+      "{\"image\":2,\"video\":0}",
+      "--trust-remote-code",
+      "--enable-prefix-caching",
+      "--enable-auto-tool-choice",
+      "--tool-call-parser",
+      "qwen3_xml",
+      "--reasoning-parser",
+      "qwen3",
+      "--exclude-tools-when-tool-choice-none",
+      "--enforce-eager",
+      "--served-model-name",
+      "Intel/Qwen3.8-Flash-Next-W4A16-AutoRound",
+      "--speculative-config",
+      "{\"method\": \"dflash\", \"model\": \"/draft\", \"num_speculative_tokens\": 7, \"draft_tensor_parallel_size\": 4, \"draft_sample_method\": \"probabilistic\", \"rejection_sample_method\": \"standard\", \"attention_backend\": \"TRITON_ATTN\"}",
+      "--tensor-parallel-size",
+      "4",
+      "--max-model-len",
+      "262144"
+    ],
+    "WorkingDir": "/opt/venv",
+    "Labels": {
+      "org.opencontainers.image.version": "24.04"
+    },
+    "ArgsEscaped": true,
+    "Shell": [
+      "bash",
+      "-c"
+    ]
+  },
+  "Architecture": "amd64",
+  "Os": "linux",
+  "Size": 5221549867,
+  "RootFS": {
+    "Type": "layers",
+    "Layers": [
+      "sha256:bec87777bc2fb2edcdf9af11df1531469e7df911309c1413082b18fcb8610278",
+      "sha256:2b9d5d56cf447dc13484a3285e1160f35190a1e2552f0677e1fb93d7e3336e81",
+      "sha256:22d8c223048c3cd970e665bd8cd0993eb9683dbf9a2fb6ef2fd0c52a024ac699",
+      "sha256:c3e6fcbb18f2c5bb6d3638bd1fae19fa63a371e039f52aa81e5c58219a32ac0d",
+      "sha256:3f3c0e37a77efec6fa67b3a603fbe60f21cfc7d219272397e2ac2dc66b1ff69f",
+      "sha256:68541b97f05304a1c8ba7dfdba045456dc753f320a7951415ff2b482f148ced1",
+      "sha256:4ddccd87e98d153883f36ee91c4a28b0fe11b2c54879aede389b6546a82e179b",
+      "sha256:9a33d53a1b2a2d233697edfbb8c48ac339832d23e089721bde3912209f3ac41a",
+      "sha256:39ee9e1188a05bf4566037e33230d9331a17d78ea9948f94eff4b8e01b365898",
+      "sha256:aeb2d4edbb5fd0bd191e298b2f471d75682938455a7256b40487217a8c230102",
+      "sha256:a865e021ddcb49a0952769d0275c59ec89bff688bb330f34c846363d45899288",
+      "sha256:bf15199a20e03ac74b6c6cc3071f596fabed81ccbb05b7c188a45f3d4a5759c8",
+      "sha256:892ad76f49ce5e7c9624c3fd17a8f7c26116974caa90c20663b16c8d38ee4cdb",
+      "sha256:37add4e396896b2e7bcf195d2460a4eed0d5e4b3846278b6fef996b7b326d991",
+      "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+      "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+      "sha256:495b02c4ec1efd3b053290e47dea78311bab20289dca31508d999a77dbfeedb4",
+      "sha256:980405509faebdf97bd9419b812ceea618807535fb9709f96d180e4955c7a568",
+      "sha256:aa279794cc0d0bbb2d136cb771081920a937a9e923ae87ccaf4234ec382a07f5",
+      "sha256:7ab7c840cfa20c1dc4faa22295d5be737a4c1f3ca84632519f39e3800747450d",
+      "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+      "sha256:c58a7001628681987a7b06019a0910015738b2a236cab52242c1d27e364872d6",
+      "sha256:a448e5463687262a8e32e02591cd3d4bc203cc808b4c0fc3edc9f886e5ad64d3",
+      "sha256:cd05ddb98735f790cc10fd1549bdffbd62a061c43ccbf02a5b34082014fa6bc0",
+      "sha256:eef74ecfc33a136a604b3f06c9ddbca4fe6653e7a36893561aae789ae9e1a662",
+      "sha256:233e0e64aa7722e464fefd19b201ef35c598504e80c7f3106ff367f50e957f72",
+      "sha256:f26eaa847915c45aa2a7257d1dc62c9ee1b312a395141f6c8be022d2b53203ed",
+      "sha256:4322472a67001d47c99b497a9ba8f8d58de806a2e0ecd6295cd63d644530e089"
+    ]
+  },
+  "Metadata": {
+    "LastTagTime": "2026-11-16T01:44:30.738653015Z"
+  },
+  "Descriptor": {
+    "mediaType": "application/vnd.oci.image.index.v1+json",
+    "digest": "sha256:761f4e425466133c13a53198451177e64e9a08a97759655031c7cf96a00fd089",
+    "size": 856
+  },
+  "Identity": {
+    "Pull": [
+      {
+        "Repository": "docker.io/local/dflash2-v033"
+      }
+    ],
+    "Build": [
+      {
+        "Ref": "lobfksdl88ad2x52vlyww7wzd",
+        "CreatedAt": "2026-11-15T18:44:30.811322981-07:00"
+      }
+    ]
+  }
+}

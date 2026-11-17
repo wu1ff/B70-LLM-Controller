@@ -1,0 +1,33 @@
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 97B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/local/dflash2-v033:calconv-graphupd-v2
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [internal] load build context
+#4 transferring context: 254.63kB done
+#4 DONE 0.0s
+
+#5 [1/2] FROM docker.io/local/dflash2-v033:calconv-graphupd-v2@sha256:bc673822914e6137807cc5e87e6b8979195774b704e9f222a76bc9619e4e770b
+#5 resolve docker.io/local/dflash2-v033:calconv-graphupd-v2@sha256:bc673822914e6137807cc5e87e6b8979195774b704e9f222a76bc9619e4e770b 0.0s done
+#5 DONE 0.5s
+
+#6 [2/2] COPY overlay/ /
+#6 DONE 0.0s
+
+#7 exporting to image
+#7 exporting layers 0.1s done
+#7 exporting manifest sha256:c6bed447883209e333c0c90e557af010416bd6f1a15a08a650f75993b7038d5b 0.0s done
+#7 exporting config sha256:4ddaaee4c1a66d80ce3ffc8ed58b8898f3f54d887f55f538a02a492a495b14ec 0.0s done
+#7 exporting attestation manifest sha256:9a8e7ea2bbb171f88e3f895e45db50856fc3ce0bedf8e9f735d0b4aa09591534 0.0s done
+#7 exporting manifest list sha256:cf2f4b846bd7b1c3843fd2739a68809d2bdc75cbc38d76c928012e960c9b1b14 0.0s done
+#7 naming to docker.io/local/dflash2-v033:expanded-exact-v3 done
+#7 unpacking to docker.io/local/dflash2-v033:expanded-exact-v3 0.0s done
+#7 DONE 0.3s

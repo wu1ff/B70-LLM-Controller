@@ -1,14 +1,29 @@
 {
-  "accepted_image_id": "sha256:6e2ab4e686680a5208ff0119c4637341cba81942bd39b6576ea14dc8f547b83b",
-  "images": {
-    "compiler": "intel/omix@sha256:59cef13f8e87275846cc08e01d32b49082694a5c01d842d2e845552cbc8c199f",
-    "vendor": "vllm/vllm-openai-xpu@sha256:9dd913e9036633d55ace17265cbfc29f48b9b85fe4bc8b129debcf7e1b269ce7"
+  "platform": "linux/amd64",
+  "selected_image": {
+    "tag": "local/dflash2-v033:expanded2-exact-v6",
+    "id": "sha256:2fa91d1ac8c17ad866d9ae7eaea83ac1b1666ffd0ccceb7685564f55528c47af",
+    "registry_manifest_digest": "sha256:0d9a3cfe4bec7a28400f9ad425b13c9853734f19086a11dbaf884f7faebb8d60"
   },
-  "kernel_reference": {
-    "base": "ddf336d86e3c8602888572a3502f951abd51df12",
-    "intel_reference_tree": "1ce13e70894b11165f66a357d512517bf81c7bf6",
-    "repository": "https://github.com/vllm-project/vllm-xpu-kernels.git",
-    "stock_wheel_commit": "UNATTESTED; binary dependency pinned by vendor image"
+  "vendor": {
+    "repository": "vllm/vllm-openai-xpu",
+    "manifest_digest": "sha256:010bdc441c72ee222f459d3b688bb41317525f1bd7223afe6218490b0c526832",
+    "config_digest": "sha256:7b3eb7c792a5d3a049effcb0d792ce95d4a482dd47a965d8a05a244a47682813",
+    "local_tag": "local/dflash2-v033:vendor-exact",
+    "source_build_claim": false,
+    "stock_kernel_version": "0.1.15.4",
+    "stock_kernel_source_commit": "UNATTESTED; inherited immutable vendor binaries retained"
+  },
+  "vllm": {
+    "repository": "https://github.com/vllm-project/vllm.git",
+    "commit": "4ba787ec9959e566d3b587a796dff07673324da5",
+    "workspace_port_commit": "c41dc798b4d11b1534303396d08d63e340f9cd42",
+    "installed_source_identity": "ordered patches and SHA256 manifest; image Git HEAD alone omits overlays"
+  },
+  "compiler": {
+    "version": "2026.0.0.20260331",
+    "packages": "manifests/compiler-lock.json",
+    "retained_tree": "manifests/toolchain-files.json"
   },
   "models": {
     "draft": {
@@ -20,16 +35,66 @@
       "revision": "4c67bf686b7f7fd386bae6b07ab59e8ff1d5b897"
     }
   },
-  "native_build_prerequisites": "Docker BuildKit plus both pinned OCI images (preload for offline builds). Compiler binaries and vendor runtime are external immutable inputs, not bundled sources.",
-  "offline_source_verification": "All source inputs are included; no Docker, compiler, network or weights needed.",
-  "platform": "linux/amd64",
   "sycl_tla": {
+    "url": "https://codeload.github.com/intel/sycl-tla/tar.gz/87f6850680a580654b9ea2c80dbc01aeb36ad231",
     "commit": "87f6850680a580654b9ea2c80dbc01aeb36ad231",
-    "repository": "https://github.com/intel/sycl-tla.git"
+    "sha256": "5938a31e3940d1c90e88d9126788990a25a5e0ac968e53345461459b5ea21218",
+    "bytes": 31170769
   },
-  "vllm": {
-    "commit": "5df63a7203cdb9328d824a27b682e77c7b9928be",
-    "repository": "https://github.com/vllm-project/vllm.git",
-    "subset": "vllm/ + LICENSE"
+  "kernel_reference": {
+    "base": "ddf336d86e3c8602888572a3502f951abd51df12",
+    "intel_reference_tree": "1ce13e70894b11165f66a357d512517bf81c7bf6",
+    "repository": "https://github.com/vllm-project/vllm-xpu-kernels.git",
+    "stock_wheel_commit": "UNATTESTED; binary dependency pinned by vendor image",
+    "scope": "Shared custom-kernel header reference; this is not an attestation for the installed vendor wheel."
+  },
+  "profile_sha256": "ed6e18ce9c7bf052757da399d94857f99ebff0def85c94bb725d83301b7a7a85",
+  "external_runtime_mounts": [
+    {
+      "Type": "bind",
+      "Source": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/runtime/draft",
+      "Destination": "/draft",
+      "Mode": "ro",
+      "RW": false,
+      "Propagation": "rprivate"
+    },
+    {
+      "Type": "bind",
+      "Source": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/runtime/dflash-lan-v6-20261116t080819z-468409",
+      "Destination": "/work",
+      "Mode": "",
+      "RW": true,
+      "Propagation": "rprivate"
+    },
+    {
+      "Type": "bind",
+      "Source": "/mnt/models/intel-qwen38-flash-next-4c67bf686b7f/checkpoint",
+      "Destination": "/models",
+      "Mode": "ro",
+      "RW": false,
+      "Propagation": "rprivate"
+    },
+    {
+      "Type": "bind",
+      "Source": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/qualification/parity_worker.py",
+      "Destination": "/opt/dflash-parity/parity_worker.py",
+      "Mode": "",
+      "RW": false,
+      "Propagation": "rprivate"
+    },
+    {
+      "Type": "bind",
+      "Source": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/qualification/tuning_worker.py",
+      "Destination": "/opt/dflash-parity/tuning_worker.py",
+      "Mode": "",
+      "RW": false,
+      "Propagation": "rprivate"
+    }
+  ],
+  "data_assets": {
+    "calibration": "generated/quality_calibration.pt",
+    "checkpoint_weights": "EXTERNAL; excluded",
+    "frontend_metadata": "support/b70-flashnext/assets",
+    "calibration_sha256": "f6a104dd32e6a41754a89a2bb1cd3a3f35ec04ef6083c68ffd17e73a75375624"
   }
 }

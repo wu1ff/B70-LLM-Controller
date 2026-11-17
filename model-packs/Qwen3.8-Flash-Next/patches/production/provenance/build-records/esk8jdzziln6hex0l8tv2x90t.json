@@ -1,0 +1,40 @@
+{
+  "Name": "parity-shared-context",
+  "Ref": "esk8jdzziln6hex0l8tv2x90t",
+  "Context": "build/parity-shared-context",
+  "Dockerfile": "Dockerfile",
+  "StartedAt": "2026-11-12T00:43:46.860049886-07:00",
+  "CompletedAt": "2026-11-12T00:43:47.267643148-07:00",
+  "Duration": 407593262,
+  "Status": "completed",
+  "NumCompletedSteps": 7,
+  "NumTotalSteps": 7,
+  "NumCachedSteps": 1,
+  "Config": {
+    "Network": "none",
+    "ImageResolveMode": "local"
+  },
+  "Materials": [
+    {
+      "URI": "pkg:docker/local/dflash2-v033@metadata-b1?platform=linux%2Famd64",
+      "Digests": [
+        "sha256:ce670e4345c5476cc884052c90f3c1d3d802d6e0187d8b1f786612914a363071"
+      ]
+    }
+  ],
+  "Attachments": [
+    {
+      "Digest": "sha256:b0262b274313ddd1127b95631157a6929073dd6123df55746bdac6927ec76a58",
+      "Type": "application/vnd.oci.image.index.v1+json"
+    },
+    {
+      "Digest": "sha256:fdf23e4adfb43f8fb7d76cefd3d334ef56f732995f58102412ba3552fcb1c0a3",
+      "Type": "https://slsa.dev/provenance/v1"
+    },
+    {
+      "Digest": "sha256:f0e3b81e32033bf3a0d552b217775f0fe7b4f0b8cb5b07a6a38ab175eeed380f",
+      "Platform": "linux/amd64",
+      "Type": "application/vnd.oci.image.manifest.v1+json"
+    }
+  ]
+}

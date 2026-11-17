@@ -1,0 +1,75 @@
+diff --git a/vllm/models/qwen4_exp/nvidia/b70_moe_glue.py b/vllm/models/qwen4_exp/nvidia/b70_moe_glue.py
+index 81ab83c..388779d 100644
+--- a/vllm/models/qwen4_exp/nvidia/b70_moe_glue.py
++++ b/vllm/models/qwen4_exp/nvidia/b70_moe_glue.py
+@@ -1,13 +1,20 @@
+ # SPDX-License-Identifier: Apache-2.0
+ """Exact fused MoE glue for B70 DFlash2 decode widths (experiment; env-gated).
+ 
++expanded2 (v6): uses b70_exact_moe_v3. The v1 kernel (v4/v5 images) computed the shared-expert gate
++logit (N=1, K=2560) as one straight chained DPAS accumulation, but oneDNN's N=1 GEMV sums 16 step
++partials (each a chain over the five 32-wide chunks k = blk*512 + j*32) left to right; v1 therefore
++differed by one BF16 ulp in ~2e-4 of rows (measured; see astra/evidence/expanded2-20261116T035217Z).
++v3 reproduces the measured oneDNN order (0 mismatches in 1.2M rows) and computes the 16 step
++partials on 8 subgroups in parallel. Inputs must also be 64-byte aligned (2D block loads).
++
+ For a Qwen4Exp sparse MoE block at 8/16/24/32 rows:
+   * router gate + shared gate_up (+ silu_and_mul) + shared expert gate run in one
+-    native launch (b70_exact_moe_v1.front);
++    native launch (b70_exact_moe_v3.front);
+   * the shared down projection and sigmoid(expert_gate) * out run in one native
+-    launch (b70_exact_moe_v1.back).
++    launch (b70_exact_moe_v3.back).
+ Both reproduce the image's oneDNN/vllm arithmetic bit-for-bit (K=2560: four chained
+-FP32 DPAS K-quarters summed left to right; K=160 and N=1: one chained accumulation;
++FP32 DPAS K-quarters summed left to right; K=160: one chained accumulation; N=1: see above;
+ silu/sigmoid element formulas verified over the whole BF16 domain). Routing, routed
+ experts, the routed+shared add and the TP all-reduce are untouched.
+ """
+@@ -24,10 +31,19 @@ def _load():
+     if not _loaded:
+         import vllm_xpu_kernels
+ 
+-        torch.ops.load_library(str(Path(vllm_xpu_kernels.__file__).with_name("libb70_exact_moe_v1.so")))
++        torch.ops.load_library(str(Path(vllm_xpu_kernels.__file__).with_name("libb70_exact_moe_v3.so")))
+         _loaded = True
+ 
+ 
++def _ops():
++    # Module-level indirection so a diagnostic probe can select another registered kernel
++    # namespace for A/B (a new graph family is required: captured graphs bake the kernel).
++    return OPS if OPS is not None else torch.ops.b70_exact_moe_v3
++
++
++OPS = None
++
++
+ def _eligible_x(x):
+     return (
+         x.dim() == 2
+@@ -36,6 +52,7 @@ def _eligible_x(x):
+         and x.dtype == torch.bfloat16
+         and x.device.type == "xpu"
+         and x.is_contiguous()
++        and x.data_ptr() % 64 == 0
+     )
+ 
+ 
+@@ -73,7 +90,7 @@ def install(block):
+ 
+     def gate_forward(x):
+         if _eligible_x(x):
+-            logits, act, egate = torch.ops.b70_exact_moe_v1.front(x, wr, wgu, we)
++            logits, act, egate = _ops().front(x, wr, wgu, we)
+             state.clear()
+             state.update(x=x, act=act, egate=egate)
+             return ret(logits) if ret is not None else logits
+@@ -84,7 +101,7 @@ def install(block):
+         if state.get("x") is x:
+             act, egate = state["act"], state["egate"]
+             state.clear()
+-            return torch.ops.b70_exact_moe_v1.back(act, wd, egate, x, False)
++            return _ops().back(act, wd, egate, x, False)
+         state.clear()
+         return orig_se(x)
+ 

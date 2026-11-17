@@ -1,0 +1,128 @@
+{
+  "status": "PASS",
+  "controller": {
+    "binary": "/usr/bin/b70ctl",
+    "version": "1.0.1",
+    "sha256": "169a1b9abf4b8e5f842a59e4e41c991c097d8a8f4196ba2630aa4edf2c0943a7",
+    "unchanged": true,
+    "workflow": "Model Packs / Import Local Pack, then Run Model / Start, Runtime / Stop"
+  },
+  "image": "sha256:2fa91d1ac8c17ad866d9ae7eaea83ac1b1666ffd0ccceb7685564f55528c47af",
+  "production_pack_sha256": "ae59256f4c016939f6b8ea649b2f943996a5399a53703e20934f0c1e8d190643",
+  "frozen_profile_sha256": "ed6e18ce9c7bf052757da399d94857f99ebff0def85c94bb725d83301b7a7a85",
+  "frozen_profile_preserved": true,
+  "production_differences": {
+    "worker_methods": {
+      "parity_worker.py": {
+        "ParityWorker": [
+          "parity_snapshot",
+          "set_parity_shared",
+          "arm_parity_timing",
+          "disarm_parity_timing",
+          "run_parity_probe",
+          "probe_parity_shared_metadata"
+        ]
+      },
+      "tuning_worker.py": {
+        "TuningWorker": [
+          "set_dflash_hc_epilogue",
+          "probe_dflash_fast_metadata",
+          "arm_dflash_timing",
+          "disarm_dflash_timing",
+          "set_dflash_tuning_mode",
+          "probe_dflash_hc_epilogue",
+          "probe_dflash_cyclic_experts",
+          "qualify_dflash_cyclic_all_layers"
+        ]
+      }
+    },
+    "extension_has_startup_or_destructor_hooks": false,
+    "removed_argv": [
+      "--worker-extension-cls",
+      "parity_worker.ParityWorker"
+    ],
+    "removed_environment": {
+      "PYTHONPATH": "/opt/dflash-parity",
+      "VLLM_SERVER_DEV_MODE": "1"
+    },
+    "removed_launcher_mounts": [
+      "/opt/dflash-parity/parity_worker.py",
+      "/opt/dflash-parity/tuning_worker.py"
+    ],
+    "work": "ordinary writable container filesystem; no mount",
+    "frozen_profile_sha256": "ed6e18ce9c7bf052757da399d94857f99ebff0def85c94bb725d83301b7a7a85",
+    "image_unchanged": true
+  },
+  "validation": {
+    "imported": true,
+    "image_reused": true,
+    "checkpoints_reused": true,
+    "downloaded_weights": false,
+    "readiness_seconds": 240.6,
+    "all_four_ranks": true,
+    "kv_cache_tokens": 460944,
+    "reasoning": "PASS",
+    "required_tool": "PASS",
+    "continuation": "PASS",
+    "eos": "Baked guard enabled; observed reasoning-close token before clean stop and final answer",
+    "target_query_graphs": "C1-C4 active on all ranks; changed-input gates pass; no graph failure logs",
+    "disk_ple": "Original read-only mmap, bounded 5 MiB pinned stage per rank, eight gather threads",
+    "concurrency": {
+      "waves": 2,
+      "slots": 4,
+      "requests_completed": 8,
+      "max_response_tokens": 1024,
+      "final_running": 0,
+      "final_waiting": 0
+    },
+    "prior_short_check": "One of eight initial concurrency responses exhausted 512 response tokens during reasoning; retained and narrowed repeat passed. No pack changes between checks.",
+    "stopped_via_controller": true,
+    "exit_code": 0,
+    "earlier_controller_copy_readiness_seconds": 256.4,
+    "original_checkpoint": {
+      "original_ple_inode": 134217883,
+      "target_files_same_original_inodes": 29,
+      "read_only_worker_mappings": 4,
+      "original_path": "/mnt/models/intel-qwen38-flash-next-4c67bf686b7f/checkpoint",
+      "existing_inventory": "/mnt/models/dflash2-work-mount-check-20261022",
+      "new_links_or_model_files_created": false,
+      "model_assets_modified": false
+    },
+    "earlier_unconstrained_concurrency": {
+      "waves": 2,
+      "slots": 4,
+      "max_response_tokens": 1024,
+      "drafts": 648,
+      "proposals": 4536,
+      "accepted": 1976,
+      "final_running": 0,
+      "final_waiting": 0
+    },
+    "speculation": {
+      "configured_tokens": 7,
+      "full_width_graph_rows": [
+        8,
+        16,
+        24,
+        32
+      ],
+      "whole_final_exercise_rounds": 654.0,
+      "whole_final_exercise_effective_draft_tokens": 4568.0,
+      "whole_final_exercise_accepted": 1953.0,
+      "counter_semantics": {
+        "observed_shortfall_from_7xrounds": 10.0,
+        "source": "Baked scheduler update_draft_token_ids_in_output validates grammar and records num_invalid_spec_tokens; make_spec_decoding_stats subtracts these before SpecDecodingStats.observe_draft. Scheduler can also schedule partial rounds.",
+        "required_tool_uses_grammar": true,
+        "evidence": "counter-source-hashes.json and original counter assertion/error logs",
+        "interpretation": "Exact aggregate 7xrounds is not a valid invariant for mixed grammar-constrained tool traffic. Serving settings and C1-C4 full-width graph dispatch prove seven-token execution. Exact per-step source of each deducted token was not instrumented.",
+        "separate_unconstrained_repeat": "Earlier two-wave concurrency-only repeat: 648 rounds, 4536 proposals, exactly seven per round."
+      }
+    }
+  },
+  "limits": [
+    "Targeted local-image compatibility only; no full-context or benchmark rerun.",
+    "Diagnostic in-memory snapshots/timing/RPCs omitted; graph evidence is from baked serving logs.",
+    "Image registry publication and remote acquisition remain unverified and unpublished.",
+    "Earlier run reused an existing Controller checkpoint copy; final run verifies original qualification checkpoint inodes through the supported existing inventory."
+  ]
+}

@@ -379,6 +379,10 @@ struct gated_delta_rule_spec_kernel {
       return;
     }
 
+    if (query_start_loc[batch_id + 1] == query_start_loc[batch_id]) {
+      return;  // Padded requests have no valid state indices.
+    }
+
     const float scale = 1.0f / sycl::sqrt(float(head_k_dim));
     float A_log_local = A_log[num_v_heads_id];
     float dt_bias_local = dt_bias[num_v_heads_id];

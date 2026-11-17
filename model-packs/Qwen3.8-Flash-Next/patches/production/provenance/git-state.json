@@ -1,0 +1,17 @@
+{
+  "/home/wulf/Desktop/B70-Controller": {
+    "head": "94eeda630f757c46dd6e02c4cc49387119efc811\n",
+    "status": "?? .b70_drive_launch.py\n?? betterbench-results/\n?? cmd/flashnextsmoke/\n?? cmd/packarchive/\n?? cmd/qwen38convfix/\n?? cmd/qwen38smoke/\n?? cmd/qwen38validate/\n?? qwen38smoke\n?? tp2-benchmark-results/\n",
+    "remotes": "github\tgit@github.com:wu1ff/B70-LLM-Controller.git (fetch)\ngithub\tgit@github.com:wu1ff/B70-LLM-Controller.git (push)\norigin\tforgejo:wulf/B70-LLM-Controller.git (fetch)\norigin\tforgejo:wulf/B70-LLM-Controller.git (push)\n"
+  },
+  "/home/wulf/Desktop/B70-LLM-Controller-Model-Packs": {
+    "head": "98058ac8fb05fa2b677650c8ccccb906bf571873\n",
+    "status": " M Qwen3.8-Flash-Next/README.md\n M Qwen3.8-Flash-Next/RUNTIME_RECIPE.md\n M Qwen3.8-Flash-Next/pack.json\n M Qwen3.8-Flash-Next/patches/001-qwen4exp-xpu-base/README.md\n M Qwen3.8-Flash-Next/patches/002-pinned-host-ple/README.md\n M Qwen3.8-Flash-Next/patches/003-ple-full-graph-capture/README.md\n M Qwen3.8-Flash-Next/patches/004-hc-ksplit/README.md\n M Qwen3.8-Flash-Next/patches/005-gdn-spec-metadata/README.md\n M Qwen3.8-Flash-Next/patches/006-gdn-index64/README.md\n M Qwen3.8-Flash-Next/patches/007-serve-packaging/README.md\n M Qwen3.8-Flash-Next/patches/README.md\n M Qwen3.8-Flash-Next/patches/SHA256SUMS\n M Qwen3.8-Flash-Next/patches/b70-residency-shim/README.md\n M Qwen3.8-Flash-Next/validate.py\n?? Qwen3.8-Flash-Next/patches/disk/\n?? pack-recon/\n",
+    "remotes": "origin\tssh://git@192.168.1.205/wulf/B70-LLM-Controller-Model-Packs.git (fetch)\norigin\tssh://git@192.168.1.205/wulf/B70-LLM-Controller-Model-Packs.git (push)\n"
+  },
+  "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/source/vllm": {
+    "head": "c41dc798b4d11b1534303396d08d63e340f9cd42\n",
+    "status": " M vllm/model_executor/layers/logits_processor.py\n M vllm/v1/attention/backends/gdn_attn.py\n M vllm/v1/worker/gpu/model_runner.py\n?? vllm/models/qwen4_exp/nvidia/dflash_head_graph.py\n?? vllm/v1/attention/backends/gdn_spec_metadata.py\n",
+    "remotes": "origin\t/home/wulf/Desktop/qwen3.8-flash-next-v033-recon/upstream-v033 (fetch)\norigin\t/home/wulf/Desktop/qwen3.8-flash-next-v033-recon/upstream-v033 (push)\n"
+  }
+}

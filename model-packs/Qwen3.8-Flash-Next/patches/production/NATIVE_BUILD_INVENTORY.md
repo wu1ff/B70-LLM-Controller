@@ -1,24 +1,48 @@
-# Complete native source/build inventory
+# Native sources and build inventory
 
-All twelve installed libraries are required for payload reconstruction, including fallback consumers. Build inputs are pinned by `immutable-inputs.json` and `input-lock.json`. No native binary is included in this bundle.
+All 17 retained outputs match the selected image. Sources and recipes are
+included; generated libraries remain external comparison evidence. All compiler
+flags and link options are preserved in each family’s `build.sh`.
 
-| Installed library | Translation units | Build script | Headers | Output before install |
-| --- | --- | --- | --- | --- |
-| vllm_xpu_kernels/libgdn_index64.so | native/native/gdn_index64.cpp | native/native/build.sh | gdn-headers | libgdn_index64.so |
-| b70-residency-shim/libl0_peer_residency_shim.so | native/residency-shim/l0_peer_residency_shim.c | vendor GCC command in build/Dockerfile.native | vendor Level Zero + libc | libl0_peer_residency_shim.so |
-| vllm_xpu_kernels/libastra_moe.so | native/astra500-native/astra_moe.cpp | native/astra500-native/build.sh | common-native-headers | libastra_moe.so |
-| vllm_xpu_kernels/libastra_hc.so | native/astra500-structural-hc/astra_hc_v3.cpp | native/astra500-structural-hc/build-v3.sh | common-native-headers | libastra_hc_v3.so |
-| vllm_xpu_kernels/libastra_direct.so | native/astra500-structural-moe/astra_direct.cpp | native/astra500-structural-moe/build.sh | common-native-headers | libastra_direct.so |
-| vllm_xpu_kernels/libastra_groups.so | native/astra500-ownership-groups/astra_direct.cpp, native/astra500-ownership-groups/ownership_remap.cpp, native/astra500-ownership-groups/ownership_gather.cpp | native/astra500-ownership-groups/build.sh | common-native-headers | libastra_groups.so |
-| vllm_xpu_kernels/libastra_batch.so | native/astra500-ownership-batch/astra_batch.cpp | native/astra500-ownership-batch/build.sh | common-native-headers | libastra_batch.so |
-| vllm_xpu_kernels/libbeyond_prefill.so | native/astra500-beyond-prefill/beyond_prefill.cpp | native/astra500-beyond-prefill/build.sh | common-native-headers | libbeyond_prefill.so |
-| vllm_xpu_kernels/libdominant_w4_layout.so | native/astra500-dominant-native/w4_layout.cpp | native/astra500-dominant-native/build.sh | common-native-headers | libdominant_w4_layout.so |
-| vllm_xpu_kernels/libserving_prefill.so | native/prefill-native/prefill_small.cpp | native/prefill-native/build.sh | common-native-headers | libserving_prefill.so |
-| vllm_xpu_kernels/liblong_hc.so | native/long-hc-selected/hc.cpp | native/long-hc-selected/build.sh | common-native-headers | liblong_hc.so |
-| vllm_xpu_kernels/liblong_prefill_v3.so | native/long-prefill-native/prefill_small.cpp | native/long-prefill-native/build.sh | common-native-headers | liblong_prefill_v3.so |
+| Family | Installed output | Compiler | SHA256 |
+| --- | --- | --- | --- |
+| native | `libgdn_index64.so` | oneAPI 2026.0.0.20260331 | `101e6a2555449dc92d94b9acc4b79c9581e458f95c4866ce7446bb03518ffa87` |
+| residency-shim | `libl0_peer_residency_shim.so` | vendor GCC 13.3.0 | `ae2c82f549d97393268cbd7b90dba7cf38fd00dbccae54f090b1a545e5613b3c` |
+| astra500-native | `libastra_moe.so` | oneAPI 2026.0.0.20260331 | `fd704477a62d24bb96f573564894e4723b765620e86ff1f760abaed994d755c8` |
+| astra500-structural-hc | `libastra_hc.so` | oneAPI 2026.0.0.20260331 | `2fdda680027db5d730ae9b9ed0098f0db4b97d83a6bc2fe27e55331e1756c44c` |
+| astra500-structural-moe | `libastra_direct.so` | oneAPI 2026.0.0.20260331 | `ffefd9b53777893a56224cacbefbd77c09c6baa44be5c64304b27fdd846b5103` |
+| astra500-ownership-groups | `libastra_groups.so` | oneAPI 2026.0.0.20260331 | `e8d9887f2918046f6fb45b86a2d8737633f4e42fd3a7e734fe1e5977c9729418` |
+| astra500-ownership-batch | `libastra_batch.so` | oneAPI 2026.0.0.20260331 | `551f15c64119aff9905b651f880d7c1313bf0ade3fb3fcb4dc31a7432c50f77a` |
+| astra500-beyond-prefill | `libbeyond_prefill.so` | oneAPI 2026.0.0.20260331 | `f2bafe516962f7109d5ec14fce47583db2289fd8830dfb7f571c14c6cf9a66d4` |
+| astra500-dominant-native | `libdominant_w4_layout.so` | oneAPI 2026.0.0.20260331 | `1a2e8f582e76e27bbc478a9c2ffa6f26f6e2283673a4059a5c5c0564d2c9d673` |
+| prefill-native | `libserving_prefill.so` | oneAPI 2026.0.0.20260331 | `c1c0190a5fd1290d057dabf11f26e3ce66bf01cdd9d32f8fcb7e315a842f35ea` |
+| long-hc-selected | `liblong_hc.so` | oneAPI 2026.0.0.20260331 | `959439265e485be1434b038b2050aab775c7d421646bc77806415552749499c5` |
+| long-prefill-native | `liblong_prefill_v3.so` | oneAPI 2026.0.0.20260331 | `fe7ba008bd1251ffc1cd6bac7bc08b93fb76b61ec78bed1b66a737300f20c55f` |
+| ordered-hc-v2 | `libb70_ordered_hc_v2.so` | oneAPI 2026.0.0.20260331 | `4ddb9a938ce6f415b9b0ae2c0486e04e3f74a358d9c3448381c52672f6db1ce6` |
+| exact-v1 | `libb70_exact_v1.so` | oneAPI 2026.0.0.20260331 | `be4e6e756afd5852cefee188f5cce56a18d5caf5eccc3d26b0e6c099123ad1fa` |
+| exact-moe-v1 | `libb70_exact_moe_v1.so` | oneAPI 2026.0.0.20260331 | `892e1d86b1e0deb87538936b99d296f2c16865650997ba2565c37dc11395cb6a` |
+| exact-moe-v3 | `libb70_exact_moe_v3.so` | oneAPI 2026.0.0.20260331 | `20691aa32d8b61d9e1f907be92f0115960199a6a296ad14762396b218654aaaa` |
+| ple-gather | `libple_gather.so` | vendor GCC 13.3.0 | `b3011fac3b7f0687b4ce77a26bad8f20e1e3e9eb21b05bcb3219d8ecafab52f1` |
 
-The scripts preserve the exact C++20/O3/NDEBUG/PIC/hidden-visibility/SYCL spir64 options, XE2 and CUTLASS definitions, include order, SPIR-V extension flags, symbol binding, Torch libraries and relative rpath. GDN links the pinned vendor delta-rule library; the shim retains its C11/O2/Wall/Wextra/Werror/ze_loader/dl/pthread command. HC v3 is installed as libastra_hc.so. Direct v2 uses its retained normalized astra_direct.cpp/direct_gemm.hpp filenames and libastra_direct.so export.
+GDN uses `dependencies/gdn-headers`; other SYCL families use
+`dependencies/common-native-headers` and pinned TLA. The shim and PLE gather
+use vendor GCC. Keep the legacy MoE v1 library to preserve the final image
+payload; corrected MoE v3 is the selected consumer path.
 
-The old structural-builder image is the vendor layer prefix plus the copied compiler and an unrelated four-file native build context/output. Its environment equals the vendor environment. The replacement copies the same pinned compiler into the same /toolchain path and supplies all selected include trees directly. See native-environment-closure.json and phase2-evidence for inspected ancestry; the local image is not an input.
+The original GDN compilation produced its object but the first link encountered
+an output path that was a directory. The retained link-only retry succeeded;
+both logs and commands are preserved. The consolidated GDN build script performs
+that same compile and link in a new output directory.
 
-Required vendor headers/loaders were inspected without compilation. Kernel, TLA and compiler source/header file hashes and references are distinct from accepted .so hashes. Independent compilation and binary comparison remain the next step.
+The original PLE GCC command was not retained. A reconstructed `-O2 -fPIC
+-shared -pthread` recipe under the pinned vendor compiler reproduced SHA256
+`b3011fac3b7f0687b4ce77a26bad8f20e1e3e9eb21b05bcb3219d8ecafab52f1`
+exactly. That result closes the source/recipe gap without a serving run.
+
+`manifests/native-dependency-audit.json` resolves 3,348 packaged/toolchain
+dependency references and 4,802 external vendor header paths with no gaps.
+`manifests/toolchain-files.json` and `compiler-lock.json` pin the complete
+retained compiler tree and its 15 package inputs. No arbitrary host compiler
+or local structural-builder image is used.
+
+Independent SYCL recompilation of all families was not performed in this task.

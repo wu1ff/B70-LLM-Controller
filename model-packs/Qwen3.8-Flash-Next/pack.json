@@ -2,7 +2,7 @@
   "schema_version": 1,
   "id": "qwen38-flashnext-b70",
   "name": "Qwen3.8-Flash-Next B70 Pack (DFlash2)",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "models": [
     {
       "id": "qwen38-flashnext-w4a16",
@@ -184,8 +184,8 @@
   "runtimes": [
     {
       "id": "qwen38-flashnext-runtime-dflash2",
-      "image": "ghcr.io/wu1ff/qwen38-flashnext-b70:dflash2",
-      "digest": "sha256:6e2ab4e686680a5208ff0119c4637341cba81942bd39b6576ea14dc8f547b83b",
+      "image": "ghcr.io/wu1ff/qwen38-flashnext-b70:dflash2-v033",
+      "digest": "sha256:2fa91d1ac8c17ad866d9ae7eaea83ac1b1666ffd0ccceb7685564f55528c47af",
       "container_port": 8000,
       "health_path": "/health",
       "launch": {
@@ -193,36 +193,52 @@
           "--pull",
           "never",
           "--device=/dev/dri:/dev/dri",
-          "--ipc=host",
+          "--ipc=private",
+          "--shm-size=32g",
           "--security-opt",
-          "seccomp=unconfined",
-          "--security-opt",
-          "label=disable",
-          "--mount",
-          "type=bind,source=/dev/dri/by-path,target=/dev/dri/by-path,readonly"
+          "seccomp=unconfined"
         ],
         "environment": {
-          "CCL_SYCL_ALLREDUCE_LL_THRESHOLD": "65536",
-          "CCL_SYCL_ALLGATHERV_TMP_BUF": "1",
-          "HF_HOME": "/work/hf-cache",
-          "TRANSFORMERS_OFFLINE": "1",
-          "TRITON_CACHE_DIR": "/work/triton-cache",
-          "VLLM_XPU_DFLASH_FIXED_SPLITS": "32",
-          "PYTHONPATH": "/opt/phase4-tests:/tests:/opt/phase3-tests:/opt/phase2-tests",
-          "B70_PLE_DISK_BF16": "1",
           "CCL_SYCL_ALLREDUCE_TMP_BUF": "1",
+          "HF_HUB_OFFLINE": "1",
+          "LD_PRELOAD": "/opt/b70-residency-shim/libl0_peer_residency_shim.so",
+          "TMPDIR": "/work/tmp",
+          "TRANSFORMERS_OFFLINE": "1",
+          "XDG_CACHE_HOME": "/work/xdg-cache",
+          "CCL_SYCL_ALLGATHERV_TMP_BUF": "1",
+          "CCL_SYCL_ALLREDUCE_LL_THRESHOLD": "65536",
           "VLLM_CACHE_ROOT": "/work/vllm-cache",
           "VLLM_TARGET_DEVICE": "xpu",
-          "XDG_CACHE_HOME": "/work/xdg-cache",
           "HF_DATASETS_OFFLINE": "1",
+          "TRITON_CACHE_DIR": "/work/triton-cache",
+          "VLLM_WORKER_MULTIPROC_METHOD": "spawn",
+          "VLLM_XPU_DFLASH_FIXED_SPLITS": "32",
+          "ZE_FLAT_DEVICE_HIERARCHY": "FLAT",
+          "B70_PLE_DISK_BF16": "1",
+          "HF_HOME": "/work/hf-cache",
+          "PLE_TABLE_PATH": "/models/model-00016-of-00017.safetensors",
           "VLLM_USE_V2_MODEL_RUNNER": "1",
           "ZE_AFFINITY_MASK": "0,1,2,3",
-          "VLLM_WORKER_MULTIPROC_METHOD": "spawn",
-          "TMPDIR": "/tmp",
-          "LD_PRELOAD": "/opt/b70-residency-shim/libl0_peer_residency_shim.so",
-          "PLE_TABLE_PATH": "/models/model-00016-of-00017.safetensors",
-          "ZE_FLAT_DEVICE_HIERARCHY": "FLAT",
-          "HF_HUB_OFFLINE": "1"
+          "VLLM_XPU_INC_WNA16_BACKEND": "w4a16",
+          "B70_DFLASH_LIVE_GRAPH_CHECKS": "1",
+          "B70_DFLASH_FUSED_GDN_METADATA": "1",
+          "B70_DFLASH_SHARED_GDN_METADATA": "1",
+          "B70_DFLASH_QUERY_GRAPH": "1",
+          "B70_DFLASH_NATIVE_HC": "20",
+          "ASTRA_DFLASH_RAW_REDUCE": "0",
+          "ASTRA_DFLASH_QUERY_BLOCK": "8",
+          "ASTRA_DFLASH_SUPPORT": "16",
+          "ASTRA_DFLASH_SCORE_SCALE": "1.0",
+          "B70_THINKING_EOS_GUARD": "1",
+          "B70_DFLASH_QUALITY_CALIBRATION": "1",
+          "B70_DFLASH_QUALITY_CONV": "1",
+          "B70_DFLASH_COMPILED_GRAPH_UPDATE": "1",
+          "B70_DFLASH_FUSED_GRAPH_COPY": "1",
+          "B70_PLE_PARALLEL_GATHER": "8",
+          "B70_DFLASH_EXACT_BA": "1",
+          "B70_DFLASH_HC_SPLIT32": "10",
+          "B70_DFLASH_MOE_GLUE": "1",
+          "B70_DFLASH_DEFER_PLE": "1"
         },
         "command": [
           "vllm",
@@ -250,12 +266,10 @@
           "--reasoning-parser",
           "qwen3",
           "--exclude-tools-when-tool-choice-none",
-          "--enforce-eager",
-          "--num-gpu-blocks-override",
-          "7785"
+          "--enforce-eager"
         ]
       },
-      "registry": "ghcr.io/wu1ff/qwen38-flashnext-b70@sha256:6e2ab4e686680a5208ff0119c4637341cba81942bd39b6576ea14dc8f547b83b"
+      "registry": "ghcr.io/wu1ff/qwen38-flashnext-b70@sha256:2fa91d1ac8c17ad866d9ae7eaea83ac1b1666ffd0ccceb7685564f55528c47af"
     }
   ],
   "modes": [

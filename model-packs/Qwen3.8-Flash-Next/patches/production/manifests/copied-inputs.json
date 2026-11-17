@@ -1,0 +1,1262 @@
+[
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/release-prep/provenance-20261116T231122Z-33259c/snapshots/010bdc441c72ee222f459d3b688bb41317525f1bd7223afe6218490b0c526832/opt/venv/lib/python3.12/site-packages/vllm/_version.py",
+    "packaged": "patches/production/generated/vllm/_version.py",
+    "sha256": "83ac00973c429411aefd8e8f33cfb4a313b438b7c07e93d2fada81db86206f92"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/release-prep/provenance-20261116T231122Z-33259c/snapshots/2fa91d1ac8c17ad866d9ae7eaea83ac1b1666ffd0ccceb7685564f55528c47af/opt/venv/lib/python3.12/site-packages/vllm/v1/worker/gpu/spec_decode/dflash2/quality_calibration.pt",
+    "packaged": "patches/production/generated/quality_calibration.pt",
+    "sha256": "f6a104dd32e6a41754a89a2bb1cd3a3f35ec04ef6083c68ffd17e73a75375624"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/build/metadata-b1-context/Dockerfile",
+    "packaged": "patches/production/provenance/layers/01-v033-port-metadata-b1/Dockerfile",
+    "sha256": "54ff5557ed5beacb9027280a58ac32be6b822277967ff2b21144ec5b825e405b"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/build/parity-shared-context/Dockerfile",
+    "packaged": "patches/production/provenance/layers/02-shared-gdn/Dockerfile",
+    "sha256": "e2d33e6f1742a2db01c4ccc2bec82dfd05556892f0e66838d7c2d0243be0002a"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/build/optimization-candidate-v3/manifest.json",
+    "packaged": "patches/production/provenance/layers/03-query-ordered-hc/manifest.json",
+    "sha256": "8d9398c942d1b098323c357d5b69936f89f1631c4450124077a6ddb6a4d6d6d7"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/build/optimization-candidate-v3/Dockerfile",
+    "packaged": "patches/production/provenance/layers/03-query-ordered-hc/Dockerfile",
+    "sha256": "03c9789aa7014089bc74d1070bd7eee7adc944116689eb52b97b071d9d9bf850"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/bf16-reference-v1/Dockerfile",
+    "packaged": "patches/production/provenance/layers/04-bf16-repair-standard-eos/Dockerfile",
+    "sha256": "1a9182bfcdf45590da9f62e064f8ea538da091979dd81dbd84b7599e2ed63992"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/bf16-reference-v1/profile.json",
+    "packaged": "patches/production/provenance/layers/04-bf16-repair-standard-eos/profile.json",
+    "sha256": "b7892e669b350fa40fc00bbb846c78b67aace8323532eb73442fc827fca56dd1"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/bf16-reference-v1/source-manifest.json",
+    "packaged": "patches/production/provenance/layers/04-bf16-repair-standard-eos/source-manifest.json",
+    "sha256": "3f755eb06e89fb162416068747b0e7bdfb719055f064dc7e3c2d4bb35381cf5a"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/bf16-reference-v1/build.log",
+    "packaged": "patches/production/provenance/layers/04-bf16-repair-standard-eos/build.log",
+    "sha256": "1dfb5ea9d248cea3ffc17718a9614bd4063683979f1f672507fae6508f13bdd8"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/bf16-calconv-frozen-v1/Dockerfile",
+    "packaged": "patches/production/provenance/layers/05-calibration-bf16-conv/Dockerfile",
+    "sha256": "69e453767563a52ea0d5522840fa92ca3d7909e4a5a8f8c5d2fcce79599836f8"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/bf16-calconv-frozen-v1/profile.json",
+    "packaged": "patches/production/provenance/layers/05-calibration-bf16-conv/profile.json",
+    "sha256": "14ce587ad4dd3b9be7e82c90c953e008671c7edc4aa9bfd3b61cb265f70f30e2"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/bf16-calconv-frozen-v1/source-manifest.json",
+    "packaged": "patches/production/provenance/layers/05-calibration-bf16-conv/source-manifest.json",
+    "sha256": "152b3e45ed70a0e1dd10e1ef0a4bcbfbabc555597776a4634d6ec67dea659d9a"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/bf16-calconv-frozen-v1/build.log",
+    "packaged": "patches/production/provenance/layers/05-calibration-bf16-conv/build.log",
+    "sha256": "393f8cc32b01930ce70983e434c55f3d3897aa85973a96fe149038a289056f4e"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/calconv-graphupd-v2/Dockerfile",
+    "packaged": "patches/production/provenance/layers/06-compiled-graph-update-copy/Dockerfile",
+    "sha256": "e1e29e510a274890794f51c023e45bfa847bf3638ddcb7d545907911a26e40c8"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/calconv-graphupd-v2/profile.json",
+    "packaged": "patches/production/provenance/layers/06-compiled-graph-update-copy/profile.json",
+    "sha256": "cf1ae34d08d9ed04ae0b279ee1ae12502a652bf69b3276f5de204f27dd127c12"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/calconv-graphupd-v2/source-manifest.json",
+    "packaged": "patches/production/provenance/layers/06-compiled-graph-update-copy/source-manifest.json",
+    "sha256": "843f62daec809f603f58521758073b6fbb0b2288836cfbc2409e13346663bb35"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/calconv-graphupd-v2/build.log",
+    "packaged": "patches/production/provenance/layers/06-compiled-graph-update-copy/build.log",
+    "sha256": "99e95d16bc16f1baa457b80e640f978cf1a0f05dffa9ce6a7832077ffc683632"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/expanded-exact-v3/Dockerfile",
+    "packaged": "patches/production/provenance/layers/07-parallel-ple-exact-ba-hc/Dockerfile",
+    "sha256": "6c8816c81ac800629a9108f41408d686124204a763521c9b54d8eb54b5445473"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/expanded-exact-v3/profile.json",
+    "packaged": "patches/production/provenance/layers/07-parallel-ple-exact-ba-hc/profile.json",
+    "sha256": "50f135523be3ae0b4c0ff4dab6baf9b41ecbe1c27128dfedecb8048792947c7c"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/expanded-exact-v3/source-manifest.json",
+    "packaged": "patches/production/provenance/layers/07-parallel-ple-exact-ba-hc/source-manifest.json",
+    "sha256": "c9bbde1a12216344b2b4cc1a9a0a4f16c5a5ffad81397c8d4dc504af211941d6"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/expanded-exact-v3/build.log",
+    "packaged": "patches/production/provenance/layers/07-parallel-ple-exact-ba-hc/build.log",
+    "sha256": "e619648bbb247eea063b4045196f22362861313f49da5528a6cb251375efe797"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/expanded-exact-v4/Dockerfile",
+    "packaged": "patches/production/provenance/layers/08-exact-moe-v1/Dockerfile",
+    "sha256": "fb32b39cd7403f86c6a61cc653855600904b512fe6ccc4ecf885ec0ab3836c5c"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/expanded-exact-v4/profile.json",
+    "packaged": "patches/production/provenance/layers/08-exact-moe-v1/profile.json",
+    "sha256": "b7d2eef6fbb07ae5f661cb2b2976ec275d3ef3e132d7dbe749062a804201223f"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/expanded-exact-v4/source-manifest.json",
+    "packaged": "patches/production/provenance/layers/08-exact-moe-v1/source-manifest.json",
+    "sha256": "e430b2235e370c567b4357e3a0ac5e9175de88373d19479d91f2c68051f226be"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/expanded-exact-v4/build.log",
+    "packaged": "patches/production/provenance/layers/08-exact-moe-v1/build.log",
+    "sha256": "dc39b65acc0c2cb9037fc7bce56de0c8c357cc21ba68968eedf97671f597026e"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/expanded-exact-v5/Dockerfile",
+    "packaged": "patches/production/provenance/layers/09-deferred-ple/Dockerfile",
+    "sha256": "a5b95c8dcc20e7f81be03fb80b6613d8fb12f5c3e8af756267153fb986093ec7"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/expanded-exact-v5/profile.json",
+    "packaged": "patches/production/provenance/layers/09-deferred-ple/profile.json",
+    "sha256": "d893c5b4e170d080a5e7321cc546a2f1cfa540e75567f1338e384e7121b842ff"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/expanded-exact-v5/source-manifest.json",
+    "packaged": "patches/production/provenance/layers/09-deferred-ple/source-manifest.json",
+    "sha256": "bdb3d8ee6291fc59e4f1ee4920c0895bdaddc848ad97e947333ba688cd1df98b"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/expanded-exact-v5/build.log",
+    "packaged": "patches/production/provenance/layers/09-deferred-ple/build.log",
+    "sha256": "88914146cad51a52ef6ffac6c8ff81153d5d750df5b6f69479f843fca06c09b5"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/expanded2-exact-v6/Dockerfile",
+    "packaged": "patches/production/provenance/layers/10-exact-moe-v3/Dockerfile",
+    "sha256": "26efec4f905dfc1d6b9755e4902a554457c75840f5d82ebcd8e5bb33cc354c1e"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/expanded2-exact-v6/profile.json",
+    "packaged": "patches/production/provenance/layers/10-exact-moe-v3/profile.json",
+    "sha256": "ed6e18ce9c7bf052757da399d94857f99ebff0def85c94bb725d83301b7a7a85"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/expanded2-exact-v6/source-manifest.json",
+    "packaged": "patches/production/provenance/layers/10-exact-moe-v3/source-manifest.json",
+    "sha256": "3f3d86187c5e06875bad806db0d310e20b4eaf100e38d8b3c67ab6d1a78f9b94"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/expanded2-exact-v6/build.log",
+    "packaged": "patches/production/provenance/layers/10-exact-moe-v3/build.log",
+    "sha256": "f21b891939fc0ef5f5e4a07075502ee2d3d7f8e2ce55ff9cc4e4ddeb61155b92"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/release-prep/provenance-20261116T231122Z-33259c/snapshots/2fa91d1ac8c17ad866d9ae7eaea83ac1b1666ffd0ccceb7685564f55528c47af/opt/venv/lib/python3.12/site-packages/vllm/_xpu_ops.py",
+    "packaged": "patches/production/accepted-overlay/vllm/_xpu_ops.py",
+    "sha256": "9271b737b720b62c1b927c269f56d6f34c6ac46439030098f205c3f90e89300b"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/release-prep/provenance-20261116T231122Z-33259c/snapshots/2fa91d1ac8c17ad866d9ae7eaea83ac1b1666ffd0ccceb7685564f55528c47af/opt/venv/lib/python3.12/site-packages/vllm/model_executor/layers/fused_moe/experts/xpu_moe.py",
+    "packaged": "patches/production/accepted-overlay/vllm/model_executor/layers/fused_moe/experts/xpu_moe.py",
+    "sha256": "3351465ab5247b05782e1afe69c9ba74d46f5f897f3b57cfa8e235ff7eb2dd30"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/release-prep/provenance-20261116T231122Z-33259c/snapshots/2fa91d1ac8c17ad866d9ae7eaea83ac1b1666ffd0ccceb7685564f55528c47af/opt/venv/lib/python3.12/site-packages/vllm/model_executor/layers/linear.py",
+    "packaged": "patches/production/accepted-overlay/vllm/model_executor/layers/linear.py",
+    "sha256": "4f893be01a8ca11ae97be22dbd07d44753c2fa3b4ef61ff6790d3f06d0bb1587"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/release-prep/provenance-20261116T231122Z-33259c/snapshots/2fa91d1ac8c17ad866d9ae7eaea83ac1b1666ffd0ccceb7685564f55528c47af/opt/venv/lib/python3.12/site-packages/vllm/model_executor/layers/mamba/gdn/qwen_gdn_linear_attn.py",
+    "packaged": "patches/production/accepted-overlay/vllm/model_executor/layers/mamba/gdn/qwen_gdn_linear_attn.py",
+    "sha256": "8363d3a95d290d01e3780cfad75e4f430c8286c9603db7242e1c5a37171f6f33"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/release-prep/provenance-20261116T231122Z-33259c/snapshots/2fa91d1ac8c17ad866d9ae7eaea83ac1b1666ffd0ccceb7685564f55528c47af/opt/venv/lib/python3.12/site-packages/vllm/model_executor/models/config.py",
+    "packaged": "patches/production/accepted-overlay/vllm/model_executor/models/config.py",
+    "sha256": "46954747257011a7fff7968f8679f015d9157d9992f8c0b341984f0e07afe9f8"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/release-prep/provenance-20261116T231122Z-33259c/snapshots/2fa91d1ac8c17ad866d9ae7eaea83ac1b1666ffd0ccceb7685564f55528c47af/opt/venv/lib/python3.12/site-packages/vllm/model_executor/models/quality_bf16_conv.py",
+    "packaged": "patches/production/accepted-overlay/vllm/model_executor/models/quality_bf16_conv.py",
+    "sha256": "35c17b63c06b39387dca83ecafeb868900ea9204f87062586e0514821fe9cc75"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/release-prep/provenance-20261116T231122Z-33259c/snapshots/2fa91d1ac8c17ad866d9ae7eaea83ac1b1666ffd0ccceb7685564f55528c47af/opt/venv/lib/python3.12/site-packages/vllm/model_executor/models/qwen3_dflash2.py",
+    "packaged": "patches/production/accepted-overlay/vllm/model_executor/models/qwen3_dflash2.py",
+    "sha256": "bd6c488f1c2f695ed2ed2a86b3132e1f51efd1e69c3cf789d5cb6f3193360e37"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/release-prep/provenance-20261116T231122Z-33259c/snapshots/2fa91d1ac8c17ad866d9ae7eaea83ac1b1666ffd0ccceb7685564f55528c47af/opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp/__init__.py",
+    "packaged": "patches/production/accepted-overlay/vllm/models/qwen4_exp/__init__.py",
+    "sha256": "981b71be939776b432db3264d03ede53c09bbac9280b185caf7f88bb07403920"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/release-prep/provenance-20261116T231122Z-33259c/snapshots/2fa91d1ac8c17ad866d9ae7eaea83ac1b1666ffd0ccceb7685564f55528c47af/opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp/common/disk_ple.py",
+    "packaged": "patches/production/accepted-overlay/vllm/models/qwen4_exp/common/disk_ple.py",
+    "sha256": "b6cba10cea2762e08905624c48b771a2e17788fec7fb1a67e68e57573869c72d"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/release-prep/provenance-20261116T231122Z-33259c/snapshots/2fa91d1ac8c17ad866d9ae7eaea83ac1b1666ffd0ccceb7685564f55528c47af/opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp/intel_checkpoint.py",
+    "packaged": "patches/production/accepted-overlay/vllm/models/qwen4_exp/intel_checkpoint.py",
+    "sha256": "d345ca8e0352ee24cb419d26990a47a7e97b8f155441fdf6c0574cfd47952bbf"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/release-prep/provenance-20261116T231122Z-33259c/snapshots/2fa91d1ac8c17ad866d9ae7eaea83ac1b1666ffd0ccceb7685564f55528c47af/opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp/nvidia/b70_c1_graph.py",
+    "packaged": "patches/production/accepted-overlay/vllm/models/qwen4_exp/nvidia/b70_c1_graph.py",
+    "sha256": "e34ffd39199cb5b2fdaddfd0c09a5ae6ef21ed36e5dc5dfa4c729c79c854a5dc"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/release-prep/provenance-20261116T231122Z-33259c/snapshots/2fa91d1ac8c17ad866d9ae7eaea83ac1b1666ffd0ccceb7685564f55528c47af/opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp/nvidia/b70_compiled_graph_update.py",
+    "packaged": "patches/production/accepted-overlay/vllm/models/qwen4_exp/nvidia/b70_compiled_graph_update.py",
+    "sha256": "fa9699ea19f6acc028050867f054812bd9a9da577234c5aa9472bc4ff3402639"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/release-prep/provenance-20261116T231122Z-33259c/snapshots/2fa91d1ac8c17ad866d9ae7eaea83ac1b1666ffd0ccceb7685564f55528c47af/opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp/nvidia/b70_defer_ple.py",
+    "packaged": "patches/production/accepted-overlay/vllm/models/qwen4_exp/nvidia/b70_defer_ple.py",
+    "sha256": "8ee9b997614b5eb28a0c4cf5a839cba556e52ff9f2a74bfa00f6e703bc997505"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/release-prep/provenance-20261116T231122Z-33259c/snapshots/2fa91d1ac8c17ad866d9ae7eaea83ac1b1666ffd0ccceb7685564f55528c47af/opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp/nvidia/b70_disk.py",
+    "packaged": "patches/production/accepted-overlay/vllm/models/qwen4_exp/nvidia/b70_disk.py",
+    "sha256": "68c590bdf61570495e4cf9ddcfe5cdd8f5ab3f8b76176ba7a004111bbf585415"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/release-prep/provenance-20261116T231122Z-33259c/snapshots/2fa91d1ac8c17ad866d9ae7eaea83ac1b1666ffd0ccceb7685564f55528c47af/opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp/nvidia/b70_hc_gemm.py",
+    "packaged": "patches/production/accepted-overlay/vllm/models/qwen4_exp/nvidia/b70_hc_gemm.py",
+    "sha256": "2ff55d66e90665c5710091e170372acf52dc8a996d55ec264645b63ecb931c65"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/release-prep/provenance-20261116T231122Z-33259c/snapshots/2fa91d1ac8c17ad866d9ae7eaea83ac1b1666ffd0ccceb7685564f55528c47af/opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp/nvidia/b70_hyperconnection.py",
+    "packaged": "patches/production/accepted-overlay/vllm/models/qwen4_exp/nvidia/b70_hyperconnection.py",
+    "sha256": "26bbab23c6ca771b80999f8d6ad485c4189327357a9aae4d7d61e14b86712b3a"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/release-prep/provenance-20261116T231122Z-33259c/snapshots/2fa91d1ac8c17ad866d9ae7eaea83ac1b1666ffd0ccceb7685564f55528c47af/opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp/nvidia/b70_moe_glue.py",
+    "packaged": "patches/production/accepted-overlay/vllm/models/qwen4_exp/nvidia/b70_moe_glue.py",
+    "sha256": "9842f16eb70aecfb377feb7ef96eae25dfd98d8534c493284e6cbf8e0a4a92bc"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/release-prep/provenance-20261116T231122Z-33259c/snapshots/2fa91d1ac8c17ad866d9ae7eaea83ac1b1666ffd0ccceb7685564f55528c47af/opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp/nvidia/b70_prefill_hc.py",
+    "packaged": "patches/production/accepted-overlay/vllm/models/qwen4_exp/nvidia/b70_prefill_hc.py",
+    "sha256": "dcd4317687e071a6f0b6c7673888fcc67e51b741371a360c9844d5f995357af4"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/release-prep/provenance-20261116T231122Z-33259c/snapshots/2fa91d1ac8c17ad866d9ae7eaea83ac1b1666ffd0ccceb7685564f55528c47af/opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp/nvidia/b70_target_attention.py",
+    "packaged": "patches/production/accepted-overlay/vllm/models/qwen4_exp/nvidia/b70_target_attention.py",
+    "sha256": "a1a152ebbecfc3bff714185edd833da3287c4e4bff10cc3f3f3d914b5b95abc1"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/release-prep/provenance-20261116T231122Z-33259c/snapshots/2fa91d1ac8c17ad866d9ae7eaea83ac1b1666ffd0ccceb7685564f55528c47af/opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp/nvidia/b70_target_graph.py",
+    "packaged": "patches/production/accepted-overlay/vllm/models/qwen4_exp/nvidia/b70_target_graph.py",
+    "sha256": "386d6f7be554c06fb8298e61031f4af0689f84830334f87cd8694ab6aad83caf"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/release-prep/provenance-20261116T231122Z-33259c/snapshots/2fa91d1ac8c17ad866d9ae7eaea83ac1b1666ffd0ccceb7685564f55528c47af/opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp/nvidia/c1_verify.py",
+    "packaged": "patches/production/accepted-overlay/vllm/models/qwen4_exp/nvidia/c1_verify.py",
+    "sha256": "332c123516051bf28f1b02dbfbce20a5c1a655768b372a83e71d81f9c7fb1d2c"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/release-prep/provenance-20261116T231122Z-33259c/snapshots/2fa91d1ac8c17ad866d9ae7eaea83ac1b1666ffd0ccceb7685564f55528c47af/opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp/nvidia/dflash2_features.py",
+    "packaged": "patches/production/accepted-overlay/vllm/models/qwen4_exp/nvidia/dflash2_features.py",
+    "sha256": "c952c8e513e86adb4b137c8aaea018d70fd45d0e4b4c533cb7a0b5d371235042"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/release-prep/provenance-20261116T231122Z-33259c/snapshots/2fa91d1ac8c17ad866d9ae7eaea83ac1b1666ffd0ccceb7685564f55528c47af/opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp/nvidia/model.py",
+    "packaged": "patches/production/accepted-overlay/vllm/models/qwen4_exp/nvidia/model.py",
+    "sha256": "e770ec9dc02b90871b782469243926617cede004e518b0bd1ad47309cb156352"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/release-prep/provenance-20261116T231122Z-33259c/snapshots/2fa91d1ac8c17ad866d9ae7eaea83ac1b1666ffd0ccceb7685564f55528c47af/opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp/nvidia/model_state.py",
+    "packaged": "patches/production/accepted-overlay/vllm/models/qwen4_exp/nvidia/model_state.py",
+    "sha256": "fcb7638d1215b4fb015fb44f7302c7d5ba183082c0b9cad7e97d37326d459ec7"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/release-prep/provenance-20261116T231122Z-33259c/snapshots/2fa91d1ac8c17ad866d9ae7eaea83ac1b1666ffd0ccceb7685564f55528c47af/opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp/nvidia/ngram_embedding.py",
+    "packaged": "patches/production/accepted-overlay/vllm/models/qwen4_exp/nvidia/ngram_embedding.py",
+    "sha256": "fadc5cf81fe5f544c97f339a1bf0df7370d86aef900a9f8258a4775612a8b63d"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/release-prep/provenance-20261116T231122Z-33259c/snapshots/2fa91d1ac8c17ad866d9ae7eaea83ac1b1666ffd0ccceb7685564f55528c47af/opt/venv/lib/python3.12/site-packages/vllm/v1/attention/backends/gdn_attn.py",
+    "packaged": "patches/production/accepted-overlay/vllm/v1/attention/backends/gdn_attn.py",
+    "sha256": "6790cd3e4312ae09755869cd9bead4f939e6da8889fedd3cd4f8feec6bf1f7bf"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/release-prep/provenance-20261116T231122Z-33259c/snapshots/2fa91d1ac8c17ad866d9ae7eaea83ac1b1666ffd0ccceb7685564f55528c47af/opt/venv/lib/python3.12/site-packages/vllm/v1/attention/backends/gdn_spec_metadata.py",
+    "packaged": "patches/production/accepted-overlay/vllm/v1/attention/backends/gdn_spec_metadata.py",
+    "sha256": "bcaa05f276c95b44a63b3405012d35d7b1c2677b4bb7007fd2174967c2412600"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/release-prep/provenance-20261116T231122Z-33259c/snapshots/2fa91d1ac8c17ad866d9ae7eaea83ac1b1666ffd0ccceb7685564f55528c47af/opt/venv/lib/python3.12/site-packages/vllm/v1/core/sched/scheduler.py",
+    "packaged": "patches/production/accepted-overlay/vllm/v1/core/sched/scheduler.py",
+    "sha256": "83d9a0b995e0bd58d7e08ce13ce19daf8ee1920747b244702a7c053ea1fe57b9"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/release-prep/provenance-20261116T231122Z-33259c/snapshots/2fa91d1ac8c17ad866d9ae7eaea83ac1b1666ffd0ccceb7685564f55528c47af/opt/venv/lib/python3.12/site-packages/vllm/v1/sample/ops/topk_topp_triton.py",
+    "packaged": "patches/production/accepted-overlay/vllm/v1/sample/ops/topk_topp_triton.py",
+    "sha256": "6a5ed7e80cb9a054cfe4251cf70e9f3dedf7c39febb5345c96d04056726cb658"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/release-prep/provenance-20261116T231122Z-33259c/snapshots/2fa91d1ac8c17ad866d9ae7eaea83ac1b1666ffd0ccceb7685564f55528c47af/opt/venv/lib/python3.12/site-packages/vllm/v1/worker/gpu/astra_greedy.py",
+    "packaged": "patches/production/accepted-overlay/vllm/v1/worker/gpu/astra_greedy.py",
+    "sha256": "383eee474c15bff948179d8933c03fbf727b32f9c5473706e5c51c5a1988e163"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/release-prep/provenance-20261116T231122Z-33259c/snapshots/2fa91d1ac8c17ad866d9ae7eaea83ac1b1666ffd0ccceb7685564f55528c47af/opt/venv/lib/python3.12/site-packages/vllm/v1/worker/gpu/model_runner.py",
+    "packaged": "patches/production/accepted-overlay/vllm/v1/worker/gpu/model_runner.py",
+    "sha256": "e0db068cc3caaaced2b259b28a018aae818373d10b33cc691d1f0e742ce985fb"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/release-prep/provenance-20261116T231122Z-33259c/snapshots/2fa91d1ac8c17ad866d9ae7eaea83ac1b1666ffd0ccceb7685564f55528c47af/opt/venv/lib/python3.12/site-packages/vllm/v1/worker/gpu/sample/sampler.py",
+    "packaged": "patches/production/accepted-overlay/vllm/v1/worker/gpu/sample/sampler.py",
+    "sha256": "f8d31025b2e0af8b56613c18dbccb8c5bdb858676bc4ce4aa0775cf5a8b4ae44"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/release-prep/provenance-20261116T231122Z-33259c/snapshots/2fa91d1ac8c17ad866d9ae7eaea83ac1b1666ffd0ccceb7685564f55528c47af/opt/venv/lib/python3.12/site-packages/vllm/v1/worker/gpu/sample/thinking_budget.py",
+    "packaged": "patches/production/accepted-overlay/vllm/v1/worker/gpu/sample/thinking_budget.py",
+    "sha256": "00ec24f2bb775765612ef21f64dc6662aae3b74ff39cac0bbdbd82edbe900df0"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/release-prep/provenance-20261116T231122Z-33259c/snapshots/2fa91d1ac8c17ad866d9ae7eaea83ac1b1666ffd0ccceb7685564f55528c47af/opt/venv/lib/python3.12/site-packages/vllm/v1/worker/gpu/sample/xpu_filter_warmup.py",
+    "packaged": "patches/production/accepted-overlay/vllm/v1/worker/gpu/sample/xpu_filter_warmup.py",
+    "sha256": "3dbebbaca7a44844e48b69ae8587cdb0a0ba10388950e115c66ea4ee6e254277"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/release-prep/provenance-20261116T231122Z-33259c/snapshots/2fa91d1ac8c17ad866d9ae7eaea83ac1b1666ffd0ccceb7685564f55528c47af/opt/venv/lib/python3.12/site-packages/vllm/v1/worker/gpu/spec_decode/dflash/speculator.py",
+    "packaged": "patches/production/accepted-overlay/vllm/v1/worker/gpu/spec_decode/dflash/speculator.py",
+    "sha256": "56feae2adda26ae6cbab6201a7e72605ed904d663a9a4f6c74a04ad330a125bb"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/release-prep/provenance-20261116T231122Z-33259c/snapshots/2fa91d1ac8c17ad866d9ae7eaea83ac1b1666ffd0ccceb7685564f55528c47af/opt/venv/lib/python3.12/site-packages/vllm/v1/worker/gpu/spec_decode/dflash2/b70_graphs.py",
+    "packaged": "patches/production/accepted-overlay/vllm/v1/worker/gpu/spec_decode/dflash2/b70_graphs.py",
+    "sha256": "129f4dce600d69298652d140db74e756c9febfeea6e3302aef75dc97e8611845"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/release-prep/provenance-20261116T231122Z-33259c/snapshots/2fa91d1ac8c17ad866d9ae7eaea83ac1b1666ffd0ccceb7685564f55528c47af/opt/venv/lib/python3.12/site-packages/vllm/v1/worker/gpu/spec_decode/dflash2/speculator.py",
+    "packaged": "patches/production/accepted-overlay/vllm/v1/worker/gpu/spec_decode/dflash2/speculator.py",
+    "sha256": "2b17d625a3a6cd84ceda7d84ae39ce5322aec22b0a056d87fce92dcca6a4e880"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/release-prep/provenance-20261116T231122Z-33259c/snapshots/2fa91d1ac8c17ad866d9ae7eaea83ac1b1666ffd0ccceb7685564f55528c47af/opt/venv/lib/python3.12/site-packages/vllm/v1/worker/gpu/spec_decode/rejection_sampler_utils.py",
+    "packaged": "patches/production/accepted-overlay/vllm/v1/worker/gpu/spec_decode/rejection_sampler_utils.py",
+    "sha256": "482e65dcf97c64ec56eff1446136392ef335cf25e6ad8f7396e9a6b27c4fd260"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/release-prep/provenance-20261116T231122Z-33259c/snapshots/2fa91d1ac8c17ad866d9ae7eaea83ac1b1666ffd0ccceb7685564f55528c47af/opt/venv/lib/python3.12/site-packages/vllm/v1/worker/gpu_worker.py",
+    "packaged": "patches/production/accepted-overlay/vllm/v1/worker/gpu_worker.py",
+    "sha256": "e431a315ad2b6f16b102e64a5a1c917af2305ec823a8cf6695364aa6e2fdf51f"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/release-prep/provenance-20261116T231122Z-33259c/snapshots/2fa91d1ac8c17ad866d9ae7eaea83ac1b1666ffd0ccceb7685564f55528c47af/opt/venv/lib/python3.12/site-packages/vllm/v1/worker/mamba_utils.py",
+    "packaged": "patches/production/accepted-overlay/vllm/v1/worker/mamba_utils.py",
+    "sha256": "91f12db0ab44064d6a4400e34a86d14443c61c1a56df32ef1a880a44ab109221"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/release-prep/provenance-20261116T231122Z-33259c/snapshots/2fa91d1ac8c17ad866d9ae7eaea83ac1b1666ffd0ccceb7685564f55528c47af/opt/venv/lib/python3.12/site-packages/vllm_xpu_kernels/astra500_moe.py",
+    "packaged": "patches/production/accepted-overlay/vllm_xpu_kernels/astra500_moe.py",
+    "sha256": "9346e3d41d2d7b890edf441624359db7d8d77214b19d776878bd0e5a1dbc3806"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/release-prep/provenance-20261116T231122Z-33259c/snapshots/2fa91d1ac8c17ad866d9ae7eaea83ac1b1666ffd0ccceb7685564f55528c47af/opt/venv/lib/python3.12/site-packages/vllm_xpu_kernels/astra_ownership.py",
+    "packaged": "patches/production/accepted-overlay/vllm_xpu_kernels/astra_ownership.py",
+    "sha256": "672f2fea4f6599c5d86eb158d334fd5aaae2e670c496050f37d2d2b05fe2ba68"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/release-prep/provenance-20261116T231122Z-33259c/snapshots/2fa91d1ac8c17ad866d9ae7eaea83ac1b1666ffd0ccceb7685564f55528c47af/opt/venv/lib/python3.12/site-packages/vllm_xpu_kernels/astra_structural.py",
+    "packaged": "patches/production/accepted-overlay/vllm_xpu_kernels/astra_structural.py",
+    "sha256": "6650c391e6defcf0433ace77ba7fb63ba69c5e88e43fb5d5f29dcc79318e7f9e"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/release-prep/provenance-20261116T231122Z-33259c/snapshots/2fa91d1ac8c17ad866d9ae7eaea83ac1b1666ffd0ccceb7685564f55528c47af/opt/venv/lib/python3.12/site-packages/vllm_xpu_kernels/fused_moe_interface.py",
+    "packaged": "patches/production/accepted-overlay/vllm_xpu_kernels/fused_moe_interface.py",
+    "sha256": "0f2fb737da190ff3f662083f38ca01182da38631d545cc8e69d6763fab3987ad"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/release-prep/provenance-20261116T231122Z-33259c/snapshots/2fa91d1ac8c17ad866d9ae7eaea83ac1b1666ffd0ccceb7685564f55528c47af/opt/b70-flashnext/prepare-serve.sh",
+    "packaged": "patches/production/support/b70-flashnext/prepare-serve.sh",
+    "sha256": "8b666d96a19e627c03c479f67d7b61743bdee042d42527ec0aa8699f2467326c"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/release-prep/provenance-20261116T231122Z-33259c/snapshots/2fa91d1ac8c17ad866d9ae7eaea83ac1b1666ffd0ccceb7685564f55528c47af/opt/b70-flashnext/prepare-intel.py",
+    "packaged": "patches/production/support/b70-flashnext/prepare-intel.py",
+    "sha256": "8d9bb22a4e2fd39808ed1544848aa0a215e2252e15000bee632f01d28cbaebab"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/release-prep/provenance-20261116T231122Z-33259c/snapshots/2fa91d1ac8c17ad866d9ae7eaea83ac1b1666ffd0ccceb7685564f55528c47af/opt/b70-flashnext/assets/frontend.json",
+    "packaged": "patches/production/support/b70-flashnext/assets/frontend.json",
+    "sha256": "42a0e4a35092f63643dc70116db509146a84fe4cdaccf86ffa3d86d9a1f0c1fb"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/release-prep/provenance-20261116T231122Z-33259c/snapshots/2fa91d1ac8c17ad866d9ae7eaea83ac1b1666ffd0ccceb7685564f55528c47af/opt/b70-flashnext/assets/checkpoint-lock.json",
+    "packaged": "patches/production/support/b70-flashnext/assets/checkpoint-lock.json",
+    "sha256": "529f74cdab5ea3130e92fd9fc5004cdf7649ff6a55b33e6e39caac190c6d0d8a"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/release-prep/provenance-20261116T231122Z-33259c/snapshots/2fa91d1ac8c17ad866d9ae7eaea83ac1b1666ffd0ccceb7685564f55528c47af/opt/b70-flashnext/assets/serve-config.json",
+    "packaged": "patches/production/support/b70-flashnext/assets/serve-config.json",
+    "sha256": "05633cfa9fede3b56d9aac375a6893172709f3fa154ffbe0f24893063e09e4bc"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/release-prep/provenance-20261116T231122Z-33259c/snapshots/2fa91d1ac8c17ad866d9ae7eaea83ac1b1666ffd0ccceb7685564f55528c47af/opt/b70-flashnext/assets/frontend/vocab.json",
+    "packaged": "patches/production/support/b70-flashnext/assets/frontend/vocab.json",
+    "sha256": "ce99b4cb2983d118806ce0a8b777a35b093e2000a503ebde25853284c9dfa003"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/release-prep/provenance-20261116T231122Z-33259c/snapshots/2fa91d1ac8c17ad866d9ae7eaea83ac1b1666ffd0ccceb7685564f55528c47af/opt/b70-flashnext/assets/frontend/tokenizer_config.json",
+    "packaged": "patches/production/support/b70-flashnext/assets/frontend/tokenizer_config.json",
+    "sha256": "b11349aafa7cdc6a320767cf7ceb29ed82f7eda5d65e8e0819e76f0ce947bf27"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/release-prep/provenance-20261116T231122Z-33259c/snapshots/2fa91d1ac8c17ad866d9ae7eaea83ac1b1666ffd0ccceb7685564f55528c47af/opt/b70-flashnext/assets/frontend/preprocessor_config.json",
+    "packaged": "patches/production/support/b70-flashnext/assets/frontend/preprocessor_config.json",
+    "sha256": "27225450ac9c6529872ee1924fcb0962ff5634834f817040f444118116f4e516"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/release-prep/provenance-20261116T231122Z-33259c/snapshots/2fa91d1ac8c17ad866d9ae7eaea83ac1b1666ffd0ccceb7685564f55528c47af/opt/b70-flashnext/assets/frontend/generation_config.json",
+    "packaged": "patches/production/support/b70-flashnext/assets/frontend/generation_config.json",
+    "sha256": "e70c136c1b78ddc1fb0905bac8e733a4dc448d4f852a5dd75143fffc70be550e"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/release-prep/provenance-20261116T231122Z-33259c/snapshots/2fa91d1ac8c17ad866d9ae7eaea83ac1b1666ffd0ccceb7685564f55528c47af/opt/b70-flashnext/assets/frontend/video_preprocessor_config.json",
+    "packaged": "patches/production/support/b70-flashnext/assets/frontend/video_preprocessor_config.json",
+    "sha256": "7768af27c1fafa9cc9011c1dc20067e03f8915e03b63504550e11d5066986d13"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/release-prep/provenance-20261116T231122Z-33259c/snapshots/2fa91d1ac8c17ad866d9ae7eaea83ac1b1666ffd0ccceb7685564f55528c47af/opt/b70-flashnext/assets/frontend/merges.txt",
+    "packaged": "patches/production/support/b70-flashnext/assets/frontend/merges.txt",
+    "sha256": "a9d356d7bdf1ef4949e3e748e95b8e10ad9d4e2e838eddc38a0a7b6b94d1db8d"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/release-prep/provenance-20261116T231122Z-33259c/snapshots/2fa91d1ac8c17ad866d9ae7eaea83ac1b1666ffd0ccceb7685564f55528c47af/opt/b70-flashnext/assets/frontend/tokenizer.json",
+    "packaged": "patches/production/support/b70-flashnext/assets/frontend/tokenizer.json",
+    "sha256": "0997f410c57a1f4e53b09e4be8f4a172d90edd9564368fb0847030937229b9f3"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/release-prep/provenance-20261116T231122Z-33259c/snapshots/2fa91d1ac8c17ad866d9ae7eaea83ac1b1666ffd0ccceb7685564f55528c47af/opt/b70-flashnext/assets/frontend/chat_template.jinja",
+    "packaged": "patches/production/support/b70-flashnext/assets/frontend/chat_template.jinja",
+    "sha256": "12827f24b742ea4e80cdc12dbcf9622227056b9f797252a3149263d4f9aaadce"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/release-prep/provenance-20261116T231122Z-33259c/snapshots/2fa91d1ac8c17ad866d9ae7eaea83ac1b1666ffd0ccceb7685564f55528c47af/opt/b70-flashnext/assets/licenses/external-model.txt",
+    "packaged": "patches/production/support/b70-flashnext/assets/licenses/external-model.txt",
+    "sha256": "a0dc422560841fd68e06d974907f8b4c709bca44a67daad2b528437bdf676c08"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/expanded-exact-v3/overlay/workspace/vllm/vllm/models/qwen4_exp/nvidia/b70_hc_gemm.py",
+    "packaged": "patches/production/image-support/workspace/vllm/vllm/models/qwen4_exp/nvidia/b70_hc_gemm.py",
+    "sha256": "2ff55d66e90665c5710091e170372acf52dc8a996d55ec264645b63ecb931c65"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/bf16-calconv-frozen-v1/overlay/workspace/vllm/vllm/v1/worker/gpu/spec_decode/dflash2/speculator.py",
+    "packaged": "patches/production/image-support/workspace/vllm/vllm/v1/worker/gpu/spec_decode/dflash2/speculator.py",
+    "sha256": "2b17d625a3a6cd84ceda7d84ae39ce5322aec22b0a056d87fce92dcca6a4e880"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/build/optimization-candidate-v3/overlay/workspace/vllm/vllm/v1/worker/gpu/spec_decode/dflash2/b70_graphs.py",
+    "packaged": "patches/production/image-support/workspace/vllm/vllm/v1/worker/gpu/spec_decode/dflash2/b70_graphs.py",
+    "sha256": "129f4dce600d69298652d140db74e756c9febfeea6e3302aef75dc97e8611845"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/calconv-graphupd-v2/overlay/workspace/vllm/vllm/models/qwen4_exp/nvidia/b70_target_graph.py",
+    "packaged": "patches/production/image-support/workspace/vllm/vllm/models/qwen4_exp/nvidia/b70_target_graph.py",
+    "sha256": "386d6f7be554c06fb8298e61031f4af0689f84830334f87cd8694ab6aad83caf"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/bf16-reference-v1/overlay/workspace/vllm/vllm/models/qwen4_exp/nvidia/c1_verify.py",
+    "packaged": "patches/production/image-support/workspace/vllm/vllm/models/qwen4_exp/nvidia/c1_verify.py",
+    "sha256": "332c123516051bf28f1b02dbfbce20a5c1a655768b372a83e71d81f9c7fb1d2c"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/bf16-reference-v1/overlay/workspace/vllm/vllm/v1/attention/backends/gdn_attn.py",
+    "packaged": "patches/production/image-support/workspace/vllm/vllm/v1/attention/backends/gdn_attn.py",
+    "sha256": "6790cd3e4312ae09755869cd9bead4f939e6da8889fedd3cd4f8feec6bf1f7bf"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/bf16-reference-v1/overlay/workspace/vllm/vllm/v1/worker/gpu/sample/sampler.py",
+    "packaged": "patches/production/image-support/workspace/vllm/vllm/v1/worker/gpu/sample/sampler.py",
+    "sha256": "f8d31025b2e0af8b56613c18dbccb8c5bdb858676bc4ce4aa0775cf5a8b4ae44"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/bf16-reference-v1/overlay/workspace/vllm/vllm/v1/worker/gpu/sample/thinking_budget.py",
+    "packaged": "patches/production/image-support/workspace/vllm/vllm/v1/worker/gpu/sample/thinking_budget.py",
+    "sha256": "00ec24f2bb775765612ef21f64dc6662aae3b74ff39cac0bbdbd82edbe900df0"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/bf16-reference-v1/overlay/workspace/vllm/vllm/v1/worker/gpu/spec_decode/rejection_sampler_utils.py",
+    "packaged": "patches/production/image-support/workspace/vllm/vllm/v1/worker/gpu/spec_decode/rejection_sampler_utils.py",
+    "sha256": "482e65dcf97c64ec56eff1446136392ef335cf25e6ad8f7396e9a6b27c4fd260"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/bf16-reference-v1/overlay/workspace/vllm/vllm/v1/worker/gpu/spec_decode/dflash/speculator.py",
+    "packaged": "patches/production/image-support/workspace/vllm/vllm/v1/worker/gpu/spec_decode/dflash/speculator.py",
+    "sha256": "56feae2adda26ae6cbab6201a7e72605ed904d663a9a4f6c74a04ad330a125bb"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/bf16-calconv-frozen-v1/overlay/workspace/vllm/vllm/model_executor/models/qwen3_dflash2.py",
+    "packaged": "patches/production/image-support/workspace/vllm/vllm/model_executor/models/qwen3_dflash2.py",
+    "sha256": "bd6c488f1c2f695ed2ed2a86b3132e1f51efd1e69c3cf789d5cb6f3193360e37"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/bf16-calconv-frozen-v1/overlay/workspace/vllm/vllm/model_executor/models/quality_bf16_conv.py",
+    "packaged": "patches/production/image-support/workspace/vllm/vllm/model_executor/models/quality_bf16_conv.py",
+    "sha256": "35c17b63c06b39387dca83ecafeb868900ea9204f87062586e0514821fe9cc75"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/bf16-calconv-frozen-v1/overlay/workspace/vllm/vllm/v1/worker/gpu/spec_decode/dflash2/quality_calibration.pt",
+    "packaged": "patches/production/image-support/workspace/vllm/vllm/v1/worker/gpu/spec_decode/dflash2/quality_calibration.pt",
+    "sha256": "f6a104dd32e6a41754a89a2bb1cd3a3f35ec04ef6083c68ffd17e73a75375624"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/calconv-graphupd-v2/overlay/workspace/vllm/vllm/models/qwen4_exp/nvidia/b70_compiled_graph_update.py",
+    "packaged": "patches/production/image-support/workspace/vllm/vllm/models/qwen4_exp/nvidia/b70_compiled_graph_update.py",
+    "sha256": "fa9699ea19f6acc028050867f054812bd9a9da577234c5aa9472bc4ff3402639"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/expanded2-exact-v6/profile.json",
+    "packaged": "patches/production/runtime/profile.json",
+    "sha256": "ed6e18ce9c7bf052757da399d94857f99ebff0def85c94bb725d83301b7a7a85"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/qualification/parity_worker.py",
+    "packaged": "patches/production/runtime/parity_worker.py",
+    "sha256": "a5fd99f132295c71f2815a431e0ad7bb1dd9702097ad00b73e7e8043d2f7b714"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/qualification/tuning_worker.py",
+    "packaged": "patches/production/runtime/tuning_worker.py",
+    "sha256": "09cd97b179a7546e94bbf68d15cf83b43b31da60269a3727b836cd153fc1f322"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/scripts/launch.py",
+    "packaged": "patches/production/runtime/launch.py",
+    "sha256": "8de1967d5bb1b1cb4b56344968ce79425a950c8d752058a1421495027249b5b0"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/release-prep/provenance-20261116T231122Z-33259c/snapshots/2fa91d1ac8c17ad866d9ae7eaea83ac1b1666ffd0ccceb7685564f55528c47af/metadata.json",
+    "packaged": "patches/production/manifests/installed-metadata.json",
+    "sha256": "ce496dbf9548e27531919f95a505cf3ad6420430df429e7a4e8cb40d150a7a2d"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/release-prep/provenance-20261116T231122Z-33259c/snapshots/2fa91d1ac8c17ad866d9ae7eaea83ac1b1666ffd0ccceb7685564f55528c47af/dpkg-status.txt",
+    "packaged": "patches/production/manifests/installed-dpkg-status.txt",
+    "sha256": "716b8f71de86550d9bf98fe2fcb76407530d6fd8592f48916b01da033b0c7a96"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/release-prep/provenance-20261116T231122Z-33259c/snapshots/2fa91d1ac8c17ad866d9ae7eaea83ac1b1666ffd0ccceb7685564f55528c47af/inventory.json",
+    "packaged": "patches/production/manifests/installed-artifacts.json",
+    "sha256": "6edd93b5d80530c3e5b9be8cd9750a7663ad872db2d031bdf579225ccfe83b1d"
+  },
+  {
+    "original": "/home/wulf/Desktop/Qfn-Mtp-vllm33/build/phase6/inputs/sycl-tla.tar.gz",
+    "packaged": "patches/production/dependencies/sycl-tla.tar.gz",
+    "sha256": "5938a31e3940d1c90e88d9126788990a25a5e0ac968e53345461459b5ea21218"
+  },
+  {
+    "original": "/home/wulf/Desktop/Qfn-Mtp-vllm33/upstream/mtp-frozen/patches/disk/manifests/compiler-lock.json",
+    "packaged": "patches/production/manifests/compiler-lock.json",
+    "sha256": "b043612f0a9e620c407fbccdad30a66a695248b230f93b4d6b2cdf2a87defc18"
+  },
+  {
+    "original": "/home/wulf/Desktop/Qfn-Mtp-vllm33/upstream/mtp-frozen/patches/disk/manifests/sycl-tla.json",
+    "packaged": "patches/production/manifests/sycl-tla.json",
+    "sha256": "0969268e4e1a1a13ead4d6a66c4fe159581a2ed35fcc6c10b0c2810de63ef104"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/source/native/native/gdn_index64.cpp",
+    "packaged": "patches/production/native/native/gdn_index64.cpp",
+    "sha256": "8de6cea7fe553900c1c18d923a1f32b4ee1d42f3c6118cf93cac31e25b7add84"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/build/native/gdn-guard/build.sh",
+    "packaged": "patches/production/native/native/build.sh",
+    "sha256": "2495e7e5145ef2c711ad058cc5e363e944296cf4d4a23e629850861f806dac03"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/build/native/gdn-guard/build.log",
+    "packaged": "patches/production/provenance/native/native/build.log",
+    "sha256": "7668d8ff26b14904be117e75613164fc36ac208d8a8ef0f69c8f2ecafd192ed5"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/build/native/gdn-guard/link.sh",
+    "packaged": "patches/production/provenance/native/native/link.sh",
+    "sha256": "afab661a9b62db8ed9200eb03cb280b5e8303f49f5c3ac25f8cb1e523b1d78ca"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/build/native/gdn-guard/link.log",
+    "packaged": "patches/production/provenance/native/native/link.log",
+    "sha256": "27739834bf6c76c602d5b0b30796d1b97f84fed2231226069300a7a4ea79b690"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/build/native/gdn-guard/gdn_index64.o.d",
+    "packaged": "patches/production/provenance/native/native/gdn_index64.o.d",
+    "sha256": "725c21ded3900ba316cffd65b4fd8e3eff41931b55774c1f16c7d8cc8a390fc4"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/source/native/residency-shim/l0_peer_residency_shim.c",
+    "packaged": "patches/production/native/residency-shim/l0_peer_residency_shim.c",
+    "sha256": "f79e1bbaa18a9c29ac621452dd091c6522f2802d96c51a95ca9cb63f1ee1f10c"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/build/native/residency-shim/build.sh",
+    "packaged": "patches/production/native/residency-shim/build.sh",
+    "sha256": "6a8c1f1ffa54fde495c495d140f167247347847d36813934fc930fcc6abe7963"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/build/native/residency-shim/build.log",
+    "packaged": "patches/production/provenance/native/residency-shim/build.log",
+    "sha256": "4571fd6814d247ce887ca2855af34ee7e9da0d486fc8e105aba8c996bbcd5a51"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/source/native/astra500-native/astra_moe.cpp",
+    "packaged": "patches/production/native/astra500-native/astra_moe.cpp",
+    "sha256": "38dd2f12da21a143a6cfa7050d630e460954cfa06499c672d7023b554cd08baf"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/build/native/astra500-native/build.sh",
+    "packaged": "patches/production/native/astra500-native/build.sh",
+    "sha256": "ca13af16fea86d91dea7eaed8c2ac9464903e637a33b5e59488b140475e8c033"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/build/native/astra500-native/build.log",
+    "packaged": "patches/production/provenance/native/astra500-native/build.log",
+    "sha256": "7b58fadf18026d7478c27341d45cf3c654878da69de3fcb8be7dcd828787d601"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/source/native/astra500-structural-hc/astra_hc_v3.cpp",
+    "packaged": "patches/production/native/astra500-structural-hc/astra_hc_v3.cpp",
+    "sha256": "6f03646101a9adb093b7846c394eb4af913496ed034357db0c5305d7ef215b5f"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/source/native/astra500-structural-hc/fused_hc_v3.hpp",
+    "packaged": "patches/production/native/astra500-structural-hc/fused_hc_v3.hpp",
+    "sha256": "d207bf1399aaa3529fb71083561b18050a7250540ea091311210b0c44a761af9"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/build/native/astra500-structural-hc/build.sh",
+    "packaged": "patches/production/native/astra500-structural-hc/build.sh",
+    "sha256": "7398def432c232655fc20e5edd93caf1d4f1a08be220c2afe683f05fd133e0ac"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/build/native/astra500-structural-hc/build.log",
+    "packaged": "patches/production/provenance/native/astra500-structural-hc/build.log",
+    "sha256": "a3aaf347351660ebe283d183c3d15048110673ac9719c13a953aee0e8d1c9f3e"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/source/native/astra500-structural-moe/astra_direct.cpp",
+    "packaged": "patches/production/native/astra500-structural-moe/astra_direct.cpp",
+    "sha256": "3949c45afcb72ef94ea51076038d4b05fd3ff604c3fd2679dac11bd1b60823b4"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/source/native/astra500-structural-moe/direct_gemm.hpp",
+    "packaged": "patches/production/native/astra500-structural-moe/direct_gemm.hpp",
+    "sha256": "37b58dd9f567ef06df016df1e5a3247742ad4e8385edc2ed53a79940921d882e"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/build/native/astra500-structural-moe/build.sh",
+    "packaged": "patches/production/native/astra500-structural-moe/build.sh",
+    "sha256": "3b99125e19d92642fad0b46c28f05274bc52745829a7c9e3a7eaf632b3cd0bd5"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/build/native/astra500-structural-moe/build.log",
+    "packaged": "patches/production/provenance/native/astra500-structural-moe/build.log",
+    "sha256": "c07d32f9108381ea2baade876373b8be8cf7de6c0c54f32af8a17d06d86c4a36"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/source/native/astra500-ownership-groups/astra_direct.cpp",
+    "packaged": "patches/production/native/astra500-ownership-groups/astra_direct.cpp",
+    "sha256": "b4dd8789ab0bd2b8f9fbc22809537f48c2f98a7feaaff0d3cbbc443176fbd637"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/source/native/astra500-ownership-groups/ownership_remap.cpp",
+    "packaged": "patches/production/native/astra500-ownership-groups/ownership_remap.cpp",
+    "sha256": "ada545d108dbc5c709ba8ef44c931b41416b5a0011d950aadeeffeb0a6938c6f"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/source/native/astra500-ownership-groups/ownership_gather.cpp",
+    "packaged": "patches/production/native/astra500-ownership-groups/ownership_gather.cpp",
+    "sha256": "035f9952644e9dbe77b17e5c6ad6b519cf4d2601d2e334daa4cf8fe0725b9b1c"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/source/native/astra500-ownership-groups/direct_gemm.hpp",
+    "packaged": "patches/production/native/astra500-ownership-groups/direct_gemm.hpp",
+    "sha256": "512417e6b0ba4e054cff6f2626da28d126c21534c7bbef3d55777e5d4494f25f"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/build/native/astra500-ownership-groups/build.sh",
+    "packaged": "patches/production/native/astra500-ownership-groups/build.sh",
+    "sha256": "01b35ff763ee3557653696164b4ef5aa783a7a23abcfb85c0f3824119f23d22f"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/build/native/astra500-ownership-groups/build.log",
+    "packaged": "patches/production/provenance/native/astra500-ownership-groups/build.log",
+    "sha256": "d28627b2c25406af061ea70b3eb3acff0d149773fb3c7ff0487f8381e742ea63"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/source/native/astra500-ownership-batch/direct_gemm.hpp",
+    "packaged": "patches/production/native/astra500-ownership-batch/direct_gemm.hpp",
+    "sha256": "b29bf23c5e9d706d33b0e35bbd79fd922ade9b1b36eb5d5e42ae4f90dd78a167"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/source/native/astra500-ownership-batch/astra_batch.cpp",
+    "packaged": "patches/production/native/astra500-ownership-batch/astra_batch.cpp",
+    "sha256": "edd368bf0203085ced760ec66d47071986a0d120c2a2e01128ff85f56ff0b8fb"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/build/native/astra500-ownership-batch/build.sh",
+    "packaged": "patches/production/native/astra500-ownership-batch/build.sh",
+    "sha256": "1ad258a04273e1e57353cd2e194f370a1ebbb2db074a57038cd9c3c83d109dbe"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/build/native/astra500-ownership-batch/build.log",
+    "packaged": "patches/production/provenance/native/astra500-ownership-batch/build.log",
+    "sha256": "d8f7d405873443cafbc72ef28a0d80a2b20ea64b99d18e0f3ddb2bfb5b68b5f2"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/source/native/astra500-beyond-prefill/direct_gemm_v2.hpp",
+    "packaged": "patches/production/native/astra500-beyond-prefill/direct_gemm_v2.hpp",
+    "sha256": "a723129d94d02a9aa0b7c36d0ac87d750d3622c6607c4346f823a4bccd37a688"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/source/native/astra500-beyond-prefill/beyond_prefill.cpp",
+    "packaged": "patches/production/native/astra500-beyond-prefill/beyond_prefill.cpp",
+    "sha256": "465be5170d77338c4dec09508a319f0176cebbad34cd3f85a0b84f850d9b9477"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/build/native/astra500-beyond-prefill/build.sh",
+    "packaged": "patches/production/native/astra500-beyond-prefill/build.sh",
+    "sha256": "7ba0a4e0100098d3f8e1afac8a801be7d35451d4d5dc1e08fa7d1d72c53ea4bd"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/build/native/astra500-beyond-prefill/build.log",
+    "packaged": "patches/production/provenance/native/astra500-beyond-prefill/build.log",
+    "sha256": "f34f4d8f7547620e85ff46514fe739e2d0c56ea66937e6a6238a13a7d1d8fea4"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/source/native/astra500-dominant-native/w4_layout.cpp",
+    "packaged": "patches/production/native/astra500-dominant-native/w4_layout.cpp",
+    "sha256": "4bef7018a71ee1bcabb18f88e106a5730b4ea42253dc6cae13251a1da9003998"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/source/native/astra500-dominant-native/layout_gemm.hpp",
+    "packaged": "patches/production/native/astra500-dominant-native/layout_gemm.hpp",
+    "sha256": "7d6ffb1eec6992f99238f5e8c380707605a961656c1d4134a4080e14aebc4a9b"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/build/native/astra500-dominant-native/build.sh",
+    "packaged": "patches/production/native/astra500-dominant-native/build.sh",
+    "sha256": "4357af0898a9909d9a63f811e07f792daad314273f314f59d35eaa79bcc0996a"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/build/native/astra500-dominant-native/build.log",
+    "packaged": "patches/production/provenance/native/astra500-dominant-native/build.log",
+    "sha256": "8b795ba256b5c83dbc2665217617415742f226dbec7b499f3c0b369b78243162"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/source/native/prefill-native/direct_gemm_prefill.hpp",
+    "packaged": "patches/production/native/prefill-native/direct_gemm_prefill.hpp",
+    "sha256": "c426cd3704f3c352c18c922ca5c1eea1946dbc720869e29837d776716f61ba0a"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/source/native/prefill-native/prefill_small.cpp",
+    "packaged": "patches/production/native/prefill-native/prefill_small.cpp",
+    "sha256": "69ce2f7d226e106150d05894dc1c1d03ebacee503f6a65a225c5dfbe33605a82"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/build/native/prefill-native/build.sh",
+    "packaged": "patches/production/native/prefill-native/build.sh",
+    "sha256": "7c3ceab6db373ac7ca109d42f64d25a070ea20e2259f23a2836fbf8fe14e2d7c"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/build/native/prefill-native/build.log",
+    "packaged": "patches/production/provenance/native/prefill-native/build.log",
+    "sha256": "8dea7e8d052eb8ed147ba90a23f285cd5289921b08569b6e9c4b1f32c28ea796"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/source/native/long-hc-selected/hc_tile.hpp",
+    "packaged": "patches/production/native/long-hc-selected/hc_tile.hpp",
+    "sha256": "8c57f69658c0c7354f8bfd4241bd082373504af400bbccfd0b32a37351959f96"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/source/native/long-hc-selected/hc.cpp",
+    "packaged": "patches/production/native/long-hc-selected/hc.cpp",
+    "sha256": "3fbfd691fd2efffe69fb3d36b96c648abaccf27c4e57095d49537af06b77f969"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/build/native/long-hc-selected/build.sh",
+    "packaged": "patches/production/native/long-hc-selected/build.sh",
+    "sha256": "b852307f1afc49443386fc8329ee7e376069cc32846abc9e7314120ef63176bf"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/build/native/long-hc-selected/build.log",
+    "packaged": "patches/production/provenance/native/long-hc-selected/build.log",
+    "sha256": "f7abea3c8d92ab9cddc0b0210a3d01fa3a21c654f1a8ef5382f8acf9b84f5c20"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/source/native/long-prefill-native/direct_gemm.hpp",
+    "packaged": "patches/production/native/long-prefill-native/direct_gemm.hpp",
+    "sha256": "a4f7f6c04cdabc9d7a910b4372063bdadd5e1dd1dfb61fc5bd56e5548d6a46d4"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/source/native/long-prefill-native/prefill_small.cpp",
+    "packaged": "patches/production/native/long-prefill-native/prefill_small.cpp",
+    "sha256": "2166316cc51171535610f00201bb9d112eee4d5884af98b5b8cea1280d3dbb21"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/build/native/long-prefill-native/build.sh",
+    "packaged": "patches/production/native/long-prefill-native/build.sh",
+    "sha256": "4d42f77832e99fdbee855462fe739d6256480ecb05c54128b882fc26a4601a15"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/build/native/long-prefill-native/build.log",
+    "packaged": "patches/production/provenance/native/long-prefill-native/build.log",
+    "sha256": "d846ae174a27720142617bbf9c10ba4b684effba0847dd87265ea36634d54208"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/build/optimization-ordered-hc-v2/ordered_hc_v2.cpp",
+    "packaged": "patches/production/native/ordered-hc-v2/ordered_hc_v2.cpp",
+    "sha256": "a6d1e1a5dff097ffe9d1d6edc6f9b4d1acf7a27edc5bdd8edbc91f5966fe2e15"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/build/optimization-ordered-hc-v2/dense_fragment.hpp",
+    "packaged": "patches/production/native/ordered-hc-v2/dense_fragment.hpp",
+    "sha256": "a1272723b78d5e82f06049a8dfb9e85054584267e43112e218c257415199ff62"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/build/optimization-ordered-hc-v2/build.sh",
+    "packaged": "patches/production/native/ordered-hc-v2/build.sh",
+    "sha256": "7a6e981a2af3fb1d17044fe7c7fd6c132f6b9730de8604f0eac6addd2f5f4f3f"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/build/optimization-ordered-hc-v2/build.log",
+    "packaged": "patches/production/provenance/native/ordered-hc-v2/build.log",
+    "sha256": "9d9fa7dbfb125c3c78a26ae0b138041abc394bbf9c392aca2cc26bd2b4f25fb5"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/build/optimization-ordered-hc-v2/build.log",
+    "packaged": "patches/production/provenance/native/ordered-hc-v2/build.log",
+    "sha256": "9d9fa7dbfb125c3c78a26ae0b138041abc394bbf9c392aca2cc26bd2b4f25fb5"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/build/optimization-ordered-hc-v2/ordered_hc_v2.o.d",
+    "packaged": "patches/production/provenance/native/ordered-hc-v2/ordered_hc_v2.o.d",
+    "sha256": "a64487aa41969e66fca616e800091889fafc862f8d02335042849b55e38bcf0d"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/build/optimization-ordered-hc-v2/command.json",
+    "packaged": "patches/production/provenance/native/ordered-hc-v2/command.json",
+    "sha256": "71d3b607a52cdba624a5ce1d3a8e4a1eb58590e98084e421520b188678eda250"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/exact-kernels-v1/exact_gemm.cpp",
+    "packaged": "patches/production/native/exact-v1/exact_gemm.cpp",
+    "sha256": "102425662c2d51dbd164b1685b3575ae4365fe87df0bdb9ce9deef59e8b6da37"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/exact-kernels-v1/dense_fragment.hpp",
+    "packaged": "patches/production/native/exact-v1/dense_fragment.hpp",
+    "sha256": "32e5ac62602e7597d64cf403670ad014b59de8d87652ab96bbf49de4a13a3216"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/exact-kernels-v1/build.sh",
+    "packaged": "patches/production/native/exact-v1/build.sh",
+    "sha256": "a6709d43b3182293bfddaaf5dc6de9f12c9d8ce331da11afe3c26d04368c00ce"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/exact-kernels-v1/build.log",
+    "packaged": "patches/production/provenance/native/exact-v1/build.log",
+    "sha256": "b0e1e063782f0d0851da22d187b307588e57b75fa9a83528cc88d7abae2df678"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/exact-kernels-v1/build.log",
+    "packaged": "patches/production/provenance/native/exact-v1/build.log",
+    "sha256": "b0e1e063782f0d0851da22d187b307588e57b75fa9a83528cc88d7abae2df678"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/exact-kernels-v1/exact_gemm.o.d",
+    "packaged": "patches/production/provenance/native/exact-v1/exact_gemm.o.d",
+    "sha256": "80513ca5de301528fe4ca72c8227fb8689818db0e1ebb87b68523cfcdc35c574"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/exact-kernels-v1/command_moe.json",
+    "packaged": "patches/production/provenance/native/exact-v1/command_moe.json",
+    "sha256": "aad3eed10c6bbbda2040199633473a5c58467f0d4b2af88df9eff6bfbee47f99"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/exact-kernels-v1/command.json",
+    "packaged": "patches/production/provenance/native/exact-v1/command.json",
+    "sha256": "927c4ff7dbf7d4970bbd4838a189f11bed675e644d7141ec49122f5a3dc2335c"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/exact-kernels-v1/exact_moe.cpp",
+    "packaged": "patches/production/native/exact-moe-v1/exact_moe.cpp",
+    "sha256": "d9d9a7518ec0f83a10e5240dad08b38b6fc384a7860e67ff7be53b13e2197552"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/exact-kernels-v1/dense_fragment.hpp",
+    "packaged": "patches/production/native/exact-moe-v1/dense_fragment.hpp",
+    "sha256": "32e5ac62602e7597d64cf403670ad014b59de8d87652ab96bbf49de4a13a3216"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/exact-kernels-v1/build_moe.sh",
+    "packaged": "patches/production/native/exact-moe-v1/build.sh",
+    "sha256": "03d71edec4caf8b8213653cbbe28a934e75cf2ac6ad5f8bbf500798a5f653b0e"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/exact-kernels-v1/build.log",
+    "packaged": "patches/production/provenance/native/exact-moe-v1/build.log",
+    "sha256": "b0e1e063782f0d0851da22d187b307588e57b75fa9a83528cc88d7abae2df678"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/exact-kernels-v1/build_moe.log",
+    "packaged": "patches/production/provenance/native/exact-moe-v1/build_moe.log",
+    "sha256": "0ad9394d6dab41473348256e989b05e40de7729f0df3f0dfcd399239229ac39a"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/exact-kernels-v1/exact_moe.o.d",
+    "packaged": "patches/production/provenance/native/exact-moe-v1/exact_moe.o.d",
+    "sha256": "6bee1751ab5b4f41692d77441d79362ffdf89571b9d9ee779a8ce3c74a5facc9"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/exact-kernels-v1/command_moe.json",
+    "packaged": "patches/production/provenance/native/exact-moe-v1/command_moe.json",
+    "sha256": "aad3eed10c6bbbda2040199633473a5c58467f0d4b2af88df9eff6bfbee47f99"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/exact-kernels-v1/command.json",
+    "packaged": "patches/production/provenance/native/exact-moe-v1/command.json",
+    "sha256": "927c4ff7dbf7d4970bbd4838a189f11bed675e644d7141ec49122f5a3dc2335c"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/exact-kernels-v3/exact_moe_v3.cpp",
+    "packaged": "patches/production/native/exact-moe-v3/exact_moe_v3.cpp",
+    "sha256": "33ef055ad19e60073c3ad0bda39b63b6efcd93b2ad4fc978512d14a462926fdd"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/exact-kernels-v3/dense_fragment.hpp",
+    "packaged": "patches/production/native/exact-moe-v3/dense_fragment.hpp",
+    "sha256": "2a7bc6b3c8c17b71099da55e25078b50dda77b29dfbb218c9e0689c9ecb9781f"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/exact-kernels-v3/build_moe_v3.sh",
+    "packaged": "patches/production/native/exact-moe-v3/build.sh",
+    "sha256": "908705cf2b578e9c0fb944bf6e4c0e2f01449651d9d63fa97b83c30ea7f75074"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/exact-kernels-v3/build_moe_v3.log",
+    "packaged": "patches/production/provenance/native/exact-moe-v3/build_moe_v3.log",
+    "sha256": "ff7a9cb16986b162ddce97b9d6e075286c814c6b97a6bf28634e215c66a18836"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/exact-kernels-v3/exact_moe_v3.o.d",
+    "packaged": "patches/production/provenance/native/exact-moe-v3/exact_moe_v3.o.d",
+    "sha256": "1ee71e9e67ac8c48b630dd8afefae2afdeb588ff3166c3c569c0ff59463977e9"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/exact-kernels-v3/command_moe_v3.json",
+    "packaged": "patches/production/provenance/native/exact-moe-v3/command_moe_v3.json",
+    "sha256": "f1e0fad1b352184f39ef5ec8c1e8d43a874bd57b3da7db3c6694fccadff6d7b1"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/evidence/expanded-20261116T000816Z/dev/ple_gather/ple_gather.c",
+    "packaged": "patches/production/native/ple-gather/ple_gather.c",
+    "sha256": "288c589d59d899d9740554042806bfe221e52e3fd2f1b578908291b70f36996b"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/scripts/port_source.py",
+    "packaged": "patches/production/provenance/builders/port_source.py",
+    "sha256": "ead1a2e34ecd0592f561f48fcbdb8a2cdcd2e685828513ac9c1c2f73f4f11b02"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/scripts/adapt_interfaces.py",
+    "packaged": "patches/production/provenance/builders/adapt_interfaces.py",
+    "sha256": "3fe0fb8c0aca9e8dcf7da424b1d7657559c61db779b8414363f87059e4338920"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/scripts/prepare_metadata_candidate.py",
+    "packaged": "patches/production/provenance/builders/prepare_metadata_candidate.py",
+    "sha256": "4acf68ed920e0745b76a2ae6281164ec61e085332cbbf6041388c2937b2343ec"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/scripts/build_native.py",
+    "packaged": "patches/production/provenance/builders/build_native.py",
+    "sha256": "4e7d0866901034fa45e71deb715f951090f22c2b69173480a02e05158074453a"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/scripts/package_candidate.py",
+    "packaged": "patches/production/provenance/builders/package_candidate.py",
+    "sha256": "24bb7e1a787b14fe13cb2568117aec34590c03c7d9c8365074bdd2054721fcd1"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/scripts/build_parity_shared.py",
+    "packaged": "patches/production/provenance/builders/build_parity_shared.py",
+    "sha256": "9fb59192453d094270d4e7bb6f4016ffe2e14bda7fa415896c7e6658716aecff"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/scripts/opt_build_candidate.py",
+    "packaged": "patches/production/provenance/builders/opt_build_candidate.py",
+    "sha256": "b11b0b712700c05610afc27aacbf0803b57d752e9c71a0473c03cdde864bae99"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/scripts/opt_build_ordered_hc.py",
+    "packaged": "patches/production/provenance/builders/opt_build_ordered_hc.py",
+    "sha256": "3e6359d4a4a1e36349c538fa1217c41cc7c4ebb121bda8b7beb8e64137a453ea"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/scripts/opt_build_ordered_hc_v2.py",
+    "packaged": "patches/production/provenance/builders/opt_build_ordered_hc_v2.py",
+    "sha256": "65506ea236f64f78c597898114adca24bcda927269876ad8595badaba6551b2d"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/scripts/build_bf16_reference.py",
+    "packaged": "patches/production/provenance/builders/build_bf16_reference.py",
+    "sha256": "54fd4fe5014b6ff9ddbda7a7dc11fef67124a54efe1443457f5d2ce99ad083ea"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/scripts/build_bf16_tuned.py",
+    "packaged": "patches/production/provenance/builders/build_bf16_tuned.py",
+    "sha256": "04aaf732d06890b542051607a147698e68e525a1e4d383dfc3caf79ae4cb63f9"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/scripts/build_calconv_graphupd.py",
+    "packaged": "patches/production/provenance/builders/build_calconv_graphupd.py",
+    "sha256": "92f1c5e5581ad1d7309a7cc9a01bc9847103a66508a7519b1e854e8d139dfae8"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/scripts/build_expanded_v3.py",
+    "packaged": "patches/production/provenance/builders/build_expanded_v3.py",
+    "sha256": "d16254f3365f3a2e1e0d78c36890f2726c5584b73213e0f3d89ea88bf02125e6"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/scripts/build_expanded_v4.py",
+    "packaged": "patches/production/provenance/builders/build_expanded_v4.py",
+    "sha256": "4282863d8d6eb8bd81708ef677442d98a0cdeb2b714f9094e0c5061205814e33"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/scripts/build_expanded_v5.py",
+    "packaged": "patches/production/provenance/builders/build_expanded_v5.py",
+    "sha256": "84a2a07b5ebdb3e1c5267267e5948740915d2a94b93f7a868fe1f0b7341d007d"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/scripts/build_expanded2_v6.py",
+    "packaged": "patches/production/provenance/builders/build_expanded2_v6.py",
+    "sha256": "15c3ca6ffcd085794d3ffc3eb0f05e16a5ddd8f7517c33c25d1f373a7c1e92df"
+  },
+  {
+    "original": "/home/wulf/Desktop/Qfn-Mtp-vllm33/evidence/exact-artifact/acquisition.json",
+    "packaged": "patches/production/provenance/vendor/acquisition.json",
+    "sha256": "6241096d7807bda4a06b74e51756d30b852e5d3fec5f80bade5b17e17e6e8b27"
+  },
+  {
+    "original": "/home/wulf/Desktop/Qfn-Mtp-vllm33/evidence/exact-artifact/xpu-index.json",
+    "packaged": "patches/production/provenance/vendor/xpu-index.json",
+    "sha256": "be3a9aea234be64ffc2816ac561c597e0f0b1f44a61a7f4912780e4d77450086"
+  },
+  {
+    "original": "/home/wulf/Desktop/Qfn-Mtp-vllm33/evidence/exact-artifact/xpu-manifest.json",
+    "packaged": "patches/production/provenance/vendor/xpu-manifest.json",
+    "sha256": "010bdc441c72ee222f459d3b688bb41317525f1bd7223afe6218490b0c526832"
+  },
+  {
+    "original": "/home/wulf/Desktop/Qfn-Mtp-vllm33/evidence/exact-artifact/vllm-release-comparison.json",
+    "packaged": "patches/production/provenance/vendor/vllm-release-comparison.json",
+    "sha256": "796f50bdefea0bc9cf0802b7d32e20c6d228b4325bea6459fb7717af0a2ccda1"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/evidence/native-toolchain.json",
+    "packaged": "patches/production/provenance/initial/native-toolchain.json",
+    "sha256": "6b546fc7c3e7577ad570e7fffd7c538ce5613190130fa2ffbf8f1108cd95b5c3"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/evidence/implementation-decisions.json",
+    "packaged": "patches/production/provenance/initial/implementation-decisions.json",
+    "sha256": "f27a759e186ebb3d2900539813f6f9888fce901f0a2ea33f05c0ec942e104fcd"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/evidence/source-initial-merge.json",
+    "packaged": "patches/production/provenance/initial/source-initial-merge.json",
+    "sha256": "769525d4162d35605e1df5af66519c4fc26ac6a57ab8dd5ab36fe19b4966c9cf"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/evidence/native-builds.json",
+    "packaged": "patches/production/provenance/initial/native-builds.json",
+    "sha256": "20c5faf028c59dc49faebb8e8a7543908d36c2a596252353ceea6d9bbe2221d5"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/evidence/metadata-b1-payload.json",
+    "packaged": "patches/production/provenance/initial/metadata-b1-payload.json",
+    "sha256": "1a34969d29dc91270413a6cbad7e7f265f98f6f7fceaa6ef319b292254c60e36"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/release-prep/provenance-20261116T231122Z-33259c/native-build-containers.json",
+    "packaged": "patches/production/provenance/native-build-containers.json",
+    "sha256": "8928138ca9099a0354130920ad04bd90ccca2007af4651f9db14dc96b32bc3bd"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/release-prep/provenance-20261116T231122Z-33259c/upstream-base-comparison.json",
+    "packaged": "patches/production/provenance/upstream-base-comparison.json",
+    "sha256": "bd09c724430c062e5d96f6e5e5f0ff8ab6297085cf6725c80492fbdb254d608f"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/release-prep/provenance-20261116T231122Z-33259c/ple-build-check.json",
+    "packaged": "patches/production/provenance/ple-build-check.json",
+    "sha256": "2108aa3942fc25f86e553a59043c8cae33338b2f73a5d96ebbbb47f1b4a672d5"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/release-prep/provenance-20261116T231122Z-33259c/git-state.json",
+    "packaged": "patches/production/provenance/git-state.json",
+    "sha256": "5b4329631c08e7d51b2c5b7e2084158787ab7dfc552081306c78bb18df26fde0"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/release-prep/provenance-20261116T231122Z-33259c/images/bc673822914e6137807cc5e87e6b8979195774b704e9f222a76bc9619e4e770b.json",
+    "packaged": "patches/production/provenance/images/bc673822914e6137807cc5e87e6b8979195774b704e9f222a76bc9619e4e770b.json",
+    "sha256": "76f61cef00cb054865ae36671fed472b1e515e36a8d74e3d8983b2c8acaca6bf"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/release-prep/provenance-20261116T231122Z-33259c/images/ce670e4345c5476cc884052c90f3c1d3d802d6e0187d8b1f786612914a363071.history.jsonl",
+    "packaged": "patches/production/provenance/images/ce670e4345c5476cc884052c90f3c1d3d802d6e0187d8b1f786612914a363071.history.jsonl",
+    "sha256": "48826903f32eada9880584d3d965321e3b9a9e5167914aa44bc17a03a8620b86"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/release-prep/provenance-20261116T231122Z-33259c/images/2fa91d1ac8c17ad866d9ae7eaea83ac1b1666ffd0ccceb7685564f55528c47af.json",
+    "packaged": "patches/production/provenance/images/2fa91d1ac8c17ad866d9ae7eaea83ac1b1666ffd0ccceb7685564f55528c47af.json",
+    "sha256": "c141195a8906eb53d01f32174207bf8a19578772e7c913cf4e676e7c6acf0a02"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/release-prep/provenance-20261116T231122Z-33259c/images/bc673822914e6137807cc5e87e6b8979195774b704e9f222a76bc9619e4e770b.history.jsonl",
+    "packaged": "patches/production/provenance/images/bc673822914e6137807cc5e87e6b8979195774b704e9f222a76bc9619e4e770b.history.jsonl",
+    "sha256": "9c21dced7dde4fe96bc7b06b39722fdfeda6f660fb1bf5ab5905707bf8004d0c"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/release-prep/provenance-20261116T231122Z-33259c/images/761f4e425466133c13a53198451177e64e9a08a97759655031c7cf96a00fd089.history.jsonl",
+    "packaged": "patches/production/provenance/images/761f4e425466133c13a53198451177e64e9a08a97759655031c7cf96a00fd089.history.jsonl",
+    "sha256": "39bcad11e6fa5e9d3eca97863c11a0c8f9395112d58a1f64faddc1a163d45d8c"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/release-prep/provenance-20261116T231122Z-33259c/images/2fa91d1ac8c17ad866d9ae7eaea83ac1b1666ffd0ccceb7685564f55528c47af.history.jsonl",
+    "packaged": "patches/production/provenance/images/2fa91d1ac8c17ad866d9ae7eaea83ac1b1666ffd0ccceb7685564f55528c47af.history.jsonl",
+    "sha256": "fa388d830e97a9caa8520dd5ba1b6c8fbe58120153ca9c1651b93d7e8cf844f6"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/release-prep/provenance-20261116T231122Z-33259c/images/b0262b274313ddd1127b95631157a6929073dd6123df55746bdac6927ec76a58.history.jsonl",
+    "packaged": "patches/production/provenance/images/b0262b274313ddd1127b95631157a6929073dd6123df55746bdac6927ec76a58.history.jsonl",
+    "sha256": "855e75800b788dc367727ef478ad8d2563588484dbd75866daf40a81520ef267"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/release-prep/provenance-20261116T231122Z-33259c/images/cf2f4b846bd7b1c3843fd2739a68809d2bdc75cbc38d76c928012e960c9b1b14.json",
+    "packaged": "patches/production/provenance/images/cf2f4b846bd7b1c3843fd2739a68809d2bdc75cbc38d76c928012e960c9b1b14.json",
+    "sha256": "de1a289f53d0913a9ae26f9bd831aec86944832183e54699fcf3f91340302d02"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/release-prep/provenance-20261116T231122Z-33259c/images/010bdc441c72ee222f459d3b688bb41317525f1bd7223afe6218490b0c526832.json",
+    "packaged": "patches/production/provenance/images/010bdc441c72ee222f459d3b688bb41317525f1bd7223afe6218490b0c526832.json",
+    "sha256": "c91bf86a8ace5a2235a9262c04313b50a7848e65afd95b5dc5ee0f1cb8c3849c"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/release-prep/provenance-20261116T231122Z-33259c/images/b0262b274313ddd1127b95631157a6929073dd6123df55746bdac6927ec76a58.json",
+    "packaged": "patches/production/provenance/images/b0262b274313ddd1127b95631157a6929073dd6123df55746bdac6927ec76a58.json",
+    "sha256": "8e124ea49f1ee616114f1f57ddd8ee0dabd310a466c901c5e3c6ae282893c8fc"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/release-prep/provenance-20261116T231122Z-33259c/images/761f4e425466133c13a53198451177e64e9a08a97759655031c7cf96a00fd089.json",
+    "packaged": "patches/production/provenance/images/761f4e425466133c13a53198451177e64e9a08a97759655031c7cf96a00fd089.json",
+    "sha256": "d350d5da098996d031c1b0c62c790a3c74cfab126a50014c7cf6b39add70a17f"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/release-prep/provenance-20261116T231122Z-33259c/images/e0c6ee4bdb33bc073a82b86c050aedfa2c93703c6ed80f772b873cafb0b791c6.history.jsonl",
+    "packaged": "patches/production/provenance/images/e0c6ee4bdb33bc073a82b86c050aedfa2c93703c6ed80f772b873cafb0b791c6.history.jsonl",
+    "sha256": "abef25da645db7057e57a687ccc94ee8ace0ad1e64793468affd3d3400a9058a"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/release-prep/provenance-20261116T231122Z-33259c/images/848f48ff831ff244154bab6ef2938093bb0a588b2e2bb643a51c8a57b920789b.history.jsonl",
+    "packaged": "patches/production/provenance/images/848f48ff831ff244154bab6ef2938093bb0a588b2e2bb643a51c8a57b920789b.history.jsonl",
+    "sha256": "ea3eeed969607faba1db304140b83efb083fa0adab06dda08a9fb9aaf58bc2a7"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/release-prep/provenance-20261116T231122Z-33259c/images/f5ac30152869ae3a0fd7c619812d645031ffa67bbb92c89235ac35b4d490da23.json",
+    "packaged": "patches/production/provenance/images/f5ac30152869ae3a0fd7c619812d645031ffa67bbb92c89235ac35b4d490da23.json",
+    "sha256": "bfde1d1c59cd95a8753ab5e65d1e4d4e94f2aa787bfd05ee02f2b4d5d608da34"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/release-prep/provenance-20261116T231122Z-33259c/images/e0c6ee4bdb33bc073a82b86c050aedfa2c93703c6ed80f772b873cafb0b791c6.json",
+    "packaged": "patches/production/provenance/images/e0c6ee4bdb33bc073a82b86c050aedfa2c93703c6ed80f772b873cafb0b791c6.json",
+    "sha256": "f5727666a7e1f03a3ccdf9008c144b793e3a88b0cc0d987888b9d992d1d65ef3"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/release-prep/provenance-20261116T231122Z-33259c/images/cf2f4b846bd7b1c3843fd2739a68809d2bdc75cbc38d76c928012e960c9b1b14.history.jsonl",
+    "packaged": "patches/production/provenance/images/cf2f4b846bd7b1c3843fd2739a68809d2bdc75cbc38d76c928012e960c9b1b14.history.jsonl",
+    "sha256": "cfd39fdfb5bd33b0afdc8329d57c11862b777a75d3f24b7df048da0aab82e4e6"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/release-prep/provenance-20261116T231122Z-33259c/images/8ef67bb4a18c5ed47c61f756e011f8c84994c7dc678d09157e2f2428c27a37fe.json",
+    "packaged": "patches/production/provenance/images/8ef67bb4a18c5ed47c61f756e011f8c84994c7dc678d09157e2f2428c27a37fe.json",
+    "sha256": "cd21ad40c78dccdc0021f2e0bc1a5434285fa4ec609b64238f683bec520a0044"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/release-prep/provenance-20261116T231122Z-33259c/images/8ef67bb4a18c5ed47c61f756e011f8c84994c7dc678d09157e2f2428c27a37fe.history.jsonl",
+    "packaged": "patches/production/provenance/images/8ef67bb4a18c5ed47c61f756e011f8c84994c7dc678d09157e2f2428c27a37fe.history.jsonl",
+    "sha256": "670574923e38e5fd8ebf05f0d9ba3b8ed0d00178d95d71ab061e68c324b53cc1"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/release-prep/provenance-20261116T231122Z-33259c/images/f5ac30152869ae3a0fd7c619812d645031ffa67bbb92c89235ac35b4d490da23.history.jsonl",
+    "packaged": "patches/production/provenance/images/f5ac30152869ae3a0fd7c619812d645031ffa67bbb92c89235ac35b4d490da23.history.jsonl",
+    "sha256": "11313cd6ece5c6892f9bc997ebe19f956e200b1960dacbf33cb9f4743f979a44"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/release-prep/provenance-20261116T231122Z-33259c/images/848f48ff831ff244154bab6ef2938093bb0a588b2e2bb643a51c8a57b920789b.json",
+    "packaged": "patches/production/provenance/images/848f48ff831ff244154bab6ef2938093bb0a588b2e2bb643a51c8a57b920789b.json",
+    "sha256": "8e754dfb89a2f90f5ad01d8d4e959760c2a7c68d23f5fcfa3f58039344bcf465"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/release-prep/provenance-20261116T231122Z-33259c/images/ce670e4345c5476cc884052c90f3c1d3d802d6e0187d8b1f786612914a363071.json",
+    "packaged": "patches/production/provenance/images/ce670e4345c5476cc884052c90f3c1d3d802d6e0187d8b1f786612914a363071.json",
+    "sha256": "c75ea85467fae25dd647dd9b4426c4281eba728bb63a8564ed4a885075244a77"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/release-prep/provenance-20261116T231122Z-33259c/images/010bdc441c72ee222f459d3b688bb41317525f1bd7223afe6218490b0c526832.history.jsonl",
+    "packaged": "patches/production/provenance/images/010bdc441c72ee222f459d3b688bb41317525f1bd7223afe6218490b0c526832.history.jsonl",
+    "sha256": "6ce11f5ec3f9fa645aca3cdc40f760e92f3558796cf8843b4a765b0867b72291"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/release-prep/publication-1.0.5/final-pack/patches/production/README.md",
+    "packaged": "patches/production/provenance/v032-reference/README.md",
+    "sha256": "6e2c2f8ddd022200befd6573a499107757c09e7e34cd61bd080d460cf2974bf9"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/release-prep/publication-1.0.5/final-pack/patches/production/BUNDLE.md",
+    "packaged": "patches/production/provenance/v032-reference/BUNDLE.md",
+    "sha256": "616ef3ba297df52b16c06b6a8f09cd581c7613acf5f34ba753e95da0ded7cced"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/release-prep/publication-1.0.5/final-pack/patches/production/manifests/immutable-inputs.json",
+    "packaged": "patches/production/provenance/v032-reference/manifests/immutable-inputs.json",
+    "sha256": "e726a1bdb9ea2666dbfb7e685943ee8f555d610eacb61c7d1787815e978ccf13"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/release-prep/publication-1.0.5/final-pack/patches/production/manifests/patch-series.json",
+    "packaged": "patches/production/provenance/v032-reference/manifests/patch-series.json",
+    "sha256": "d70a641232f0b58b01ac9fddc4b3293a90b523ff8737ae4ba2ade29673995ffe"
+  },
+  {
+    "original": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/release-prep/publication-1.0.5/release-receipt.json",
+    "packaged": "patches/production/provenance/v032-reference/release-receipt.json",
+    "sha256": "419fc5d8f54bb7dac789b6ede2e1198d69f4b886e635f4ae5d1fc57dea42bcd6"
+  }
+]

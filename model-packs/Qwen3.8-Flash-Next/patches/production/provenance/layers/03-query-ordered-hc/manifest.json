@@ -1,0 +1,21 @@
+{
+  "parent": "sha256:b0262b274313ddd1127b95631157a6929073dd6123df55746bdac6927ec76a58",
+  "files": [
+    {
+      "path": "vllm/v1/worker/gpu/spec_decode/dflash2/speculator.py",
+      "sha256": "97653c5484e2e206be68e048407a629264ea0ec95bd40b308a40ecaf9d8f5397"
+    },
+    {
+      "path": "vllm/v1/worker/gpu/spec_decode/dflash2/b70_graphs.py",
+      "sha256": "129f4dce600d69298652d140db74e756c9febfeea6e3302aef75dc97e8611845"
+    },
+    {
+      "path": "vllm/models/qwen4_exp/nvidia/b70_hc_gemm.py",
+      "sha256": "a1471cffc4045a5222c775a4c93c45732d3ec5db91af761bedecf6a43fa37148"
+    },
+    {
+      "path": "vllm_xpu_kernels/libb70_ordered_hc_v2.so",
+      "sha256": "4ddb9a938ce6f415b9b0ae2c0486e04e3f74a358d9c3448381c52672f6db1ce6"
+    }
+  ]
+}

@@ -1,8 +1,315 @@
 {
+  "Id": "6d2a920d923b1cad71bda3b137838d408480bdc2eca83f414157c5d8c2fbc5f3",
+  "Created": "2026-11-16T08:08:53.914828644Z",
+  "Path": "/opt/b70-flashnext/prepare-serve.sh",
+  "Args": [
+    "vllm",
+    "serve",
+    "/models",
+    "--host",
+    "0.0.0.0",
+    "--port",
+    "8000",
+    "--dtype",
+    "bfloat16",
+    "--enable-expert-parallel",
+    "--max-num-seqs",
+    "4",
+    "--max-num-batched-tokens",
+    "1024",
+    "--gpu-memory-utilization",
+    "0.91",
+    "--limit-mm-per-prompt",
+    "{\"image\":2,\"video\":0}",
+    "--trust-remote-code",
+    "--enable-prefix-caching",
+    "--enable-auto-tool-choice",
+    "--tool-call-parser",
+    "qwen3_xml",
+    "--reasoning-parser",
+    "qwen3",
+    "--exclude-tools-when-tool-choice-none",
+    "--enforce-eager",
+    "--served-model-name",
+    "Intel/Qwen3.8-Flash-Next-W4A16-AutoRound",
+    "--speculative-config",
+    "{\"method\": \"dflash\", \"model\": \"/draft\", \"num_speculative_tokens\": 7, \"draft_tensor_parallel_size\": 4, \"draft_sample_method\": \"probabilistic\", \"rejection_sample_method\": \"standard\", \"attention_backend\": \"TRITON_ATTN\"}",
+    "--tensor-parallel-size",
+    "4",
+    "--max-model-len",
+    "262144",
+    "--worker-extension-cls",
+    "parity_worker.ParityWorker"
+  ],
+  "State": {
+    "Status": "running",
+    "Running": true,
+    "Paused": false,
+    "Restarting": false,
+    "OOMKilled": false,
+    "Dead": false,
+    "Pid": 2021681,
+    "ExitCode": 0,
+    "Error": "",
+    "StartedAt": "2026-11-16T08:08:54.030841131Z",
+    "FinishedAt": "0001-01-01T00:00:00Z"
+  },
+  "Image": "sha256:2fa91d1ac8c17ad866d9ae7eaea83ac1b1666ffd0ccceb7685564f55528c47af",
+  "ResolvConfPath": "/mnt/docker/runtime/docker/containers/6d2a920d923b1cad71bda3b137838d408480bdc2eca83f414157c5d8c2fbc5f3/resolv.conf",
+  "HostnamePath": "/mnt/docker/runtime/docker/containers/6d2a920d923b1cad71bda3b137838d408480bdc2eca83f414157c5d8c2fbc5f3/hostname",
+  "HostsPath": "/mnt/docker/runtime/docker/containers/6d2a920d923b1cad71bda3b137838d408480bdc2eca83f414157c5d8c2fbc5f3/hosts",
+  "LogPath": "/mnt/docker/runtime/docker/containers/6d2a920d923b1cad71bda3b137838d408480bdc2eca83f414157c5d8c2fbc5f3/6d2a920d923b1cad71bda3b137838d408480bdc2eca83f414157c5d8c2fbc5f3-json.log",
+  "Name": "/dflash-lan-v6-20261116t080819z-468409",
+  "RestartCount": 0,
+  "Driver": "overlayfs",
+  "Platform": "linux",
+  "MountLabel": "",
+  "ProcessLabel": "",
+  "AppArmorProfile": "docker-default",
+  "ExecIDs": null,
+  "HostConfig": {
+    "Binds": [
+      "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/runtime/draft:/draft:ro",
+      "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/runtime/dflash-lan-v6-20261116t080819z-468409:/work",
+      "/mnt/models/intel-qwen38-flash-next-4c67bf686b7f/checkpoint:/models:ro"
+    ],
+    "ContainerIDFile": "",
+    "LogConfig": {
+      "Type": "json-file",
+      "Config": {}
+    },
+    "NetworkMode": "bridge",
+    "PortBindings": {
+      "8000/tcp": [
+        {
+          "HostIp": "0.0.0.0",
+          "HostPort": "8000"
+        }
+      ]
+    },
+    "RestartPolicy": {
+      "Name": "no",
+      "MaximumRetryCount": 0
+    },
+    "AutoRemove": false,
+    "VolumeDriver": "",
+    "VolumesFrom": null,
+    "ConsoleSize": [
+      0,
+      0
+    ],
+    "CapAdd": null,
+    "CapDrop": null,
+    "CgroupnsMode": "private",
+    "Dns": null,
+    "DnsOptions": [],
+    "DnsSearch": [],
+    "ExtraHosts": null,
+    "GroupAdd": null,
+    "IpcMode": "private",
+    "Cgroup": "",
+    "Links": null,
+    "OomScoreAdj": 0,
+    "PidMode": "",
+    "Privileged": false,
+    "PublishAllPorts": false,
+    "ReadonlyRootfs": false,
+    "SecurityOpt": [
+      "seccomp=unconfined"
+    ],
+    "UTSMode": "",
+    "UsernsMode": "",
+    "ShmSize": 34359738368,
+    "Runtime": "runc",
+    "Isolation": "",
+    "CpuShares": 0,
+    "Memory": 0,
+    "NanoCpus": 0,
+    "CgroupParent": "",
+    "BlkioWeight": 0,
+    "BlkioWeightDevice": [],
+    "BlkioDeviceReadBps": [],
+    "BlkioDeviceWriteBps": [],
+    "BlkioDeviceReadIOps": [],
+    "BlkioDeviceWriteIOps": [],
+    "CpuPeriod": 0,
+    "CpuQuota": 0,
+    "CpuRealtimePeriod": 0,
+    "CpuRealtimeRuntime": 0,
+    "CpusetCpus": "",
+    "CpusetMems": "",
+    "Devices": [
+      {
+        "PathOnHost": "/dev/dri",
+        "PathInContainer": "/dev/dri",
+        "CgroupPermissions": "rwm"
+      }
+    ],
+    "DeviceCgroupRules": null,
+    "DeviceRequests": null,
+    "MemoryReservation": 0,
+    "MemorySwap": 0,
+    "MemorySwappiness": null,
+    "OomKillDisable": null,
+    "PidsLimit": null,
+    "Ulimits": [],
+    "CpuCount": 0,
+    "CpuPercent": 0,
+    "IOMaximumIOps": 0,
+    "IOMaximumBandwidth": 0,
+    "Mounts": [
+      {
+        "Type": "bind",
+        "Source": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/qualification/parity_worker.py",
+        "Target": "/opt/dflash-parity/parity_worker.py",
+        "ReadOnly": true
+      },
+      {
+        "Type": "bind",
+        "Source": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/qualification/tuning_worker.py",
+        "Target": "/opt/dflash-parity/tuning_worker.py",
+        "ReadOnly": true
+      }
+    ],
+    "MaskedPaths": [
+      "/proc/acpi",
+      "/proc/asound",
+      "/proc/interrupts",
+      "/proc/kcore",
+      "/proc/keys",
+      "/proc/latency_stats",
+      "/proc/sched_debug",
+      "/proc/scsi",
+      "/proc/timer_list",
+      "/proc/timer_stats",
+      "/sys/devices/virtual/powercap",
+      "/sys/firmware"
+    ],
+    "ReadonlyPaths": [
+      "/proc/bus",
+      "/proc/fs",
+      "/proc/irq",
+      "/proc/sys",
+      "/proc/sysrq-trigger"
+    ]
+  },
+  "Storage": {
+    "RootFS": {
+      "Snapshot": {
+        "Name": "overlayfs"
+      }
+    }
+  },
+  "Mounts": [
+    {
+      "Type": "bind",
+      "Source": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/runtime/draft",
+      "Destination": "/draft",
+      "Mode": "ro",
+      "RW": false,
+      "Propagation": "rprivate"
+    },
+    {
+      "Type": "bind",
+      "Source": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/runtime/dflash-lan-v6-20261116t080819z-468409",
+      "Destination": "/work",
+      "Mode": "",
+      "RW": true,
+      "Propagation": "rprivate"
+    },
+    {
+      "Type": "bind",
+      "Source": "/mnt/models/intel-qwen38-flash-next-4c67bf686b7f/checkpoint",
+      "Destination": "/models",
+      "Mode": "ro",
+      "RW": false,
+      "Propagation": "rprivate"
+    },
+    {
+      "Type": "bind",
+      "Source": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/qualification/parity_worker.py",
+      "Destination": "/opt/dflash-parity/parity_worker.py",
+      "Mode": "",
+      "RW": false,
+      "Propagation": "rprivate"
+    },
+    {
+      "Type": "bind",
+      "Source": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/qualification/tuning_worker.py",
+      "Destination": "/opt/dflash-parity/tuning_worker.py",
+      "Mode": "",
+      "RW": false,
+      "Propagation": "rprivate"
+    }
+  ],
   "Config": {
-    "AttachStderr": false,
+    "Hostname": "6d2a920d923b",
+    "Domainname": "",
+    "User": "",
     "AttachStdin": false,
     "AttachStdout": false,
+    "AttachStderr": false,
+    "ExposedPorts": {
+      "8000/tcp": {}
+    },
+    "Tty": false,
+    "OpenStdin": false,
+    "StdinOnce": false,
+    "Env": [
+      "VLLM_WORKER_MULTIPROC_METHOD=spawn",
+      "B70_PLE_DISK_BF16=1",
+      "B70_DFLASH_QUERY_GRAPH=1",
+      "B70_DFLASH_NATIVE_HC=20",
+      "B70_DFLASH_DEFER_PLE=1",
+      "CCL_SYCL_ALLREDUCE_TMP_BUF=1",
+      "CCL_SYCL_ALLGATHERV_TMP_BUF=1",
+      "VLLM_CACHE_ROOT=/work/vllm-cache",
+      "VLLM_TARGET_DEVICE=xpu",
+      "HF_DATASETS_OFFLINE=1",
+      "TRITON_CACHE_DIR=/work/triton-cache",
+      "ZE_FLAT_DEVICE_HIERARCHY=FLAT",
+      "PLE_TABLE_PATH=/models/model-00016-of-00017.safetensors",
+      "LD_PRELOAD=/opt/b70-residency-shim/libl0_peer_residency_shim.so",
+      "TMPDIR=/work/tmp",
+      "ASTRA_DFLASH_SUPPORT=16",
+      "B70_DFLASH_QUALITY_CALIBRATION=1",
+      "B70_PLE_PARALLEL_GATHER=8",
+      "B70_DFLASH_EXACT_BA=1",
+      "VLLM_XPU_DFLASH_FIXED_SPLITS=32",
+      "ZE_AFFINITY_MASK=0,1,2,3",
+      "VLLM_XPU_INC_WNA16_BACKEND=w4a16",
+      "VLLM_SERVER_DEV_MODE=1",
+      "ASTRA_DFLASH_RAW_REDUCE=0",
+      "B70_DFLASH_FUSED_GRAPH_COPY=1",
+      "XDG_CACHE_HOME=/work/xdg-cache",
+      "HF_HOME=/work/hf-cache",
+      "B70_DFLASH_SHARED_GDN_METADATA=1",
+      "B70_THINKING_EOS_GUARD=1",
+      "B70_DFLASH_QUALITY_CONV=1",
+      "B70_DFLASH_COMPILED_GRAPH_UPDATE=1",
+      "B70_DFLASH_HC_SPLIT32=10",
+      "HF_HUB_OFFLINE=1",
+      "VLLM_USE_V2_MODEL_RUNNER=1",
+      "ASTRA_DFLASH_SCORE_SCALE=1.0",
+      "PYTHONPATH=/opt/dflash-parity",
+      "B70_DFLASH_MOE_GLUE=1",
+      "TRANSFORMERS_OFFLINE=1",
+      "CCL_SYCL_ALLREDUCE_LL_THRESHOLD=65536",
+      "B70_DFLASH_LIVE_GRAPH_CHECKS=1",
+      "B70_DFLASH_FUSED_GDN_METADATA=1",
+      "ASTRA_DFLASH_QUERY_BLOCK=8",
+      "PATH=/opt/venv/bin:/root/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+      "DEBIAN_FRONTEND=noninteractive",
+      "VIRTUAL_ENV=/opt/venv",
+      "UV_PYTHON_INSTALL_DIR=/opt/uv/python",
+      "UV_HTTP_TIMEOUT=500",
+      "PIP_EXTRA_INDEX_URL=https://download.pytorch.org/whl/xpu",
+      "UV_EXTRA_INDEX_URL=https://download.pytorch.org/whl/xpu",
+      "UV_INDEX_STRATEGY=unsafe-best-match",
+      "UV_LINK_MODE=copy",
+      "LD_LIBRARY_PATH=/opt/ucx/lib:/opt/venv/lib:/usr/local/lib",
+      "UV_COMPILE_BYTECODE=1"
+    ],
     "Cmd": [
       "vllm",
       "serve",
@@ -13,11 +320,7 @@
       "8000",
       "--dtype",
       "bfloat16",
-      "--tensor-parallel-size",
-      "4",
       "--enable-expert-parallel",
-      "--max-model-len",
-      "262144",
       "--max-num-seqs",
       "4",
       "--max-num-batched-tokens",
@@ -34,204 +337,66 @@
       "--reasoning-parser",
       "qwen3",
       "--exclude-tools-when-tool-choice-none",
+      "--enforce-eager",
       "--served-model-name",
       "Intel/Qwen3.8-Flash-Next-W4A16-AutoRound",
-      "--enforce-eager",
       "--speculative-config",
       "{\"method\": \"dflash\", \"model\": \"/draft\", \"num_speculative_tokens\": 7, \"draft_tensor_parallel_size\": 4, \"draft_sample_method\": \"probabilistic\", \"rejection_sample_method\": \"standard\", \"attention_backend\": \"TRITON_ATTN\"}",
-      "--num-gpu-blocks-override",
-      "7785"
+      "--tensor-parallel-size",
+      "4",
+      "--max-model-len",
+      "262144",
+      "--worker-extension-cls",
+      "parity_worker.ParityWorker"
     ],
-    "Domainname": "",
+    "Image": "sha256:2fa91d1ac8c17ad866d9ae7eaea83ac1b1666ffd0ccceb7685564f55528c47af",
+    "Volumes": null,
+    "WorkingDir": "/opt/venv",
     "Entrypoint": [
       "/opt/b70-flashnext/prepare-serve.sh"
     ],
-    "Env": [
-      "LD_LIBRARY_PATH=/opt/ucx/lib:/opt/venv/lib:/usr/local/lib",
-      "CCL_SYCL_ALLREDUCE_LL_THRESHOLD=65536",
-      "CCL_SYCL_ALLGATHERV_TMP_BUF=1",
-      "HF_HOME=/work/hf-cache",
-      "UV_INDEX_STRATEGY=unsafe-best-match",
-      "TRANSFORMERS_OFFLINE=1",
-      "UV_EXTRA_INDEX_URL=https://download.pytorch.org/whl/xpu",
-      "TRITON_CACHE_DIR=/work/triton-cache",
-      "UV_PYTHON_INSTALL_DIR=/opt/uv/python",
-      "VLLM_XPU_DFLASH_FIXED_SPLITS=32",
-      "PATH=/opt/venv/bin:/root/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
-      "PYTHONPATH=/opt/phase4-tests:/tests:/opt/phase3-tests:/opt/phase2-tests",
-      "B70_PLE_DISK_BF16=1",
-      "PIP_EXTRA_INDEX_URL=https://download.pytorch.org/whl/xpu",
-      "CCL_SYCL_ALLREDUCE_TMP_BUF=1",
-      "VLLM_CACHE_ROOT=/work/vllm-cache",
-      "VLLM_TARGET_DEVICE=xpu",
-      "XDG_CACHE_HOME=/work/xdg-cache",
-      "UV_COMPILE_BYTECODE=1",
-      "HF_DATASETS_OFFLINE=1",
-      "UV_HTTP_TIMEOUT=500",
-      "VLLM_USE_V2_MODEL_RUNNER=1",
-      "ZE_AFFINITY_MASK=0,1,2,3",
-      "VLLM_WORKER_MULTIPROC_METHOD=spawn",
-      "TMPDIR=/work/tmp",
-      "UV_LINK_MODE=copy",
-      "LD_PRELOAD=/opt/b70-residency-shim/libl0_peer_residency_shim.so",
-      "VIRTUAL_ENV=/opt/venv",
-      "PLE_TABLE_PATH=/models/model-00016-of-00017.safetensors",
-      "ZE_FLAT_DEVICE_HIERARCHY=FLAT",
-      "DEBIAN_FRONTEND=noninteractive",
-      "HF_HUB_OFFLINE=1"
-    ],
-    "Hostname": "b70",
-    "Image": "qwen38-flashnext-dflash2:integrated-serving-v1",
     "Labels": {
       "org.opencontainers.image.version": "24.04"
-    },
-    "OpenStdin": false,
-    "StdinOnce": false,
-    "Tty": false,
-    "User": "",
-    "Volumes": null,
-    "WorkingDir": "/opt/venv"
-  },
-  "HostConfig": {
-    "AutoRemove": false,
-    "Binds": [
-      "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/runtime/work:/work",
-      "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/runtime/draft:/draft:ro",
-      "/dev/dri/by-path:/dev/dri/by-path:ro",
-      "/mnt/models/intel-qwen38-flash-next-4c67bf686b7f/checkpoint:/models:ro"
-    ],
-    "BlkioDeviceReadBps": [],
-    "BlkioDeviceReadIOps": [],
-    "BlkioDeviceWriteBps": [],
-    "BlkioDeviceWriteIOps": [],
-    "BlkioWeight": 0,
-    "BlkioWeightDevice": [],
-    "CapAdd": null,
-    "CapDrop": null,
-    "Cgroup": "",
-    "CgroupParent": "",
-    "CgroupnsMode": "private",
-    "ConsoleSize": [
-      0,
-      0
-    ],
-    "ContainerIDFile": "",
-    "CpuCount": 0,
-    "CpuPercent": 0,
-    "CpuPeriod": 0,
-    "CpuQuota": 0,
-    "CpuRealtimePeriod": 0,
-    "CpuRealtimeRuntime": 0,
-    "CpuShares": 0,
-    "CpusetCpus": "",
-    "CpusetMems": "",
-    "DeviceCgroupRules": null,
-    "DeviceRequests": null,
-    "Devices": [
-      {
-        "CgroupPermissions": "rwm",
-        "PathInContainer": "/dev/dri",
-        "PathOnHost": "/dev/dri"
-      }
-    ],
-    "Dns": null,
-    "DnsOptions": [],
-    "DnsSearch": [],
-    "ExtraHosts": null,
-    "GroupAdd": null,
-    "IOMaximumBandwidth": 0,
-    "IOMaximumIOps": 0,
-    "IpcMode": "host",
-    "Isolation": "",
-    "Links": null,
-    "LogConfig": {
-      "Config": {},
-      "Type": "json-file"
-    },
-    "MaskedPaths": [
-      "/proc/acpi",
-      "/proc/asound",
-      "/proc/interrupts",
-      "/proc/kcore",
-      "/proc/keys",
-      "/proc/latency_stats",
-      "/proc/sched_debug",
-      "/proc/scsi",
-      "/proc/timer_list",
-      "/proc/timer_stats",
-      "/sys/devices/virtual/powercap",
-      "/sys/firmware"
-    ],
-    "Memory": 0,
-    "MemoryReservation": 0,
-    "MemorySwap": 0,
-    "MemorySwappiness": null,
-    "NanoCpus": 0,
-    "NetworkMode": "host",
-    "OomKillDisable": null,
-    "OomScoreAdj": 0,
-    "PidMode": "",
-    "PidsLimit": null,
-    "PortBindings": {},
-    "Privileged": false,
-    "PublishAllPorts": false,
-    "ReadonlyPaths": [
-      "/proc/bus",
-      "/proc/fs",
-      "/proc/irq",
-      "/proc/sys",
-      "/proc/sysrq-trigger"
-    ],
-    "ReadonlyRootfs": false,
-    "RestartPolicy": {
-      "MaximumRetryCount": 0,
-      "Name": "no"
-    },
-    "Runtime": "runc",
-    "SecurityOpt": [
-      "seccomp=unconfined",
-      "label=disable"
-    ],
-    "ShmSize": 67108864,
-    "UTSMode": "",
-    "Ulimits": [],
-    "UsernsMode": "",
-    "VolumeDriver": "",
-    "VolumesFrom": null
-  },
-  "Image": "sha256:6e2ab4e686680a5208ff0119c4637341cba81942bd39b6576ea14dc8f547b83b",
-  "Mounts": [
-    {
-      "Destination": "/work",
-      "Mode": "",
-      "Propagation": "rprivate",
-      "RW": true,
-      "Source": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/runtime/work",
-      "Type": "bind"
-    },
-    {
-      "Destination": "/draft",
-      "Mode": "ro",
-      "Propagation": "rprivate",
-      "RW": false,
-      "Source": "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v032/runtime/draft",
-      "Type": "bind"
-    },
-    {
-      "Destination": "/dev/dri/by-path",
-      "Mode": "ro",
-      "Propagation": "rprivate",
-      "RW": false,
-      "Source": "/dev/dri/by-path",
-      "Type": "bind"
-    },
-    {
-      "Destination": "/models",
-      "Mode": "ro",
-      "Propagation": "rprivate",
-      "RW": false,
-      "Source": "/mnt/models/intel-qwen38-flash-next-4c67bf686b7f/checkpoint",
-      "Type": "bind"
     }
-  ]
+  },
+  "NetworkSettings": {
+    "SandboxID": "a70506ed26c381753501099c33420afe1f8aa977081b431f220a717960aacad7",
+    "SandboxKey": "/var/run/docker/netns/a70506ed26c3",
+    "Ports": {
+      "8000/tcp": [
+        {
+          "HostIp": "0.0.0.0",
+          "HostPort": "8000"
+        }
+      ]
+    },
+    "Networks": {
+      "bridge": {
+        "IPAMConfig": null,
+        "Links": null,
+        "Aliases": null,
+        "DriverOpts": null,
+        "GwPriority": 0,
+        "NetworkID": "4f689b2504d302ab39fffccd01e450646054174fd666232caa138c0ebf56af77",
+        "EndpointID": "b5fa89ad5a112951cb068eb77d45c2655a243e084d46b358a2e0229c7c2c64aa",
+        "Gateway": "172.17.0.1",
+        "IPAddress": "172.17.0.2",
+        "MacAddress": "52:c2:23:4a:27:81",
+        "IPPrefixLen": 16,
+        "IPv6Gateway": "",
+        "GlobalIPv6Address": "",
+        "GlobalIPv6PrefixLen": 0,
+        "DNSNames": null
+      }
+    }
+  },
+  "ImageManifestDescriptor": {
+    "mediaType": "application/vnd.oci.image.manifest.v1+json",
+    "digest": "sha256:0d9a3cfe4bec7a28400f9ad425b13c9853734f19086a11dbaf884f7faebb8d60",
+    "size": 6015,
+    "platform": {
+      "architecture": "amd64",
+      "os": "linux"
+    }
+  }
 }

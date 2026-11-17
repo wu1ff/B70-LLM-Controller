@@ -1,0 +1,39 @@
+{
+  "Name": "context",
+  "Ref": "kuxstzoscjy64plioct8hjbro",
+  "Context": "build/context",
+  "Dockerfile": "Dockerfile",
+  "StartedAt": "2026-11-11T21:28:40.718968849-07:00",
+  "CompletedAt": "2026-11-11T21:28:43.70828127-07:00",
+  "Duration": 2989312421,
+  "Status": "completed",
+  "NumCompletedSteps": 8,
+  "NumTotalSteps": 8,
+  "NumCachedSteps": 1,
+  "Config": {
+    "ImageResolveMode": "local"
+  },
+  "Materials": [
+    {
+      "URI": "pkg:docker/local/dflash2-v033@vendor-exact?platform=linux%2Famd64",
+      "Digests": [
+        "sha256:010bdc441c72ee222f459d3b688bb41317525f1bd7223afe6218490b0c526832"
+      ]
+    }
+  ],
+  "Attachments": [
+    {
+      "Digest": "sha256:ce670e4345c5476cc884052c90f3c1d3d802d6e0187d8b1f786612914a363071",
+      "Type": "application/vnd.oci.image.index.v1+json"
+    },
+    {
+      "Digest": "sha256:dcc800245f42e42e8a2cb4ba3a120ae62e63655229447247a8fe4cd0bf0e7cb1",
+      "Type": "https://slsa.dev/provenance/v1"
+    },
+    {
+      "Digest": "sha256:4e22b7226a91e70019900e8dd04ee8cbbdfb786247cfbb8669775d8ec955c41a",
+      "Platform": "linux/amd64",
+      "Type": "application/vnd.oci.image.manifest.v1+json"
+    }
+  ]
+}

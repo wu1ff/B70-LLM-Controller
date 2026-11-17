@@ -29,8 +29,9 @@ class Qwen4ExpModelState(MambaHybridModelState):
         config = self.model_config.hf_text_config
         from .ngram_embedding import (
             Qwen4ExpNGramEmbedding,
-            Qwen4ExpPLEDiskBF16Embedding,
         )
+
+        from ..common.disk_ple import Qwen4ExpPLEDiskBF16Embedding
 
         self._disk_ple_modules = tuple(
             module
@@ -130,6 +131,7 @@ class Qwen4ExpModelState(MambaHybridModelState):
             if input_batch.input_ids.shape[0] != num_tokens_padded:
                 raise ValueError("Disk BF16 PLE input length differs from dispatch")
             if num_tokens_padded == 0:
+                module.ngram_embedding.prepare(None, 0, 0)
                 continue
             # Existing GPU IDs use the authoritative committed context above.
             # This producer runs before FULL replay as well as ordinary forward.
@@ -142,6 +144,7 @@ class Qwen4ExpModelState(MambaHybridModelState):
                 ids,
                 input_batch.num_tokens,
                 num_tokens_padded,
+                is_padding=input_batch.is_padding,
             )
         return model_inputs
 
@@ -180,3 +183,12 @@ class Qwen4ExpModelState(MambaHybridModelState):
 
 
 __all__ = ["Qwen4ExpModelState"]
+
+
+# --- B70 expanded campaign 2026-11-16: deferred Disk-PLE prepare (env-gated) --
+# B70_DFLASH_DEFER_PLE=1: C1-verify batches run the PLE prepare after the target
+# graph's input update instead of before it (host ordering only); see b70_defer_ple.py.
+if __import__("os").getenv("B70_DFLASH_DEFER_PLE", "0") == "1":
+    from .b70_defer_ple import install as _b70_install_defer_ple
+
+    _b70_install_defer_ple(Qwen4ExpModelState)

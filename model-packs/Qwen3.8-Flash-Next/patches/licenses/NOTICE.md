@@ -1,3 +1,23 @@
+# v0.33 release scope
+
+The following published v0.32 attribution/notice text is retained verbatim as a
+historical record. All its accompanying notice and source-access assets remain
+in this package. Current accepted v0.33 sources and provenance are in
+[production](../production/BUNDLE.md); compiler build inputs are oneAPI
+2026.0.0.20260331, while inherited Intel/SYCL runtime is 2026.1.1. The old
+`compiler-input/` and `accepted-vendor/` trees describe the previously inspected
+v0.32 stack; they do not attest every v0.33 binary. Existing per-file copyrights,
+SPDX and terms in the accepted source package are unchanged.
+
+The historical 57-file annotated export and its original mapping are retained as
+[distribution-source.tar.gz](../archive/v032-source-delivery/distribution-source.tar.gz)
+and [source-export.json](../archive/v032-source-delivery/manifests/source-export.json).
+References below to old production notice-export tools/delivery describe the
+published 1.0.5 package, not the new ten-patch v0.33 production subtree. No new
+clearance, author identity, license grant or compliance infrastructure is asserted.
+
+---
+
 # DFlash2 source notices and attribution
 
 This pack reconstructs the accepted B70 Flash-Next DFlash2 runtime. Retain all

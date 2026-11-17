@@ -1,98 +1,109 @@
-# DFlash2 portable source reconstruction
+# Build inputs and provenance boundaries
 
-Accepted runtime: `qwen38-flashnext-dflash2:integrated-serving-v1`, local image ID
-`sha256:6e2ab4e686680a5208ff0119c4637341cba81942bd39b6576ea14dc8f547b83b`.
-This is a source reconstruction candidate. Independent native binary and full-image
-reproducibility have not been proved. Performance tuning is closed.
+Upstream vLLM is pinned to
+`4ba787ec9959e566d3b587a796dff07673324da5` (v0.33).
+Every one of the 3,648 source files under `vllm/` in the vendor foundation matches
+that commit. Only `_version.py` is vendor-generated. The local port checkout
+HEAD is `c41dc798b4d11b1534303396d08d63e340f9cd42`; it is not the final installed
+v6 source tree. The installed image's Git HEAD remains the upstream commit;
+the patch series and installed hashes identify the actual modified sources.
 
-Everything to carry into the future model-pack archive lives beneath `patches/`,
-because that archive includes regular `patches/**` files. Preserve the entire tree:
+The original layer chain begins at the separately acquired binary dependency
+`vllm/vllm-openai-xpu@sha256:010bdc441c72ee222f459d3b688bb41317525f1bd7223afe6218490b0c526832`.
+Its original config digest is
+`sha256:7b3eb7c792a5d3a049effcb0d792ce95d4a482dd47a965d8a05a244a47682813`.
+The local alias is `local/dflash2-v033:vendor-exact`. That image must exist for
+the native wrapper. The package does not rebuild the inherited vendor stack
+from clean upstream. `provenance/vendor/` retains its manifest, config, acquisition
+record and original source comparison. No floating dependency resolution is needed.
 
-- `production/`: clean source inputs, exact 16-patch chain, accepted overlay for
-  comparison, selected native sources, two shared header trees, one pinned TLA
-  archive, frontend, shim, immutable references, recipes, manifests and verifier.
-- `archive/`: original campaign sources and patches, rejected/superseded variants,
-  historical locks and reconstruction evidence. Never apply archive patches to the
-  production result. `patch-index.json` indexes all 97 original patch/diff paths;
-  `python-variants.json` indexes historical Python variants by content hash.
-- `licenses/`: original notices, accepted-version vendor notices, compiler-input
-  notices, source-delivery evidence and explicit unresolved findings.
+The historical chain depends on locally built intermediate images. Its last
+Dockerfile is `FROM local/dflash2-v033:expanded-exact-v5`, pinned in the retained
+manifest/build record to
+`sha256:848f48ff831ff244154bab6ef2938093bb0a588b2e2bb643a51c8a57b920789b`.
+`manifests/image-lineage.json`, `patch-series.json`, `build-record-audit.json` and
+the layer records give every preceding dependency. Layer-prefix identity and all
+ten BuildKit material references were checked. Historical builder scripts are
+documentary originals tied to their campaign paths; the portable tools supply
+the consolidated source replay and reassembly procedure.
 
-From any directory, run the bundled verifier with Python 3.12+, Git and Bash:
+The final Docker identity is an OCI index:
+`sha256:2fa91d1ac8c17ad866d9ae7eaea83ac1b1666ffd0ccceb7685564f55528c47af`.
+The linux/amd64 runtime manifest is a different object:
+`sha256:0d9a3cfe4bec7a28400f9ad425b13c9853734f19086a11dbaf884f7faebb8d60`.
+All 30 retained OCI/SLSA attachment payloads match their BuildKit digest exactly.
+Attestations are retained evidence, not an independent source-build attestation
+for the inherited vendor stack.
 
-```sh
-python3 /path/to/bundle/patches/production/tools/verify.py \
-  --staging /tmp/dflash2-source-clean \
-  --report /tmp/dflash2-source-verification.json
-```
+The compiler is Intel oneAPI **2026.0.0.20260331**, supplied by 15 locked
+2026.0.0-947 packages. This differs from the v0.32 DFlash release's OMIX 2026.1.1
+compiler. All 15 retained package hashes and 1,473 extracted toolchain entries
+were checked. Do not substitute the v0.32 compiler. Runtime Intel/SYCL remains
+2026.1.1 from the vendor image; native build scripts temporarily expose the
+compiler support libraries during compilation. GCC is Ubuntu 13.3.0-6ubuntu2~24.04.1.
+Torch is 2.14.0+xpu, Triton 3.8.0+xpu, Transformers 5.20.2 and kernel wheel
+0.1.15.4. Full package and dpkg censuses are included.
 
-The staging path must not exist. This works offline without Docker, model weights,
-the original workspace, previously patched files, a compiler or GPUs. The verifier
-checks the complete bundle inventory, extracts clean pinned package sources,
-applies each original incremental patch, supplies explicit vendor-generated version
-metadata, compares every installed Python source hash and its file set, and checks
-all selected native/build inputs, both header trees, TLA and supporting files.
-`accepted-overlay/` is a comparison target, never an input to patch replay.
+Native recipes preserve C++20, `-O3`, ABI=1, `spir64`, XE2/header-only SYCL
+defines, original include ordering, original SPIR-V extensions and link/rpath
+flags. GDN uses the distinct corrected int64/zero-length-guard tree and retains
+the vendor GDN delta-rule library link. SYCL-TLA commit is
+`87f6850680a580654b9ea2c80dbc01aeb36ad231`; archive SHA256 is
+`5938a31e3940d1c90e88d9126788990a25a5e0ac968e53345461459b5ea21218`.
+The shared kernel reference revisions describe custom header ancestry, not an
+attestation of the exact source commit of the inherited wheel.
 
-Only `astra500-dominant.patch` uses `git apply -p3`; the other fifteen use `-p1`.
-The original 16 patches are immutable; `manifests/patch-series.json` defines their
-order. Do not reapply the chain over the final overlay.
+Inputs are separated as follows:
 
-The native environment is reconstructed from the two image digests in
-`manifests/immutable-inputs.json`. The compiler image supplies oneAPI 2026.1.1;
-the vendor image supplies Torch 2.14.0+xpu headers/libraries, Python 3.12 headers,
-GCC/binutils, Level Zero headers/loader and the unchanged GDN delta-rule library.
-No apt or pip resolution and no local campaign image tag is needed. Each native
-family builds separately at the original `/build` path using its unmodified shell
-recipe. The GDN builder uses its own corrected int64 conv headers; the other ten
-SYCL families share the common tree/TLA. The residency shim uses vendor GCC.
+- `inputs/`: pinned pristine upstream source subset and vendor kernel Python
+  baseline. `dependencies/`: required common and corrected GDN headers plus TLA.
+- `patch-chain/`, `native/`, `support/`, `image-support/`, `runtime/`: our changes,
+  native translation units, build scripts, preparation/frontend assets, exact
+  mirror deltas and external serving profile/modules. No checkpoint weights.
+- `generated/`: exact vendor version metadata and required calibration tensor.
+  Native `.so` files are represented by installed hashes and retained build/ELF
+  records, and are regenerated by the native wrapper; they are not packaged.
+- `manifests/`: complete source/input locks, installed artifact hashes, dependency
+  audit, build order, identities and effective launch. `provenance/`: original
+  builder records and manifests, collection scripts and recovery evidence.
 
-Inspect the exact native order, translation units, flags and output renames:
+The exact 7×2 calibration tensor is supplied, SHA256
+`f6a104dd32e6a41754a89a2bb1cd3a3f35ec04ef6083c68ffd17e73a75375624`.
+Its retained serialized source asset byte-matches the installed tensor. The
+historical fitting script is provided for attribution/provenance; fitting data
+is not a build dependency because these exact tensor bytes are included. No
+refitting or bit-identical retraining claim is made.
 
-```sh
-python3 /path/to/bundle/patches/production/tools/build_native.py --plan
-```
+External model inputs remain the original read-only target
+`Intel/Qwen3.8-Flash-Next-W4A16-AutoRound@4c67bf686b7f7fd386bae6b07ab59e8ff1d5b897`
+and BF16 draft
+`incoai/Qwen3.8-Flash-Next-DFlash2@a22a1744e85c17364dcc54a6a420af7135d4c7f6`.
+Their pinned upstream payload identities, mount inventories and metadata hashes
+are recorded. Target PLE maps the original
+`model-00016-of-00017.safetensors`; no converted table is needed. Weight files
+were not copied or rehashed in this task. Target and draft remain external model
+assets, and the vendor image/compiler packages remain external binary inputs.
 
-For a later authorized native compilation, preload both pinned OCI images and
-provide Docker BuildKit. This command builds no serving image and starts no server:
+The historical expanded-v4 `b70_moe_glue.py` source path had subsequently changed
+to v5. Its exact original `398fae…` bytes were recovered from the retained v4
+overlay and included under `provenance/recovered-sources/`. This is an exact
+recovery, not an approximate reconstruction. All manifest source references now
+resolve to exact packaged bytes or an exact retained builder copy.
 
-```sh
-python3 /path/to/bundle/patches/production/tools/build_native.py \
-  --output /tmp/dflash2-independent-native
-```
+Installed `site-packages` and `/workspace/vllm` differ. In particular later model,
+state and disk-PLE changes were deliberately installed only in `site-packages`.
+The 14 cumulative mirror artifacts are supplied separately and must not replace
+installed sources. All 90 cumulative image-overlay artifacts were checked in the
+final image, including those mirrors and calibration copies.
 
-The native recipe's order is GDN → residency shim → MoE → HC v3 → direct fallback
-→ ownership groups → batch → beyond fallback → dominant layout → short prefill
-→ long HC → long prefill v3. These libraries are independent of one another;
-all rely on the pinned vendor environment. `Dockerfile.native` first materializes
-the compiler/common includes, then builds the twelve isolated stages and exports
-the installed names. It preserves both the HC v3-to-HC rename and all fallbacks.
-The build wrapper compares every result against the accepted library hash and
-returns failure for any difference. A matching source inventory alone does not
-predict that outcome. Compiler nondeterminism and toolchain environment differences
-remain possible until this test runs.
+No essential custom-source gap remains. Independent compilation of all 17
+families and a full rebuilt image remain unperformed here. Seventeen retained
+library outputs match the image; only the small GCC PLE output was independently
+rebuilt and byte-matched in this task. Source completeness, retained-binary
+equality and independently rebuilt image equality are separate claims.
 
-For subsequent image assembly, install the verified source delta and all twelve
-native outputs over the pinned vendor image, add `support/b70-flashnext/` at
-`/opt/b70-flashnext/`, and install the shim under `/opt/b70-residency-shim/`.
-Keep `/opt/b70-flashnext/prepare-serve.sh` as entrypoint. The complete accepted
-test/helper sources are retained under `image-support/` at their original absolute
-path suffixes; its 110 files are also hash-checked. Preserve the entrypoint's
-executable mode when assembling an image from an archive.
-The complete accepted
-argv, environment, mounts/devices and image configuration are frozen in
-`manifests/serving-contract.json` and `accepted-image.json`. Paths `/models`,
-`/draft` and writable `/work` are part of that contract. Model revisions and
-inventories are immutable references, not bundled checkpoints.
-
-A full-image recipe is a separate next phase: reconcile the inherited test/PYTHONPATH
-layers and configuration rather than silently omitting them or claiming the same
-OCI digest. The smallest useful next action is the twelve-family native build
-and binary comparison above, followed by an independently tagged image assembly.
-
-The legacy workspace input lock and Phase 4 rebuild launcher are archived unchanged.
-`archive/historical-build/lock-reconciliation.json` explains all ten stale hashes;
-the active lock tracks the portable integrated bundle, not mutable old worktrees.
-Distribution blockers are in `../licenses/FINDINGS.md` and `UNRESOLVED.json`.
-No publication, new release identity, inference qualification or legal clearance is
-implied by this bundle.
+Future release packaging must choose model-pack metadata, path relocation and
+diagnostic-module handling, and review the concrete serving contract. Preserve
+the existing v0.32 notices/findings when doing that work; no new compliance
+infrastructure or clearance is introduced here. No public repository, release,
+registry or Controller configuration was changed.

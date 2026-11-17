@@ -1,0 +1,8 @@
+{
+  "status": "PASS",
+  "overlay_files": 90,
+  "all_hashes_match_final_image": true,
+  "native_inputs": "Retained libraries independently hash-matched to final image, not newly compiled SYCL outputs",
+  "docker_build": "NOT RUN",
+  "source_replay": "validation-v6-source-clean-2/reconstructed"
+}

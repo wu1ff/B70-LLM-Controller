@@ -1,28 +1,26 @@
-# DFlash2 source index
+# DFlash2 source index — v0.33 staging
 
-- [Production](production/README.md): exact accepted source reconstruction; 16 ordered
-  patches, 12 native families, frontend, residency shim, helpers and immutable inputs.
-- [Campaign](archive/reconnaissance/CAMPAIGN.md): selected, superseded, rejected and
-  diagnostic work with reasons. Original path/hash indices: `archive/patch-index.json`
-  (97 patch paths / 86 unique contents), `archive/native-variants-index.json` (113
-  originals), `archive/python-variants.json` (120 paths / 53 unique variants).
-  `archive/objects/` stores immutable content; `archive/originals/` retains sources.
-- [Qualification](archive/qualification/README.md): Phase 2–4 source/build/live receipts
-  and accepted stock BetterBench/serving measurements. They are historical evidence.
-- [Notices](licenses/NOTICE.md), [source access](licenses/SOURCE_ACCESS.md),
-  [distribution findings](licenses/SOURCE_DISTRIBUTION.md).
-- [Visual assets](assets/README.md): complete BetterBench/aquarium reports, readable
-  telemetry crops and their provenance.
+- [Production](production/README.md): unchanged accepted v6 source package;
+  ten ordered patches, 17 native families, exact preparation/frontend assets,
+  calibration, worker modules, input locks and build provenance.
+- [Runtime recipe](../RUNTIME_RECIPE.md) and [portable launcher](../launch.py):
+  current package layout, launch rendering and the Controller worker-mount blocker.
+- [Accepted BetterBench 0.6.1 evidence](benchmarks/betterbench-0.6.1/benchmark-provenance.json):
+  the existing two temperature-1.0 runs, with raw results, summaries and launch audits.
+- [Retained campaign](archive/reconnaissance/CAMPAIGN.md) and
+  [qualification](archive/qualification/README.md): prior published records,
+  preserved as historical evidence, never v0.33 patch replay inputs.
+- [Retained v0.32 annotated delivery](archive/v032-source-delivery/README.md):
+  original distribution-source archive and mapping, build-boundary documentation
+  and published storage investigation. Full old production is available in the
+  actual published 1.0.5 archive; it is not duplicated as a second workspace here.
+- [Credits/notices](licenses/NOTICE.md), [source access](licenses/SOURCE_ACCESS.md)
+  and [distribution findings](licenses/SOURCE_DISTRIBUTION.md): existing published
+  attribution/evidence retained with explicit v0.33/historical scope.
+- [Historical visual assets](assets/README.md): preserved prior release assets;
+  they are not the current v0.33 benchmark results.
 
-Do not apply archived patches over production. Some original patch names mention
-MTP investigations: their selected effects are already in the accepted DFlash2
-chain; they do not expose a Controller MTP mode. Historical published sources stay
-available at the 1.0.4 release recorded in `archive/published-1.0.4.json`.
-`SHA256SUMS` covers every regular file below this directory except itself.
-
-The annotated production source delivery is `production/distribution-source.tar.gz`,
-pinned by `production/manifests/source-export.json`. It incorporates the reviewed
-57-file notice overlay and preserves separate accepted identities. Experimental
-archive files remain immutable evidence. Their changed-file notice treatment,
-source-delivery scope and Intel recipient terms remain explicit release decisions
-in `licenses/SOURCE_DISTRIBUTION.md`.
+`SHA256SUMS` covers all regular files below patches except itself. The package-root
+`SHA256SUMS` additionally covers root files and this checksum list. Production's
+original input-lock remains unchanged. No experiment, old source export or old
+notice-overlay is applied over the accepted v0.33 production sources.

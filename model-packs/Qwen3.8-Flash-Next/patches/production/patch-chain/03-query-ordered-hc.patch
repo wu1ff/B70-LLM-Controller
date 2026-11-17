@@ -1,0 +1,305 @@
+diff --git a/vllm/models/qwen4_exp/nvidia/b70_hc_gemm.py b/vllm/models/qwen4_exp/nvidia/b70_hc_gemm.py
+index 7b2814f..2cb8a17 100644
+--- a/vllm/models/qwen4_exp/nvidia/b70_hc_gemm.py
++++ b/vllm/models/qwen4_exp/nvidia/b70_hc_gemm.py
+@@ -9,6 +9,13 @@ import torch
+ from vllm.triton_utils import tl, triton
+ 
+ _large_hc = None
++_ordered_native_hc = int(os.getenv("B70_DFLASH_NATIVE_HC", "0"))
++if _ordered_native_hc:
++    if _ordered_native_hc not in (10, 20, 40):
++        raise ValueError("Unsupported exact-order HC split")
++    import vllm_xpu_kernels
++    torch.ops.load_library(str(Path(vllm_xpu_kernels.__file__).with_name(
++        "libb70_ordered_hc_v2.so")))
+ 
+ 
+ @triton.jit(do_not_specialize=["M"])
+@@ -170,6 +177,11 @@ def parallel_hc_gemm(x, weight, valid_columns):
+     """
+     rows, inner = x.shape
+     columns = weight.shape[0]
++    if (_ordered_native_hc and 1 <= rows <= 32 and inner == 10240
++            and x.is_contiguous() and weight.is_contiguous()
++            and columns in (320, 336)):
++        return torch.ops.b70_ordered_hc_v2.forward(
++            x, weight, valid_columns, _ordered_native_hc)
+     block_k = 64 if rows > 8 else 128
+     tiles = triton.cdiv(inner, block_k)
+     partials = torch.empty((tiles, rows, columns), dtype=torch.float32, device=x.device)
+diff --git a/vllm/v1/worker/gpu/spec_decode/dflash2/b70_graphs.py b/vllm/v1/worker/gpu/spec_decode/dflash2/b70_graphs.py
+new file mode 100644
+index 0000000..6c27c0e
+--- /dev/null
++++ b/vllm/v1/worker/gpu/spec_decode/dflash2/b70_graphs.py
+@@ -0,0 +1,246 @@
++"""Owned XPU query graphs for the unchanged DFlash2 proposal algorithm."""
++
++import copy
++import dataclasses
++import os
++
++import torch
++import torch.distributed as dist
++
++from vllm.config.compilation import CUDAGraphMode
++from vllm.distributed import get_tp_group
++from vllm.logger import init_logger
++
++logger = init_logger("vllm.b70_draft_graph")
++SCRATCH = frozenset(("softmax_segm_output", "softmax_segm_max", "softmax_segm_expsum"))
++
++
++def stage(value, bound, memo, live=False):
++    if id(value) in memo:
++        return memo[id(value)]
++    if isinstance(value, torch.Tensor):
++        result = value if live else value.clone()
++    elif dataclasses.is_dataclass(value):
++        result = copy.copy(value)
++        for field in dataclasses.fields(value):
++            item = getattr(value, field.name)
++            if field.name == "max_seq_len":
++                item = bound
++            elif field.name not in SCRATCH:
++                item = stage(item, bound, memo, live)
++            setattr(result, field.name, item)
++    elif isinstance(value, dict):
++        result = {k: stage(v, bound, memo, live) for k, v in value.items()}
++    elif isinstance(value, (tuple, list)):
++        result = type(value)(stage(v, bound, memo, live) for v in value)
++    else:
++        return value
++    memo[id(value)] = result
++    return result
++
++
++def copies(destination, source, seen, dst, src):
++    if id(destination) in seen:
++        return
++    seen.add(id(destination))
++    if isinstance(destination, torch.Tensor):
++        assert destination.shape == source.shape
++        assert destination.dtype == source.dtype and destination.device == source.device
++        if destination.data_ptr() != source.data_ptr():
++            dst.append(destination)
++            src.append(source)
++    elif dataclasses.is_dataclass(destination):
++        for field in dataclasses.fields(destination):
++            if field.name in SCRATCH:
++                # Builder-owned output-only scratch is kept alive by each entry.
++                assert getattr(destination, field.name).data_ptr() == getattr(source, field.name).data_ptr()
++            elif field.name == "max_seq_len":
++                assert getattr(source, field.name) <= getattr(destination, field.name)
++            else:
++                copies(getattr(destination, field.name), getattr(source, field.name), seen, dst, src)
++    elif isinstance(destination, dict):
++        assert destination.keys() == source.keys()
++        for key in destination:
++            copies(destination[key], source[key], seen, dst, src)
++    elif isinstance(destination, (tuple, list)):
++        assert len(destination) == len(source)
++        for a, b in zip(destination, source):
++            copies(a, b, seen, dst, src)
++    else:
++        assert destination == source, (destination, source)
++
++
++def vote(value):
++    verdict = torch.tensor(int(value), dtype=torch.int32)
++    dist.all_reduce(verdict, op=dist.ReduceOp.MIN, group=get_tp_group().cpu_group)
++    return bool(verdict.item())
++
++
++def input_tensors(spec, context=False):
++    if context:
++        tensors = [spec.hidden_states, spec.context_positions, spec._context_slot_mappings]
++    else:
++        tensors = [spec.input_buffers.input_ids, spec.input_buffers.positions,
++                   spec.input_buffers.is_padding, spec.sample_indices, spec.sample_pos,
++                   spec.sample_idx_mapping, spec.temperature, spec.seeds,
++                   spec.draft_tokens, spec.candidate_sampler.scores,
++                   spec.candidate_sampler.cached_candidate_ids]
++        if spec.draft_logits is not None:
++            tensors.append(spec.draft_logits)
++        tensors.append(spec.block_tables.slot_mappings)
++        tensors.extend(spec.block_tables.input_block_tables)
++    tensors.extend(layer.kv_cache for layer in spec.model.model._attn_layers)
++    return tensors
++
++
++def bindings(spec, context=False):
++    tensors = input_tensors(spec, context)
++    return (id(spec.model), tuple((x.data_ptr(), tuple(x.shape), tuple(x.stride()),
++                                  x.dtype, x.device) for x in tensors))
++
++
++def replay_decision(valid, has_entry):
++    state = torch.tensor([int(valid), int(has_entry), int(not has_entry)], dtype=torch.int32)
++    dist.all_reduce(state, op=dist.ReduceOp.MIN, group=get_tp_group().cpu_group)
++    valid, replay, capture = state.tolist()
++    return bool(valid and (replay or capture))
++
++
++def snapshot(spec, num_reqs, slots, num_tokens):
++    tensors = [spec.draft_tokens, spec.candidate_sampler.scores[:num_reqs],
++               spec.candidate_sampler.cached_candidate_ids]
++    if spec.draft_logits is not None:
++        tensors.append(spec.draft_logits)
++    result = [x.clone() for x in tensors]
++    names = {id(layer): name for name, layer in
++             spec.vllm_config.compilation_config.static_forward_context.items()}
++    for layer in spec.model.model._attn_layers:
++        indices = slots[names[id(layer)]][:num_tokens]
++        indices = indices[indices >= 0]
++        cache = layer.kv_cache
++        assert cache.ndim == 4
++        block_size = cache.shape[2]
++        result.append(cache[indices // block_size, :, indices % block_size, :].clone())
++    return result
++
++
++class DraftQueryGraphs:
++    def __init__(self):
++        self.entries = {}
++        self.disabled = set()
++        self.replays = 0
++        self.fallbacks = 0
++        self.checks = {}
++        self.pool = torch.xpu.graph_pool_handle()
++        self.enabled = True
++        self.live_inputs = False
++
++    def run(self, spec, eager, num_reqs, num_tokens, metadata, slots, across, mode):
++        if (not self.enabled or metadata is None or across is not None
++                or getattr(spec, "_b70_query_skip", False) or mode != CUDAGraphMode.NONE):
++            return eager(num_reqs, num_tokens, metadata, slots, across, mode)
++        if num_tokens != num_reqs * spec.num_query_per_req:
++            return eager(num_reqs, num_tokens, metadata, slots, across, mode)
++        key = (num_reqs, num_tokens)
++        if key in self.disabled:
++            self.fallbacks += 1
++            return eager(num_reqs, num_tokens, metadata, slots, across, mode)
++        current = (metadata, slots)
++        entry = self.entries.get(key)
++        dst, src = [], []
++        signature = bindings(spec)
++        valid = True
++        if entry is not None:
++            try:
++                assert entry[2] == signature
++                if not (self.live_inputs and metadata is entry[3]
++                        and slots.keys() == entry[1][1].keys()):
++                    copies(entry[1], current, set(), dst, src)
++            except (AssertionError, TypeError, AttributeError):
++                valid = False
++        # Every collective-bearing replay follows the same all-rank decision.
++        if not replay_decision(valid, entry is not None):
++            self.fallbacks += 1
++            return eager(num_reqs, num_tokens, metadata, slots, across, mode)
++        if entry is None:
++            static = stage(current, spec.max_model_len, {}, self.live_inputs)
++            eager(num_reqs, num_tokens, metadata, slots, across, mode)
++            expected = snapshot(spec, num_reqs, slots, num_tokens)
++            eager(num_reqs, num_tokens, *static, across, mode)
++            torch.xpu.synchronize()
++            graph = torch.xpu.XPUGraph()
++            # Attention query K/V writes are idempotent for these fixed inputs;
++            # capture does not include target recurrent state or context staging.
++            with torch.xpu.graph(graph, pool=self.pool):
++                eager(num_reqs, num_tokens, *static, across, mode)
++            graph.replay()
++            torch.xpu.synchronize()
++            actual = snapshot(spec, num_reqs, slots, num_tokens)
++            passed = vote(all(torch.equal(a, b) for a, b in zip(expected, actual)))
++            self.checks[key] = [passed]
++            if not passed:
++                self.disabled.add(key)
++                eager(num_reqs, num_tokens, metadata, slots, across, mode)
++                logger.warning("DFlash query graph failed exact output/cache gate: %s", key)
++                return
++            self.entries[key] = (graph, static, signature, metadata,
++                                 (spec.model, tuple(input_tensors(spec))))
++            logger.info("DFlash query graph ready: key=%s exact proposal/cache=True", key)
++        else:
++            if dst:
++                torch._foreach_copy_(dst, src)
++            check = len(self.checks[key]) < 3
++            if check:
++                eager(num_reqs, num_tokens, metadata, slots, across, mode)
++                expected = snapshot(spec, num_reqs, slots, num_tokens)
++            entry[0].replay()
++            if check:
++                torch.xpu.synchronize()
++                passed = vote(all(torch.equal(a, b) for a, b in zip(
++                    expected, snapshot(spec, num_reqs, slots, num_tokens))))
++                self.checks[key].append(passed)
++                logger.info("DFlash query graph changed-input check: key=%s exact=%s", key, passed)
++                if not passed:
++                    self.disabled.add(key)
++                    eager(num_reqs, num_tokens, metadata, slots, across, mode)
++        self.replays += 1
++
++
++def install(spec):
++    import types
++
++    if not hasattr(spec, "_b70_query_graphs"):
++        spec._b70_query_graphs = DraftQueryGraphs()
++        spec._b70_generate_eager = spec._generate_draft
++        spec._b70_query_propose_eager = spec.propose
++
++        def propose(self, *args, **kwargs):
++            dummy = kwargs.get("dummy_run", args[12] if len(args) > 12 else False)
++            profile = kwargs.get("is_profile", args[15] if len(args) > 15 else False)
++            self._b70_query_skip = dummy or profile
++            try:
++                return self._b70_query_propose_eager(*args, **kwargs)
++            finally:
++                self._b70_query_skip = False
++
++        def generate(self, num_reqs, num_tokens_padded, attn_metadata, slot_mappings,
++                     num_tokens_across_dp, cudagraph_runtime_mode=CUDAGraphMode.NONE):
++            return self._b70_query_graphs.run(
++                self, self._b70_generate_eager, num_reqs, num_tokens_padded,
++                attn_metadata, slot_mappings, num_tokens_across_dp,
++                cudagraph_runtime_mode)
++
++        spec._generate_draft = types.MethodType(generate, spec)
++        spec.propose = types.MethodType(propose, spec)
++    return spec._b70_query_graphs
++
++
++def probe(worker):
++    spec = worker.model_runner.speculator
++    manager = install(spec)
++    manager.enabled = os.getenv("B70_QUERY_TEST_ENABLED", "1") == "1"
++    return dict(rank=worker.rank, enabled=manager.enabled,
++                entries=[str(k) for k in manager.entries], replays=manager.replays,
++                fallbacks=manager.fallbacks, disabled=[str(k) for k in manager.disabled],
++                checks={str(k): v for k, v in manager.checks.items()})
++
+diff --git a/vllm/v1/worker/gpu/spec_decode/dflash2/speculator.py b/vllm/v1/worker/gpu/spec_decode/dflash2/speculator.py
+index 110a2b3..cc7967c 100644
+--- a/vllm/v1/worker/gpu/spec_decode/dflash2/speculator.py
++++ b/vllm/v1/worker/gpu/spec_decode/dflash2/speculator.py
+@@ -1,6 +1,7 @@
+ # SPDX-License-Identifier: Apache-2.0
+ # SPDX-FileCopyrightText: Copyright contributors to the vLLM project
+ 
++import os
+ from typing import Any
+ 
+ import torch
+@@ -196,6 +197,10 @@ class DFlash2Speculator(DFlashSpeculator):
+         self.candidate_sampler = CandidateSampler(
+             self.max_num_reqs, self.num_speculative_steps, self.top_k, device
+         )
++        if (device.type == "xpu" and type(self).__name__ == "DFlash2Speculator"
++                and os.getenv("B70_DFLASH_QUERY_GRAPH", "0") == "1"):
++            from .b70_graphs import install
++            install(self)
+ 
+     def draft_logits_spec(self, vllm_config: VllmConfig) -> tuple[torch.dtype, float]:
+         # fp32 so the walk and the rejection that checks it read the same

@@ -1,0 +1,5 @@
+
+String dump of section '.comment':
+  [     0]  GCC: (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0
+  [    2d]  Intel(R) oneAPI DPC++/C++ Compiler 2026.0.0 (2026.0.0.20260331)
+

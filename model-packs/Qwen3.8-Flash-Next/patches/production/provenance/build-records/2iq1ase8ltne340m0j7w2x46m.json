@@ -1,0 +1,40 @@
+{
+  "Name": "bf16-calconv-frozen-v1",
+  "Ref": "2iq1ase8ltne340m0j7w2x46m",
+  "Context": "astra/candidates/bf16-calconv-frozen-v1",
+  "Dockerfile": "Dockerfile",
+  "StartedAt": "2026-11-13T00:39:46.514697301-07:00",
+  "CompletedAt": "2026-11-13T00:39:47.122088061-07:00",
+  "Duration": 607390760,
+  "Status": "completed",
+  "NumCompletedSteps": 7,
+  "NumTotalSteps": 7,
+  "NumCachedSteps": 0,
+  "Config": {
+    "Network": "none",
+    "ImageResolveMode": "local"
+  },
+  "Materials": [
+    {
+      "URI": "pkg:docker/local/dflash2-v033@bf16-reference-v1?platform=linux%2Famd64",
+      "Digests": [
+        "sha256:8ef67bb4a18c5ed47c61f756e011f8c84994c7dc678d09157e2f2428c27a37fe"
+      ]
+    }
+  ],
+  "Attachments": [
+    {
+      "Digest": "sha256:f5ac30152869ae3a0fd7c619812d645031ffa67bbb92c89235ac35b4d490da23",
+      "Type": "application/vnd.oci.image.index.v1+json"
+    },
+    {
+      "Digest": "sha256:a533f236f4c22fa968bbb62108fc3bec484d928ae5a3088d2d4262c3ed3f4d1d",
+      "Type": "https://slsa.dev/provenance/v1"
+    },
+    {
+      "Digest": "sha256:104d8f23d0f862366b29b7988fc66c6bf75c265c3eb15582940bb10db8bcd1fc",
+      "Platform": "linux/amd64",
+      "Type": "application/vnd.oci.image.manifest.v1+json"
+    }
+  ]
+}

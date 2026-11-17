@@ -1,0 +1,114 @@
+[
+  {
+    "path": "vllm/_xpu_ops.py",
+    "status": "unchanged upstream, local delta"
+  },
+  {
+    "path": "vllm/model_executor/layers/fused_moe/experts/xpu_moe.py",
+    "status": "unchanged upstream, local delta"
+  },
+  {
+    "path": "vllm/model_executor/layers/linear.py",
+    "status": "merged"
+  },
+  {
+    "path": "vllm/model_executor/layers/mamba/gdn/qwen_gdn_linear_attn.py",
+    "status": "merged"
+  },
+  {
+    "path": "vllm/model_executor/models/config.py",
+    "status": "merged"
+  },
+  {
+    "path": "vllm/models/qwen4_exp/__init__.py",
+    "status": "unchanged upstream, local delta"
+  },
+  {
+    "path": "vllm/models/qwen4_exp/intel_checkpoint.py",
+    "status": "added local module"
+  },
+  {
+    "path": "vllm/models/qwen4_exp/nvidia/b70_c1_graph.py",
+    "status": "added local module"
+  },
+  {
+    "path": "vllm/models/qwen4_exp/nvidia/b70_disk.py",
+    "status": "added local module"
+  },
+  {
+    "path": "vllm/models/qwen4_exp/nvidia/b70_hc_gemm.py",
+    "status": "added local module"
+  },
+  {
+    "path": "vllm/models/qwen4_exp/nvidia/b70_hyperconnection.py",
+    "status": "added local module"
+  },
+  {
+    "path": "vllm/models/qwen4_exp/nvidia/b70_prefill_hc.py",
+    "status": "added local module"
+  },
+  {
+    "path": "vllm/models/qwen4_exp/nvidia/b70_target_attention.py",
+    "status": "added local module"
+  },
+  {
+    "path": "vllm/models/qwen4_exp/nvidia/b70_target_graph.py",
+    "status": "added local module"
+  },
+  {
+    "path": "vllm/models/qwen4_exp/nvidia/c1_verify.py",
+    "status": "added local module"
+  },
+  {
+    "path": "vllm/models/qwen4_exp/nvidia/dflash2_features.py",
+    "status": "added local module"
+  },
+  {
+    "path": "vllm/models/qwen4_exp/nvidia/model.py",
+    "status": "conflict"
+  },
+  {
+    "path": "vllm/models/qwen4_exp/nvidia/model_state.py",
+    "status": "unchanged upstream, local delta"
+  },
+  {
+    "path": "vllm/models/qwen4_exp/nvidia/ngram_embedding.py",
+    "status": "merged"
+  },
+  {
+    "path": "vllm/v1/attention/backends/gdn_attn.py",
+    "status": "merged"
+  },
+  {
+    "path": "vllm/v1/core/sched/scheduler.py",
+    "status": "merged"
+  },
+  {
+    "path": "vllm/v1/sample/ops/topk_topp_triton.py",
+    "status": "merged"
+  },
+  {
+    "path": "vllm/v1/worker/gpu/astra_greedy.py",
+    "status": "added local module"
+  },
+  {
+    "path": "vllm/v1/worker/gpu/model_runner.py",
+    "status": "merged"
+  },
+  {
+    "path": "vllm/v1/worker/gpu/sample/xpu_filter_warmup.py",
+    "status": "added local module"
+  },
+  {
+    "path": "vllm/v1/worker/gpu/spec_decode/dflash/speculator.py",
+    "status": "merged"
+  },
+  {
+    "path": "vllm/v1/worker/gpu_worker.py",
+    "status": "merged"
+  },
+  {
+    "path": "vllm/v1/worker/mamba_utils.py",
+    "status": "unchanged upstream, local delta"
+  }
+]

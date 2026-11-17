@@ -1,0 +1,48 @@
+{
+  "base": "sha256:bc673822914e6137807cc5e87e6b8979195774b704e9f222a76bc9619e4e770b",
+  "base_tag": "local/dflash2-v033:calconv-graphupd-v2",
+  "base_profile_sha256": "cf1ae34d08d9ed04ae0b279ee1ae12502a652bf69b3276f5de204f27dd127c12",
+  "files": [
+    {
+      "path": "vllm/models/qwen4_exp/nvidia/b70_hc_gemm.py",
+      "targets": [
+        "opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp/nvidia/b70_hc_gemm.py",
+        "workspace/vllm/vllm/models/qwen4_exp/nvidia/b70_hc_gemm.py"
+      ],
+      "sha256": "2ff55d66e90665c5710091e170372acf52dc8a996d55ec264645b63ecb931c65"
+    },
+    {
+      "path": "vllm/models/qwen4_exp/common/disk_ple.py",
+      "targets": [
+        "opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp/common/disk_ple.py"
+      ],
+      "sha256": "b6cba10cea2762e08905624c48b771a2e17788fec7fb1a67e68e57573869c72d"
+    },
+    {
+      "path": "vllm_xpu_kernels/libb70_exact_v1.so",
+      "targets": [
+        "opt/venv/lib/python3.12/site-packages/vllm_xpu_kernels/libb70_exact_v1.so"
+      ],
+      "sha256": "be4e6e756afd5852cefee188f5cce56a18d5caf5eccc3d26b0e6c099123ad1fa"
+    },
+    {
+      "path": "vllm_xpu_kernels/libple_gather.so",
+      "targets": [
+        "opt/venv/lib/python3.12/site-packages/vllm_xpu_kernels/libple_gather.so"
+      ],
+      "sha256": "b3011fac3b7f0687b4ce77a26bad8f20e1e3e9eb21b05bcb3219d8ecafab52f1"
+    }
+  ],
+  "sources": {
+    "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/expanded-tails/b70_hc_gemm_tail.py": "9112bde3365c9e38a5c732ac14088733d53fe8a6846b251642b37cd2c5abc469",
+    "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/expanded-tails/disk_ple_tail.py": "2ae452c5ad48e030c921edb08b7fe76470de2b11d616082795f29efe7b7db30e",
+    "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/exact-kernels-v1/exact_gemm.cpp": "102425662c2d51dbd164b1685b3575ae4365fe87df0bdb9ce9deef59e8b6da37",
+    "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/exact-kernels-v1/dense_fragment.hpp": "32e5ac62602e7597d64cf403670ad014b59de8d87652ab96bbf49de4a13a3216",
+    "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/exact-kernels-v1/build.sh": "a6709d43b3182293bfddaaf5dc6de9f12c9d8ce331da11afe3c26d04368c00ce",
+    "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/exact-kernels-v1/command.json": "927c4ff7dbf7d4970bbd4838a189f11bed675e644d7141ec49122f5a3dc2335c",
+    "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/evidence/expanded-20261116T000816Z/dev/ple_gather/ple_gather.c": "288c589d59d899d9740554042806bfe221e52e3fd2f1b578908291b70f36996b"
+  },
+  "builder_sha256": "d16254f3365f3a2e1e0d78c36890f2726c5584b73213e0f3d89ea88bf02125e6",
+  "profile_sha256": "50f135523be3ae0b4c0ff4dab6baf9b41ecbe1c27128dfedecb8048792947c7c",
+  "status": "TUNING CANDIDATE, NOT PRODUCTION-QUALIFIED"
+}

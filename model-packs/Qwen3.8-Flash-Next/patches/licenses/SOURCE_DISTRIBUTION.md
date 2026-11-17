@@ -1,3 +1,22 @@
+# v0.33 staging scope for retained distribution findings
+
+The entire dated v0.32 findings record below is retained verbatim. It is
+historical evidence and does not attest the v0.33 inherited vendor stack or the
+2026.0.0 native compiler. Its source-export and notice treatment refer to the
+[retained v0.32 annotated delivery](../archive/v032-source-delivery/distribution-source.tar.gz)
+and [original mapping](../archive/v032-source-delivery/manifests/source-export.json).
+All accompanying evidence under this licenses tree is preserved. No new legal
+assessment, permission, source-hosting promise or compliance infrastructure is
+introduced. Existing unresolved findings are not claimed resolved.
+
+Current model-pack **1.0.6** is provisional. Current image/source identities and
+the separate Controller worker-mount blocker are documented in the
+[v0.33 runtime recipe](../../RUNTIME_RECIPE.md). The published 1.0.5 status and
+v0.32 mount-free live verification below do not establish a v0.33 public release
+or a working v0.33 Controller launch.
+
+---
+
 # Distribution status — publication blocked
 
 2026-10-22, America/Phoenix. Source-export work is complete for the 57 reviewed

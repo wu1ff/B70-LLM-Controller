@@ -1,97 +1,129 @@
-# Qwen3.8-Flash-Next + DFlash2 — 4× Intel Arc Pro B70
+# Qwen3.8 Flash-Next DFlash2 — vLLM 0.33
 
-| | |
+This runtime serves Qwen3.8 Flash-Next on four Intel Arc Pro B70 GPUs through an
+OpenAI-compatible API. It combines an Intel AutoRound W4A16 target with a BF16 DFlash2
+draft, custom XPU kernels and graphs, and disk-backed BF16 PLE embeddings.
+
+## Benchmark system
+
+| Component | Configuration |
 | --- | --- |
-| Model | Qwen3.8-Flash-Next — Intel AutoRound W4A16 (4-bit weights, BF16 execution) |
-| Draft | Qwen3.8-Flash-Next-DFlash2 — BF16, 7 proposals per cycle |
-| Hardware | 4× Intel Arc Pro B70, 32 GB each |
-| Parallelism | TP4, expert parallelism |
-| Runtime | vLLM 0.32.0 XPU — `integrated-serving-v1` |
-| Context | 262,144 tokens · 4 request slots |
-
-The B70 implementation combines custom native kernels, guarded decode graphs, and verification/state handling with disk-backed BF16 PLE and a residency shim for GPU memory placement. The [runtime recipe](RUNTIME_RECIPE.md) records the exact configuration, model revisions and capacity limits.
+| GPUs | 4× Intel Arc Pro B70, 32 GiB each |
+| CPU | AMD EPYC 7443, 24 cores / 48 threads |
+| RAM | 256 GiB installed RAM |
+| Storage | NVMe-backed storage |
+| Runtime | Customized vLLM 0.33.0 XPU |
 
 ## BetterBench performance
 
-BetterBench v0.6.0 run using the accepted `integrated-serving-v1` runtime: **336/336 measured requests completed**, plus **32 warmups**. Weighted combined decode was **160.11 tok/s**, median time to first token (TTFT) **139.39 ms**, and stream-update p99 **25.82 ms**. The graphic rounds these headline values for display.
+Two independent stock BetterBench 0.6.1 runs used the accepted v6 image and unchanged serving profile.
+Decode and concurrency used the manufacturer's recommended thinking configuration: **temperature 1.0,
+top-p 0.95, top-k 20**. Each run completed 344 measured samples, with 34 warmups discarded.
 
-[![BetterBench full release report: category decode, stream-update latency, concurrency, prefill and complete result tables](patches/assets/betterbench-integrated-serving-v1-full.png)](patches/assets/betterbench-integrated-serving-v1-full.png)
+| Metric | Run 1 | Run 2 |
+| --- | ---: | ---: |
+| Weighted decode | 178.57 tok/s | 183.85 tok/s |
+| C1 aggregate | 164.59 tok/s | 159.76 tok/s |
+| C2 aggregate | 233.55 tok/s | 238.36 tok/s |
+| C4 aggregate | 333.78 tok/s | 340.10 tok/s |
+| Weighted TTFT (category p50) | 131.18 ms | 129.19 ms |
 
-| Concurrent requests | Completed | Aggregate throughput | Median decode per request | Median TTFT |
-| --- | --- | --- | --- | --- |
-| 1 (C1) | 48/48 | 146.50 tok/s | 183.46 tok/s | 140.99 ms |
-| 2 (C2) | 48/48 | 227.12 tok/s | 145.60 tok/s | 175.95 ms |
-| 4 (C4) | 48/48 | 316.01 tok/s | 106.58 tok/s | 196.47 ms |
+Weighted decode is the weighted arithmetic mean of category median single-stream decode rates,
+excluding TTFT. C1/C2/C4 aggregate throughput measures total output tokens over the concurrency
+sweep's wall time, including scheduling and TTFT.
 
-Aggregate throughput counts output across concurrent requests; it differs from the per-request rate and the weighted single-stream score. Stream-update gaps measure delivery of token batches, rather than individual token latency. This run used fresh prefix-cache salts with warm model/OS/PLE caches. The report records zero prefix-cache hits and zero server errors. Its small-sample tail estimates should be read with the qualifications printed in the report.
+Stock prefill uses greedy sampling. Each depth has eight measurements per run; the reported rate
+is the median of prompt tokens divided by TTFT. Nominal targets are approximate filler sizes;
+actual token counts are shown separately.
 
-[Open the complete BetterBench PNG at original resolution](patches/assets/betterbench-integrated-serving-v1-full.png).
-The [retained qualification reports](patches/archive/qualification/README.md)
-and the runtime recipe preserve earlier measurements; the figures above refer
-to this latest rerun. One run does not establish a universal gain.
+| Nominal prefill target | Actual prompt tokens, median R1 / R2 | Prefill, median R1 | Prefill, median R2 |
+| --- | ---: | ---: | ---: |
+| 16K (16,000) | 11,871 / 11,863 | 4,827.04 tok/s | 4,801.71 tok/s |
+| 32K (32,000) | 23,576 / 23,625 | 4,695.76 tok/s | 4,677.96 tok/s |
+| 64K (64,000) | 47,082.5 / 47,169.5 | 4,327.08 tok/s | 4,309.97 tok/s |
 
-## three.js build session
+## What this runtime is
 
-DeepSeek Harness three.js build session results: one completed turn spanning 3h 02m 55.8s and 520,445 generated tokens.
+The W4A16 target, `Intel/Qwen3.8-Flash-Next-W4A16-AutoRound`, uses 4-bit weights and BF16 execution
+and supplies predictions and multimodal features. The smaller, text-only BF16 draft,
+`incoai/Qwen3.8-Flash-Next-DFlash2`, uses target features to propose seven tokens per cycle;
+STANDARD target verification decides which proposals to accept. The target uses TP4 / EP4,
+and the draft uses TP4 with probabilistic sampling.
 
-### Session overview
+The custom work is runtime engineering: kernels, speculative execution, state handling,
+memory placement and scheduling. It does not fine-tune the target or draft checkpoint weights.
+A supplied calibration tensor adjusts draft proposal scoring within that runtime.
 
-[![ABYSS aquarium session overview: lifecycle, prefix caching, DFlash2 acceptance, client latency and three compactions](patches/assets/aquarium-telemetry-overview.png)](patches/assets/aquarium-telemetry-overview.png)
+## Engineering and optimizations
 
-The report accounts for **520,445 generated tokens**: 500,651 from main requests
-and 19,794 from compaction. It records **517 main requests**, **520 tool calls**
-and **three compactions**. Pooled client decode was **119.10 tok/s**; the whole-turn
-effective rate, including tools, waits and compaction, was **47.42 tok/s**.
+### Speculative decoding and recurrent-state correctness
 
-These are session measurements with different counting windows from BetterBench.
-Client first-delta timing includes harness overhead; server counters cover the
-enclosing capture window. The telemetry graphics retain their contemporaneous
-benchmark references (138 ms and 4,665 tok/s), while the BetterBench section above
-uses the later rerun. No speedup baseline was run for the aquarium session.
+The DFlash2 integration carries target features into the draft and handles accepted prefixes,
+partial verification and padded request batches. Shared Gated DeltaNet (GDN) metadata staging
+uses actual query lengths and aligned state indices, with guarded fallbacks for other layouts.
+This keeps recurrent checkpoints and request slots consistent as acceptance and concurrency vary.
 
-### Generation through the session
+Proposal calibration weights unary and residual scores separately at each proposal position.
+It acts on draft scores; target verification retains STANDARD accept/reject handling. The retained
+thinking EOS guard suppresses premature end-of-sequence during the initial open reasoning segment
+and recognizes tool handoffs.
 
-[![Aquarium trace panel 1: server generation rate over the full session, including compaction markers and legend](patches/assets/aquarium-trace-01-generation-rate.png)](patches/assets/aquarium-trace-01-generation-rate.png)
+### Native GPU kernels and BF16 convolution
 
-[![Aquarium trace panel 2: cumulative generated tokens, comparing the server counter with settled main-request output](patches/assets/aquarium-trace-02-generated-tokens.png)](patches/assets/aquarium-trace-02-generated-tokens.png)
+Custom SYCL kernels accelerate GDN projections, hyperconnection (HC) reductions and mixture-of-experts
+(MoE) execution. Dispatch selects kernels by shape and alignment; ordered reductions preserve the
+intended arithmetic where required. Fused MoE work combines routing, shared-expert projections,
+activation and gating, with per-block temporary-state cleanup to prevent reuse across batches.
 
-### Context growth and prefix caching
+The draft's grouped convolution fuses coefficient preparation, products and accumulation while
+retaining the original BF16 rounding boundaries. These paths reduce launches and intermediate
+memory traffic.
 
-[![Aquarium trace panel 3: prompt occupancy and all three context compaction cycles](patches/assets/aquarium-trace-03-prompt-occupancy.png)](patches/assets/aquarium-trace-03-prompt-occupancy.png)
+### Target/query graphs and input staging
 
-[![Aquarium trace panel 4: prefix-cache ratio, draft acceptance and acceptance of all seven drafts over time](patches/assets/aquarium-trace-04-cache-and-acceptance.png)](patches/assets/aquarium-trace-04-cache-and-acceptance.png)
+Guarded target-verification and draft-query graphs replay supported C1–C4 decode shapes. Graph
+ownership and output/state checks protect request-specific buffers; other shapes retain fallbacks.
+The profile's generic eager setting coexists with these explicitly managed XPU graph paths.
 
-### Draft acceptance and compaction details
+Graph-input staging compiles the fixed destination-tree traversal into direct host operations,
+retaining schema checks and copy ordering. A fused byte-copy kernel batches eligible contiguous
+copies into one launch. Together these changes reduce repeated Python work and GPU idle time
+between draft execution and target verification.
 
-[![Aquarium trace panel 5: draft acceptance at each of the seven proposal positions](patches/assets/aquarium-trace-05-acceptance-by-position.png)](patches/assets/aquarium-trace-05-acceptance-by-position.png)
+### Disk-backed PLE and preparation
 
-[![Aquarium trace panel 6: timings, prompt sizes and next-request latency for the three compaction events](patches/assets/aquarium-trace-06-compactions.png)](patches/assets/aquarium-trace-06-compactions.png)
+The original BF16 PLE embedding table is mapped read-only from the target checkpoint.
+Only tensor-parallel-owned rows enter bounded pinned staging before transfer to the GPUs, avoiding
+a permanently pinned whole-table host allocation. The residency shim manages GPU memory placement;
+the accepted profile uses eight CPU gather threads over the same mapped table.
 
-### Client activity and evidence
+For eligible verification batches, deferred PLE preparation lets graph-input copies queue before
+the blocking row preparation. Device operations remain on the same stream, with flushing before
+eager execution. Automatic prefix caching (APC) reuses eligible prompt prefixes and recurrent state.
+NVMe latency and the reclaimable OS page cache still affect preparation and startup costs.
 
-[![Aquarium trace panel 7: client wait, reasoning, text, tools and compaction timeline, followed by integrity counters and evidence notes](patches/assets/aquarium-trace-07-client-timeline.png)](patches/assets/aquarium-trace-07-client-timeline.png)
+## System capabilities
 
-[Open the complete, unchanged full-session trace report](patches/assets/aquarium-telemetry-full.png)
-or [the unchanged overview](patches/assets/aquarium-telemetry-overview.png).
-[Visual asset record](patches/assets/README.md)
+The native limit is 262,144 input-plus-output tokens. The accepted profile reported **460,944 shared
+KV-cache tokens** across four request slots. Capacity depends on active requests and cached prefixes;
+one simultaneous native-limit request was qualified.
+
+The runtime supports APC, streaming, separated Qwen3 reasoning, automatic `qwen3_xml` tool calls and
+tool-result continuation, and schema-constrained structured output. Vision accepts up to two images
+per prompt through the multimodal target; the speculative draft is text-only. Video is disabled.
 
 ## Installation and operation
 
-The model pack provides a single DFlash2 runtime profile for B70 LLM Controller.
+Operation requires a compatible Linux Intel Xe/Level Zero stack, a container runtime and access to
+the GPUs. B70 LLM Controller manages model acquisition, profile selection and container lifecycle.
+Keep the complete model-pack source archive: Controller import retains the manifest and README,
+not the full source tree. Use [RUNTIME_RECIPE.md](RUNTIME_RECIPE.md) for exact checkpoint revisions,
+dependencies, setup, runtime configuration and launch procedures.
 
-- **Hardware:** 4× Intel Arc Pro B70, 32 GB each; NVMe storage for disk-backed PLE.
-- **Models:** Pinned Intel AutoRound W4A16 target and BF16 DFlash2 draft.
-- **Runtime:** vLLM 0.32.0 XPU, TP4 with expert parallelism.
-- **Context:** 262,144 total tokens per request.
-- **Concurrency:** Four request slots sharing a 491,165-token KV cache. Four simultaneous full-context requests are not supported.
-- **Features:** Automatic prefix caching, reasoning, tool calling, continuation and up to two images.
+## Sources and notices
 
-The [runtime recipe](RUNTIME_RECIPE.md) provides model revisions, dependencies, source reconstruction, configuration and launch instructions.
-
-## Source access, credits and limitations
-
-[Production source and build instructions](patches/production/README.md) · [Complete development patch archive](patches/INDEX.md) · [Source access](patches/licenses/SOURCE_ACCESS.md) · [Credits and notices](patches/licenses/NOTICE.md)
-
-B70 LLM Controller is licensed under MIT. Model weights, vLLM, Intel software and other third-party components retain their respective licenses.
-
-The runtime uses a text-only DFlash2 draft supplied with features from the multimodal target. Video input is disabled. Hardware requirements, resource limits and reproducibility details are documented in the [runtime recipe](RUNTIME_RECIPE.md).
+[Production sources and reconstruction](patches/production/README.md),
+[build provenance and boundaries](patches/production/BUNDLE.md),
+[retained source-access record](patches/licenses/SOURCE_ACCESS.md),
+[credits and notices](patches/licenses/NOTICE.md) and
+[source-distribution findings](patches/licenses/SOURCE_DISTRIBUTION.md).

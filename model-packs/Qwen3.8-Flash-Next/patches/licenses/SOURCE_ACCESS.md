@@ -1,3 +1,41 @@
+# Source access for the locally staged v0.33 pack
+
+Retain this complete model-pack archive: Controller import does not retain
+`patches/**`, the runtime recipe or the portable launcher. Model-pack 1.0.6 and
+its public release/tag/registry destinations are provisional and unpublished.
+The accepted image is
+`sha256:2fa91d1ac8c17ad866d9ae7eaea83ac1b1666ffd0ccceb7685564f55528c47af`.
+Its unchanged production sources are integrated from
+`dflash2-v033-v6-source.tar.gz`, SHA256
+`cf0e839191f32991228668b92f8ebd1ee901a1b0facbb9a419c3cf67cc59b20e`.
+
+From the unpacked root, use the current offline reconstruction command:
+
+```sh
+python3 patches/production/tools/verify.py \
+  --staging /tmp/dflash033-source-clean --report /tmp/dflash033-source.json
+```
+
+The current verifier checks the 851 locked inputs, ten patches, 3,679 source files,
+3,021 Python syntax files, exact calibration and 17 native families. It does not
+compile or start a server. [Current build boundaries](../production/BUNDLE.md),
+[current recipe](../../RUNTIME_RECIPE.md) and
+[immutable external inputs](../production/manifests/immutable-inputs.json)
+identify the vendor image, compiler and separately acquired model revisions.
+No public v0.33 source-delivery location or new source offer is invented.
+
+The complete historical source-access directions below are retained verbatim.
+Their 1.0.5 URL is an actual published archive. Their 16-patch verifier, 12-family
+build, notice-export commands and `production/distribution-source.tar.gz` paths
+apply to that older archive. The old annotated source archive and original
+mapping are now retained locally under
+[historical source delivery](../archive/v032-source-delivery/README.md),
+not under current production. Companion-hosting, binary-source identity and
+recipient-term findings below remain historical open findings; they have not
+been resolved or extended into a new compliance program in this staging task.
+
+---
+
 # Source access and companion delivery directions
 
 Retain the complete model-pack archive: Controller import keeps only pack.json

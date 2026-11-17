@@ -2,20 +2,21 @@
 
 B70 LLM Controller (`b70ctl`) is a terminal UI for installing and serving qualified LLM model packs on Intel Arc Pro B70 GPUs.
 
-A working B70 deployment requires the model revision, runtime image, quantization, card count, context limit, serving mode, and launch settings to agree. `b70ctl` packages those tested choices as model packs and exposes only qualified configurations, from model download through launch, status, logs, stop, and cleanup.
-
-It manages the LLMs running on the B70s; it does not configure the GPUs or the host driver stack.
+It manages tested model/runtime deployments, from checkpoint downloads through launch, status, logs, stop, and cleanup. It does not install or configure host GPU drivers.
 
 Current release: **1.0.1**.
 
-## What it does
+[Model packs](#available-model-packs) · [Requirements](#requirements) · [Installation](#installation) · [Quick start](#quick-start) · [How it works](#how-it-works) · [Documentation and development](#documentation-and-development) · [License](#license)
 
-- Installs qualified model packs from the catalog or by local import, and downloads the exact Hugging Face model revisions each pack pins — interrupted downloads resume by reusing completed files.
-- Acquires the pack's qualified Docker runtime, verified by digest.
-- Offers only the model, card, context, and serving-mode combinations the pack actually qualified.
-- Launches serving with read-only model mounts, Local or LAN binding, and a chosen port.
-- Manages running servers: status, recent logs, stop.
-- Cleans up: delete or replace models, remove orphaned models no installed pack references, uninstall packs, and remove runtimes `b70ctl` acquired that are no longer used.
+## Available model packs
+
+| Model pack | Checkpoints | Serving modes |
+| --- | --- | --- |
+| [Qwen3.8-27B](model-packs/Qwen3.8-27B/README.md) | Standard and uncensored FP8 / INT4 | Base, MTP1, dFlash2 |
+| [Qwen3.6-35B-A3B](model-packs/Qwen3.6-35B-A3B/README.md) | FP8 / INT4 | Base, DFlash |
+| [Qwen3.8 Flash-Next](model-packs/Qwen3.8-Flash-Next/README.md) | Intel AutoRound W4A16 | DFlash2 — 7 proposals, 4× B70, 262,144-token context |
+
+Mode availability depends on the checkpoint, card count, and context. Each linked pack README describes its qualified profiles and any additional storage or runtime requirements.
 
 ## Requirements
 
@@ -26,7 +27,7 @@ The qualified host is **Ubuntu 26.04 amd64**. Other Linux distributions may work
 - Docker, with permission for the user running `b70ctl` to use the daemon.
 - Access to the B70 render devices so Docker can pass `/dev/dri` into the container.
 
-The serving-side Intel GPU userspace ships inside the pack's container runtime; the host supplies only the kernel driver, firmware, device nodes, and Docker. Driver installation is distribution-specific and not handled by this project.
+The serving-side Intel/XPU/vLLM userspace ships inside the pack's runtime image. The host supplies the kernel driver, firmware, device access, and Docker; driver installation is distribution-specific and outside the Controller's scope.
 
 ## Installation
 
@@ -39,87 +40,41 @@ sudo apt install ./b70-llm-controller_1.0.1_amd64.deb
 
 The package installs `b70ctl` to `/usr/bin/b70ctl` and contains only `b70ctl` — not Docker, Intel drivers, model weights, or runtime images. Run `b70ctl --version` to check the installed version.
 
-## Getting started
+## Quick start
 
-Run:
+Launch the terminal UI:
 
 ```bash
 b70ctl
 ```
 
-Then follow the normal flow:
-
-```text
-Model Packs → choose or import a pack → prepare the required checkpoints
-Run Model   → choose model, cards, context, and mode
-            → choose Local or LAN access and a port
-            → Start
-```
+1. Open **Model Packs** to choose a catalog pack or **Import Local Pack**.
+2. Select and prepare the required checkpoints. Exact revisions and the qualified runtime are acquired as needed; interrupted model downloads reuse completed files.
+3. Open **Run Model** and choose a supported model, card count, context, and serving mode.
+4. Choose **Local** or **LAN** access, set a port, and select **Start**.
+5. Use **Runtime** to check status, view recent logs, or stop the server.
 
 Run Model remembers the last combination you started and preselects it whenever the installed packs still offer it.
 
-Models are stored in `~/b70ctl-models` by default. Under **Settings** you can change the model directory, the default access mode, and the default port.
+Models are stored in `~/b70ctl-models` by default. Under **Settings** you can change the model directory, default access mode, and default port, and configure a Hugging Face token for gated or private models.
 
-## Model packs
+## How it works
 
-A model pack freezes everything a deployment needs to agree:
+A model pack pins exact checkpoint revisions, file inventories, and runtime image digests, together with qualified quantization, card, context, mode, and launch settings. `b70ctl` verifies the runtime's identity and offers only combinations recorded in the pack.
 
-- the exact model artifacts and revisions;
-- the qualified runtime image digest;
-- the card/context/mode profiles that passed qualification;
-- the launch settings for each profile.
+Checkpoints are pre-quantized and mounted read-only for serving; weights stay separate from the runtime image. Runtimes derive from Intel's `llm-scaler` and XPU vLLM work, with pack-specific fixes independently qualified by this project. They are not official Intel releases.
 
-`b70ctl` offers only combinations contained in the pack; it does not invent unsupported ones or guess that a nearby configuration will work.
+Cleanup respects resource ownership:
 
-Each pack pins a qualified container runtime and the exact model revision. The runtime includes the Intel/XPU/vLLM userspace and any model-specific fixes that pack requires; model weights stay separate and are mounted read-only when serving. Checkpoints are already pre-quantized (FP8 or INT4) and are not converted at startup.
+- **Models:** delete or replace Controller-managed models from **Models**, including orphaned models no installed pack references. External Hugging Face cache contents are not cleanup targets; pack uninstall retains shared artifacts.
+- **Runtimes:** only images `b70ctl` pulled, digest-verified, and recorded as owned are eligible for removal when no installed pack references them and they are not active. Pre-existing images may be reused but are never claimed or deleted. **Unused Runtimes** removes eligible images without forcing deletion.
+- **Other resources:** server management applies to Controller-managed containers. Unrelated Docker data is outside its scope; `b70ctl` never prunes Docker data or force-deletes images.
 
-The current runtimes are derived from Intel's `llm-scaler` and XPU vLLM work but are modified and independently qualified by this project; they are not official Intel releases.
+## Documentation and development
 
-See [model-packs/README.md](model-packs/README.md) for the pack format and contributor guide.
-
-## Ownership and cleanup
-
-`b70ctl` deletes only models and Docker runtime images it can prove it acquired itself.
-
-- **Runtimes:** images `b70ctl` pulled and digest-verified are recorded as owned and can be removed from the Unused Runtimes screen, but only while no installed pack references them. A Docker image that was already on the machine — even one identical to a `b70ctl` runtime — may be reused but is never recorded as owned and never deleted; remove such images yourself with `docker`. Docker data unrelated to model packs is entirely out of scope, and `b70ctl` never prunes Docker data or force-deletes images.
-- **Models:** Controller-managed models can be deleted or replaced from the Models screen. Hugging Face cache contents `b70ctl` did not download are not cleanup targets.
-
-## Building from source
-
-Building requires Go 1.25:
-
-```bash
-make build
-make test
-make vet
-sudo make install
-```
-
-`make build` writes `dist/b70ctl`; `sudo make install` installs it as `/usr/local/bin/b70ctl`. The Makefile expects Go at `/usr/lib/go-1.25/bin/go` — set `GO=/path/to/go` if yours is elsewhere.
-
-## Building a release
-
-Maintainer workflow for the release artifacts:
-
-```bash
-make package        # build dist/b70-llm-controller_<version>_amd64.deb
-make release-check  # full validation; release tag verified if present
-make release        # additionally requires tag v<VERSION> at HEAD
-```
-
-The `VERSION` file is the single version authority. Tags follow `v` + `VERSION` (`v1.0.0`); in Debian package versions a pre-release dash becomes `~`. Both release commands require a clean tracked tree, run the full test, vet, build, and packaging cycle, and write the `.deb` and `SHA256SUMS` to `dist/`. Nothing uploads automatically; publishing is a manual step.
-
-## Included model packs
-
-- [Qwen3.8-27B](model-packs/Qwen3.8-27B/README.md) — standard and uncensored FP8 and INT4 checkpoints with Base, MTP1, and dFlash2 modes where each combination passed qualification.
-- [Qwen3.6-35B-A3B](model-packs/Qwen3.6-35B-A3B/README.md) — FP8 and INT4 checkpoints with Base and DFlash modes across the qualified one-, two-, and four-card profiles.
-- [Qwen3.8-Flash-Next](model-packs/Qwen3.8-Flash-Next/README.md) — Intel AutoRound W4A16 with disk-backed BF16 PLE and an external BF16 DFlash2 assistant, seven proposals, TP4 with expert parallelism, four request slots and native 262,144-token context.
-
-Each pack pins its own exact model revisions, runtime image, context/card matrix, and launch settings. See the pack README for the full qualification matrix.
-
-## Status
-
-The install, model preparation, serving, and uninstall flows are implemented and shipped in the [1.0.1 release](https://github.com/wu1ff/B70-LLM-Controller/releases/tag/v1.0.1).
+- [Model-pack format and contributor guide](model-packs/README.md)
+- [Building from source](docs/DEVELOPMENT.md#building-from-source)
+- [Maintainer release instructions](docs/DEVELOPMENT.md#building-a-release)
 
 ## License
 

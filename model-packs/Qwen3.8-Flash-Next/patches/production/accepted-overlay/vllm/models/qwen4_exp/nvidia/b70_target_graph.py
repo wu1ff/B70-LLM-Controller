@@ -65,6 +65,10 @@ def native_rows(width):
     original = comm.all_reduce
 
     def reduce(x):
+        if os.getenv("ASTRA_DFLASH_RAW_REDUCE", "0") == "1":
+            # Buffered native collective, preserving its out-of-place input
+            # contract. Different rank partitions change BF16 reduction order.
+            return original(x)
         if x.ndim == 2 and x.shape[0] == width and x.dtype == torch.bfloat16:
             if (
                 comm.world_size == 4
@@ -169,6 +173,8 @@ class TargetGraphs:
         self.fallbacks = 0
         self.fallback_reasons = {}
         self.pool = torch.xpu.graph_pool_handle()
+        self.live_checks = {}
+        self.verify_live = os.getenv("B70_DFLASH_LIVE_GRAPH_CHECKS", "0") == "1"
 
     def fallback(self, reason, key):
         self.fallbacks += 1
@@ -179,7 +185,7 @@ class TargetGraphs:
 
     def run(self, runner, batch, metadata, inputs, eager):
         # Uniform eight-row verification for one through four requests.
-        if batch.num_tokens != 8 * batch.num_reqs:
+        if batch.num_tokens != (runner.speculative_config.num_speculative_tokens + 1) * batch.num_reqs:
             return eager(runner, batch, metadata, inputs)
         if os.getenv("VLLM_XPU_DFLASH_FIXED_SPLITS", "0") in ("32", "64"):
             # The target split schedule no longer depends on this host bound.
@@ -189,7 +195,7 @@ class TargetGraphs:
             bound = max(
                 512, 1 << (int(batch.seq_lens_cpu_upper_bound[0]) - 1).bit_length()
             )
-        key = (batch.num_reqs, bound)
+        key = (batch.num_reqs, batch.num_tokens, bound)
         if key in self.disabled:
             self.fallback("disabled", key)
             return eager(runner, batch, metadata, inputs)
@@ -215,7 +221,31 @@ class TargetGraphs:
             except (AssertionError, TypeError, AttributeError) as exc:
                 self.fallback(type(exc).__name__ + ": " + str(exc), key)
                 return eager(runner, batch, metadata, inputs)
+            check = self.verify_live and self.live_checks.get(key, 0) < 2
+            if check:
+                routes = state_routes(runner, metadata)
+                initial = save(routes)
+                expected = clone_output(eager(runner, batch, metadata, inputs))
+                expected_state = save(routes)
+                restore(routes, initial)
             entry[0].replay()
+            if check:
+                torch.xpu.synchronize()
+                passed = compare(expected, entry[1]) and all(
+                    torch.equal(value, tensor[indices])
+                    for (_, tensor, indices), value in zip(routes, expected_state)
+                )
+                verdict = torch.tensor(int(passed), dtype=torch.int32)
+                dist.all_reduce(verdict, op=dist.ReduceOp.MIN,
+                                group=get_tp_group().cpu_group)
+                self.live_checks[key] = self.live_checks.get(key, 0) + 1
+                logger.info("DFlash changed-input graph check: key=%s pass=%s check=%d",
+                            key, bool(verdict.item()), self.live_checks[key])
+                if not verdict.item():
+                    restore(routes, expected_state)
+                    self.disabled.add(key)
+                    self.fallback("live_equality_failure", key)
+                    return expected
             self.replays += 1
             if self.replays % 1024 == 0:
                 logger.info("Target graph counters: replays=%d fallbacks=%d key=%s",
@@ -272,3 +302,11 @@ class TargetGraphs:
         self.disabled.add(key)
         self.fallback("capture_or_equality_failure", key)
         return expected
+
+
+if os.getenv("B70_DFLASH_COMPILED_GRAPH_UPDATE", "0") == "1":
+    # Exact: same walk order, checks, exception types and copied pairs; the
+    # static destination tree is compiled once per captured entry.
+    from .b70_compiled_graph_update import update as _b70_compiled_update
+    _b70_original_update = update
+    update = _b70_compiled_update

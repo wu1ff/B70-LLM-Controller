@@ -1,0 +1,30 @@
+{
+  "model_pack_version": "1.0.5",
+  "source_commit": "cdaa3ddb1f2de94144d24887ba3e690c9b8efed3",
+  "catalog_update_commit": "5e5cf43f048d9b32146bb22925d4a2cf198400b0",
+  "release_url": "https://github.com/wu1ff/B70-LLM-Controller/releases/tag/qwen3.8-flash-next-v1.0.5",
+  "archive_url": "https://github.com/wu1ff/B70-LLM-Controller/releases/download/qwen3.8-flash-next-v1.0.5/qwen38-flashnext-b70-1.0.5.tar.gz",
+  "archive_sha256": "b1bef2c8e382cc5ae69033221b9822a46686198c54c95d4028ec91e749acec9c",
+  "archive_bytes": 125788049,
+  "ghcr_tag": "ghcr.io/wu1ff/qwen38-flashnext-b70:dflash2",
+  "ghcr_digest": "sha256:6e2ab4e686680a5208ff0119c4637341cba81942bd39b6576ea14dc8f547b83b",
+  "source_and_catalog_refs_verified": true,
+  "controller_version": "1.0.1",
+  "public_install": "PASS",
+  "public_readme_graphics": "PASS",
+  "go_test": "PASS",
+  "go_vet": "PASS",
+  "service": {
+    "service": "flashnext-integrated-final",
+    "container_id": "99bdddf9c1387d26b622c43e5c1c2400bb92dd9d9b0b86d259bd19ebff7fbc33",
+    "image": "sha256:6e2ab4e686680a5208ff0119c4637341cba81942bd39b6576ea14dc8f547b83b",
+    "running": true,
+    "health_http": 200,
+    "port": 8000,
+    "started_at": "2026-10-23T04:56:19.768716896Z",
+    "no_restart_or_configuration_change": true,
+    "b70ctl_version": "1.0.1",
+    "b70ctl_sha256": "169a1b9abf4b8e5f842a59e4e41c991c097d8a8f4196ba2630aa4edf2c0943a7"
+  },
+  "publication_blockers": []
+}

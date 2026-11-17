@@ -1,0 +1,33 @@
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 95B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/local/dflash2-v033:expanded-exact-v3
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [internal] load build context
+#4 transferring context: 220.18kB 0.0s done
+#4 DONE 0.1s
+
+#5 [1/2] FROM docker.io/local/dflash2-v033:expanded-exact-v3@sha256:cf2f4b846bd7b1c3843fd2739a68809d2bdc75cbc38d76c928012e960c9b1b14
+#5 resolve docker.io/local/dflash2-v033:expanded-exact-v3@sha256:cf2f4b846bd7b1c3843fd2739a68809d2bdc75cbc38d76c928012e960c9b1b14 0.0s done
+#5 DONE 0.5s
+
+#6 [2/2] COPY overlay/ /
+#6 DONE 0.0s
+
+#7 exporting to image
+#7 exporting layers 0.1s done
+#7 exporting manifest sha256:1cc364ac37f081a4090e86d86c21228c6b5212cfa9b1e9b0d47698d5d593d112 0.0s done
+#7 exporting config sha256:8d3c27d72c9aa5bb003c2deb531928ffe0e60f0012b2072a2f22cf5e7a0d4819 0.0s done
+#7 exporting attestation manifest sha256:6bbd3cab5622b8d7dcd73dec791688a4dc1d00990c64428522f93cdb713d16c2 0.0s done
+#7 exporting manifest list sha256:761f4e425466133c13a53198451177e64e9a08a97759655031c7cf96a00fd089 0.0s done
+#7 naming to docker.io/local/dflash2-v033:expanded-exact-v4 done
+#7 unpacking to docker.io/local/dflash2-v033:expanded-exact-v4 0.0s done
+#7 DONE 0.3s

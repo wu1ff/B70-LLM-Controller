@@ -1,0 +1,35 @@
+{
+  "accepted_image_id": "sha256:6e2ab4e686680a5208ff0119c4637341cba81942bd39b6576ea14dc8f547b83b",
+  "images": {
+    "compiler": "intel/omix@sha256:59cef13f8e87275846cc08e01d32b49082694a5c01d842d2e845552cbc8c199f",
+    "vendor": "vllm/vllm-openai-xpu@sha256:9dd913e9036633d55ace17265cbfc29f48b9b85fe4bc8b129debcf7e1b269ce7"
+  },
+  "kernel_reference": {
+    "base": "ddf336d86e3c8602888572a3502f951abd51df12",
+    "intel_reference_tree": "1ce13e70894b11165f66a357d512517bf81c7bf6",
+    "repository": "https://github.com/vllm-project/vllm-xpu-kernels.git",
+    "stock_wheel_commit": "UNATTESTED; binary dependency pinned by vendor image"
+  },
+  "models": {
+    "draft": {
+      "repository": "incoai/Qwen3.8-Flash-Next-DFlash2",
+      "revision": "a22a1744e85c17364dcc54a6a420af7135d4c7f6"
+    },
+    "target": {
+      "repository": "Intel/Qwen3.8-Flash-Next-W4A16-AutoRound",
+      "revision": "4c67bf686b7f7fd386bae6b07ab59e8ff1d5b897"
+    }
+  },
+  "native_build_prerequisites": "Docker BuildKit plus both pinned OCI images (preload for offline builds). Compiler binaries and vendor runtime are external immutable inputs, not bundled sources.",
+  "offline_source_verification": "All source inputs are included; no Docker, compiler, network or weights needed.",
+  "platform": "linux/amd64",
+  "sycl_tla": {
+    "commit": "87f6850680a580654b9ea2c80dbc01aeb36ad231",
+    "repository": "https://github.com/intel/sycl-tla.git"
+  },
+  "vllm": {
+    "commit": "5df63a7203cdb9328d824a27b682e77c7b9928be",
+    "repository": "https://github.com/vllm-project/vllm.git",
+    "subset": "vllm/ + LICENSE"
+  }
+}

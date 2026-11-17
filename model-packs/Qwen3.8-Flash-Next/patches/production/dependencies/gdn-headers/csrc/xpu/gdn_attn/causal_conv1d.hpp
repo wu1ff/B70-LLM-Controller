@@ -573,6 +573,10 @@ struct causal_conv1d_spec_kernel {
       return;
     }
 
+    if (query_start_loc[batch_id + 1] == query_start_loc[batch_id]) {
+      return;  // Padded requests have no valid state indices.
+    }
+
     const int q_dim = head_k_dim;
     const int k_dim = head_k_dim;
     const int v_dim = head_v_dim * num_v_heads / num_k_heads;

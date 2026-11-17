@@ -84,11 +84,13 @@ from vllm.tokenizers.registry import cached_tokenizer_from_config
 from vllm.v1.attention.backends.registry import MambaAttentionBackendEnum
 from vllm.v1.kv_cache_interface import MambaSpec
 
+from ..common.hyperconnection import is_hc_sequence_parallel_enabled
 if current_platform.is_xpu():
     from .b70_hyperconnection import GatedResidual, HyperConnectionConfig
 else:
     from .hyperconnection import GatedResidual, HyperConnectionConfig
 from .dflash2_features import AUX_LAYER_BOUNDARIES, DFlash2FeatureCapture
+
 from .low_latency_gemm import enable_qwen4_exp_low_latency_gemm
 from .ops.cute_dsl.hc_down_silu import request_hc_down_silu_warmup
 from .ple_layer import Qwen4ExpPLELayer
@@ -97,14 +99,6 @@ from .qsa import Qwen4ExpQSAAttention
 # Transformers v5.18 renamed `qwen_sparse_attention` to `indexed_attention`
 # TODO: Delete qwen_... once Transformers 5.18.0 is the minimum required version.
 _QSA_LAYER_TYPES = ("qwen_sparse_attention", "indexed_attention")
-
-
-def is_hc_sequence_parallel_enabled(vllm_config: VllmConfig) -> bool:
-    """Enable GR/PLE SP explicitly or automatically with sequence-parallel MoE."""
-    parallel_config = vllm_config.parallel_config
-    return parallel_config.tensor_parallel_size > 1 and (
-        parallel_config.enable_hc_sp or parallel_config.use_sequence_parallel_moe
-    )
 
 
 def without_modelopt_fp4(
@@ -1070,7 +1064,9 @@ class Qwen4ExpForConditionalGeneration(
         self.make_empty_intermediate_tensors = (
             self.language_model.make_empty_intermediate_tensors
         )
-        if not get_pp_group().is_first_rank and self.use_deepstack:
+        if not get_pp_group().is_first_rank and hasattr(
+            config.vision_config, "deepstack_visual_indexes"
+        ):
             assert self.language_model.model.start_layer >= len(
                 config.vision_config.deepstack_visual_indexes
             ), (
@@ -1205,3 +1201,12 @@ __all__ = [
     "Qwen4ExpModel",
     "Qwen4ExpSparseMoeBlock",
 ]
+
+
+# --- B70 expanded campaign 2026-11-16: exact fused MoE glue (env-gated) -----
+# B70_DFLASH_MOE_GLUE=1 binds per-block fast paths (router gate + shared expert)
+# that reproduce the original arithmetic bit-for-bit; see b70_moe_glue.py.
+if __import__("os").getenv("B70_DFLASH_MOE_GLUE", "0") == "1":
+    from .b70_moe_glue import wrap_block_forward as _b70_wrap_moe_block
+
+    Qwen4ExpSparseMoeBlock.forward = _b70_wrap_moe_block(Qwen4ExpSparseMoeBlock.forward)

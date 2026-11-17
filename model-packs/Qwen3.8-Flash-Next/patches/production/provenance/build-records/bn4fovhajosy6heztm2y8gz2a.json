@@ -1,0 +1,40 @@
+{
+  "Name": "expanded-exact-v5",
+  "Ref": "bn4fovhajosy6heztm2y8gz2a",
+  "Context": "astra/candidates/expanded-exact-v5",
+  "Dockerfile": "Dockerfile",
+  "StartedAt": "2026-11-15T19:07:28.04447417-07:00",
+  "CompletedAt": "2026-11-15T19:07:28.967581091-07:00",
+  "Duration": 923106921,
+  "Status": "completed",
+  "NumCompletedSteps": 7,
+  "NumTotalSteps": 7,
+  "NumCachedSteps": 0,
+  "Config": {
+    "Network": "none",
+    "ImageResolveMode": "local"
+  },
+  "Materials": [
+    {
+      "URI": "pkg:docker/local/dflash2-v033@expanded-exact-v4?platform=linux%2Famd64",
+      "Digests": [
+        "sha256:761f4e425466133c13a53198451177e64e9a08a97759655031c7cf96a00fd089"
+      ]
+    }
+  ],
+  "Attachments": [
+    {
+      "Digest": "sha256:848f48ff831ff244154bab6ef2938093bb0a588b2e2bb643a51c8a57b920789b",
+      "Type": "application/vnd.oci.image.index.v1+json"
+    },
+    {
+      "Digest": "sha256:baabf7f17d9c36f35de7d3a065a2d79566b2298236ef40da09f1399425e5d789",
+      "Type": "https://slsa.dev/provenance/v1"
+    },
+    {
+      "Digest": "sha256:37a8c06c7a75d2157e502a9d73cec86562f719e9e7eac035af29810f3f860d9c",
+      "Platform": "linux/amd64",
+      "Type": "application/vnd.oci.image.manifest.v1+json"
+    }
+  ]
+}

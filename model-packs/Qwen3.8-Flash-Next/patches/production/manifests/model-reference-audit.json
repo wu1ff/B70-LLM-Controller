@@ -1,0 +1,22 @@
+{
+  "target_29_file_path_size_match": true,
+  "draft_checks": [
+    {
+      "path": "README.md",
+      "size_matches": true,
+      "git_blob_sha1": "543ab98bb545f8613eeee40fceafae1e5fa8b600",
+      "git_blob_matches": true
+    },
+    {
+      "path": "config.json",
+      "size_matches": true,
+      "git_blob_sha1": "b370fddafd42756538af6e1cbe8273cab6e6d803",
+      "git_blob_matches": true
+    },
+    {
+      "path": "model.safetensors",
+      "size_matches": true
+    }
+  ],
+  "weights_rehashed": false
+}

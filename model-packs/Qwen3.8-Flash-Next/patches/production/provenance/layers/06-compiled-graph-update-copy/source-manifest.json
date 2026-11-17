@@ -1,0 +1,19 @@
+{
+  "base": "sha256:f5ac30152869ae3a0fd7c619812d645031ffa67bbb92c89235ac35b4d490da23",
+  "base_tag": "local/dflash2-v033:bf16-calconv-frozen-v1",
+  "base_profile_sha256": "14ce587ad4dd3b9be7e82c90c953e008671c7edc4aa9bfd3b61cb265f70f30e2",
+  "files": [
+    {
+      "path": "models/qwen4_exp/nvidia/b70_target_graph.py",
+      "sha256": "386d6f7be554c06fb8298e61031f4af0689f84830334f87cd8694ab6aad83caf"
+    },
+    {
+      "path": "models/qwen4_exp/nvidia/b70_compiled_graph_update.py",
+      "sha256": "fa9699ea19f6acc028050867f054812bd9a9da577234c5aa9472bc4ff3402639"
+    }
+  ],
+  "fused_copy": true,
+  "builder_sha256": "92f1c5e5581ad1d7309a7cc9a01bc9847103a66508a7519b1e854e8d139dfae8",
+  "profile_sha256": "cf1ae34d08d9ed04ae0b279ee1ae12502a652bf69b3276f5de204f27dd127c12",
+  "status": "TUNING CANDIDATE, NOT PRODUCTION-QUALIFIED"
+}

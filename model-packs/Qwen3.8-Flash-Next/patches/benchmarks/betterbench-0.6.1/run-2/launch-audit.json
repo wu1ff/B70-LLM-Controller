@@ -1,0 +1,9 @@
+{
+  "command_matches": true,
+  "profile_environment_matches": true,
+  "image_matches": true,
+  "loopback_only": true,
+  "model_mounts_readonly": true,
+  "fresh_runtime": true,
+  "profile_sha256": "ed6e18ce9c7bf052757da399d94857f99ebff0def85c94bb725d83301b7a7a85"
+}

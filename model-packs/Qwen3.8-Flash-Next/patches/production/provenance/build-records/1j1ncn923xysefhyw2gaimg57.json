@@ -1,0 +1,40 @@
+{
+  "Name": "bf16-reference-v1",
+  "Ref": "1j1ncn923xysefhyw2gaimg57",
+  "Context": "astra/candidates/bf16-reference-v1",
+  "Dockerfile": "Dockerfile",
+  "StartedAt": "2026-11-12T23:11:15.307127865-07:00",
+  "CompletedAt": "2026-11-12T23:11:15.828083375-07:00",
+  "Duration": 520955510,
+  "Status": "completed",
+  "NumCompletedSteps": 7,
+  "NumTotalSteps": 7,
+  "NumCachedSteps": 1,
+  "Config": {
+    "Network": "none",
+    "ImageResolveMode": "local"
+  },
+  "Materials": [
+    {
+      "URI": "pkg:docker/local/dflash2-v033@opt-query-ordered-hc-v3?platform=linux%2Famd64",
+      "Digests": [
+        "sha256:e0c6ee4bdb33bc073a82b86c050aedfa2c93703c6ed80f772b873cafb0b791c6"
+      ]
+    }
+  ],
+  "Attachments": [
+    {
+      "Digest": "sha256:8ef67bb4a18c5ed47c61f756e011f8c84994c7dc678d09157e2f2428c27a37fe",
+      "Type": "application/vnd.oci.image.index.v1+json"
+    },
+    {
+      "Digest": "sha256:454ef940ca03beb11f969cc2f3af7af18b1b84845e9aadf91b0280f7c2e9b1a7",
+      "Type": "https://slsa.dev/provenance/v1"
+    },
+    {
+      "Digest": "sha256:85feaf9476b86a3e62a2db4293e190145771f0712aea63ed5bcfa5a6421ca8d3",
+      "Platform": "linux/amd64",
+      "Type": "application/vnd.oci.image.manifest.v1+json"
+    }
+  ]
+}

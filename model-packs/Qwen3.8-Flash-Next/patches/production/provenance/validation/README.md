@@ -1,0 +1,1 @@
+These receipts precede final archive sealing and retain their original paths/file counts. Source and image-overlay payloads were verified. The final archive is independently extracted and replayed after sealing; its receipt is retained beside the archive in the v0.33 release-prep directory. No full image build was run.

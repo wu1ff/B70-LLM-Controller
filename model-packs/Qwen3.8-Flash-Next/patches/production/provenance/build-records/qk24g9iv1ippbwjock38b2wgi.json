@@ -1,0 +1,40 @@
+{
+  "Name": "optimization-candidate-v3",
+  "Ref": "qk24g9iv1ippbwjock38b2wgi",
+  "Context": "build/optimization-candidate-v3",
+  "Dockerfile": "Dockerfile",
+  "StartedAt": "2026-11-12T03:00:06.194201874-07:00",
+  "CompletedAt": "2026-11-12T03:00:06.65740923-07:00",
+  "Duration": 463207356,
+  "Status": "completed",
+  "NumCompletedSteps": 7,
+  "NumTotalSteps": 7,
+  "NumCachedSteps": 1,
+  "Config": {
+    "Network": "none",
+    "ImageResolveMode": "local"
+  },
+  "Materials": [
+    {
+      "URI": "pkg:docker/local/dflash2-v033@parity-shared-gdn?platform=linux%2Famd64",
+      "Digests": [
+        "sha256:b0262b274313ddd1127b95631157a6929073dd6123df55746bdac6927ec76a58"
+      ]
+    }
+  ],
+  "Attachments": [
+    {
+      "Digest": "sha256:e0c6ee4bdb33bc073a82b86c050aedfa2c93703c6ed80f772b873cafb0b791c6",
+      "Type": "application/vnd.oci.image.index.v1+json"
+    },
+    {
+      "Digest": "sha256:daa88c7085cce373a94c8eab496d4fabfcc66243877293a5a06da43b8493fe7f",
+      "Type": "https://slsa.dev/provenance/v1"
+    },
+    {
+      "Digest": "sha256:303116ba8cf04c4eea712005f5fe3eb9660be455f78aac7b6030ddbe06fe04c6",
+      "Platform": "linux/amd64",
+      "Type": "application/vnd.oci.image.manifest.v1+json"
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "base": "sha256:761f4e425466133c13a53198451177e64e9a08a97759655031c7cf96a00fd089",
+  "base_tag": "local/dflash2-v033:expanded-exact-v4",
+  "base_profile_sha256": "b7d2eef6fbb07ae5f661cb2b2976ec275d3ef3e132d7dbe749062a804201223f",
+  "files": [
+    {
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp/nvidia/model_state.py",
+      "sha256": "fcb7638d1215b4fb015fb44f7302c7d5ba183082c0b9cad7e97d37326d459ec7"
+    },
+    {
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp/nvidia/b70_defer_ple.py",
+      "sha256": "8ee9b997614b5eb28a0c4cf5a839cba556e52ff9f2a74bfa00f6e703bc997505"
+    },
+    {
+      "path": "opt/venv/lib/python3.12/site-packages/vllm/models/qwen4_exp/nvidia/b70_moe_glue.py",
+      "sha256": "5df7da9b774661b30f801d4466d63356e58fa82b9b977177f9163597ee710ece"
+    }
+  ],
+  "sources": {
+    "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/expanded-tails/model_state_tail.py": "beefda7e49be68abcff8c24c162a8bc6d872f4fc4d5be6d7ced0dda4dbad9773",
+    "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/expanded-tails/b70_defer_ple.py": "8ee9b997614b5eb28a0c4cf5a839cba556e52ff9f2a74bfa00f6e703bc997505",
+    "/home/wulf/Desktop/qwen3.8-flash-next-dflash2-v033/astra/candidates/expanded-tails/b70_moe_glue.py": "5df7da9b774661b30f801d4466d63356e58fa82b9b977177f9163597ee710ece"
+  },
+  "note": "workspace/vllm source-tree model_state.py differs from site-packages in the base image and is left unchanged",
+  "builder_sha256": "84a2a07b5ebdb3e1c5267267e5948740915d2a94b93f7a868fe1f0b7341d007d",
+  "profile_sha256": "d893c5b4e170d080a5e7321cc546a2f1cfa540e75567f1338e384e7121b842ff",
+  "status": "TUNING CANDIDATE, NOT PRODUCTION-QUALIFIED"
+}

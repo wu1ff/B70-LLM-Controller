@@ -1,0 +1,18 @@
+{
+  "base": "sha256:010bdc441c72ee222f459d3b688bb41317525f1bd7223afe6218490b0c526832",
+  "vllm": "4ba787ec9959e566d3b587a796dff07673324da5",
+  "source_method": "Three-way accepted local deltas against pristine v0.32/v0.33; explicit common PLE, HC import and FA2 adaptation.",
+  "ple": "Current common descriptor-validated mmap and bounded-prefix clearing; DFlash2 guards; explicit padding and committed GPU history; original serialized producer-before-replay.",
+  "gdn": "Original DFlash interface/header math and vendor prefill/normalization dependency, rebuilt against v0.33; early zero-length guard before state accesses, preserving actual lengths vs eight-position reservation.",
+  "metadata": "Released per-builder fallback initially; do not re-enable legacy XPU all-group metadata sharing.",
+  "prefill": "Use released K0 context-KV and hidden-state store. Do not carry the superseded incomplete-prefill shortcut.",
+  "graphs": "Original full-target rows 8/16/24/32; partial eager/canonical reductions and short HC retained. First two subsequent replays per shape compare changed-input output and state exactly on all ranks.",
+  "numerics": "Original DFlash HC/gates, BF16 target and separate BF16 checkpoint; no MTP approximation, expert redistribution, trained proposal or lossy verification.",
+  "upstream_54163": "Retain last DFlash prefix block; no legacy trailing-block drop.",
+  "upstream_59468": "No extra drafting rows charged to aggregate target-token budget; target verification remains eight rows per full request and draft KV lookahead remains necessary.",
+  "upstream_61161": "Proposal walk uses spec_step_seed(seed,step); positive-temperature seeded paths can differ from v0.32.",
+  "kv": "Measure automatic capacity first; 7785 is a historical configuration rather than an invariant.",
+  "gpu_discovery": "Unprivileged xpu-smi was misleading; sudo discovery confirms all four devices normal. Privileged preflight required thereafter.",
+  "fa2": "Measured exact v0.33 varlen_fwd schema; accepted DFlash wrapper already includes q_scale/k_scale/v_scale. No extra compatibility argument retained.",
+  "diagnostic_failure": "Initial native INFO messages used an unconfigured vllm_xpu_kernels logger and were suppressed; dispatch diagnostics now use vllm.dflash2.cyclic_experts. A1 served and passed row8 graph checks; A2 diagnostic startup was stopped before qualification. Neither is a measured baseline."
+}
