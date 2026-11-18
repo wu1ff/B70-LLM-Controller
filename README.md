@@ -6,7 +6,7 @@ It manages tested model/runtime deployments, from checkpoint downloads through l
 
 Current release: **1.0.1**.
 
-[Model packs](#available-model-packs) · [Requirements](#requirements) · [Installation](#installation) · [Quick start](#quick-start) · [How it works](#how-it-works) · [Documentation and development](#documentation-and-development) · [License](#license)
+[Model packs](#available-model-packs) · [Requirements](#requirements) · [Installation](#installation) · [Quick start](#quick-start) · [How it works](#how-it-works) · [Documentation and development](#documentation-and-development) · [License](#license) · [What's cooking](https://github.com/wu1ff/B70-LLM-Controller/discussions/10)
 
 ## Available model packs
 
@@ -75,7 +75,6 @@ Cleanup respects resource ownership:
 - [Model-pack format and contributor guide](model-packs/README.md)
 - [Building from source](docs/DEVELOPMENT.md#building-from-source)
 - [Maintainer release instructions](docs/DEVELOPMENT.md#building-a-release)
-- [What's cooking — what I'm currently working on](https://github.com/wu1ff/B70-LLM-Controller/discussions/10)
 
 ## License
 
