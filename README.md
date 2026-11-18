@@ -75,6 +75,7 @@ Cleanup respects resource ownership:
 - [Model-pack format and contributor guide](model-packs/README.md)
 - [Building from source](docs/DEVELOPMENT.md#building-from-source)
 - [Maintainer release instructions](docs/DEVELOPMENT.md#building-a-release)
+- [What's cooking — what I'm currently working on](https://github.com/wu1ff/B70-LLM-Controller/discussions/10)
 
 ## License
 
