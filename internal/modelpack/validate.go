@@ -18,6 +18,8 @@ var (
 // The exact fixed v26 runtime device bind is the only pack mount Controller permits.
 var fixedDeviceBind = [2]string{"--mount", "type=bind,source=/dev/dri/by-path,target=/dev/dri/by-path,readonly"}
 
+const JITCacheMountPath = "/cache"
+
 func (manifest *Manifest) validate() error {
 	if manifest.SchemaVersion != schemaVersion {
 		return fmt.Errorf("schema_version must be %d", schemaVersion)
@@ -147,6 +149,12 @@ func validateRuntimes(runtimes []Runtime) (map[string]Runtime, error) {
 		if err := validateRuntimeLaunch(runtime.Launch, "runtime "+runtime.ID); err != nil {
 			return nil, err
 		}
+		if err := validateRuntimeOptions(Resolved{
+			ImageEntrypoint: runtime.ImageEntrypoint, PersistentJITCache: runtime.PersistentJITCache,
+			Command: runtime.Launch.Command, DockerArgs: runtime.Launch.DockerArgs,
+		}); err != nil {
+			return nil, fmt.Errorf("runtime %q: %w", runtime.ID, err)
+		}
 		byID[runtime.ID] = runtime
 	}
 	return byID, nil
@@ -244,6 +252,42 @@ func validateLaunchBlock(launch LaunchBlock, label string) error {
 
 func validateRuntimeLaunch(launch RuntimeLaunch, label string) error {
 	return validateLaunchValues(launch.DockerArgs, launch.Environment, label)
+}
+
+func validateRuntimeOptions(resolved Resolved) error {
+	if !resolved.ImageEntrypoint && !resolved.PersistentJITCache {
+		return nil
+	}
+	if resolved.ImageEntrypoint && len(resolved.Command) != 0 {
+		return errors.New("image_entrypoint requires an empty composed command")
+	}
+	for index, arg := range resolved.DockerArgs {
+		option, value, assigned := strings.Cut(arg, "=")
+		if resolved.ImageEntrypoint && option == "--entrypoint" {
+			return errors.New("image_entrypoint cannot be combined with --entrypoint")
+		}
+		if resolved.PersistentJITCache && option == "--tmpfs" {
+			if !assigned && index+1 < len(resolved.DockerArgs) {
+				value = resolved.DockerArgs[index+1]
+			}
+			mountPath, _, _ := strings.Cut(value, ":")
+			if conflictsWithJITCache(path.Clean(mountPath)) {
+				return errors.New("persistent_jit_cache reserves /cache for the controller; tmpfs mount conflicts")
+			}
+		}
+	}
+	if resolved.PersistentJITCache {
+		for _, mount := range resolved.Mounts {
+			if conflictsWithJITCache(mount.ContainerPath) {
+				return fmt.Errorf("persistent_jit_cache reserves /cache for the controller; model %q mount conflicts", mount.ModelID)
+			}
+		}
+	}
+	return nil
+}
+
+func conflictsWithJITCache(mountPath string) bool {
+	return mountPath == "/" || mountPath == JITCacheMountPath || strings.HasPrefix(mountPath, JITCacheMountPath+"/")
 }
 
 func validateLaunchValues(dockerArgs []string, environment map[string]string, label string) error {

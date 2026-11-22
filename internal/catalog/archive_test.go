@@ -53,6 +53,22 @@ func TestAcquireDownloadsVerifiesExtractsAndCleans(t *testing.T) {
 	}
 }
 
+func TestAcquireMatchesVersionLabeledCatalogEntry(t *testing.T) {
+	archive := validPackArchiveForController(t, "dflash2-sglang", "DFlash2 — SGLang", "1.0.0", "1.0.2")
+	server := archiveServer(t, archive)
+	defer server.Close()
+	client := &Client{HTTPClient: server.Client()}
+	entry := catalogEntry(server.URL, archive, "dflash2-sglang", "DFlash2 — SGLang (Controller 1.0.2+)", "1.0.0")
+	pack, err := client.Acquire(context.Background(), t.TempDir(), entry)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer pack.Close()
+	if pack.Manifest.Name != "DFlash2 — SGLang" {
+		t.Fatalf("manifest name = %q", pack.Manifest.Name)
+	}
+}
+
 func TestAcquireRejectsChecksumBeforeExtractionAndCleans(t *testing.T) {
 	archive := makeArchive(t, []archiveEntry{{name: "../escape", typeflag: tar.TypeReg, data: []byte("bad")}})
 	server := archiveServer(t, archive)
@@ -129,6 +145,11 @@ func TestAcquireRequiresValidPackAndMatchingCatalogIdentity(t *testing.T) {
 
 func validPackArchive(t *testing.T, id, name, version string) []byte {
 	t.Helper()
+	return validPackArchiveForController(t, id, name, version, "")
+}
+
+func validPackArchiveForController(t *testing.T, id, name, version, minimum string) []byte {
+	t.Helper()
 	digest := "sha256:" + strings.Repeat("b", 64)
 	manifest := map[string]any{
 		"schema_version": 1, "id": id, "name": name, "version": version,
@@ -136,6 +157,9 @@ func validPackArchive(t *testing.T, id, name, version string) []byte {
 		"runtimes": []map[string]any{{"id": "runtime", "image": "example/runtime:1", "digest": digest, "container_port": 8000, "health_path": "/health", "launch": map[string]any{"docker_args": []string{}, "environment": map[string]string{}, "command": []string{"serve"}}}},
 		"modes":    []map[string]any{{"id": "base", "display_name": "Base", "assistants": []string{}, "launch": map[string]any{"docker_args": []string{}, "environment": map[string]string{}, "command_args": []string{}}}},
 		"profiles": []map[string]any{{"id": "base", "model_id": "target", "runtime_id": "runtime", "cards": 1, "tensor_parallel": 1, "context": 4096, "mode": "base", "launch": map[string]any{"docker_args": []string{}, "environment": map[string]string{}, "command_args": []string{}}}},
+	}
+	if minimum != "" {
+		manifest["min_controller_version"] = minimum
 	}
 	manifestJSON, err := json.Marshal(manifest)
 	if err != nil {

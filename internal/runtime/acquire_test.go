@@ -28,6 +28,29 @@ func TestAcquireReusesExactImageWithoutPull(t *testing.T) {
 	}
 }
 
+func TestAcquireMissingPinnedLocalImage(t *testing.T) {
+	declared := testAcquisitionRuntime()
+	declared.Image = "local/flash-next-sglang@" + declared.Digest
+	declared.Registry = ""
+	var inspected []string
+	setDockerHook(t, func(args ...string) ([]byte, error) {
+		reference := args[len(args)-1]
+		inspected = append(inspected, reference)
+		return missingImage(reference)
+	})
+	setDockerPullHook(t, func(context.Context, string, func(PullProgress)) ([]byte, error) {
+		t.Fatal("local-only runtime tried to pull")
+		return nil, nil
+	})
+	result := Acquire(context.Background(), declared, nil)
+	if result.Outcome != AcquisitionFailed || !strings.Contains(result.Reason, "load the pinned image") || !strings.Contains(result.Err.Error(), declared.Image) {
+		t.Fatalf("Acquire() = %#v", result)
+	}
+	if !reflect.DeepEqual(inspected, []string{declared.Image, declared.Digest}) {
+		t.Fatalf("inspected %v", inspected)
+	}
+}
+
 func TestAcquirePullsExactImmutableReferenceAndVerifiesDownloadedImage(t *testing.T) {
 	declared := testAcquisitionRuntime()
 	var inspected []string

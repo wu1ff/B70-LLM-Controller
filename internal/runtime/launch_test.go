@@ -57,6 +57,15 @@ func TestBuildLaunchLANAndIncompleteModel(t *testing.T) {
 	}
 }
 
+func TestBuildLaunchRequiresVLLMCommandWithoutNativeEntrypoint(t *testing.T) {
+	manifest := launchManifest()
+	manifest.Runtimes[0].Launch.Command = nil
+	_, err := BuildLaunch(manifest, manifest.Profiles[0], launchModels(t), AccessLocal, 8000)
+	if err == nil || !strings.Contains(err.Error(), "resolved command must begin with") {
+		t.Fatalf("BuildLaunch() error = %v", err)
+	}
+}
+
 func launchManifest() *modelpack.Manifest {
 	empty := func() modelpack.LaunchBlock {
 		return modelpack.LaunchBlock{DockerArgs: []string{}, Environment: map[string]string{}, CommandArgs: []string{}}

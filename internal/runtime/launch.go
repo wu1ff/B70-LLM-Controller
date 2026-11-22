@@ -81,13 +81,20 @@ func BuildLaunch(manifest *modelpack.Manifest, profile modelpack.Profile, models
 	for _, name := range environmentNames {
 		args = append(args, "--env", name+"="+resolved.Environment[name])
 	}
-	target, exists := modelsByID[profile.ModelID]
-	if !exists {
-		return Launch{}, fmt.Errorf("model %q is not declared", profile.ModelID)
+	var serveCommand []string
+	if !resolved.ImageEntrypoint {
+		target := modelsByID[profile.ModelID]
+		serveCommand, err = modelpack.ServeCommand(resolved, target.MountPath)
+		if err != nil {
+			return Launch{}, err
+		}
 	}
-	serveCommand, err := modelpack.ServeCommand(resolved, target.MountPath)
-	if err != nil {
-		return Launch{}, err
+	if resolved.PersistentJITCache {
+		mount, err := persistentJITCacheMount(resolved.Digest)
+		if err != nil {
+			return Launch{}, err
+		}
+		args = append(args, "--mount", mount)
 	}
 	args = append(args, resolved.Digest)
 	args = append(args, serveCommand...)

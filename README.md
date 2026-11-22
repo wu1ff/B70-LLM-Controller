@@ -4,7 +4,7 @@ B70 LLM Controller (`b70ctl`) is a terminal UI for installing and serving qualif
 
 It manages tested model/runtime deployments, from checkpoint downloads through launch, status, logs, stop, and cleanup. It does not install or configure host GPU drivers.
 
-Current release: **1.0.1**.
+Controller version: **1.0.2**.
 
 [Model packs](#available-model-packs) · [Requirements](#requirements) · [Installation](#installation) · [Quick start](#quick-start) · [How it works](#how-it-works) · [Documentation and development](#documentation-and-development) · [License](#license) · [What's cooking](https://github.com/wu1ff/B70-LLM-Controller/discussions/10)
 
@@ -31,11 +31,11 @@ The serving-side Intel/XPU/vLLM userspace ships inside the pack's runtime image.
 
 ## Installation
 
-Release builds are distributed as a Debian package with a `SHA256SUMS` checksum file. Download both from the [1.0.1 release](https://github.com/wu1ff/B70-LLM-Controller/releases/tag/v1.0.1), then verify and install:
+Release builds are distributed as a Debian package with a `SHA256SUMS` checksum file. Download the matching package and checksum file from the same [Controller release](https://github.com/wu1ff/B70-LLM-Controller/releases). Verify the checksum before installing.
 
 ```bash
 sha256sum -c SHA256SUMS
-sudo apt install ./b70-llm-controller_1.0.1_amd64.deb
+sudo apt install ./b70-llm-controller_1.0.2_amd64.deb
 ```
 
 The package installs `b70ctl` to `/usr/bin/b70ctl` and contains only `b70ctl` — not Docker, Intel drivers, model weights, or runtime images. Run `b70ctl --version` to check the installed version.

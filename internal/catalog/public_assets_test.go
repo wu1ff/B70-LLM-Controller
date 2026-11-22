@@ -13,6 +13,7 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"reflect"
 	"sort"
@@ -37,12 +38,14 @@ const (
 // directory name plus -v<version> (Qwen3.8-27B -> qwen3.8-27b-v1.0.1).
 var publishedPackDirectories = []string{"Qwen3.8-27B", "Qwen3.6-35B-A3B", "Qwen3.8-Flash-Next"}
 
-// Pack distribution archives are generated release artifacts and are not
-// committed. The tests build them from the source pack with the established
-// normalization: the pack's distributed files in sorted order, regular mode 0644,
-// epoch mtime, zero ownership, GNU tar format, and a nameless gzip stream —
-// byte-identical output for identical pack contents.
+// The legacy release and development archive fixtures use regular mode 0644,
+// epoch mtime, zero ownership, GNU tar format and a nameless gzip stream.
 func writePackArchive(t *testing.T, packDirectory, destination string) {
+	t.Helper()
+	writeNamedPackArchive(t, packDirectory, destination, packArchiveNames(t, packDirectory))
+}
+
+func writeNamedPackArchive(t *testing.T, packDirectory, destination string, names []string) {
 	t.Helper()
 	output, err := os.Create(destination)
 	if err != nil {
@@ -50,7 +53,7 @@ func writePackArchive(t *testing.T, packDirectory, destination string) {
 	}
 	compressed := gzip.NewWriter(output)
 	archive := tar.NewWriter(compressed)
-	for _, name := range packArchiveNames(t, packDirectory) {
+	for _, name := range names {
 		data, err := os.ReadFile(filepath.Join(packDirectory, name))
 		if err != nil {
 			t.Fatal(err)
@@ -95,21 +98,65 @@ func packArchiveNames(t *testing.T, packDirectory string) []string {
 	} else if err != nil {
 		t.Fatal(err)
 	}
-	err := filepath.WalkDir(patchRoot, func(path string, entry os.DirEntry, err error) error {
-		if err != nil {
+	for _, name := range packTreeNames(t, patchRoot) {
+		names = append(names, "patches/"+name)
+	}
+	sort.Strings(names)
+	return names
+}
+
+func TestFlashNextSourceArchiveLoad(t *testing.T) {
+	packDirectory := filepath.Join("..", "..", "model-packs", "Qwen3.8-Flash-Next")
+	manifest, err := modelpack.Load(packDirectory)
+	if err != nil {
+		t.Fatal(err)
+	}
+	want := packTreeNames(t, packDirectory)
+	archivePath := filepath.Join(t.TempDir(), "flashnext-source.tar.gz")
+	writeNamedPackArchive(t, packDirectory, archivePath, want)
+	archiveBytes, err := os.ReadFile(archivePath)
+	if err != nil {
+		t.Fatal(err)
+	}
+	repeatPath := filepath.Join(t.TempDir(), "repeat-flashnext-source.tar.gz")
+	writeNamedPackArchive(t, packDirectory, repeatPath, want)
+	if fileDigest(t, archivePath) != fileDigest(t, repeatPath) {
+		t.Fatal("Flash-Next source archive generation is not deterministic")
+	}
+	server := archiveServer(t, archiveBytes)
+	defer server.Close()
+	entry := catalogEntry(server.URL, archiveBytes, manifest.ID, manifest.Name, manifest.Version)
+	client := &Client{HTTPClient: server.Client()}
+	acquired, err := client.Acquire(context.Background(), t.TempDir(), entry)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer acquired.Close()
+
+	got := packTreeNames(t, acquired.Path)
+	if !reflect.DeepEqual(got, want) {
+		t.Fatalf("extracted files = %v, want %v", got, want)
+	}
+	for _, name := range got {
+		if fileDigest(t, filepath.Join(acquired.Path, name)) != fileDigest(t, filepath.Join(packDirectory, name)) {
+			t.Fatalf("extracted file differs from development source: %s", name)
+		}
+	}
+	patchRoot := filepath.Join(acquired.Path, "patches")
+	verifyTreeChecksums(t, patchRoot, packTreeNames(t, patchRoot))
+}
+
+func packTreeNames(t *testing.T, root string) []string {
+	t.Helper()
+	var names []string
+	err := filepath.WalkDir(root, func(path string, entry os.DirEntry, err error) error {
+		if err != nil || entry.IsDir() {
 			return err
 		}
-		if entry.IsDir() {
-			return nil
+		if !entry.Type().IsRegular() {
+			return fmt.Errorf("pack entry %s is not a regular file", path)
 		}
-		info, err := entry.Info()
-		if err != nil {
-			return err
-		}
-		if !info.Mode().IsRegular() {
-			return fmt.Errorf("pack patch entry %s is not a regular file", path)
-		}
-		relative, err := filepath.Rel(packDirectory, path)
+		relative, err := filepath.Rel(root, path)
 		if err != nil {
 			return err
 		}
@@ -123,62 +170,30 @@ func packArchiveNames(t *testing.T, packDirectory string) []string {
 	return names
 }
 
-func TestFlashNextSourceArchiveLoad(t *testing.T) {
-	packDirectory := filepath.Join("..", "..", "model-packs", "Qwen3.8-Flash-Next")
-	archivePath := filepath.Join(t.TempDir(), "flashnext-source.tar.gz")
-	writePackArchive(t, packDirectory, archivePath)
-	archiveBytes, err := os.ReadFile(archivePath)
+func verifyTreeChecksums(t *testing.T, root string, names []string) {
+	t.Helper()
+	sums, err := os.ReadFile(filepath.Join(root, "SHA256SUMS"))
 	if err != nil {
 		t.Fatal(err)
 	}
-	repeatPath := filepath.Join(t.TempDir(), "repeat-flashnext-source.tar.gz")
-	writePackArchive(t, packDirectory, repeatPath)
-	if fileDigest(t, archivePath) != fileDigest(t, repeatPath) {
-		t.Fatal("Flash-Next source archive generation is not deterministic")
+	remaining := make(map[string]bool, len(names))
+	for _, name := range names {
+		if name != "SHA256SUMS" {
+			remaining[name] = true
+		}
 	}
-	server := archiveServer(t, archiveBytes)
-	defer server.Close()
-	entry := catalogEntry(server.URL, archiveBytes, "qwen38-flashnext-b70", "Qwen3.8-Flash-Next B70 Pack (DFlash2)", "1.0.5")
-	client := &Client{HTTPClient: server.Client()}
-	acquired, err := client.Acquire(context.Background(), t.TempDir(), entry)
-	if err != nil {
-		t.Fatal(err)
-	}
-	defer acquired.Close()
-
-	want := packArchiveNames(t, packDirectory)
-	got := packArchiveNames(t, acquired.Path)
-	if !reflect.DeepEqual(got, want) {
-		t.Fatalf("extracted files = %v, want %v", got, want)
-	}
-	sums, err := os.ReadFile(filepath.Join(acquired.Path, "patches", "SHA256SUMS"))
-	if err != nil {
-		t.Fatal(err)
-	}
-	count := 0
 	for _, line := range strings.Split(strings.TrimSpace(string(sums)), "\n") {
 		parts := strings.SplitN(line, "  ", 2)
-		if len(parts) != 2 {
-			t.Fatalf("invalid patch checksum line %q", line)
+		if len(parts) != 2 || !remaining[parts[1]] {
+			t.Fatalf("%s: invalid, unexpected or duplicate checksum line %q", root, line)
 		}
-		data, err := os.ReadFile(filepath.Join(acquired.Path, "patches", parts[1]))
-		if err != nil {
-			t.Fatal(err)
+		if actual := fileDigest(t, filepath.Join(root, parts[1])); actual != "sha256:"+parts[0] {
+			t.Fatalf("%s: checksum mismatch for %s", root, parts[1])
 		}
-		actual := fmt.Sprintf("%x", sha256.Sum256(data))
-		if actual != parts[0] {
-			t.Fatalf("patch checksum mismatch: %s", parts[1])
-		}
-		count++
+		delete(remaining, parts[1])
 	}
-	patchFiles := 0
-	for _, name := range want {
-		if strings.HasPrefix(name, "patches/") && name != "patches/SHA256SUMS" {
-			patchFiles++
-		}
-	}
-	if count != patchFiles {
-		t.Fatalf("patch checksum count = %d, want %d", count, patchFiles)
+	if len(remaining) != 0 {
+		t.Fatalf("%s: missing checksums for %v", root, remaining)
 	}
 }
 
@@ -293,11 +308,8 @@ func TestTrackedCatalogListsNoRepositoryArchives(t *testing.T) {
 	}
 }
 
-// The tracked catalog entries for the published packs must stay in lockstep
-// with the pack source directories: matching id, name, and version; the
-// SHA-256 of the archive built from that source by the established
-// normalization; and the archive hosted at the pack tag's GitHub release
-// download URL. Validated without requiring the archive to be committed.
+// Match catalog metadata to the source manifests and verify the published
+// checksums with each pack's release inputs and archive format.
 func TestTrackedCatalogMatchesPublishedPack(t *testing.T) {
 	index, err := os.Open(filepath.Join("..", "..", "model-packs", "index.json"))
 	if err != nil {
@@ -336,15 +348,55 @@ func TestTrackedCatalogMatchesPublishedPack(t *testing.T) {
 
 		archiveName := manifest.ID + "-" + manifest.Version + ".tar.gz"
 		archivePath := filepath.Join(t.TempDir(), archiveName)
-		writePackArchive(t, packPath, archivePath)
+		tag := strings.ToLower(directory) + "-v" + manifest.Version
+		if directory == "Qwen3.8-Flash-Next" {
+			writeFlashNextReleaseArchive(t, tag, directory, archivePath)
+		} else {
+			writePackArchive(t, packPath, archivePath)
+		}
 		if digest := fileDigest(t, archivePath); entry.SHA256 != digest {
-			t.Fatalf("catalog sha256 %s does not match archive built from pack source %s", entry.SHA256, digest)
+			t.Fatalf("catalog SHA-256 for %s = %s, rebuilt release archive = %s", tag, entry.SHA256, digest)
 		}
 
-		wantURL := "https://github.com/wu1ff/B70-LLM-Controller/releases/download/" + strings.ToLower(directory) + "-v" + manifest.Version + "/" + archiveName
+		wantURL := "https://github.com/wu1ff/B70-LLM-Controller/releases/download/" + tag + "/" + archiveName
 		if entry.ArchiveURL != wantURL {
 			t.Fatalf("catalog archive_url %s does not match pack release download URL %s", entry.ArchiveURL, wantURL)
 		}
+	}
+}
+
+func writeFlashNextReleaseArchive(t *testing.T, tag, directory, destination string) {
+	t.Helper()
+	source := filepath.Join(t.TempDir(), "tagged-pack.tar")
+	export := exec.Command("git", "archive", "--format=tar", "-o", source, "refs/tags/"+tag+":model-packs/"+directory)
+	export.Dir = filepath.Join("..", "..")
+	if output, err := export.CombinedOutput(); err != nil {
+		t.Fatalf("export pack release %s (use a checkout with its release tag): %v\n%s", tag, err, output)
+	}
+	// The v6 asset was published with Python tarfile and level-6 zlib.
+	// Stream the tagged files in name order with the original metadata rules.
+	const repack = `
+import gzip
+from pathlib import PurePosixPath
+import sys
+import tarfile
+
+with tarfile.open(sys.argv[1]) as source, open(sys.argv[2], "wb") as raw:
+    with gzip.GzipFile(filename="", mode="wb", fileobj=raw, mtime=0, compresslevel=6) as compressed:
+        with tarfile.open(fileobj=compressed, mode="w|", format=tarfile.PAX_FORMAT) as release:
+            for member in sorted(source.getmembers(), key=lambda member: PurePosixPath(member.name)):
+                if member.isdir():
+                    continue
+                if not member.isfile():
+                    raise ValueError(f"unexpected release entry {member.name}")
+                entry = tarfile.TarInfo(member.name)
+                entry.mode = 0o755 if member.mode & 0o111 else 0o644
+                entry.size = member.size
+                with source.extractfile(member) as content:
+                    release.addfile(entry, content)
+`
+	if output, err := exec.Command("python3", "-c", repack, source, destination).CombinedOutput(); err != nil {
+		t.Fatalf("repack %s with the Flash-Next release format: %v\n%s", tag, err, output)
 	}
 }
 

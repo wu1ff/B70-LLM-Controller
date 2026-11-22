@@ -8,19 +8,22 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+
+	"b70ctl"
 )
 
 const schemaVersion = 1
 
 type Manifest struct {
-	SchemaVersion int       `json:"schema_version"`
-	ID            string    `json:"id"`
-	Name          string    `json:"name"`
-	Version       string    `json:"version"`
-	Models        []Model   `json:"models"`
-	Runtimes      []Runtime `json:"runtimes"`
-	Modes         []Mode    `json:"modes"`
-	Profiles      []Profile `json:"profiles"`
+	MinControllerVersion string    `json:"min_controller_version,omitempty"`
+	SchemaVersion        int       `json:"schema_version"`
+	ID                   string    `json:"id"`
+	Name                 string    `json:"name"`
+	Version              string    `json:"version"`
+	Models               []Model   `json:"models"`
+	Runtimes             []Runtime `json:"runtimes"`
+	Modes                []Mode    `json:"modes"`
+	Profiles             []Profile `json:"profiles"`
 }
 
 type LaunchBlock struct {
@@ -53,13 +56,15 @@ type ModelFile struct {
 }
 
 type Runtime struct {
-	ID            string        `json:"id"`
-	Image         string        `json:"image"`
-	Digest        string        `json:"digest"`
-	Registry      string        `json:"registry,omitempty"`
-	ContainerPort int           `json:"container_port"`
-	HealthPath    string        `json:"health_path"`
-	Launch        RuntimeLaunch `json:"launch"`
+	ImageEntrypoint    bool          `json:"image_entrypoint,omitempty"`
+	PersistentJITCache bool          `json:"persistent_jit_cache,omitempty"`
+	ID                 string        `json:"id"`
+	Image              string        `json:"image"`
+	Digest             string        `json:"digest"`
+	Registry           string        `json:"registry,omitempty"`
+	ContainerPort      int           `json:"container_port"`
+	HealthPath         string        `json:"health_path"`
+	Launch             RuntimeLaunch `json:"launch"`
 }
 
 type Mode struct {
@@ -81,14 +86,15 @@ type Profile struct {
 }
 
 type manifestFile struct {
-	SchemaVersion int            `json:"schema_version"`
-	ID            string         `json:"id"`
-	Name          string         `json:"name"`
-	Version       string         `json:"version"`
-	Models        *[]modelFile   `json:"models"`
-	Runtimes      *[]runtimeFile `json:"runtimes"`
-	Modes         *[]modeFile    `json:"modes"`
-	Profiles      *[]profileFile `json:"profiles"`
+	MinControllerVersion json.RawMessage `json:"min_controller_version"`
+	SchemaVersion        int             `json:"schema_version"`
+	ID                   string          `json:"id"`
+	Name                 string          `json:"name"`
+	Version              string          `json:"version"`
+	Models               *[]modelFile    `json:"models"`
+	Runtimes             *[]runtimeFile  `json:"runtimes"`
+	Modes                *[]modeFile     `json:"modes"`
+	Profiles             *[]profileFile  `json:"profiles"`
 }
 
 type modelFile struct {
@@ -104,13 +110,29 @@ type modelFile struct {
 }
 
 type runtimeFile struct {
-	ID            string             `json:"id"`
-	Image         string             `json:"image"`
-	Digest        string             `json:"digest"`
-	Registry      *string            `json:"registry"`
-	ContainerPort int                `json:"container_port"`
-	HealthPath    string             `json:"health_path"`
-	Launch        *runtimeLaunchFile `json:"launch"`
+	ImageEntrypoint    optionalBool       `json:"image_entrypoint"`
+	PersistentJITCache optionalBool       `json:"persistent_jit_cache"`
+	ID                 string             `json:"id"`
+	Image              string             `json:"image"`
+	Digest             string             `json:"digest"`
+	Registry           *string            `json:"registry"`
+	ContainerPort      int                `json:"container_port"`
+	HealthPath         string             `json:"health_path"`
+	Launch             *runtimeLaunchFile `json:"launch"`
+}
+
+type optionalBool bool
+
+func (value *optionalBool) UnmarshalJSON(raw []byte) error {
+	switch string(raw) {
+	case "true":
+		*value = true
+	case "false":
+		*value = false
+	default:
+		return errors.New("runtime capability must be a JSON boolean")
+	}
+	return nil
 }
 
 type modeFile struct {
@@ -158,10 +180,20 @@ func Load(root string) (*Manifest, error) {
 	if err := ensureJSONEnd(decoder); err != nil {
 		return nil, err
 	}
+	var minimum string
+	if source.MinControllerVersion != nil {
+		if err := json.Unmarshal(source.MinControllerVersion, &minimum); err != nil || minimum == "" {
+			return nil, errors.New("min_controller_version must be a stable version (major.minor.patch)")
+		}
+	}
+	if err := requireControllerVersion(minimum, controller.Version()); err != nil {
+		return nil, err
+	}
 	manifest, err := source.manifest()
 	if err != nil {
 		return nil, err
 	}
+	manifest.MinControllerVersion = minimum
 	if err := manifest.validate(); err != nil {
 		return nil, err
 	}
@@ -216,7 +248,11 @@ func (source manifestFile) manifest() (*Manifest, error) {
 		if err != nil {
 			return nil, err
 		}
-		value := Runtime{ID: item.ID, Image: item.Image, Digest: item.Digest, ContainerPort: item.ContainerPort, HealthPath: item.HealthPath, Launch: launch}
+		value := Runtime{
+			ID: item.ID, Image: item.Image, Digest: item.Digest, ContainerPort: item.ContainerPort,
+			HealthPath: item.HealthPath, Launch: launch,
+			ImageEntrypoint: bool(item.ImageEntrypoint), PersistentJITCache: bool(item.PersistentJITCache),
+		}
 		if item.Registry != nil {
 			value.Registry = *item.Registry
 		}

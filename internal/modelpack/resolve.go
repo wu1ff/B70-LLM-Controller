@@ -8,14 +8,16 @@ type Mount struct {
 }
 
 type Resolved struct {
-	ContainerPort int
-	HealthPath    string
-	DockerArgs    []string
-	Environment   map[string]string
-	Mounts        []Mount
-	Image         string
-	Digest        string
-	Command       []string
+	ImageEntrypoint    bool
+	PersistentJITCache bool
+	ContainerPort      int
+	HealthPath         string
+	DockerArgs         []string
+	Environment        map[string]string
+	Mounts             []Mount
+	Image              string
+	Digest             string
+	Command            []string
 }
 
 func Resolve(manifest *Manifest, profile Profile) (Resolved, error) {
@@ -44,7 +46,11 @@ func Resolve(manifest *Manifest, profile Profile) (Resolved, error) {
 		return Resolved{}, fmt.Errorf("mode %q is not declared", profile.Mode)
 	}
 	layers := []LaunchBlock{{DockerArgs: runtime.Launch.DockerArgs, Environment: runtime.Launch.Environment}, model.Launch, mode.Launch, profile.Launch}
-	resolved := Resolved{ContainerPort: runtime.ContainerPort, HealthPath: runtime.HealthPath, Environment: map[string]string{}, Image: runtime.Image, Digest: runtime.Digest, Command: append([]string(nil), runtime.Launch.Command...)}
+	resolved := Resolved{
+		ContainerPort: runtime.ContainerPort, HealthPath: runtime.HealthPath, Environment: map[string]string{},
+		Image: runtime.Image, Digest: runtime.Digest, Command: append([]string(nil), runtime.Launch.Command...),
+		ImageEntrypoint: runtime.ImageEntrypoint, PersistentJITCache: runtime.PersistentJITCache,
+	}
 	for _, layer := range layers {
 		resolved.DockerArgs = append(resolved.DockerArgs, layer.DockerArgs...)
 		for name, value := range layer.Environment {
@@ -71,6 +77,9 @@ func Resolve(manifest *Manifest, profile Profile) (Resolved, error) {
 			return Resolved{}, fmt.Errorf("models %q and %q conflict at mount path %q", existing, mount.ModelID, mount.ContainerPath)
 		}
 		paths[mount.ContainerPath] = mount.ModelID
+	}
+	if err := validateRuntimeOptions(resolved); err != nil {
+		return Resolved{}, err
 	}
 	return resolved, nil
 }

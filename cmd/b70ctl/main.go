@@ -9,6 +9,7 @@ import (
 
 	"golang.org/x/term"
 
+	"b70ctl"
 	"b70ctl/internal/catalog"
 	"b70ctl/internal/config"
 	"b70ctl/internal/hf"
@@ -17,11 +18,9 @@ import (
 	"b70ctl/internal/tui"
 )
 
-var version = "dev"
-
 func main() {
 	if len(os.Args) == 2 && os.Args[1] == "--version" {
-		fmt.Printf("B70 LLM Controller %s\n", version)
+		fmt.Printf("B70 LLM Controller %s\n", controller.Version())
 		return
 	}
 	if err := run(); err != nil {
@@ -77,5 +76,5 @@ func run() error {
 		os.Exit(1)
 	}()
 
-	return tui.Run(os.Stdin, os.Stdout, value, paths, version)
+	return tui.Run(os.Stdin, os.Stdout, value, paths, controller.Version())
 }

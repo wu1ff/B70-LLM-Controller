@@ -3,6 +3,7 @@ package runtime
 import (
 	"context"
 	"errors"
+	"fmt"
 	"os/exec"
 	"regexp"
 	"strings"
@@ -46,6 +47,9 @@ func Acquire(ctx context.Context, declared modelpack.Runtime, notify func(PullPr
 		return failedAcquisition("runtime image inspection failed", errors.New("unknown Docker image inspection state"))
 	}
 
+	if declared.Registry == "" && immutableRegistryPattern.MatchString(declared.Image) {
+		return failedAcquisition("required local image is missing; load the pinned image first", fmt.Errorf("required local image %q is missing (expected Docker ID %s)", declared.Image, declared.Digest))
+	}
 	if !immutableRegistryPattern.MatchString(declared.Registry) || strings.Contains(declared.Registry, "://") {
 		return failedAcquisition("immutable registry reference not configured", errors.New("runtime has no valid immutable registry reference"))
 	}

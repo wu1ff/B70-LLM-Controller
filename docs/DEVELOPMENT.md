@@ -15,6 +15,8 @@ sudo make install
 
 `make build` writes `dist/b70ctl`; `sudo make install` installs it as `/usr/local/bin/b70ctl`. The [Makefile](../Makefile) expects Go at `/usr/lib/go-1.25/bin/go` — set `GO=/path/to/go` if yours is elsewhere, for example `make build GO=/path/to/go`. `PREFIX=/path` overrides the source-install prefix.
 
+`make test` also uses Git and Python 3 with zlib to reconstruct the published Flash-Next archive from its pack release tag. Run the suite in a Git checkout containing that tag. The catalog test verifies the reconstructed release checksum offline, and the development archive test exercises the current pack tree.
+
 ## Building a release
 
 Maintainer workflow for the release artifacts, from the repository root:
@@ -25,7 +27,7 @@ make release-check  # full validation; release tag verified if present
 make release        # additionally requires tag v<VERSION> at HEAD
 ```
 
-The [VERSION](../VERSION) file is the single version authority; its current value is `1.0.1`. Tags follow `v` + `VERSION` (currently `v1.0.1`); in Debian package versions a pre-release dash becomes `~`.
+The build embeds [VERSION](../VERSION) for display and pack compatibility checks. Release tags prefix that version with `v`. Debian package versions replace a pre-release dash with `~`.
 
 Both release commands require a clean tracked tree; untracked files are ignored. `make release-check` permits an absent release tag, but verifies that it points at HEAD if it exists. `make release` additionally requires the tag at HEAD. A tag pointing at another commit fails either command.
 

@@ -64,7 +64,7 @@ func (client *Client) Acquire(ctx context.Context, dataRoot string, entry Entry)
 	if err != nil {
 		return nil, fmt.Errorf("load downloaded model pack: %w", err)
 	}
-	if manifest.ID != entry.ID || manifest.Name != entry.Name || manifest.Version != entry.Version {
+	if manifest.ID != entry.ID || manifest.Version != entry.Version || (entry.Name != manifest.Name && entry.Name != manifest.CatalogName()) {
 		return nil, errors.New("catalog entry does not match downloaded pack")
 	}
 	if err := os.Remove(archivePath); err != nil {

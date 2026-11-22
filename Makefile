@@ -1,13 +1,12 @@
 GO ?= /usr/lib/go-1.25/bin/go
 PREFIX ?= /usr/local
-VERSION := $(shell tr -d '\n' < VERSION)
 BINARY := dist/b70ctl
 
 .PHONY: build test vet install package release-check release test-release clean
 
 build:
 	mkdir -p dist
-	$(GO) build -ldflags "-X main.version=$(VERSION)" -o $(BINARY) ./cmd/b70ctl
+	$(GO) build -o $(BINARY) ./cmd/b70ctl
 
 test:
 	$(GO) test ./...

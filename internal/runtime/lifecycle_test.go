@@ -9,6 +9,7 @@ import (
 	"reflect"
 	"strconv"
 	"strings"
+	"sync/atomic"
 	"testing"
 )
 
@@ -170,6 +171,36 @@ func TestStatusUnavailableHealthEndpointIsStarting(t *testing.T) {
 	status, err := Status()
 	if err != nil || status.State != StateStarting {
 		t.Fatalf("Status() = %#v, %v", status, err)
+	}
+}
+
+func TestStatusProbesSGLangReadyOnPublishedPort(t *testing.T) {
+	for _, bind := range []string{"127.0.0.1", "0.0.0.0"} {
+		t.Run(bind, func(t *testing.T) {
+			var code atomic.Int32
+			server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+				if r.URL.Path != "/ready" || !strings.HasPrefix(r.Host, "127.0.0.1:") {
+					t.Errorf("request host/path = %s%s", r.Host, r.URL.Path)
+				}
+				w.WriteHeader(int(code.Load()))
+			}))
+			defer server.Close()
+			port := serverPort(t, server)
+			setDockerHook(t, func(...string) ([]byte, error) {
+				data := strings.NewReplacer("/health", "/ready", "8000/tcp", "18093/tcp", "127.0.0.1", bind)
+				return []byte(data.Replace(string(inspectJSON(true, 0, port)))), nil
+			})
+			for _, readiness := range []struct {
+				code  int
+				state State
+			}{{http.StatusServiceUnavailable, StateStarting}, {http.StatusOK, StateRunning}} {
+				code.Store(int32(readiness.code))
+				status, err := Status()
+				if err != nil || status.State != readiness.state || status.BindAddress != bind || status.HostPort != port || status.ContainerPort != 18093 {
+					t.Fatalf("Status() = %#v, %v; want %s", status, err, readiness.state)
+				}
+			}
+		})
 	}
 }
 
