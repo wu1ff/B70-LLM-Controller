@@ -21,6 +21,13 @@
             "version": "1.0.6",
             "archive_url": "https://github.com/wu1ff/B70-LLM-Controller/releases/download/qwen3.8-flash-next-v1.0.6/qwen38-flashnext-b70-1.0.6.tar.gz",
             "sha256": "sha256:03ca4467223cd18af3f669c7c53e08f673f4a611d60181c2c67759d14ac2ecb8"
+        },
+        {
+            "id": "dflash2-sglang",
+            "name": "DFlash2 — SGLang (Controller 1.0.2+)",
+            "version": "1.0.0",
+            "archive_url": "https://github.com/wu1ff/B70-LLM-Controller/releases/download/qwen3.8-flash-next-sglang-v1.0.0/dflash2-sglang-1.0.0.tar.gz",
+            "sha256": "sha256:24a7d0947822351b3596ba4d9fc7e52abe59270e022b0cc62fda14ec9e7f8dac"
         }
     ]
 }

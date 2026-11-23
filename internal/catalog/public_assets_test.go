@@ -36,7 +36,7 @@ const (
 // publishedPackDirectories lists every pack directory that must have a
 // matching tracked catalog entry. A pack's release tag is the lowercased
 // directory name plus -v<version> (Qwen3.8-27B -> qwen3.8-27b-v1.0.1).
-var publishedPackDirectories = []string{"Qwen3.8-27B", "Qwen3.6-35B-A3B", "Qwen3.8-Flash-Next"}
+var publishedPackDirectories = []string{"Qwen3.8-27B", "Qwen3.6-35B-A3B", "Qwen3.8-Flash-Next", "Qwen3.8-Flash-Next-SGLang"}
 
 // The legacy release and development archive fixtures use regular mode 0644,
 // epoch mtime, zero ownership, GNU tar format and a nameless gzip stream.
@@ -342,16 +342,19 @@ func TestTrackedCatalogMatchesPublishedPack(t *testing.T) {
 		if entry.ID == "" {
 			t.Fatalf("pack %s (%s) has no catalog entry; catalogs and pack directories must be added together", manifest.ID, directory)
 		}
-		if entry.Name != manifest.Name || entry.Version != manifest.Version {
+		if entry.Name != manifest.CatalogName() || entry.Version != manifest.Version {
 			t.Fatalf("catalog entry %+v does not match pack manifest id/name/version %+v", entry, manifest)
 		}
 
 		archiveName := manifest.ID + "-" + manifest.Version + ".tar.gz"
 		archivePath := filepath.Join(t.TempDir(), archiveName)
 		tag := strings.ToLower(directory) + "-v" + manifest.Version
-		if directory == "Qwen3.8-Flash-Next" {
+		switch directory {
+		case "Qwen3.8-Flash-Next":
 			writeFlashNextReleaseArchive(t, tag, directory, archivePath)
-		} else {
+		case "Qwen3.8-Flash-Next-SGLang":
+			writeSGLangReleaseArchive(t, packPath, archivePath)
+		default:
 			writePackArchive(t, packPath, archivePath)
 		}
 		if digest := fileDigest(t, archivePath); entry.SHA256 != digest {
@@ -362,6 +365,19 @@ func TestTrackedCatalogMatchesPublishedPack(t *testing.T) {
 		if entry.ArchiveURL != wantURL {
 			t.Fatalf("catalog archive_url %s does not match pack release download URL %s", entry.ArchiveURL, wantURL)
 		}
+	}
+}
+
+func writeSGLangReleaseArchive(t *testing.T, directory, destination string) {
+	t.Helper()
+	// The SGLang release uses GNU tar and level-6 gzip for its two root members.
+	const repack = `tar -C "$1" --sort=name --format=gnu --mtime=@0 --owner=0 --group=0 --numeric-owner --mode=0644 -cf - README.md pack.json | gzip -n -6`
+	payload, err := exec.Command("bash", "-o", "pipefail", "-c", repack, "repack", directory).Output()
+	if err != nil {
+		t.Fatalf("repack SGLang release: %v", err)
+	}
+	if err := os.WriteFile(destination, payload, 0o644); err != nil {
+		t.Fatal(err)
 	}
 }
 
