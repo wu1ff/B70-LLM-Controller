@@ -14,7 +14,8 @@ Controller version: **1.0.2**.
 | --- | --- | --- |
 | [Qwen3.8-27B](model-packs/Qwen3.8-27B/README.md) | Standard and uncensored FP8 / INT4 | Base, MTP1, dFlash2 |
 | [Qwen3.6-35B-A3B](model-packs/Qwen3.6-35B-A3B/README.md) | FP8 / INT4 | Base, DFlash |
-| [Qwen3.8 Flash-Next](model-packs/Qwen3.8-Flash-Next/README.md) | Intel AutoRound W4A16 | DFlash2 — 7 proposals, 4× B70, 262,144-token context |
+| [Qwen3.8 Flash-Next — vLLM DFlash2 (v6)](model-packs/Qwen3.8-Flash-Next/) | Intel AutoRound W4A16 | DFlash2 — 7 proposals, 4× B70, 262,144-token context |
+| [Qwen3.8 Flash-Next — SGLang DFlash2](model-packs/Qwen3.8-Flash-Next-SGLang/) | Intel AutoRound W4A16 | DFlash2 — 7 proposals, 4× B70, 262,144-token context |
 
 Mode availability depends on the checkpoint, card count, and context. Each linked pack README describes its qualified profiles and any additional storage or runtime requirements.
 
@@ -27,14 +28,14 @@ The qualified host is **Ubuntu 26.04 amd64**. Other Linux distributions may work
 - Docker, with permission for the user running `b70ctl` to use the daemon.
 - Access to the B70 render devices so Docker can pass `/dev/dri` into the container.
 
-The serving-side Intel/XPU/vLLM userspace ships inside the pack's runtime image. The host supplies the kernel driver, firmware, device access, and Docker; driver installation is distribution-specific and outside the Controller's scope.
+The serving engine and Intel XPU userspace ship inside the pack's runtime image. The host supplies the kernel driver, firmware, device access, and Docker; driver installation is distribution-specific and outside the Controller's scope.
 
 ## Installation
 
-Release builds are distributed as a Debian package with a `SHA256SUMS` checksum file. Download the matching package and checksum file from the same [Controller release](https://github.com/wu1ff/B70-LLM-Controller/releases). Verify the checksum before installing.
+The [Controller releases](https://github.com/wu1ff/B70-LLM-Controller/releases) include an amd64 Debian package and a standalone `b70ctl` executable. Download the desired asset and the `SHA256SUMS` file from the same release, then verify the download before installation.
 
 ```bash
-sha256sum -c SHA256SUMS
+sha256sum -c --ignore-missing SHA256SUMS
 sudo apt install ./b70-llm-controller_1.0.2_amd64.deb
 ```
 
@@ -62,7 +63,7 @@ Models are stored in `~/b70ctl-models` by default. Under **Settings** you can ch
 
 A model pack pins exact checkpoint revisions, file inventories, and runtime image digests, together with qualified quantization, card, context, mode, and launch settings. `b70ctl` verifies the runtime's identity and offers only combinations recorded in the pack.
 
-Checkpoints are pre-quantized and mounted read-only for serving; weights stay separate from the runtime image. Runtimes derive from Intel's `llm-scaler` and XPU vLLM work, with pack-specific fixes independently qualified by this project. They are not official Intel releases.
+Checkpoints are pre-quantized and mounted read-only for serving; weights stay separate from the runtime image. The project independently qualifies each runtime and its pack-specific fixes. The pack READMEs describe the serving engines and their upstream sources.
 
 Cleanup respects resource ownership:
 

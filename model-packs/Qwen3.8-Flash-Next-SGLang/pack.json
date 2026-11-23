@@ -1,0 +1,256 @@
+{
+  "schema_version": 1,
+  "min_controller_version": "1.0.2",
+  "id": "dflash2-sglang",
+  "name": "DFlash2 — SGLang",
+  "version": "1.0.0",
+  "models": [
+    {
+      "id": "qwen38-flashnext-sglang-w4a16",
+      "name": "Qwen3.8 Flash Next W4A16 — SGLang",
+      "kind": "target",
+      "repo": "Intel/Qwen3.8-Flash-Next-W4A16-AutoRound",
+      "revision": "4c67bf686b7f7fd386bae6b07ab59e8ff1d5b897",
+      "gated": false,
+      "files": [
+        {
+          "path": ".gitattributes",
+          "size": 1635
+        },
+        {
+          "path": "README.md",
+          "size": 2418
+        },
+        {
+          "path": "chat_template.jinja",
+          "size": 8952
+        },
+        {
+          "path": "config.json",
+          "size": 266426
+        },
+        {
+          "path": "config.json.autoround.bak",
+          "size": 266639
+        },
+        {
+          "path": "generation_config.json",
+          "size": 214
+        },
+        {
+          "path": "model-00001-of-00017.safetensors",
+          "size": 2899311784
+        },
+        {
+          "path": "model-00003-of-00017.safetensors",
+          "size": 5370548192
+        },
+        {
+          "path": "model-00004-of-00017.safetensors",
+          "size": 5370910416
+        },
+        {
+          "path": "model-00005-of-00017.safetensors",
+          "size": 5370140704
+        },
+        {
+          "path": "model-00006-of-00017.safetensors",
+          "size": 5370205184
+        },
+        {
+          "path": "model-00007-of-00017.safetensors",
+          "size": 5370927288
+        },
+        {
+          "path": "model-00008-of-00017.safetensors",
+          "size": 5344445352
+        },
+        {
+          "path": "model-00009-of-00017.safetensors",
+          "size": 5370355648
+        },
+        {
+          "path": "model-00010-of-00017.safetensors",
+          "size": 5370927288
+        },
+        {
+          "path": "model-00011-of-00017.safetensors",
+          "size": 5324173744
+        },
+        {
+          "path": "model-00012-of-00017.safetensors",
+          "size": 5370438520
+        },
+        {
+          "path": "model-00013-of-00017.safetensors",
+          "size": 5370927288
+        },
+        {
+          "path": "model-00014-of-00017.safetensors",
+          "size": 5342689856
+        },
+        {
+          "path": "model-00015-of-00017.safetensors",
+          "size": 5050474736
+        },
+        {
+          "path": "model-00016-of-00017.safetensors",
+          "size": 102400512256
+        },
+        {
+          "path": "model-00017-of-00017.safetensors",
+          "size": 1284526608
+        },
+        {
+          "path": "model.safetensors.index.json",
+          "size": 23794460
+        },
+        {
+          "path": "model_extra_tensors.safetensors",
+          "size": 5214492152
+        },
+        {
+          "path": "preprocessor_config.json",
+          "size": 443
+        },
+        {
+          "path": "processor_config.json",
+          "size": 1220
+        },
+        {
+          "path": "quantization_config.json",
+          "size": 94026
+        },
+        {
+          "path": "tokenizer.json",
+          "size": 19989325
+        },
+        {
+          "path": "tokenizer_config.json",
+          "size": 1165
+        }
+      ],
+      "mount_path": "/models",
+      "launch": {
+        "docker_args": [],
+        "environment": {},
+        "command_args": []
+      }
+    },
+    {
+      "id": "qwen38-flashnext-dflash2-bf16",
+      "name": "Qwen3.8-Flash-Next DFlash2 BF16 Assistant",
+      "kind": "assistant",
+      "repo": "incoai/Qwen3.8-Flash-Next-DFlash2",
+      "revision": "a22a1744e85c17364dcc54a6a420af7135d4c7f6",
+      "gated": false,
+      "files": [
+        {
+          "path": ".gitattributes",
+          "size": 1581
+        },
+        {
+          "path": "README.md",
+          "size": 5402
+        },
+        {
+          "path": "assets/dflash2-figure.png",
+          "size": 286889
+        },
+        {
+          "path": "config.json",
+          "size": 1236
+        },
+        {
+          "path": "model.safetensors",
+          "size": 1206140008
+        },
+        {
+          "path": "patches/qwen38-dflash2-capture.patch",
+          "size": 2642
+        }
+      ],
+      "mount_path": "/draft",
+      "launch": {
+        "docker_args": [],
+        "environment": {},
+        "command_args": []
+      }
+    }
+  ],
+  "runtimes": [
+    {
+      "id": "sglang-a0042",
+      "image": "ghcr.io/wu1ff/qwen38-flashnext-b70@sha256:32d45cbaee2e127c79646045cb04dc9235cf3a991d6e137f2cb4cb07f27775e4",
+      "registry": "ghcr.io/wu1ff/qwen38-flashnext-b70@sha256:32d45cbaee2e127c79646045cb04dc9235cf3a991d6e137f2cb4cb07f27775e4",
+      "digest": "sha256:32d45cbaee2e127c79646045cb04dc9235cf3a991d6e137f2cb4cb07f27775e4",
+      "image_entrypoint": true,
+      "persistent_jit_cache": true,
+      "container_port": 18093,
+      "health_path": "/ready",
+      "launch": {
+        "docker_args": [
+          "--pull",
+          "never",
+          "--init",
+          "--ipc",
+          "private",
+          "--shm-size",
+          "2g",
+          "--security-opt",
+          "seccomp=unconfined",
+          "--read-only",
+          "--tmpfs",
+          "/tmp:rw,exec,size=2g",
+          "--tmpfs",
+          "/work:rw,exec,size=4g",
+          "--device",
+          "/dev/dri/renderD128",
+          "--device",
+          "/dev/dri/renderD129",
+          "--device",
+          "/dev/dri/renderD130",
+          "--device",
+          "/dev/dri/renderD131",
+          "--ulimit",
+          "memlock=-1:-1"
+        ],
+        "environment": {
+          "TRITON_CACHE_DIR": "/cache/triton",
+          "TORCHINDUCTOR_CACHE_DIR": "/cache/inductor"
+        },
+        "command": []
+      }
+    }
+  ],
+  "modes": [
+    {
+      "id": "dflash2",
+      "display_name": "DFlash2",
+      "assistants": [
+        "qwen38-flashnext-dflash2-bf16"
+      ],
+      "launch": {
+        "docker_args": [],
+        "environment": {},
+        "command_args": []
+      }
+    }
+  ],
+  "profiles": [
+    {
+      "id": "sglang-dflash2-tp4-262144",
+      "model_id": "qwen38-flashnext-sglang-w4a16",
+      "runtime_id": "sglang-a0042",
+      "cards": 4,
+      "tensor_parallel": 4,
+      "context": 262144,
+      "mode": "dflash2",
+      "launch": {
+        "docker_args": [],
+        "environment": {},
+        "command_args": []
+      }
+    }
+  ]
+}
