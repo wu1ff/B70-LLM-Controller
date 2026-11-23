@@ -14,7 +14,7 @@ Controller version: **1.0.2**.
 | --- | --- | --- |
 | [Qwen3.8-27B](model-packs/Qwen3.8-27B/README.md) | Standard and uncensored FP8 / INT4 | Base, MTP1, dFlash2 |
 | [Qwen3.6-35B-A3B](model-packs/Qwen3.6-35B-A3B/README.md) | FP8 / INT4 | Base, DFlash |
-| [Qwen3.8 Flash-Next — vLLM DFlash2 (v6)](model-packs/Qwen3.8-Flash-Next/) | Intel AutoRound W4A16 | DFlash2 — 7 proposals, 4× B70, 262,144-token context |
+| [Qwen3.8 Flash-Next — vLLM DFlash2 (v6)](model-packs/Qwen3.8-Flash-Next-vLLM/) | Intel AutoRound W4A16 | DFlash2 — 7 proposals, 4× B70, 262,144-token context |
 | [Qwen3.8 Flash-Next — SGLang DFlash2](model-packs/Qwen3.8-Flash-Next-SGLang/) | Intel AutoRound W4A16 | DFlash2 — 7 proposals, 4× B70, 262,144-token context |
 
 Mode availability depends on the checkpoint, card count, and context. Each linked pack README describes its qualified profiles and any additional storage or runtime requirements.

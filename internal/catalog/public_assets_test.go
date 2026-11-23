@@ -25,8 +25,9 @@ import (
 )
 
 const (
-	publicPackDirectory = "Qwen3.8-27B"
-	publicArchiveName   = "qwen38-27b-b70-1.0.6.tar.gz"
+	flashNextVLLMPackDirectory = "Qwen3.8-Flash-Next-vLLM"
+	publicPackDirectory        = "Qwen3.8-27B"
+	publicArchiveName          = "qwen38-27b-b70-1.0.6.tar.gz"
 	// Fixture URL for the locally served archive; generated catalogs never
 	// reference the repository itself because generated archives are not
 	// tracked there.
@@ -34,9 +35,8 @@ const (
 )
 
 // publishedPackDirectories lists every pack directory that must have a
-// matching tracked catalog entry. A pack's release tag is the lowercased
-// directory name plus -v<version> (Qwen3.8-27B -> qwen3.8-27b-v1.0.1).
-var publishedPackDirectories = []string{"Qwen3.8-27B", "Qwen3.6-35B-A3B", "Qwen3.8-Flash-Next", "Qwen3.8-Flash-Next-SGLang"}
+// matching tracked catalog entry.
+var publishedPackDirectories = []string{"Qwen3.8-27B", "Qwen3.6-35B-A3B", flashNextVLLMPackDirectory, "Qwen3.8-Flash-Next-SGLang"}
 
 // The legacy release and development archive fixtures use regular mode 0644,
 // epoch mtime, zero ownership, GNU tar format and a nameless gzip stream.
@@ -106,7 +106,7 @@ func packArchiveNames(t *testing.T, packDirectory string) []string {
 }
 
 func TestFlashNextSourceArchiveLoad(t *testing.T) {
-	packDirectory := filepath.Join("..", "..", "model-packs", "Qwen3.8-Flash-Next")
+	packDirectory := filepath.Join("..", "..", "model-packs", flashNextVLLMPackDirectory)
 	manifest, err := modelpack.Load(packDirectory)
 	if err != nil {
 		t.Fatal(err)
@@ -350,8 +350,10 @@ func TestTrackedCatalogMatchesPublishedPack(t *testing.T) {
 		archivePath := filepath.Join(t.TempDir(), archiveName)
 		tag := strings.ToLower(directory) + "-v" + manifest.Version
 		switch directory {
-		case "Qwen3.8-Flash-Next":
-			writeFlashNextReleaseArchive(t, tag, directory, archivePath)
+		case flashNextVLLMPackDirectory:
+			// The published vLLM tag and its tree retain the original directory name.
+			tag = "qwen3.8-flash-next-v" + manifest.Version
+			writeFlashNextReleaseArchive(t, tag, "Qwen3.8-Flash-Next", archivePath)
 		case "Qwen3.8-Flash-Next-SGLang":
 			writeSGLangReleaseArchive(t, packPath, archivePath)
 		default:

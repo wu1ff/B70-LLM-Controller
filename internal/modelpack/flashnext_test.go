@@ -11,7 +11,7 @@ import (
 
 // Compare the pack's v6 launch with the retained qualified vLLM 0.33 profile.
 func TestFlashNextDiskQualifiedProfiles(t *testing.T) {
-	root := filepath.Join("..", "..", "model-packs", "Qwen3.8-Flash-Next")
+	root := filepath.Join("..", "..", "model-packs", "Qwen3.8-Flash-Next-vLLM")
 	manifest, err := Load(root)
 	if err != nil {
 		t.Fatal(err)
