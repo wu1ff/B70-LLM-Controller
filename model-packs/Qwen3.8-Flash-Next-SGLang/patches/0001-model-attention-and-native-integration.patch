@@ -1,0 +1,2014 @@
+diff --git a/python/sglang/kernels/ops/mamba/mamba_state_scatter_triton.py b/python/sglang/kernels/ops/mamba/mamba_state_scatter_triton.py
+index 33c57f1d764c61ae5c6c55e91f6c25a7b011214d..a03849642911e67088eb2723013591cbf30bcf89 100644
+--- a/python/sglang/kernels/ops/mamba/mamba_state_scatter_triton.py
++++ b/python/sglang/kernels/ops/mamba/mamba_state_scatter_triton.py
+@@ -785,13 +785,14 @@ def scatter_mamba_states_after_mtp_verify(
+     mamba_track_indices: torch.Tensor | None,
+     mamba_steps_to_track: torch.Tensor | None,
+     src_indices_raw: torch.Tensor | None = None,
++    scatter_ssm: bool = True,
+ ) -> None:
+     """Scatter per-step verify states (ssm + all conv types) into the
+     persistent caches, plus the interval-crossing track slots."""
+     ssm_states = mamba_caches.temporal
+     intermediate_state_cache = mamba_caches.intermediate_ssm
+ 
+-    if ssm_states.numel() > 0:
++    if scatter_ssm and ssm_states.numel() > 0:
+         fused_mamba_state_scatter_with_mask(
+             ssm_states,
+             intermediate_state_cache,
+diff --git a/python/sglang/kernels/ops/speculative/fused_kv_materialize.py b/python/sglang/kernels/ops/speculative/fused_kv_materialize.py
+index 0b8f5284f3ec8b26f2372d917c1eceb30dd8a293..9012839ebe2844dded9d1bbcc9c5279a022e731e 100644
+--- a/python/sglang/kernels/ops/speculative/fused_kv_materialize.py
++++ b/python/sglang/kernels/ops/speculative/fused_kv_materialize.py
+@@ -43,6 +43,9 @@ def _fused_norm_rope_kernel_stacked(
+     v_out_stride_ctx,
+     v_out_stride_head,
+     total_ctx,
++    commit_locs,
++    commit_lens,
++    PREFIX_WIDTH: tl.constexpr,
+     n_layers: tl.constexpr,
+     num_kv_heads: tl.constexpr,
+     head_dim: tl.constexpr,
+@@ -58,24 +61,25 @@ def _fused_norm_rope_kernel_stacked(
+     if ctx_id >= total_ctx or layer_id >= n_layers:
+         return
+ 
++    if PREFIX_WIDTH:
++        live = tl.load(commit_lens + ctx_id // PREFIX_WIDTH)
++        if ctx_id % PREFIX_WIDTH >= live:
++            return
++        slot = tl.load(commit_locs + ctx_id)
++        offset = slot * kv_size + head_id * head_dim
++        k_write = tl.load(k_out_ptr + layer_id).to(tl.pointer_type(tl.bfloat16)) + offset
++        v_write = tl.load(v_out_ptr + layer_id).to(tl.pointer_type(tl.bfloat16)) + offset
++    else:
++        k_write = (k_out_ptr + layer_id * k_out_stride_layer
++                   + ctx_id * k_out_stride_ctx + head_id * k_out_stride_head)
++        v_write = (v_out_ptr + layer_id * v_out_stride_layer
++                   + ctx_id * v_out_stride_ctx + head_id * v_out_stride_head)
++
+     position = tl.load(positions_ptr + ctx_id)
+     eps = tl.load(eps_ptr + layer_id).to(tl.float32)
+     kv_base = kv_ptr + ctx_id * kv_stride_ctx + layer_id * kv_stride_layer
+     k_base = kv_base + head_id * head_dim
+     v_base = kv_base + kv_size + head_id * head_dim
+-    k_write = (
+-        k_out_ptr
+-        + layer_id * k_out_stride_layer
+-        + ctx_id * k_out_stride_ctx
+-        + head_id * k_out_stride_head
+-    )
+-    v_write = (
+-        v_out_ptr
+-        + layer_id * v_out_stride_layer
+-        + ctx_id * v_out_stride_ctx
+-        + head_id * v_out_stride_head
+-    )
+-
+     offs = tl.arange(0, BLOCK_HD)
+     mask_hd = offs < head_dim
+     mask_half = offs < half_rotary_dim
+@@ -228,6 +232,9 @@ def _fused_norm_rope_stacked(
+         v_out.stride(1),
+         v_out.stride(2),
+         total_ctx,
++        None,
++        None,
++        0,
+         n_layers,
+         num_kv_heads,
+         head_dim,
+@@ -391,6 +398,7 @@ class FusedKVMaterializeHelper:
+         ctx_hidden: torch.Tensor,
+         positions: torch.Tensor,
+         write_layer_kv: Callable[[int, torch.Tensor, torch.Tensor], None],
++        resident_prefix: Optional[tuple] = None,
+     ) -> None:
+         """Materialize KV cache for all layers using batched projection."""
+         total_ctx = ctx_hidden.shape[0]
+@@ -439,6 +447,18 @@ class FusedKVMaterializeHelper:
+             proj_out_2d = torch.mm(ctx_hidden, self.flat_kv_weight_t)
+ 
+         proj_out = proj_out_2d.view(total_ctx, self.n_layers, self.layer_out_dim)
++        if resident_prefix is not None:
++            k_ptrs, v_ptrs, locs, commit_lens = resident_prefix
++            _fused_norm_rope_kernel_stacked[(total_ctx, self.num_kv_heads, self.n_layers)](
++                proj_out, self.k_norm_weights, self.eps_values, cos_sin_cache, positions,
++                k_ptrs, v_ptrs, proj_out.stride(0), proj_out.stride(1),
++                self.k_norm_weights.stride(0), cos_sin_cache.stride(0),
++                0, 0, 0, 0, 0, 0, total_ctx, locs, commit_lens,
++                locs.shape[1], self.n_layers, self.num_kv_heads, self.head_dim,
++                self.kv_size, self.rotary_dim, self.rotary_dim // 2,
++                triton.next_power_of_2(self.head_dim),
++            )
++            return
+         tmp_k = self._k_workspace[:, :total_ctx]
+         tmp_v = self._v_workspace[:, :total_ctx]
+         cache_k, cache_v = _fused_norm_rope_stacked(
+diff --git a/python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py b/python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py
+index 9373938ce490fa0e88194ac0f4512553e3eceeda..ba05e0cfd272bb6916632510310bf4e159c3ae3c 100644
+--- a/python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py
++++ b/python/sglang/srt/layers/attention/hybrid_linear_attn_backend.py
+@@ -1649,6 +1649,7 @@ class HybridLinearAttnBackend(AttentionBackend):
+         model,
+         req_pool_indices: Optional[torch.Tensor] = None,
+         state_slots: Optional[ForwardStateSlots] = None,
++        gdn_factors: bool = False,
+     ):
+         """Commit accepted Mamba states; PP rows identify the delayed batch.
+         Writes ``state_slots``; ``mamba_track_indices`` only says whether to track."""
+@@ -1768,6 +1769,12 @@ class HybridLinearAttnBackend(AttentionBackend):
+             "per-draft SSM snapshots are not allocated (ReplaySSM spec verify), "
+             "but no ReplaySSM commit handled this pool"
+         )
++        if gdn_factors:
++            from sglang.srt.speculative.gdn_factors import commit
++
++            assert src_indices_raw is None
++            commit(mamba_caches, state_indices_tensor, last_correct_step_indices,
++                   mamba_track_indices, mamba_steps_to_track)
+         scatter_mamba_states_after_mtp_verify(
+             mamba_caches,
+             state_indices_tensor,
+@@ -1775,6 +1782,7 @@ class HybridLinearAttnBackend(AttentionBackend):
+             mamba_track_indices,
+             mamba_steps_to_track,
+             src_indices_raw=src_indices_raw,
++            scatter_ssm=not gdn_factors,
+         )
+ 
+         self._update_ple_state_after_mtp_verify(
+@@ -1795,7 +1803,11 @@ class HybridLinearAttnBackend(AttentionBackend):
+     ):
+         if dst is None or src is None or step_indices_raw.numel() == 0:
+             return
+-        if dst.is_cuda and src.is_cuda:
++        from sglang.srt.speculative.flashnext_dflash2 import CYCLE
++
++        if ((dst.is_cuda and src.is_cuda)
++                or (CYCLE and dst.is_xpu and src.is_xpu
++                    and dst.is_contiguous() and src.is_contiguous())):
+             fused_mamba_state_scatter_with_mask(
+                 dst,
+                 src,
+diff --git a/python/sglang/srt/layers/attention/linear/gdn_backend.py b/python/sglang/srt/layers/attention/linear/gdn_backend.py
+index afcaaa71848173960e77f9d7e4aab20a0c867607..e4319bf753297f50bc75d25a08ac7723cddd14c8 100644
+--- a/python/sglang/srt/layers/attention/linear/gdn_backend.py
++++ b/python/sglang/srt/layers/attention/linear/gdn_backend.py
+@@ -1432,7 +1432,7 @@ class GDNAttnBackend(MambaAttnBackendBase):
+         assert isinstance(mixed_qkv, torch.Tensor)
+         seq_len = mixed_qkv.shape[0]
+ 
+-        if _is_hip and seq_len == 0:
++        if seq_len == 0 and (_is_hip or mixed_qkv.device.type == "xpu"):
+             return mixed_qkv.new_zeros((1, 0, layer.num_v_heads, layer.head_v_dim))
+ 
+         is_target_verify = forward_batch.forward_mode.is_target_verify()
+@@ -1539,6 +1539,14 @@ class GDNAttnBackend(MambaAttnBackendBase):
+                     mixed_qkv_to_track
+                 )
+ 
++            if (mixed_qkv.device.type == "xpu" and mixed_qkv.shape[0] > 128 and layer.q_dim == 512 and layer.v_dim == 1536
++                    and not needs_state_gather and self.mis_metadata is None):
++                from sglang.srt.speculative.b70_prefill import grouped_prefill
++
++                return grouped_prefill(
++                    self, layer, forward_batch, mixed_qkv, a, b,
++                    conv_states, ssm_states, cache_indices,
++                )
+             mixed_qkv = self._convolve_prefill(
+                 layer,
+                 forward_batch,
+diff --git a/python/sglang/srt/layers/attention/linear/kernels/gdn_xpu.py b/python/sglang/srt/layers/attention/linear/kernels/gdn_xpu.py
+index 6928071a7106c83a2527035c17e9a367d127a01c..7ea4b497fb78036792239404e7fbf3bfae35b80f 100644
+--- a/python/sglang/srt/layers/attention/linear/kernels/gdn_xpu.py
++++ b/python/sglang/srt/layers/attention/linear/kernels/gdn_xpu.py
+@@ -24,6 +24,14 @@ def _use_flash_next_fused_eager_gdn() -> bool:
+     return enabled
+ 
+ 
++@cache
++def _ordered_prefill_enabled():
++    if os.getenv("SGLANG_FLASHNEXT_ORDERED_PREFILL") != "1":
++        return False
++    torch.ops.load_library("/opt/flashnext/libflashnext_ordered.so")
++    return True
++
++
+ @cache
+ def _use_flash_next_eager_gdn() -> bool:
+     enabled = os.environ.get("SGLANG_INTEL_FLASHNEXT_EAGER_GDN") == "1"
+@@ -53,6 +61,11 @@ def causal_conv1d_verify_xpu(
+             retrieve_next_token, retrieve_next_sibling, retrieve_parent_token
+         )):
+             raise ValueError("Flash Next eager verify requires a fixed chain")
++        if x.shape[-1] == 8 and weight.shape[-1] == 4:
++            from sglang.srt.speculative.verify_ops import conv
++            return conv(x, conv_state, weight, bias, activation,
++                        conv_state_indices=conv_state_indices, intermediate_conv_window=intermediate_conv_window,
++                        intermediate_state_indices=intermediate_state_indices)
+         indices = conv_state_indices.long()
+         scratch = intermediate_state_indices.long()
+         history = conv_state.index_select(0, indices)
+@@ -146,16 +159,38 @@ def _flash_next_eager_gdn(
+         raise ValueError(
+             "Flash Next eager GDN requires 1 to 1024 rows, TP4 heads and FP32 state"
+         )
+-    q = q.squeeze(0).float()
+-    k = k.squeeze(0).float()
+-    v32 = v.squeeze(0).float()
+-    ratio = v.shape[-2] // q.shape[-2]
+-    q = q * (q.square().sum(dim=-1, keepdim=True) + 1e-6).rsqrt()
+-    q = (q * (q.shape[-1] ** -0.5)).repeat_interleave(ratio, dim=1)
+-    k = k * (k.square().sum(dim=-1, keepdim=True) + 1e-6).rsqrt()
+-    k = k.repeat_interleave(ratio, dim=1)
+-    gate = (-A_log.float().exp() * F.softplus(a.float() + dt_bias.float())).exp()
+-    beta = b.float().sigmoid()
++    if (has_state is not None and verify_states is None and 16 <= q.shape[1] <= 128
++            and a.numel() == b.numel() == q.shape[1] * 12
++            and A_log.numel() == dt_bias.numel() == 12
++            and not torch.xpu.is_current_stream_capturing()):
++        from sglang.srt.speculative.short_regions import gdn
++        q, k, v32, gate, beta = gdn(q[0], k[0], v[0], a, b, A_log, dt_bias)
++    else:
++        q = q.squeeze(0).float()
++        k = k.squeeze(0).float()
++        v32 = v.squeeze(0).float()
++        ratio = v.shape[-2] // q.shape[-2]
++        q = q * (q.square().sum(dim=-1, keepdim=True) + 1e-6).rsqrt()
++        q = (q * (q.shape[-1] ** -0.5)).repeat_interleave(ratio, dim=1)
++        k = k * (k.square().sum(dim=-1, keepdim=True) + 1e-6).rsqrt()
++        k = k.repeat_interleave(ratio, dim=1)
++        gate = (-A_log.float().exp() * F.softplus(a.float() + dt_bias.float())).exp()
++        beta = b.float().sigmoid()
++    capture = graph_decode and whole_target_capture.get()
++    if (has_state is not None or capture) and verify_states is None and _ordered_prefill_enabled():
++        if capture:
++            # Fixed, unpadded C1-C4 replay binds live slots at each launch.
++            offsets = torch.arange(cache_indices.numel() + 1, device=q.device, dtype=torch.int32)
++            has_state = torch.ones_like(cache_indices, dtype=torch.bool)
++        output = torch.zeros_like(v32, memory_format=torch.contiguous_format)
++        torch.ops.flashnext_ordered.recurrent(
++            q.contiguous(), k.contiguous(), v32.contiguous(), gate.contiguous(),
++            beta.contiguous(), ssm_states, cache_indices.int().contiguous(),
++            offsets.int().contiguous(), has_state.bool().contiguous(), track_state,
++            track_chunk_idx.int().contiguous() if track_state is not None else None,
++            state_chunk_size or 0, output,
++        )
++        return output.to(v.dtype).unsqueeze(0)
+     fused = verify_states is None and q.shape[0] > 1 and _use_flash_next_fused_eager_gdn()
+     if fused:
+         from sglang.srt.layers.attention.linear.kernels.gdn_flash_next_xpu import recurrent_range
+diff --git a/python/sglang/srt/layers/attention/mamba/mamba2_metadata.py b/python/sglang/srt/layers/attention/mamba/mamba2_metadata.py
+index 7d2e591dfc3a36aefccdd09a19fdf84a46f5ad92..6324ae7416a8c9e884c6a744dcbbb1648a80db65 100644
+--- a/python/sglang/srt/layers/attention/mamba/mamba2_metadata.py
++++ b/python/sglang/srt/layers/attention/mamba/mamba2_metadata.py
+@@ -101,6 +101,9 @@ class ForwardMetadata:
+     # GDN prefill on packed copies of a strided state pool: built by the first
+     # layer that stages and shared by the rest of the forward.
+     prefill_state_staging: Optional["PoolStaging"] = None
++    # Shared Flash Next Xe2 phase metadata for all GDN layers of an eager extend.
++    flashnext_prefill_plan: Optional[tuple] = None
++    flashnext_prefill_export_plan: Optional[object] = None
+ 
+     has_mamba_track_mask: bool = False
+     mamba_track_mask_indices: Optional[torch.Tensor] = None
+diff --git a/python/sglang/srt/layers/attention/triton_backend.py b/python/sglang/srt/layers/attention/triton_backend.py
+index 55f2e8b4e0e84ae6f8d7280f99177508671feee8..2ac0a737a5a21f91c53250b67b377203bdb7ad35 100644
+--- a/python/sglang/srt/layers/attention/triton_backend.py
++++ b/python/sglang/srt/layers/attention/triton_backend.py
+@@ -130,6 +130,7 @@ class WindowRail(msgspec.Struct, kw_only=True):
+     kv_indices: Optional[torch.Tensor]
+     # Extend and verify: where each request's window starts in its prefix.
+     kv_offsets: Optional[torch.Tensor] = None
++    kv_indices_exact: bool = False
+     # The window layers' write ids; None when they write through the token ids.
+     out_cache_loc: Optional[torch.Tensor] = None
+     # Deterministic extend: the rail padded to absolute tile boundaries.
+@@ -660,6 +661,7 @@ class TritonAttnBackend(AttentionBackend):
+         with_offsets: bool,
+         graph: bool = False,
+         aligned: bool = False,
++        exact_window_rows: Optional[tuple[int, int]] = None,
+     ) -> Dict[str, WindowRail]:
+         """Every window rail over the last ``lens`` tokens of each request, in the
+         CUDA-graph buffers when ``graph``; ``aligned`` adds the tile-aligned rail."""
+@@ -679,6 +681,10 @@ class TritonAttnBackend(AttentionBackend):
+                     self.cuda_graph_window_kv_indices[name] if graph else None
+                 ),
+                 kind=name,
++                exact_window_rows=(
++                    exact_window_rows[1] if name == IdSpaceKind.FULL
++                    and exact_window_rows is not None and exact_window_rows[0] == window else None
++                ),
+             )
+             if not with_offsets:
+                 kv_offsets = None
+@@ -686,7 +692,8 @@ class TritonAttnBackend(AttentionBackend):
+                 self.cuda_graph_window_kv_offsets[name][:bs] = kv_offsets
+                 kv_offsets = self.cuda_graph_window_kv_offsets[name]
+             rail = WindowRail(
+-                kv_indptr=kv_indptr, kv_indices=kv_indices, kv_offsets=kv_offsets
++                kv_indptr=kv_indptr, kv_indices=kv_indices, kv_offsets=kv_offsets,
++                kv_indices_exact=not graph,
+             )
+             if aligned:
+                 rail.aligned_kv_indptr, rail.aligned_kv_indices = (
+@@ -1026,6 +1033,10 @@ class TritonAttnBackend(AttentionBackend):
+         if self.dllm_attention is not None:
+             self.dllm_attention.graph_mode = False
+         self._dense_one_shot_kv_indptr = None
++        if forward_batch.flashnext_draft_paged and forward_batch.flashnext_prepared_window is not None:
++            from sglang.srt.speculative.draft_window import metadata
++            self.forward_metadata = metadata(forward_batch.flashnext_prepared_window, forward_batch)
++            return
+         bs = forward_batch.batch_size
+         windows: Dict[str, WindowRail] = {}
+         extra_attn_logits: Dict[int, torch.Tensor] = {}
+@@ -1163,6 +1174,7 @@ class TritonAttnBackend(AttentionBackend):
+                 forward_batch.seq_lens,
+                 forward_batch.req_pool_indices,
+                 with_offsets=True,
++                exact_window_rows=forward_batch.flashnext_window_rows,
+             )
+ 
+             custom_mask = spec_info.custom_mask
+@@ -2925,6 +2937,7 @@ def update_sliding_window_buffer(
+     token_to_kv_pool=None,
+     window_kv_indices=None,
+     kind=None,
++    exact_window_rows=None,
+ ):
+     """Fill window KV buffers for sliding-window attention.
+ 
+@@ -2948,9 +2961,8 @@ def update_sliding_window_buffer(
+     window_kv_indptr[1 : bs + 1] = torch.cumsum(window_kv_lens, dim=0)
+     window_kv_indptr = window_kv_indptr[: bs + 1]
+     if window_kv_indices is None:
+-        window_kv_indices = torch.empty(
+-            window_kv_indptr[-1], dtype=torch.int64, device=device
+-        )
++        count = window_kv_indptr[-1] if exact_window_rows is None else exact_window_rows
++        window_kv_indices = torch.empty(count, dtype=torch.int64, device=device)
+     window_kv_start_idx = seq_lens - window_kv_lens
+     token_mapping = (
+         token_to_kv_pool.full_to_swa_index_mapping
+diff --git a/python/sglang/srt/layers/hyperconnection.py b/python/sglang/srt/layers/hyperconnection.py
+index 4a76924761555189c7c3c9162c791a21211b684c..ddc84241010cd1da4b909e0e3cb76fd17a07bc9a 100644
+--- a/python/sglang/srt/layers/hyperconnection.py
++++ b/python/sglang/srt/layers/hyperconnection.py
+@@ -76,6 +76,11 @@ class GroupedGemmaRMSNorm(nn.Module):
+             return grouped_gemma_rmsnorm(
+                 x, self.weight, self._jit_group_size, self.variance_epsilon
+             )
++        if (x.is_xpu and self.group_size == 2560 and x.ndim == 2 and x.shape[1] == 10240
++                and x.dtype == self.weight.dtype == torch.bfloat16 and 16 <= len(x) <= 256
++                and not torch.xpu.is_current_stream_capturing()):
++            from sglang.srt.speculative.short_regions import norm
++            return norm(self, x)
+         input_dtype = x.dtype
+         x_float = x.float()
+         if self.group_size is None:
+@@ -155,13 +160,26 @@ class GatedResidual(HyperConnectionBase):
+             norm_dim, eps=self.config.rms_norm_eps, group_size=norm_group_size
+         )
+ 
++        packed_hc = (
++            use_mix and use_combine and is_xpu()
++            and os.getenv("SGLANG_FLASHNEXT_V6_TARGET") == "1"
++            and (self.hc_count, self.hidden_size, self.config.hc_lowrank) == (4, 2560, 320)
++            and config.params_dtype == torch.bfloat16
++        )
++        if packed_hc:
++            # The loaded checkpoint tensors are views of the native 336-column
++            # projection. Keeping one owner avoids duplicate device weights.
++            self._v6_down = torch.zeros((336, 10240), dtype=config.params_dtype)
+         if use_mix:
+             self.input_mix_weight_down = nn.Linear(
+                 self.hidden_size * self.hc_count,
+                 self.config.hc_lowrank,
+                 bias=False,
+                 dtype=config.params_dtype,
++                device="meta" if packed_hc else None,
+             )
++            if packed_hc:
++                self.input_mix_weight_down.weight = nn.Parameter(self._v6_down[:320])
+             self.input_mix_weight_up = nn.Linear(
+                 self.config.hc_lowrank,
+                 self.hc_count * self.hidden_size,
+@@ -192,7 +210,10 @@ class GatedResidual(HyperConnectionBase):
+                 self.hc_count,
+                 bias=False,
+                 dtype=config.params_dtype,
++                device="meta" if packed_hc else None,
+             )
++            if packed_hc:
++                self.block_inject_weight.weight = nn.Parameter(self._v6_down[320:324])
+             # hc_combine rejects other shapes; device and dtype are checked per call.
+             self._jit_combine_ok = (
+                 self.hidden_size % 8 == 0
+@@ -271,6 +292,19 @@ class GatedResidual(HyperConnectionBase):
+         # TODO: Re-enable after both fresh-cache and cached-restart tests pass
+         # on NPU with compatible dependencies.
+         self._mix_compute = torch.compile(_mix_compute, disable=_is_npu or use_ordered_down)
++        if is_xpu() and use_mix and (self.hc_count, self.hidden_size, config.hc_lowrank) == (4, 2560, 320):
++            from sglang.srt.speculative.b70_prefill import load
++            short_mix = self._mix_compute
++            def mix(x, down, up, hc, hs):
++                if 256 < x.shape[0] <= 1024 and x.is_contiguous() and down.is_contiguous():
++                    load("long_hc")
++                    low = torch.ops.long_hc.forward(x, down, 320, 1)
++                    from sglang.srt.speculative.b70_hc import hc_silu, hc_gate_mix
++                    # The donor rounds SiLU and the up projection to BF16.
++                    # Its final sigmoid, gated products and sum stay in FP32.
++                    return hc_gate_mix(x, F.linear(hc_silu(low, hc), up), hc)
++                return short_mix(x, down, up, hc, hs)
++            self._mix_compute = mix
+         self._combine_compute = torch.compile(_combine_compute, disable=_is_npu)
+ 
+     def _flydsl_mix_ok(self) -> bool:
+@@ -294,6 +328,24 @@ class GatedResidual(HyperConnectionBase):
+             )
+             return mixed_input, (hyper_input, hyper_input, None)
+ 
++        if (
++            hasattr(self, "_v6_down")
++            and 256 < hyper_input.shape[0] <= (
++                4097 if os.getenv("SGLANG_FLASHNEXT_WIDE_PREFILL") == "1" else 1024
++            )
++            and hyper_input.device.type == "xpu"
++            and os.environ.get("SGLANG_FLASHNEXT_V6_PREFILL") == "1"
++        ):
++            from sglang.srt.speculative.v6_target import hc_mix as v6_mix
++
++            return v6_mix(self, hyper_input, normalized_input)
++
++        if normalized_input is None and 16 <= len(hyper_input) <= 256 and hyper_input.is_xpu:
++            from sglang.srt.speculative import class_hc
++            if class_hc.supported(self, hyper_input):
++                replay = class_hc.mix(self, hyper_input)
++                if replay is not None:
++                    return replay
+         if normalized_input is not None:
+             assert self.config.hc_per_branch_norm
+             assert normalized_input.shape == hyper_input.shape
+@@ -398,6 +450,10 @@ class GatedResidual(HyperConnectionBase):
+         Callers must only pass the norm when no PLE or other update intervenes.
+         """
+         hyper_input, _, partials = residuals
++        if partials is not None and partials.device.type == "xpu" and hasattr(self, "_v6_down"):
++            from sglang.srt.speculative.v6_target import hc_combine_and_normalize
++
++            return hc_combine_and_normalize(block_output, residuals, next_norm)
+         if (
+             partials is not None
+             and next_norm is not None
+@@ -427,6 +483,16 @@ class GatedResidual(HyperConnectionBase):
+         residuals: tuple[torch.Tensor, torch.Tensor, Optional[torch.Tensor]],
+     ) -> torch.Tensor:
+         hyper_input, hyper_input_normed, partials = residuals
++        if partials is None and 16 <= len(hyper_input) <= 256 and hyper_input.is_xpu:
++            from sglang.srt.speculative import class_hc
++            if class_hc.supported(self, hyper_input):
++                updated = class_hc.combine(self, block_output, residuals)
++                if updated is not None:
++                    return updated
++        if partials is not None and partials.device.type == "xpu" and hasattr(self, "_v6_down"):
++            from sglang.srt.speculative.v6_target import hc_combine
++
++            return hc_combine(block_output, residuals)
+         if partials is not None:
+             from sglang.kernels.ops.elementwise.hc_combine_decode import (
+                 hc_combine_apply,
+diff --git a/python/sglang/srt/layers/quantization/a0042_packing.py b/python/sglang/srt/layers/quantization/a0042_packing.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..3b45ceb45dc50e8882737a033db09ce31ec1d229
+--- /dev/null
++++ b/python/sglang/srt/layers/quantization/a0042_packing.py
+@@ -0,0 +1,33 @@
++"""Bound CPU staging during the exclusive initial load of cyclic INT4 parameters."""
++import weakref
++import torch
++
++
++class Packing:
++    limit = 384 << 20
++    live = weakref.WeakSet()
++
++    def __init__(self, param):
++        self.param = param
++        self.host = torch.empty_like(param,device="cpu",pin_memory=False)
++        self.completed = 0
++        self.live.add(self)
++
++    @classmethod
++    def acquire(cls,param,source):
++        if (source.device.type != "cpu" or param.device.type != "xpu"
++                or not param.is_contiguous() or param.nbytes + sum(v.host.nbytes for v in cls.live) > cls.limit):
++            return None
++        return cls(param)
++
++    def finish_part(self, param, expected):
++        if self.param is not param:
++            raise RuntimeError("Cyclic packing parameter changed during initial load")
++        self.completed += 1
++        if self.completed < expected:
++            return False
++        if self.completed != expected:
++            raise RuntimeError("Cyclic packing received too many component tensors")
++        self.param.data.copy_(self.host)
++        self.live.discard(self)
++        return True
+diff --git a/python/sglang/srt/layers/quantization/qwen4_exp_intel_moe.py b/python/sglang/srt/layers/quantization/qwen4_exp_intel_moe.py
+index a6cd93216db25701eeb385af17dc318cee871457..fab932313f8ae3ec7157beea0e3443dcc3933f15 100644
+--- a/python/sglang/srt/layers/quantization/qwen4_exp_intel_moe.py
++++ b/python/sglang/srt/layers/quantization/qwen4_exp_intel_moe.py
+@@ -2,6 +2,7 @@
+ 
+ import hashlib
+ import logging
++import os
+ from functools import cache
+ from pathlib import Path
+ 
+@@ -29,6 +30,24 @@ def load_native():
+     torch.ops.load_library(str(NATIVE_LIBRARY))
+ 
+ 
++@cache
++def load_wide_prefill():
++    path = Path("/opt/flashnext/a0037/prefill/liba0037_prefill.so")
++    expected, filename = path.with_suffix(".sha256").read_text().split()
++    if filename != path.name or hashlib.sha256(path.read_bytes()).hexdigest() != expected:
++        raise RuntimeError("Unexpected B70 wide prefill expert binary")
++    torch.ops.load_library(str(path))
++
++
++@cache
++def load_2048_prefill():
++    path = Path("/opt/flashnext/a0039/liba0039_wide_experts.so")
++    expected, filename = path.with_suffix(".sha256").read_text().split()
++    if filename != path.name or hashlib.sha256(path.read_bytes()).hexdigest() != expected:
++        raise RuntimeError("Unexpected widened expert binary")
++    torch.ops.load_library(str(path))
++
++
+ def group_locations(expert_id, rank):
+     first = (rank - expert_id) % RANKS
+     return [
+@@ -55,6 +74,7 @@ class IntelCyclicW4:
+             raise ValueError("Intel cyclic W4A16 requires the exact TP4/EP4 expert layout")
+         self.rank = layer.moe_ep_rank
+         self.seen = set()
++        self._packing = {}
+         self.calls = 0
+         load_native()
+ 
+@@ -86,7 +106,13 @@ class IntelCyclicW4:
+         if tuple(source.shape) != expected or source.dtype != dtype:
+             raise ValueError(f"Unexpected Intel AutoRound expert tensor {key}: {source.shape} {source.dtype}")
+ 
+-        groups = param.data.view(
++        from sglang.srt.layers.quantization.a0042_packing import Packing
++        which = (down, is_weight)
++        if which not in self._packing:
++            self._packing[which] = Packing.acquire(param, source)
++        staged = self._packing[which]
++        target_data = param.data if staged is None else staged.host
++        groups = target_data.view(
+             LOCAL_GROUPS, HIDDEN if down else 2 * GROUP_WIDTH, -1
+         )
+         for group, slot in group_locations(expert_id, self.rank):
+@@ -104,8 +130,12 @@ class IntelCyclicW4:
+                 part = part.contiguous().view(torch.uint8).bitwise_xor(0x88)
+             target.copy_(part)
+         self.seen.add(key)
++        if staged is not None and staged.finish_part(param, EXPERTS if down else 2*EXPERTS):
++            del self._packing[which]
+ 
+     def finalize(self, layer):
++        if any(stage is not None for stage in self._packing.values()):
++            raise RuntimeError("Incomplete staged cyclic parameter at model finalization")
+         if len(self.seen) != EXPERTS * 3 * 2:
+             raise RuntimeError(f"Incomplete Intel cyclic expert layer {layer.layer_id}")
+         self.seen.clear()
+@@ -140,6 +170,53 @@ class IntelCyclicW4:
+         down_scales = layer.w2_scales.view(LOCAL_GROUPS, HIDDEN, 1)
+         route_ids = topk.topk_ids.to(torch.int32).contiguous()
+         route_weights = topk.topk_weights.float().contiguous()
++        packed = getattr(self, "_flashnext_verify_experts", None)
++        if packed is not None:
++            packed(hidden.contiguous(), gate_up, gate_up_scales, down, down_scales,
++                   route_ids, route_weights, self.rank, result)
++            return result
++        long_limit = 4097 if os.getenv("SGLANG_FLASHNEXT_WIDE_PREFILL") == "1" else 1024
++        if 256 < rows <= long_limit:
++            from sglang.srt.speculative.b70_prefill import load
++
++            load("long_prefill_v3")
++            wide_down = os.getenv("SGLANG_FLASHNEXT_PREFILL_MOE_DOWN128") == "1"
++            compact = os.getenv("SGLANG_FLASHNEXT_PREFILL_COMPACT_ROUTES") == "1"
++            tile_size = 1536 if compact else 1024
++            columns = os.getenv("SGLANG_FLASHNEXT_WIDE_EXPERT_COLUMNS")
++            if compact and columns in ("1280", "2560") and rows > 1536:
++                old_tiles = (rows + 1535) // 1536
++                new_tiles = (rows + 2047) // 2048
++                if new_tiles < old_tiles:
++                    # Use fewer near-equal tiles and avoid a tiny extra tail.
++                    tile_size = (rows + new_tiles - 1) // new_tiles
++            for start in range(0, rows, tile_size):
++                tile = slice(start, start + tile_size)
++                count = min(rows - start, tile_size)
++                if count > 1536:
++                    load_2048_prefill()
++                    torch.ops.a0039_wide_experts.forward(
++                        hidden[tile].contiguous(), gate_up, gate_up_scales, down, down_scales,
++                        route_ids[tile], route_weights[tile], self.rank, result[tile], int(columns),
++                    )
++                    continue
++                if compact and count > 256:
++                    load_wide_prefill()
++                    torch.ops.a0037_prefill.forward(
++                        hidden[tile].contiguous(), gate_up, gate_up_scales, down, down_scales,
++                        route_ids[tile], route_weights[tile], self.rank, result[tile],
++                        16 if count <= 768 else 32,
++                    )
++                    continue
++                torch.ops.long_prefill_v3.forward(
++                    hidden[tile].contiguous(), gate_up, gate_up_scales, down, down_scales,
++                    route_ids[tile], route_weights[tile], self.rank, result[tile],
++                    3 if wide_down and rows - start > 256 else 0,
++                )
++            if layer.layer_id == 0 and self.calls < 2:
++                logger.info("B70 long_prefill_v3 rank=%d rows=%d", self.rank, rows)
++            self.calls += 1
++            return result
+         # Routing uses the whole forward's rows. Only the row-local expert
+         # computation is tiled, so no route or partial reduction crosses a tile.
+         for begin in range(0, rows, PREFILL_TILE_ROWS):
+diff --git a/python/sglang/srt/models/qwen2_moe.py b/python/sglang/srt/models/qwen2_moe.py
+index d6e566d9368749a90cfb6771d87ad4a5571f3f09..45cf96a330e1bd45b6fced32730eb5fd116fe447 100644
+--- a/python/sglang/srt/models/qwen2_moe.py
++++ b/python/sglang/srt/models/qwen2_moe.py
+@@ -84,6 +84,7 @@ from sglang.srt.layers.moe.utils import (
+     sum_post_experts_output,
+     uses_per_rank_fused_shared_slots,
+ )
++from sglang.srt.model_executor.forward_mode import ForwardMode
+ from sglang.srt.layers.quantization.base_config import QuantizationConfig
+ from sglang.srt.layers.radix_attention import RadixAttention
+ from sglang.srt.layers.rotary_embedding import get_rope
+@@ -852,8 +853,22 @@ class Qwen2MoeSparseMoeBlock(nn.Module):
+         ):
+             return self._forward_deepep(hidden_states, forward_batch)
+ 
++        # Keep the accepted BF16 gate projection, sigmoid, product and
++        # rank-local add on cyclic target prefills. The shared MLP already
++        # implements those boundaries in its ordinary gated return path.
++        staged_prefill_gate = (
++            256 < hidden_states.shape[0] <= 4097 and hidden_states.is_xpu
++            and hidden_states.dtype == torch.bfloat16 and hidden_states.shape[1] == 2560
++            and hasattr(self.experts, "intel_cyclic_w4") and not defer_finalize
++            and forward_batch is not None and not forward_batch.return_logprob
++            and forward_batch.forward_mode in (ForwardMode.EXTEND, ForwardMode.MIXED)
++            and forward_batch.flashnext_mixed is None and forward_batch.mm_input_embeds is None
++        )
++        if staged_prefill_gate and self.layer_id == 0 and not getattr(self, "_flashnext_staged_gate_seen", False):
++            self._flashnext_staged_gate_seen = True
++            logger.info("Flash Next staged BF16 prefill shared gate rows=%d", hidden_states.shape[0])
+         use_fused_gate = (
+-            self.shared_expert_gate is not None
++            not staged_prefill_gate and self.shared_expert_gate is not None
+             and not use_intel_amx_backend(self.shared_expert_gate)
+             and not is_npu()
+         )
+diff --git a/python/sglang/srt/models/qwen3_5.py b/python/sglang/srt/models/qwen3_5.py
+index f3cf9670764983907b93fad9e88f1c4596f243dc..f61dc72b5c77c9ccbc695bb6a899b3313a0a930d 100644
+--- a/python/sglang/srt/models/qwen3_5.py
++++ b/python/sglang/srt/models/qwen3_5.py
+@@ -986,10 +986,53 @@ class Qwen3_5GatedDeltaNet(nn.Module):
+         2. Core attention (custom op)
+         3. Output projection
+         """
++        if _is_xpu and get_exec().mamba.linear_attn_backend == "intel_xpu":
++            from sglang.srt.speculative.a0042_whole_gdn import try_run
++            ready = try_run(self, hidden_states, forward_batch)
++            if ready is not None:
++                return ready
++
+         projected_states_qkvz, projected_states_ba = self._forward_input_proj(
+             hidden_states
+         )
+ 
++        lengths = forward_batch.extend_seq_lens_cpu
++        if (
++            _is_xpu and get_exec().mamba.linear_attn_backend == "intel_xpu"
++            and forward_batch.logical_forward_mode.is_extend_without_speculative()
++            and projected_states_qkvz.shape[0] > 128
++            and projected_states_qkvz.shape[1] == 4096
++            and projected_states_ba.shape == (projected_states_qkvz.shape[0], 24)
++            and projected_states_qkvz.dtype == projected_states_ba.dtype == torch.bfloat16
++            and projected_states_qkvz.is_contiguous() and projected_states_ba.is_contiguous()
++            and self.attn.q_dim == 512 and self.attn.v_dim == 1536
++            and lengths is not None and 1 <= len(lengths) <= 4 and all(lengths)
++            and sum(lengths) == projected_states_qkvz.shape[0]
++            and not torch.xpu.is_current_stream_capturing()
++        ):
++            from sglang.srt.model_executor.forward_context import get_attn_backend
++            from sglang.srt.speculative.b70_prefill import grouped_prefill
++
++            backend = getattr(get_attn_backend(), "linear_attn_backend", None)
++            if (backend is not None and backend.mis_metadata is None
++                    and backend.prefill_graph_metadata is None):
++                layer = self.attn
++                meta = backend.forward_metadata
++                cache = backend.state_layer_cache(layer.layer_id)
++                conv, state = cache.conv[0], cache.temporal
++                if (state.dtype == torch.float32
++                        and (not backend.requires_contiguous_prefill_state
++                             or (conv.is_contiguous() and state.is_contiguous())
++                             or backend._prefill_kernels_follow_slot_pitch(state))):
++                    qkv = projected_states_qkvz[:, :2560]
++                    if meta.has_mamba_track_mask:
++                        conv[meta.conv_states_mask_indices] = qkv[meta.track_conv_indices].transpose(1, 2)
++                    out, z = grouped_prefill(
++                        backend, layer, forward_batch, qkv, None, None, conv, state,
++                        meta.mamba_cache_indices, projected=(projected_states_qkvz, projected_states_ba),
++                    )
++                    return self.out_proj(self.norm(out.flatten(0, 1), z.flatten(0, 1)).reshape(qkv.shape[0], -1))[0]
++
+         use_strided_prefill_z = False
+         packed_verify = False
+         if forward_batch.forward_mode.is_target_verify():
+diff --git a/python/sglang/srt/models/qwen4_exp.py b/python/sglang/srt/models/qwen4_exp.py
+index 24e195f9d5b0f1d6d9e0fcbc99c894b15416fad8..80e113bc2cbdcc8285a1f72c0ef338ea10c9c05a 100644
+--- a/python/sglang/srt/models/qwen4_exp.py
++++ b/python/sglang/srt/models/qwen4_exp.py
+@@ -481,7 +481,18 @@ def _commit_ple_batch(batch: Optional[_PLEBatch], forward_batch: ForwardBatch) -
+     next_context = context.gather(
+         1, batch.lengths.unsqueeze(1) + context_cols.unsqueeze(0)
+     )
+-    ngram.set_context(batch.state_indices, next_context)
++    mixed = forward_batch.flashnext_mixed
++    if mixed is None:
++        ngram.set_context(batch.state_indices, next_context)
++    else:
++        normal = mixed.normal_requests
++        ngram.set_context(batch.state_indices[normal], next_context[normal])
++        verify_context = context[mixed.verify_requests, :context_len + 8]
++        steps = verify_context.unfold(1, context_len, 1)[:, 1:]
++        ngram.set_intermediate_context(steps, None)
++    from sglang.srt.speculative import b70_checkpoints
++    for item in b70_checkpoints.active():
++        item.save(("ngram",0), ngram.context, context[item.row:item.row+1,item.offset:item.offset+context_len])
+ 
+     track = _ple_track_targets(forward_batch, batch)
+     if track is not None:
+@@ -1284,6 +1295,16 @@ class Qwen4ExpPLELayer(nn.Module):
+             self.layer_id, SHORT_CONV_PART
+         )
+         conv_state = short_conv.view.layer_cache(short_conv.view_layer_id)
++        mixed = forward_batch.flashnext_mixed
++        if mixed is not None:
++            owners = batch.state_indices[mixed.verify_requests]
++            seed = conv_state.index_select(0, owners)
++            tail = x[mixed.verify_tokens].transpose(1, 2)
++            window = torch.cat((seed.to(x.dtype), tail), dim=-1)
++            intermediate = short_conv.view.layer_intermediate_cache(short_conv.view_layer_id)
++            intermediate[:owners.numel()].copy_(
++                window.unfold(2, self.short_conv_state_len, 1)[:, :, 1:].transpose(1, 2)
++            )
+ 
+         if _use_qwen4_varlen_prefill(
+             batch.mode,
+@@ -1314,6 +1335,8 @@ class Qwen4ExpPLELayer(nn.Module):
+                 track_indices=track_indices,
+                 track_offsets=track_offsets,
+             )
++            if mixed is not None:
++                conv_state.index_copy_(0, owners, seed)
+             return F.silu(conv_output)
+ 
+         if batch.use_decode_fast_path:
+@@ -1445,9 +1468,17 @@ class Qwen4ExpPLELayer(nn.Module):
+                     .expand(-1, self.conv_channels, -1),
+                 )
+ 
+-            next_state = _gather_at(batch.lengths)
+-            conv_state[batch.state_indices] = next_state.to(dtype=conv_state.dtype)
++            next_state = _gather_at(batch.lengths).to(conv_state.dtype)
++            if mixed is None:
++                conv_state[batch.state_indices] = next_state
++            else:
++                normal = mixed.normal_requests
++                conv_state[batch.state_indices[normal]] = next_state[normal]
+ 
++            from sglang.srt.speculative import b70_checkpoints
++            for item in b70_checkpoints.active():
++                item.save(("ple",self.layer_id), conv_state,
++                          conv_input[item.row:item.row+1,:,item.offset:item.offset+self.short_conv_state_len].to(conv_state.dtype))
+             # Same boundary mamba uses, into the slot the radix tree reads.
+             track = _ple_track_targets(forward_batch, batch)
+             if track is not None:
+@@ -1485,6 +1516,10 @@ class Qwen4ExpPLELayer(nn.Module):
+             return buffer
+ 
+         buffer = self._eager_prefetch_buffer
++        if lookup_tokens > 1024:
++            # Wide isolated work borrows a temporary, leaving the reusable
++            # staging allocation sized for the ordinary aggregate budget.
++            return self._allocate_prefetch_buffer(lookup_tokens, lookup_ids)
+         if buffer is None or buffer.shape[0] < lookup_tokens:
+             buffer = self._allocate_prefetch_buffer(lookup_tokens, lookup_ids)
+             self._eager_prefetch_buffer = buffer
+@@ -1528,13 +1563,53 @@ class Qwen4ExpPLELayer(nn.Module):
+             offloaded_embedding.gather(lookup_ids, out=output_view)
+         self._prefetch_state = prefetched, semantic_tokens, physical_tokens
+ 
++    def prepare_disk_prefetch(self, batch, forward_batch):
++        embedding = self.ple_embedding
++        table = embedding.ngram_embedding
++        if (
++            table.intel_disk_ple is None or embedding.gather_dp_tokens
++            or batch is None or not batch.processed_tokens
++            or not batch.mode.is_extend_without_speculative()
++            or torch.xpu.is_current_stream_capturing()
++        ):
++            return None
++        from sglang.srt.utils.device import async_d2h
++
++        ids = None
++        if os.getenv("SGLANG_FLASHNEXT_PREFILL_PLE_HASH") == "1":
++            from sglang.srt.speculative.flashnext_cycle import extend_ple_ids
++
++            ids = extend_ple_ids(batch, embedding)
++        if ids is None:
++            ids = embedding.compute_ngram_ids(batch)
++        destination = self._get_prefetch_buffer(ids.shape[0], ids)
++        host_ids = async_d2h(ids)
++        ready = torch.xpu.current_stream(ids.device).record_event()
++        gather = None
++        if os.getenv("SGLANG_FLASHNEXT_ROUND_PIPELINE") == "1":
++            gather = table.intel_disk_ple.schedule_host_rows(host_ids, ready)
++        return host_ids, ready, destination, gather
++
++    def finish_disk_prefetch(self, pending, batch):
++        host_ids, ready, destination, gather = pending
++        embedding = self.ple_embedding
++        disk = embedding.ngram_embedding.intel_disk_ple
++        output = destination.view(host_ids.shape[0], embedding.ngram_heads, -1)
++        if gather is None:
++            ready.synchronize()
++            disk.gather_host_ids(host_ids, output)
++        else:
++            disk.upload(gather.result(), output)
++        self._prefetch_state = destination, batch.processed_tokens, batch.physical_tokens
++
+     def _consume_prefetched_embeddings(
+         self, forward_batch: ForwardBatch
+     ) -> torch.Tensor:
+         if self._prefetch_state is None:
+             raise RuntimeError("PLE prefetch state is missing")
+         embeddings, semantic_tokens, physical_tokens = self._prefetch_state
+-        torch.get_device_module().current_stream().wait_stream(self._prefetch_stream)
++        if self._prefetch_stream is not None:
++            torch.get_device_module().current_stream().wait_stream(self._prefetch_stream)
+         embeddings = self.ple_embedding.ngram_embedding.reduce(embeddings)
+         embeddings = embeddings * self.ple_embedding.ngram_embedding.weight_scale
+         embeddings = self.ple_embedding._finish_embedding_lookup(
+@@ -1571,6 +1646,10 @@ class Qwen4ExpPLELayer(nn.Module):
+         key, _ = self.key_proj(embeddings)
+         value, _ = self.value_proj(embeddings)
+         token_count = hidden_states.shape[0]
++        wide_prefill = (token_count > 256 and hidden_states.is_xpu and
++                        forward_batch.logical_forward_mode.is_extend_without_speculative())
++        if wide_prefill:
++            del embeddings
+         hidden_size = self.hidden_size
+         hc_count = self.hc_count
+         if hidden_states.shape[-1] != hc_count * hidden_size:
+@@ -1581,6 +1660,8 @@ class Qwen4ExpPLELayer(nn.Module):
+         key = key.reshape(token_count, hc_count, hidden_size)
+         query = hidden_states.reshape(token_count, hc_count, hidden_size)
+         key_normed = self._apply_ple_norm(self.norm_key, key)
++        if wide_prefill:
++            del key
+         query_normed = self._apply_ple_norm(self.norm_query, query)
+         from sglang.kernels.ops.elementwise.qwen4_gate import (
+             can_fuse_qwen4_gate_reduce,
+@@ -1611,6 +1692,8 @@ class Qwen4ExpPLELayer(nn.Module):
+                 gate = gate.abs().clamp_min(1e-6).sqrt() * gate.sign()
+                 gate = torch.sigmoid(gate)
+                 gated_value = gate * value.unsqueeze(-2)
++        if wide_prefill:
++            del key_normed, query_normed, value
+         gated_value_normed = self._apply_ple_norm(self.norm_conv, gated_value)
+         gated_value = gated_value.flatten(-2)
+         gated_value_normed = gated_value_normed.flatten(-2)
+@@ -1861,14 +1944,14 @@ class Qwen4ExpLayerExtensionMixin:
+         self._decode_moe_comm = _prepare_decode_moe_comm(self.mlp)
+ 
+     @contextmanager
+-    def hc_norms(self, normalized_input, next_norm):
++    def hc_norms(self, normalized_input, next_norm, *, packed_cyclic_ep=False):
+         norms = _HCNorms(normalized_input, next_norm)
+         # A prepared norm can only follow its residual without row movement.
+         self._hc_norms = (
+             norms
+             if get_parallel().attn_dp_size == 1
+             and get_parallel().attn_cp_size == 1
+-            and get_parallel().moe_ep_size == 1
++            and (get_parallel().moe_ep_size == 1 or packed_cyclic_ep)
+             and not get_attn_tp_context().input_scattered
+             and get_moe_a2a_backend().is_none()
+             else None
+@@ -2008,11 +2091,8 @@ class Qwen4ExpLayerExtensionMixin:
+                             ),
+                         )
+                 else:
+-                    hidden_states = self.mlp(
+-                        hidden_states,
+-                        forward_batch,
+-                        defer_finalize=ffn_exit.defer_moe_finalize,
+-                    )
++                    from sglang.srt.speculative.flashnext_prefill import experts
++                    hidden_states = experts(self.mlp, hidden_states, forward_batch, ffn_exit.defer_moe_finalize)
+             else:
+                 hidden_states = self.mlp(hidden_states)
+         return ffn_exit.finish(hidden_states)
+@@ -2342,6 +2422,33 @@ class Qwen4ExpModel(Qwen3_5ForCausalLM):
+         )
+ 
+     def stage_flashnext_ple(self, batch, destinations):
++        chain = batch.flashnext_ple_chain
++        if chain is not None:
++            ids, step, cache = chain
++            if step == 0:
++                layout = _prepare_ple_batch(
++                    input_ids=batch.input_ids, forward_batch=batch,
++                    ngram_size=self.ple_ngram_size, ngram_eos_token_id=self.ple_ngram_eos_token_id,
++                )
++                # Each column of the fixed K7 chain has the same PLE inputs
++                # as its serial decode step, even when an EOS resets a window.
++                history = layout.ngram_context[:, :self.ple_ngram_size - 1]
++                contexts = torch.cat((history, ids), dim=1).unfold(1, self.ple_ngram_size, 1)
++                contexts = contexts.reshape(-1, self.ple_ngram_size).long()
++                pool = get_req_to_token_pool()
++                pool.ple_window_cache = (layout, contexts, None)
++                try:
++                    for layer_id in destinations:
++                        ple = self.layers[layer_id].ple.ple_embedding
++                        hashes = ple._hash_contexts(contexts, decode_sized=True)
++                        rows = ple.ngram_embedding.gather(hashes)
++                        cache[layer_id] = rows.view(*ids.shape, *rows.shape[1:])
++                finally:
++                    pool.ple_window_cache = None
++            if cache:
++                for layer_id, output in destinations.items():
++                    output.copy_(cache[layer_id][:, step])
++                return
+         layout = _prepare_ple_batch(
+             input_ids=batch.input_ids,
+             forward_batch=batch,
+@@ -2408,10 +2515,85 @@ class Qwen4ExpModel(Qwen3_5ForCausalLM):
+                 ngram_size=self.ple_ngram_size,
+                 ngram_eos_token_id=self.ple_ngram_eos_token_id,
+             )
++        text_input = inputs_embeds is None
++        if not text_input and forward_batch.forward_mode in (ForwardMode.EXTEND, ForwardMode.MIXED):
++            ref = getattr(forward_batch, "_flashnext_text_embedding", None)
++            text_input = (ref is not None and ref() is inputs_embeds
++                          and forward_batch.mm_input_embeds is None
++                          and forward_batch.input_embeds is None and forward_batch.replace_embeds is None)
++        disk_pending = {}
++        if not breakable_ple and forward_batch.flashnext_ple_rows is None:
++            for i in range(self.start_layer, self.end_layer):
++                ple = self.layers[i].ple
++                if ple is not None:
++                    pending = ple.prepare_disk_prefetch(ple_batch, forward_batch)
++                    if pending is not None:
++                        disk_pending[i] = pending
++
++        wide_hc = None
++        lengths = forward_batch.extend_seq_lens_cpu or ()
++        single_extend = forward_batch.forward_mode == ForwardMode.EXTEND and len(lengths) == 1
++        row_cohort = (
++            512 <= hidden_states.shape[0] <= 4097
++            and forward_batch.forward_mode in (ForwardMode.EXTEND, ForwardMode.MIXED)
++            and forward_batch.flashnext_mixed is None
++            and 1 <= len(lengths) <= 4 and all(lengths) and sum(lengths) == hidden_states.shape[0]
++        )
+         dflash_features = []
++        feature_output = getattr(self, "_flashnext_feature_output", None)
++        if (
++            feature_output is None
++            and os.getenv("SGLANG_FLASHNEXT_PREFILL_DIRECT_FEATURES") == "1"
++            and hidden_states.is_xpu and hidden_states.dtype == torch.bfloat16
++            and ((single_extend and 512 < hidden_states.shape[0] <= 4097) or row_cohort)
++            and text_input and not shards_rows and not breakable_ple
++            and not forward_batch.return_logprob
++            and forward_batch.capture_hidden_mode.need_capture()
++            and not torch.xpu.is_current_stream_capturing()
++            and self.pp_group.is_first_rank and self.pp_group.is_last_rank
++            and self.dflash_capture_layers
++            and self.dflash_capture_layers == tuple(sorted(set(self.dflash_capture_layers)))
++            and self.start_layer <= self.dflash_capture_layers[0]
++            and self.dflash_capture_layers[-1] < self.end_layer
++        ):
++            # The draft consumes each BF16 mean in ascending layer order.
++            # Write them into that layout without retaining the separate means.
++            feature_rows = hidden_states.shape[0]
++            if os.getenv("SGLANG_FLASHNEXT_HC_ROW_SHARDS") and row_cohort:
++                from sglang.srt.speculative.wide_hc import WideHC
++
++                wide_hc = WideHC.create(self, forward_batch, hidden_states)
++                if wide_hc is not None:
++                    hidden_states = self.layers[self.start_layer]._widen_streams(wide_hc.shard(hidden_states))
++                    feature_rows = wide_hc.shard_rows
++            if (single_extend and feature_rows > 512) or wide_hc is not None:
++                feature_output = hidden_states.new_empty((
++                    feature_rows, self.hidden_size * len(self.dflash_capture_layers),
++                ))
++        # These cyclic expert shards return all token rows in the same order
++        # as attention. Keep the BF16 HC norm produced at the preceding
++        # injection through the next mixed read, stopping at the PLE update.
++        prefill_cyclic_ep = (
++            os.getenv("SGLANG_FLASHNEXT_PREFILL_HC_HANDOFF") == "1" and wide_hc is None
++            and os.getenv("SGLANG_FLASHNEXT_V6_PREFILL") == "1"
++            and hidden_states.is_xpu and hidden_states.dtype == torch.bfloat16
++            and 256 < hidden_states.shape[0] <= 1024
++            and forward_batch.forward_mode == ForwardMode.EXTEND
++            and forward_batch.flashnext_mixed is None and not forward_batch.return_logprob
++            and text_input and not shards_rows and not breakable_ple
++            and not get_forward().sp_active
++            and self.pp_group.is_first_rank and self.pp_group.is_last_rank
++            and hasattr(self.layers[self.start_layer].mlp.experts, "intel_cyclic_w4")
++            and hasattr(self.layers[self.start_layer].attn_hyper_connection, "_v6_down")
++        )
++        if prefill_cyclic_ep and not getattr(self, "_flashnext_prefill_hc_reported", False):
++            self._flashnext_prefill_hc_reported = True
++            logger.info("Flash Next replicated prefill HC handoff rows=%d", hidden_states.shape[0])
+         normalized_input = None
+         for i in range(self.start_layer, self.end_layer):
+             layer = self.layers[i]
++            if i in disk_pending:
++                layer.ple.finish_disk_prefetch(disk_pending.pop(i), ple_batch)
+             if i + 1 < self.end_layer:
+                 next_ple = self.layers[i + 1].ple
+                 if next_ple is not None:
+@@ -2426,27 +2608,43 @@ class Qwen4ExpModel(Qwen3_5ForCausalLM):
+                 next_layer = self.layers[i + 1]
+                 if next_layer.ple is None:
+                     next_norm = next_layer.attn_hyper_connection.hc_norm
+-            elif self.pp_group.is_last_rank:
++            elif self.pp_group.is_last_rank and not prefill_cyclic_ep and wide_hc is None:
+                 next_norm = self.hyper_connection_mixer.hc_norm
+             with (
+                 get_global_expert_distribution_recorder().with_current_layer(i),
+-                layer.hc_norms(normalized_input, next_norm) as norms,
++                layer.hc_norms(
++                    normalized_input, next_norm,
++                    packed_cyclic_ep=prefill_cyclic_ep or getattr(self, "_flashnext_packed_cyclic_ep", False),
++                ) as norms,
+             ):
+-                hidden_states = layer(
+-                    positions=positions,
+-                    hidden_states=hidden_states,
+-                    forward_batch=forward_batch,
+-                    ple_batch=ple_batch,
+-                )
++                if wide_hc is not None:
++                    hidden_states, norms.output = wide_hc.layer(
++                        layer, hidden_states, normalized_input, next_norm, positions,
++                        forward_batch, ple_batch,
++                    )
++                else:
++                    hidden_states = layer(
++                        positions=positions,
++                        hidden_states=hidden_states,
++                        forward_batch=forward_batch,
++                        ple_batch=ple_batch,
++                    )
+             if (
+                 i in self.dflash_capture_layers
+                 and forward_batch.capture_hidden_mode.need_capture()
+                 and not forward_batch.forward_mode.is_idle()
+             ):
+                 # FFN write-back already completed the four HC streams.
+-                dflash_features.append(
+-                    hidden_states.unflatten(-1, (4, self.hidden_size)).mean(dim=-2)
+-                )
++                streams = hidden_states.unflatten(-1, (4, self.hidden_size))
++                if feature_output is None:
++                    dflash_features.append(streams.mean(dim=-2))
++                else:
++                    layer_feature = self.dflash_capture_layers.index(i)
++                    offset = layer_feature * self.hidden_size
++                    torch.mean(
++                        streams, dim=-2,
++                        out=feature_output[:, offset : offset + self.hidden_size],
++                    )
+ 
+             normalized_input = norms.output
+ 
+@@ -2463,7 +2661,10 @@ class Qwen4ExpModel(Qwen3_5ForCausalLM):
+                 proxy_tensors["mm_input_embeds"] = forward_batch.mm_input_embeds
+             return proxy_tensors
+ 
+-        hc_hidden_states = hidden_states
++        if wide_hc is not None:
++            hidden_states = wide_hc.gather(hidden_states)
++            residual_batch.stream_of(forward_batch).write(hidden_states)
++        hc_hidden_states = None if wide_hc is not None else hidden_states
+         hidden_states = residual_batch.final_norm(
+             hidden_states,
+             forward_batch,
+@@ -2478,7 +2679,13 @@ class Qwen4ExpModel(Qwen3_5ForCausalLM):
+                 if capture is not None and capture.need_capture()
+                 else None
+             )
+-        if dflash_features:
++        if wide_hc is not None:
++            # The local feature rows are complete. Publish the full feature
++            # tensor after the final mixer has consumed the full HC residual.
++            feature_output = wide_hc.gather(feature_output)
++        if feature_output is not None:
++            hc_hidden_states = feature_output
++        elif dflash_features:
+             hc_hidden_states = torch.cat(dflash_features, dim=-1)
+         if not forward_batch.forward_mode.is_idle():
+             return hidden_states, hc_hidden_states
+@@ -2486,6 +2693,8 @@ class Qwen4ExpModel(Qwen3_5ForCausalLM):
+ 
+ 
+ class Qwen4ExpVLModel(Qwen4ExpModel):
++    _flashnext_track_text_embeddings = os.getenv("SGLANG_FLASHNEXT_PREFILL_HC_HANDOFF") == "1"
++
+     def __init__(
+         self,
+         config: Qwen4ExpTextConfig,
+@@ -2691,6 +2900,7 @@ class Qwen4ExpForConditionalGeneration(Qwen3VLForConditionalGeneration):
+             if num_experts is not None
+             else []
+         )
++        expert_by_name = {m[1]: m for m in expert_params_mapping}
+         fused_expert_params_mapping = [
+             ("experts.w13_weight", "experts.gate_up_proj", 0, "w1"),
+             ("experts.w2_weight", "experts.down_proj", 0, "w2"),
+@@ -2935,6 +3145,13 @@ class Qwen4ExpForConditionalGeneration(Qwen3VLForConditionalGeneration):
+                     if is_fused_expert
+                     else expert_params_mapping
+                 )
++                if not is_fused_expert:
++                    _, marker, leaf = name.rpartition("experts.")
++                    if marker and name.count("experts.") == 1:
++                        key = "experts." + leaf.rpartition(".")[0] + "."
++                        indexed = expert_by_name.get(key)
++                        if indexed is not None:
++                            current_expert_params_mapping = (indexed,)
+                 for mapping in current_expert_params_mapping:
+                     param_name, weight_name, expert_id, shard_id = mapping
+                     if weight_name not in name:
+diff --git a/python/sglang/srt/models/qwen4_exp_intel_ple.py b/python/sglang/srt/models/qwen4_exp_intel_ple.py
+index 9de7b7638e807977d55c148e140eef3cd01bb174..3ad6d4b9766dfd546a4638411010db253d96dadb 100644
+--- a/python/sglang/srt/models/qwen4_exp_intel_ple.py
++++ b/python/sglang/srt/models/qwen4_exp_intel_ple.py
+@@ -1,5 +1,9 @@
+ """Read-only Intel Flash Next PLE table and bounded eager XPU staging."""
+ 
++from concurrent.futures import ThreadPoolExecutor
++import ctypes
++from functools import cache
++from pathlib import Path
+ import hashlib
+ import logging
+ import mmap
+@@ -17,7 +21,24 @@ PAYLOAD_OFFSET = 20_736
+ ROWS = 320_001_536
+ WIDTH = 160
+ HEADER_SHA256 = "2d42b89d8239a44849504e4ee02db22d999da6c7ea1f5a47e570d73f773332e0"
+-STAGE_ROWS = 1024 * 16
++STAGE_TOKENS = 4097 if os.getenv("SGLANG_FLASHNEXT_WIDE_PREFILL") == "1" else 1024
++STAGE_ROWS = STAGE_TOKENS * 16
++
++
++@cache
++def _gather_library():
++    path = Path("/opt/venv/lib/python3.12/site-packages/vllm_xpu_kernels/libple_gather.so")
++    if hashlib.sha256(path.read_bytes()).hexdigest() != "b3011fac3b7f0687b4ce77a26bad8f20e1e3e9eb21b05bcb3219d8ecafab52f1":
++        raise RuntimeError("Unexpected disk PLE gather library")
++    lib = ctypes.CDLL(str(path))
++    ptr, i64 = ctypes.c_void_p, ctypes.c_int64
++    lib.ple_gather.argtypes = [ptr,i64,i64,ptr,ptr,i64,i64,i64,i64,ptr,i64,ptr]
++    lib.ple_gather.restype = ctypes.c_int
++    lib.ple_gather_init.argtypes = [ctypes.c_int]
++    lib.ple_gather_init.restype = ctypes.c_int
++    if lib.ple_gather_init(8) != 8:
++        raise RuntimeError("Failed to initialize the PLE gather workers")
++    return lib
+ 
+ 
+ class IntelDiskPLE:
+@@ -45,6 +66,8 @@ class IntelDiskPLE:
+         )
+         if not self.stage.is_pinned():
+             raise RuntimeError("Intel PLE requires pinned host staging")
++        self.gather_order = np.empty(STAGE_ROWS, dtype=np.int64)
++        self.gather_lib = _gather_library()
+         self.previous_dma = None
+         self.owner = threading.get_ident()
+         self.calls = 0
+@@ -61,22 +84,64 @@ class IntelDiskPLE:
+         if torch.xpu.is_current_stream_capturing():
+             raise RuntimeError("Intel disk PLE requires eager execution")
+         if input_ids.numel() > STAGE_ROWS:
+-            raise ValueError("Intel PLE staging accepts at most 1024 tokens per gather")
++            raise ValueError(f"Intel PLE staging accepts at most {STAGE_TOKENS} tokens per gather")
++        ids = input_ids.reshape(-1).to(device="cpu", dtype=torch.int64).contiguous()
++        return self.gather_host_ids(ids, output)
++
++    def gather_host_ids(self, input_ids, output):
++        if (threading.get_ident() != self.owner or input_ids.device.type != "cpu"
++                or input_ids.dtype != torch.int64 or not input_ids.is_contiguous()
++                or output.device.type != "xpu" or torch.xpu.is_current_stream_capturing()
++                or output.numel() != input_ids.numel() * WIDTH
++                or input_ids.numel() > STAGE_ROWS):
++            raise ValueError("Invalid host ID staging for Intel disk PLE")
++        return self.upload(self.prepare_host_rows(input_ids), output)
++
++    def schedule_host_rows(self, input_ids, ids_ready):
++        if threading.get_ident() != self.owner:
++            raise RuntimeError("Intel PLE staging requires the owning XPU worker thread")
++        executor = getattr(self, "_executor", None)
++        if executor is None:
++            executor = self._executor = ThreadPoolExecutor(
++                max_workers=1, thread_name_prefix="flashnext-ple"
++            )
++        return executor.submit(self._prepare_after_readback, input_ids, ids_ready)
++
++    def _prepare_after_readback(self, input_ids, ids_ready):
++        ids_ready.synchronize()
++        return self.prepare_host_rows(input_ids)
++
++    def prepare_host_rows(self, input_ids):
++        # The packed verifier transfers exclusive stage ownership to its
++        # gather thread until upload. Eager prefill has the same DMA fence.
+         if self.previous_dma is not None:
+             self.previous_dma.synchronize()
++        ids = input_ids.reshape(-1).numpy()
++        rows = self.stage[:ids.size]
++        result = self.gather_lib.ple_gather(
++            self.table.ctypes.data, WIDTH * 2, ROWS, ids.ctypes.data, None, 16,
++            ids.size, self.start, self.end, rows.data_ptr(), rows.nbytes,
++            self.gather_order.ctypes.data)
++        if result == 1:
++            # Preserve SGLang's zero-filled rows for out-of-vocabulary padding.
++            payload = rows.numpy().view(np.uint16)
++            owned = (ids >= self.start) & (ids < self.end)
++            payload.fill(0)
++            payload[owned] = self.table[ids[owned]]
++        elif result:
++            raise RuntimeError(f"Disk PLE gather failed with status {result}")
++        return rows, ids
+ 
+-        ids = input_ids.reshape(-1).to(device="cpu", dtype=torch.int64).numpy()
+-        rows = self.stage[: ids.size]
+-        payload = rows.numpy().view(np.uint16)
+-        owned = (ids >= self.start) & (ids < self.end)
+-        payload.fill(0)
+-        payload[owned] = self.table[ids[owned]]
++    def upload(self, prepared, output):
++        rows, ids = prepared
++        if threading.get_ident() != self.owner:
++            raise RuntimeError("Intel PLE upload requires the owning XPU worker thread")
+         output.reshape(-1, WIDTH).copy_(rows.view(torch.bfloat16), non_blocking=True)
+-        self.previous_dma = torch.xpu.current_stream(input_ids.device).record_event()
++        self.previous_dma = torch.xpu.current_stream(output.device).record_event()
+         self.calls += 1
+         if self.calls <= 2:
+             logger.info(
+                 "Intel PLE XPU DMA call=%d rows=%d owned=%d bytes=%d",
+-                self.calls, ids.size, int(owned.sum()), rows.nbytes,
++                self.calls, ids.size, int(((ids >= self.start) & (ids < self.end)).sum()), rows.nbytes,
+             )
+         return output
+diff --git a/python/sglang/srt/speculative/a0042_whole_gdn.py b/python/sglang/srt/speculative/a0042_whole_gdn.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..70d0a04665a148adc3f95565e3b7f5d68b4cdf30
+--- /dev/null
++++ b/python/sglang/srt/speculative/a0042_whole_gdn.py
+@@ -0,0 +1,148 @@
++"""Whole short GDN on a reusable private working slot. Only the selected row is published."""
++import logging
++from weakref import WeakKeyDictionary
++import torch
++from sgl_kernel.mamba import causal_conv1d_fn_xpu
++from sglang.srt.speculative.budget import can_admit
++from sglang.srt.speculative.short_regions import gdn_ops
++from sglang.srt.speculative.proposal_bindings import Bindings
++
++log=logging.getLogger(__name__)
++_banks={}
++
++
++class Program:
++    def __init__(self,graph,module):
++        self.graph=graph
++        tensors=(*module.parameters(),*module.buffers())
++        dynamic=(module.attn.conv_weights,module.attn.A_log,module.attn.dt_bias)
++        self.guard=Bindings(tuple(module.modules()),tensors,dynamic)
++        self.storage=tuple(v.detach() for v in tensors+dynamic)
++        self.checks=0
++        self.disabled=False
++
++
++class Bank:
++    def __init__(self,hidden):
++        self.stream=torch.xpu.current_stream(hidden.device)
++        self.pool=torch.xpu.graph_pool_handle()
++        self.programs=WeakKeyDictionary()
++        self.comparing=False
++        with torch.inference_mode(False),torch.no_grad():
++            self.x=hidden.new_zeros((128,2560))
++            self.y=torch.empty_like(self.x)
++            self.ba=hidden.new_zeros((128,24))
++            self.conv=hidden.new_zeros((1,2560,3))
++            self.state=self.conv.new_zeros((1,12,128,128),dtype=torch.float32)
++            self.zero=self.conv.new_zeros((1,),dtype=torch.int32)
++            self.offset=self.zero.new_tensor([0,128])
++            self.seed=self.zero.new_zeros((1,),dtype=torch.bool)
++
++    def capture(self,module,width):
++        layer=module.attn
++        self.offset[1].fill_(width)
++        self.seed.zero_()
++        def core():
++            raw,_=module.in_proj_qkvz(self.x[:width])
++            ba=self.ba[:width]
++            # The non-interleaved checkpoint order is Q,K,V,Z and B,A.
++            mixed=causal_conv1d_fn_xpu(raw[:,:2560].contiguous().T,layer.conv_weights.reshape(2560,4),
++                    None,conv_states=self.conv,cache_indices=self.zero,query_start_loc=self.offset,
++                    has_initial_state=self.seed,activation=layer.activation).T
++            q,k,v=mixed.split((512,512,1536),dim=1)
++            b,a=ba.split(12,dim=1)
++            ops=gdn_ops(q.reshape(width,4,128),k.reshape(width,4,128),v.reshape(width,12,128),
++                        a,b,layer.A_log.reshape(12),layer.dt_bias.reshape(12))
++            out=torch.zeros_like(ops[2],memory_format=torch.contiguous_format)
++            torch.ops.flashnext_ordered.recurrent(*[t.contiguous() for t in ops],self.state,
++                            self.zero,self.offset,self.seed,None,None,0,out)
++            norm=module.norm(out.bfloat16().reshape(-1,128),raw[:,2560:].reshape(-1,128))
++            self.y[:width].copy_(module.out_proj(norm.reshape(width,1536))[0])
++        core()
++        graph=torch.xpu.XPUGraph()
++        with torch.xpu.graph(graph,pool=self.pool):
++            core()
++        return Program(graph,module)
++
++    def run(self,module,x,batch,backend):
++        n=len(x)
++        w=next(w for w in (16,32,64,96,128) if w>=n)
++        meta=backend.forward_metadata
++        cache=backend.state_layer_cache(module.attn.layer_id)
++        state,conv=cache.temporal,cache.conv[0]
++        if (state.shape[1:]!=(12,128,128) or state.dtype!=torch.float32
++                or conv.shape[1:]!=(2560,3) or conv.dtype!=torch.bfloat16):
++            return None
++        entries=self.programs.setdefault(module,{})
++        entry=entries.get(w)
++        if entry is False or (entry is not None and (entry.disabled or not entry.guard.valid((module.attn.conv_weights,module.attn.A_log,module.attn.dt_bias)))):
++            return None
++        if entry is None:
++            if not can_admit(x.device,("short-whole-gdn",module.attn.layer_id,w)):
++                entries[w]=False
++                return None
++            entry=entries[w]=self.capture(module,w)
++        owners=meta.mamba_cache_indices.long().reshape(1)
++        seeded=bool(batch.extend_prefix_lens_cpu[0])
++        self.seed.fill_(seeded)
++        # The narrow B/A GEMM has finer oneDNN reduction regimes than the
++        # output projection. Stage the original true-width result on every call.
++        ba,_=module.in_proj_ba(x)
++        torch._foreach_copy_([self.x[:n],self.ba[:n]],[x,ba])
++        self.offset.copy_(meta.query_start_loc)
++        if seeded:
++            self.state.copy_(state.index_select(0,owners))
++            self.conv.copy_(conv.index_select(0,owners))
++        entry.graph.replay()
++        value=self.y[:n]
++        if entry.checks<2:
++            self.comparing=True
++            try:
++                orig=module(x,batch)
++            finally:
++                self.comparing=False
++            outputs_ok=torch.equal(orig.view(torch.int16),value.view(torch.int16))
++            state_ok=torch.equal(state.index_select(0,owners).view(torch.int32),self.state.view(torch.int32))
++            conv_ok=torch.equal(conv.index_select(0,owners).view(torch.int16),self.conv.view(torch.int16))
++            same=outputs_ok and state_ok and conv_ok
++            entry.checks+=1
++            entry.disabled=not same
++            log.info("A0042 full GDN layer=%d width=%d rows=%d seed=%s check=%d output=%s state=%s conv=%s exact=%s",
++                     module.attn.layer_id,w,n,seeded,entry.checks,outputs_ok,state_ok,conv_ok,same)
++            return orig
++        state.index_copy_(0,owners,self.state)
++        conv.index_copy_(0,owners,self.conv)
++        return value.clone()
++
++
++@torch.inference_mode()
++def try_run(module,x,batch):
++    if (not isinstance(x,torch.Tensor) or x.ndim!=2 or x.shape[1]!=2560 or not 16<=len(x)<=128
++            or x.dtype!=torch.bfloat16 or not x.is_xpu or not x.is_contiguous()
++            or not batch.forward_mode.is_extend_without_speculative() or batch.extend_seq_lens_cpu!=[len(x)]
++            or not isinstance(batch.extend_prefix_lens_cpu,(tuple,list)) or len(batch.extend_prefix_lens_cpu)!=1
++            or batch.flashnext_mixed is not None or batch.return_logprob or batch.contains_mm_inputs()
++            or any(batch.lora_ids or ()) or batch.tbo_split_seq_index is not None
++            or batch.replace_embeds is not None or batch.input_embeds is not None or torch.xpu.is_current_stream_capturing()):
++        return None
++    from sglang.srt.model_executor.forward_context import get_attn_backend
++    from sglang.srt.layers.attention.linear.kernels.gdn_xpu import _ordered_prefill_enabled
++    backend=getattr(get_attn_backend(),"linear_attn_backend",None)
++    layer=module.attn
++    if (backend is None or backend.mis_metadata is not None or backend.prefill_graph_metadata is not None
++            or not _ordered_prefill_enabled() or backend.forward_metadata.has_mamba_track_mask
++            or backend.forward_metadata.conv_block_table is not None
++            or backend.forward_metadata.mamba_cache_indices.numel()!=1
++            or backend.forward_metadata.query_start_loc.numel()!=2 or module.out_proj.reduce_results
++            or layer.activation not in ("silu","swish") or layer.bias is not None
++            or layer.q_dim!=512 or layer.v_dim!=1536 or layer.conv_weights.numel()!=10240
++            or module._fused_in_proj_weight is not None or module.alt_stream is not None
++            or module._fused_input_proj_cpu_enabled.value
++            or module.in_proj_qkvz.weight.shape!=(4096,2560) or module.in_proj_ba.weight.shape!=(24,2560)):
++        return None
++    if x.device not in _banks:
++        _banks[x.device]=Bank(x) if can_admit(x.device,("short-whole-gdn-storage",128)) else None
++    bank=_banks[x.device]
++    if bank is None or bank.comparing or bank.stream!=torch.xpu.current_stream(x.device):
++        return None
++    return bank.run(module,x,batch,backend)
+diff --git a/python/sglang/srt/speculative/b70_hc.py b/python/sglang/srt/speculative/b70_hc.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..5d7598649b70eac77ab570c1fbc2a5cc9bed0b2f
+--- /dev/null
++++ b/python/sglang/srt/speculative/b70_hc.py
+@@ -0,0 +1,25 @@
++# SPDX-License-Identifier: Apache-2.0
++"""XPU launch adapter for vLLM's BF16 hc_silu and FP32 hc_gate_mix."""
++import torch
++import triton
++import triton.language as tl
++
++from vllm.models.qwen4_exp.nvidia.ops.hc import hc_gate_mix
++
++
++@triton.jit
++def _silu(x, out, stride: tl.constexpr, columns: tl.constexpr, streams: tl.constexpr, block: tl.constexpr):
++    row = tl.program_id(0)
++    index = tl.arange(0, block)
++    value = tl.load(x + row*stride + index, mask=index<columns, other=0).to(tl.float32) / streams
++    tl.store(out + row*columns + index, value * tl.sigmoid(value), mask=index<columns)
++
++
++def hc_silu(x, streams):
++    # Equivalent to vLLM's nvidia/ops/hc.py _hc_silu_kernel on Xe2 (no PDL).
++    # Resolve next_power_of_2 on the host. SGLang's installed Triton frontend
++    # rejects a Python function reference inside this constexpr expression.
++    rows,columns = x.shape
++    out = torch.empty_like(x, memory_format=torch.contiguous_format)
++    _silu[(rows,)](x,out,x.stride(0),columns,streams,triton.next_power_of_2(columns))
++    return out
+diff --git a/python/sglang/srt/speculative/gdn_factors.py b/python/sglang/srt/speculative/gdn_factors.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..6814fc44600c6c68729811d979f49b51ee7613ca
+--- /dev/null
++++ b/python/sglang/srt/speculative/gdn_factors.py
+@@ -0,0 +1,71 @@
++"""Materialize accepted GDN states from exact FP32 per-step update operands."""
++
++import torch
++import triton
++import triton.language as tl
++
++
++@triton.jit
++def _fold(
++    working, records, owners, steps, track_owners, track_steps, snapshots,
++    WORK_LAYER: tl.constexpr, WORK_SLOT: tl.constexpr,
++    RECORD_LAYER: tl.constexpr, RECORD_REQUEST: tl.constexpr, RECORD_STEP: tl.constexpr,
++    OUTPUT_REQUEST: tl.constexpr, OUTPUT_STEP: tl.constexpr,
++    TRACK: tl.constexpr, ALL: tl.constexpr, TILE_ROWS: tl.constexpr,
++):
++    layer = tl.program_id(0).to(tl.int64)
++    row = tl.program_id(1)
++    tile = tl.program_id(2)
++    head = tile // (128 // TILE_ROWS)
++    values = tile % (128 // TILE_ROWS) * TILE_ROWS + tl.arange(0, TILE_ROWS)
++    keys = tl.arange(0, 128)
++    offsets = head * 128 * 128 + values[:, None] * 128 + keys[None, :]
++    slot = tl.load(owners + row).to(tl.int64)
++    base = working + layer * WORK_LAYER
++    state = tl.load(base + slot * WORK_SLOT + offsets)
++    record = records + layer * RECORD_LAYER + row * RECORD_REQUEST + head * 257
++    if ALL:
++        end = 8
++    else:
++        end = tl.load(steps + row) + 1
++    if TRACK:
++        checkpoint = tl.load(track_steps + row)
++        tracking_slot = tl.load(track_owners + row).to(tl.int64)
++    for t in range(end):
++        operands = record + t * RECORD_STEP
++        k = tl.load(operands + keys)
++        delta = tl.load(operands + 128 + values)
++        decay = tl.load(operands + 256)
++        # The installed SYCL binary rounds the innovation product first and
++        # contracts decay * state + innovation. Check each step against that
++        # binary; the opposite contraction differs by individual FP32 words.
++        state = tl.fma(state, decay, k[None, :] * delta[:, None])
++        if ALL:
++            tl.store(snapshots + row * OUTPUT_REQUEST + t * OUTPUT_STEP + offsets, state)
++        if TRACK:
++            if t == checkpoint and tracking_slot >= 0:
++                tl.store(base + tracking_slot * WORK_SLOT + offsets, state)
++    if not ALL:
++        if end > 0:
++            tl.store(base + slot * WORK_SLOT + offsets, state)
++
++
++def commit(caches, owners, steps, track_owners, track_steps):
++    live, records = caches.temporal, caches.intermediate_ssm
++    assert live.dtype == records.dtype == torch.float32
++    assert live.shape[-3:] == records.shape[-3:] == (12, 128, 128)
++    assert records.shape[2] == 8
++    _fold[(live.shape[0], owners.numel(), 12 * 16)](
++        live, records, owners, steps, track_owners, track_steps, None,
++        *live.stride()[:2], *records.stride()[:3], 0, 0,
++        track_owners is not None, False, 8,
++    )
++
++
++def expand_layer(live, records, owners, out):
++    """Admission and diagnostics use all eight steps, without updating live slots."""
++    _fold[(1, owners.numel(), 12 * 16)](
++        live, records, owners, None, None, None, out,
++        0, live.stride(0), 0, *records.stride()[:2], *out.stride()[:2],
++        False, True, 8,
++    )
+diff --git a/python/sglang/srt/speculative/v6_gdn.py b/python/sglang/srt/speculative/v6_gdn.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..f0cdd04fc8607580b5ca9adc832a92e0d37bf321
+--- /dev/null
++++ b/python/sglang/srt/speculative/v6_gdn.py
+@@ -0,0 +1,176 @@
++# SPDX-License-Identifier: Apache-2.0
++"""Adapt v6 native speculative GDN to SGLang's owned rollback snapshots."""
++from functools import cache
++import hashlib
++import os
++from pathlib import Path
++
++import torch
++import triton
++import triton.language as tl
++
++from sglang.srt.speculative.b70_prefill import load
++
++
++@cache
++def direct_seed_enabled():
++    if os.getenv("SGLANG_FLASHNEXT_NATIVE_GDN_SEED") != "1":
++        return False
++    library = Path("/opt/flashnext/a0035/libflashnext_gdn_seed.so")
++    if hashlib.sha256(library.read_bytes()).hexdigest() != "55273afa3e43274bacfe3abfa643f8884277409d81cdf143afa01523a85dc31d":
++        raise RuntimeError(f"Unexpected packed GDN seed library at {library}")
++    torch.ops.load_library(str(library))
++    return True
++
++
++@cache
++def prepared_enabled():
++    if os.getenv("SGLANG_FLASHNEXT_PREPARED_GDN") != "1":
++        return False
++    torch.ops.load_library("/opt/flashnext/a0037/liba0037_gdn_prepare.so")
++    return True
++
++
++@triton.jit
++def _seed_verify(working, snapshots, working_conv, history, owners,
++                 STATE_STRIDE: tl.constexpr, STATE: tl.constexpr, STATE_TILES: tl.constexpr,
++                 CONV_OWNER: tl.constexpr, CONV_CHANNEL: tl.constexpr,
++                 CONV_TIME: tl.constexpr, CHANNELS: tl.constexpr):
++    row = tl.program_id(0)
++    tile = tl.program_id(1)
++    lane = tl.arange(0, 1024)
++    owner = tl.load(owners + row).to(tl.int64)
++    if STATE_TILES > 0 and tile < STATE_TILES:
++        offset = tile * 1024 + lane
++        values = tl.load(working + owner * STATE_STRIDE + offset, offset < STATE, 0)
++        tl.store(snapshots + row * 8 * STATE + offset, values, offset < STATE)
++    else:
++        offset = (tile - STATE_TILES) * 1024 + lane
++        channel = offset % CHANNELS
++        time = offset // CHANNELS
++        conv_values = tl.load(working_conv + owner * CONV_OWNER + channel * CONV_CHANNEL
++                         + time * CONV_TIME, time < 3, 0)
++        tl.store(history + row * 80 * CHANNELS + offset, conv_values, time < 3)
++
++
++@triton.jit
++def _stage_verify_conv(working, history, projection, rollback, owners,
++                       CONV_OWNER: tl.constexpr, CONV_CHANNEL: tl.constexpr,
++                       CONV_TIME: tl.constexpr, CHANNELS: tl.constexpr,
++                       PROJECTION: tl.constexpr, SAVE_ROW: tl.constexpr,
++                       SAVE_TOKEN: tl.constexpr, SAVE_CHANNEL: tl.constexpr,
++                       SAVE_TIME: tl.constexpr):
++    row = tl.program_id(0)
++    offset = tl.program_id(1) * 512 + tl.arange(0, 512)
++    channel = offset % CHANNELS
++    time = offset // CHANNELS
++    owner = tl.load(owners + row).to(tl.int64)
++    working_base = working + owner * CONV_OWNER + channel * CONV_CHANNEL
++    seed = tl.load(working_base + time * CONV_TIME, time < 3, 0)
++    tl.store(history + row * 80 * CHANNELS + offset, seed, time < 3)
++    # The donor convolution rolls its original BF16 inputs by one position
++    # per token. Stage all post-token rollback windows from those same words.
++    destination = rollback + row * SAVE_ROW + channel * SAVE_CHANNEL + time * SAVE_TIME
++    for token in tl.static_range(8):
++        position = token + time + 1
++        previous = tl.load(working_base + position * CONV_TIME,
++                           (position < 3) & (time < 3), 0)
++        current = tl.load(projection + (row * 8 + position - 3) * PROJECTION + channel,
++                          (position >= 3) & (time < 3), 0)
++        tl.store(destination + token * SAVE_TOKEN,
++                 tl.where(position < 3, previous, current), time < 3)
++
++
++class SpeculativeGDN:
++    direct_seed = False
++    factor_output = False
++
++    def __init__(self, requests, offsets, owners):
++        self.requests = requests
++        self.offsets = offsets
++        self.owners = owners
++        self.tokens = torch.arange(8 * requests, dtype=torch.int32, device=owners.device)
++        self.indices = self.tokens.view(requests, 8)
++        # The working seed is copied to column zero. The native verifier reads
++        # it before overwriting column zero and writing the remaining snapshots.
++        self.seed_column = torch.ones(requests, dtype=torch.int32, device=owners.device)
++        self.conv = torch.empty((8 * requests, 10, 2560), dtype=torch.bfloat16, device=owners.device)
++        load("gdn_index64")
++
++    def projected_forward(self, module, backend, hidden_states, forward_batch):
++        # The stored Q/K/V/Z and B/A bands already match the donor's
++        # non-interleaved projection ABI. The native convolution emits Z.
++        assert forward_batch.forward_mode.is_target_verify()
++        qkvz, ba = module._forward_input_proj(hidden_states)
++        layer = module.attn
++        cache = backend.state_layer_cache(layer.layer_id)
++        out, z = self._verify(layer, qkvz, ba, cache)
++        normalized = module.norm(out.flatten(0, 1), z.flatten(0, 1))
++        return module.out_proj(normalized.reshape(qkvz.shape[0], -1))[0]
++
++    def _verify(self, layer, qkvz, ba, cache):
++        n = self.requests
++        assert qkvz.shape == (8 * n, 4096) and qkvz.dtype == torch.bfloat16
++        assert ba.shape == (8 * n, 24) and ba.dtype == qkvz.dtype
++        working_conv = cache.conv[0]
++        working_ssm = cache.temporal
++        snapshots = cache.intermediate_ssm[:n]
++        assert snapshots.is_contiguous() and snapshots.shape[1:] == (8, 12, 128, 128)
++        assert snapshots.dtype == working_ssm.dtype == torch.float32
++        assert working_ssm[0].is_contiguous() and working_conv.dtype == torch.bfloat16
++        owners = self.owners[:n]
++        history = self.conv[::8]
++        # Seed native convolution history and FP32 recurrence directly from
++        # the working slots. The donor writes each of the eight rollback rows.
++        state_elements = snapshots[0, 0].numel()
++        channels = working_conv.shape[1]
++        rollback = cache.intermediate_conv_window[0][:n]
++        projected = qkvz.contiguous()
++        fused_conv = self.direct_seed and os.getenv("SGLANG_FLASHNEXT_ROUND_PIPELINE") == "1"
++        if (fused_conv and self.factor_output and layer.activation in ("silu", "swish")
++                and prepared_enabled()):
++            return torch.ops.a0037_gdn_prepare.verify(
++                projected, ba.contiguous(), layer.conv_weights.contiguous().view(2560, 4),
++                layer.bias, layer.A_log.float().reshape(-1).contiguous(),
++                layer.dt_bias.reshape(-1).contiguous(), working_conv, rollback,
++                working_ssm, snapshots.flatten(0, 1), owners, self.offsets,
++                self.tokens, self.indices,
++            )
++        if fused_conv:
++            _stage_verify_conv[(n, triton.cdiv(3 * channels, 512))](
++                working_conv, self.conv, projected, rollback, owners,
++                *working_conv.stride(), channels, projected.stride(0), *rollback.stride(),
++                num_warps=4,
++            )
++        else:
++            state_tiles = 0 if self.direct_seed else triton.cdiv(state_elements, 1024)
++            _seed_verify[(n, state_tiles + triton.cdiv(3 * channels, 1024))](
++                working_ssm, snapshots, working_conv, self.conv, owners,
++                working_ssm.stride(0), state_elements, state_tiles, *working_conv.stride(), channels,
++            )
++        z = qkvz.new_empty((8 * n, 12, 128))
++        ops = torch.ops._gdn_index64
++        parts = ops.causal_conv1d_spec(
++            z, projected, ba.contiguous(), 16, 48, 128, 128, self.conv,
++            layer.conv_weights.contiguous(), layer.bias, layer.activation,
++            0, 0, n, self.offsets, self.tokens, self.indices, self.seed_column, 8 * n, 4, True,
++        )
++        if not fused_conv:
++            # The donor rolls history into [old_1, old_2, x_0, ..., x_7].
++            rollback.copy_(history.unfold(1, 3, 1))
++        out = torch.empty_like(z)
++        a_log = layer.A_log.float().reshape(-1).contiguous()
++        bias = layer.dt_bias.reshape(-1).contiguous()
++        if self.direct_seed:
++            verify = (torch.ops.flashnext_gdn_factors.verify if self.factor_output
++                      else torch.ops.flashnext_gdn_seed.verify)
++            verify(
++                out, *parts, a_log, bias, snapshots.flatten(0, 1), working_ssm,
++                owners, self.offsets, self.tokens, self.indices,
++            )
++        else:
++            ops.gated_delta_rule_spec(
++                out, *parts, 48, 128, a_log, bias, snapshots.flatten(0, 1),
++                0, 0, n, self.offsets, self.tokens, self.indices, self.seed_column, 8 * n, 4,
++            )
++        return out, z
+diff --git a/python/sglang/srt/speculative/v6_target.py b/python/sglang/srt/speculative/v6_target.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..d2f0f1188c09d740cd8c130f79f9bb731237d3e6
+--- /dev/null
++++ b/python/sglang/srt/speculative/v6_target.py
+@@ -0,0 +1,267 @@
++# SPDX-License-Identifier: Apache-2.0
++"""Adapters for the accepted B70 v6 short target arithmetic."""
++from functools import cache
++import hashlib
++from pathlib import Path
++
++import torch
++import torch.nn.functional as F
++import triton
++import triton.language as tl
++
++from sglang.srt.speculative.b70_hc import hc_silu, hc_gate_mix
++
++
++@cache
++def load_native():
++    from sglang.srt.speculative.b70_prefill import LIBDIR
++
++    digests = {
++        "b70_exact_v1": "be4e6e756afd5852cefee188f5cce56a18d5caf5eccc3d26b0e6c099123ad1fa",
++        "b70_exact_moe_v3": "20691aa32d8b61d9e1f907be92f0115960199a6a296ad14762396b218654aaaa",
++        "b70_ordered_hc_v2": "4ddb9a938ce6f415b9b0ae2c0486e04e3f74a358d9c3448381c52672f6db1ce6",
++        "astra_hc": "2fdda680027db5d730ae9b9ed0098f0db4b97d83a6bc2fe27e55331e1756c44c",
++    }
++    for name, digest in digests.items():
++        library = Path(LIBDIR, f"lib{name}.so")
++        if hashlib.sha256(library.read_bytes()).hexdigest() != digest:
++            raise RuntimeError(f"Unexpected v6 target library {library}")
++        torch.ops.load_library(str(library))
++    import vllm_xpu_kernels._moe_C  # registers the donor softmax router
++
++
++@triton.jit
++def _hc_norm(x, weight, out, row_stride, EPS: tl.constexpr):
++    row = tl.program_id(0)
++    stream = tl.program_id(1)
++    offsets = stream * 2560 + tl.arange(0, 4096)
++    mask = tl.arange(0, 4096) < 2560
++    values = tl.load(x + row * row_stride + offsets, mask, 0).to(tl.float32)
++    w = tl.load(weight + offsets, mask, 0).to(tl.float32)
++    normalized = values * tl.rsqrt(tl.sum(values * values) / 2560 + EPS)
++    # Match the selected donor affine expression and BF16 store.
++    tl.store(out + row * 10240 + offsets, normalized + normalized * w, mask)
++
++
++@triton.jit
++def _hc_inject(block, residual, gate, output, block_stride, residual_stride, gate_stride,
++               QUARTER_ROWS: tl.constexpr):
++    row = tl.program_id(0)
++    tile = tl.program_id(1)
++    columns = tile * 512 + tl.arange(0, 512)
++    streams = tl.arange(0, 4)
++    offsets = streams[:, None] * 2560 + columns[None, :]
++    injection = tl.load(gate + row * gate_stride + streams).to(tl.float32)
++    injection = 2.0 * tl.sigmoid(injection / 4)
++    if QUARTER_ROWS:
++        block_offsets = (columns // 640 * QUARTER_ROWS + row) * 640 + columns % 640
++    else:
++        block_offsets = row * block_stride + columns
++    values = tl.load(block + block_offsets).to(tl.float32)
++    prior = tl.load(residual + row * residual_stride + offsets).to(tl.float32)
++    tl.store(output + row * 10240 + offsets, prior + values[None, :] * injection[:, None])
++
++
++@triton.jit
++def _hc_inject_norm(block, residual, gate, weight, output, normalized,
++                    block_stride, residual_stride, gate_stride, EPS: tl.constexpr,
++                    QUARTER_ROWS: tl.constexpr):
++    row = tl.program_id(0)
++    stream = tl.program_id(1)
++    columns = tl.arange(0, 4096)
++    active = columns < 2560
++    offsets = stream * 2560 + columns
++    injection = tl.load(gate + row * gate_stride + stream).to(tl.float32)
++    scale = 2.0 * tl.sigmoid(injection / 4)
++    if QUARTER_ROWS:
++        block_offsets = (columns // 640 * QUARTER_ROWS + row) * 640 + columns % 640
++    else:
++        block_offsets = row * block_stride + columns
++    values = tl.load(block + block_offsets, active, 0).to(tl.float32)
++    prior = tl.load(residual + row * residual_stride + offsets, active, 0).to(tl.float32)
++    combined = (prior + values * scale).to(tl.bfloat16)
++    tl.store(output + row * 10240 + offsets, combined, active)
++    values = combined.to(tl.float32)
++    norm = values * tl.rsqrt(tl.sum(values * values) / 2560 + EPS)
++    affine = tl.load(weight + offsets, active, 0).to(tl.float32)
++    tl.store(normalized + row * 10240 + offsets, norm + norm * affine, active)
++
++
++# This specializes the accepted fused HC norm to this checkpoint's HC4
++# geometry. Literal tile sizes keep host utility functions out of XPU JIT.
++@triton.jit
++def _hc_inject_norm_tree(block, residual, gate, weight, output, normalized,
++                         block_stride, residual_stride, gate_stride, EPS: tl.constexpr):
++    pid = tl.program_id(0)
++    row = pid // 4
++    stream = pid % 4
++    streams = tl.arange(0, 4)
++    columns = tl.arange(0, 8)[:, None] * 512 + tl.arange(0, 512)[None, :]
++    active = columns < 2560
++    offsets = stream * 2560 + columns
++
++    prior = tl.load(residual + row * residual_stride + offsets, active, 0.0)
++    gates = tl.load(gate + row * gate_stride + streams)
++    values = tl.load(block + row * block_stride + columns, active, 0.0)
++    gates = 2.0 * tl.sigmoid(gates.to(tl.float32) / 4)
++    injected = values.to(tl.float32) * tl.sum(tl.where(streams == stream, gates, 0.0))
++    combined = (prior.to(tl.float32) + injected).to(tl.bfloat16)
++    tl.store(output + row * 10240 + offsets, combined, active)
++
++    values = combined.to(tl.float32)
++    sum_sq = tl.sum(tl.sum(values * values, axis=1), axis=0)
++    rrms = tl.rsqrt(sum_sq / 2560 + EPS)
++    affine = tl.load(weight + offsets, active, 0.0)
++    value = values * rrms
++    value += value * affine.to(tl.float32)
++    tl.store(normalized + row * 10240 + offsets, value, active)
++
++
++@triton.jit
++def _pack_expert_sum(routed, shared, quarters, ROWS: tl.constexpr):
++    row = tl.program_id(0)
++    rank = tl.program_id(1)
++    columns = tl.arange(0, 1024)
++    active = columns < 640
++    offsets = row * 2560 + rank * 640 + columns
++    left = tl.load(routed + offsets, active, 0).to(tl.float32)
++    right = tl.load(shared + offsets, active, 0).to(tl.float32)
++    tl.store(quarters + (rank * ROWS + row) * 640 + columns,
++             left + right, active)
++
++
++def expert_sum_quarters(routed, shared):
++    rows = routed.shape[0]
++    assert shared.shape == routed.shape == (rows, 2560)
++    assert routed.is_contiguous() and shared.is_contiguous()
++    quarters = routed.new_empty((4, rows, 640))
++    _pack_expert_sum[(rows, 4)](routed, shared, quarters, rows)
++    return quarters
++
++
++def hc_norm(module, x):
++    assert module.group_size == 2560 and x.shape[1] == 10240 and x.stride(1) == 1
++    out = x.new_empty(x.shape)
++    _hc_norm[(x.shape[0], 4)](x, module.weight, out, x.stride(0), module.variance_epsilon)
++    return out
++
++
++def hc_mix(module, x, normalized_input=None, *, long_prefill=False):
++    normalized = hc_norm(module.hc_norm, x) if normalized_input is None else normalized_input
++    down = getattr(module, "_v6_down", module.input_mix_weight_down.weight)
++    valid = 324 if down.shape[0] == 336 else 320
++    if long_prefill or x.shape[0] > 256:
++        from sglang.srt.speculative.b70_prefill import load
++
++        load("long_hc")
++        if normalized.shape[0] <= 1024:
++            low = torch.ops.long_hc.forward(normalized, down, valid, 1)
++        else:
++            low = torch.cat([
++                torch.ops.long_hc.forward(tile, down, valid, 1)
++                for tile in normalized.split(1024)
++            ])
++    else:
++        low = torch.ops.b70_ordered_hc_v2.forward(
++            normalized, down, valid, 10 if x.shape[0] == 32 else 20
++        )
++    activation = hc_silu(low[:, :320], 4)
++    up = module.input_mix_weight_up.weight
++    if x.shape[0] <= 8:
++        mixed = x.new_empty((x.shape[0], 2560))
++        torch.ops.astra_hc_v3.up(activation, up, normalized, mixed)
++    else:
++        mixed = hc_gate_mix(normalized, F.linear(activation, up), 4)
++    injection = low[:, 320:324] if valid == 324 else None
++    return mixed, (x, normalized, injection)
++
++
++def hc_combine(block, residuals, *, quarter_rows=0):
++    residual, _, injection = residuals
++    assert block.stride(1) == residual.stride(1) == injection.stride(1) == 1
++    out = residual.new_empty(residual.shape)
++    _hc_inject[(block.shape[0], 5)](
++        block, residual, injection, out, block.stride(0), residual.stride(0),
++        injection.stride(0), quarter_rows,
++    )
++    return out
++
++
++def hc_combine_and_normalize(block, residuals, next_norm, *, quarter_rows=0):
++    if next_norm is None:
++        return hc_combine(block, residuals, quarter_rows=quarter_rows), None
++    residual, _, injection = residuals
++    assert block.stride(1) == residual.stride(1) == injection.stride(1) == 1
++    assert next_norm.group_size == 2560 and next_norm.weight.numel() == 10240
++    out = residual.new_empty(residual.shape)
++    normalized = torch.empty_like(out)
++    if not quarter_rows and block.shape[0] >= 128:
++        _hc_inject_norm_tree[(block.shape[0] * 4,)](
++            block, residual, injection, next_norm.weight, out, normalized,
++            block.stride(0), residual.stride(0), injection.stride(0), next_norm.variance_epsilon,
++        )
++        return out, normalized
++    _hc_inject_norm[(block.shape[0], 4)](
++        block, residual, injection, next_norm.weight, out, normalized,
++        block.stride(0), residual.stride(0), injection.stride(0),
++        next_norm.variance_epsilon, quarter_rows,
++    )
++    return out, normalized
++
++
++def route(logits, renormalize):
++    """Emit the compact route table used by the selected cyclic consumer."""
++    weights = logits.new_empty((logits.shape[0], 10), dtype=torch.float32)
++    ids = logits.new_empty(weights.shape, dtype=torch.int32)
++    token_expert_indices = torch.empty_like(ids)
++    torch.ops._moe_C.topk_softmax(weights, ids, token_expert_indices, logits, renormalize, None, None)
++    return weights, ids
++
++
++def packed_moe(block, hidden, forward_batch=None, defer_finalize=False, *,
++               fallback, defer_shared_add=None, native_shared_experts=None):
++    from sglang.srt.layers.moe.topk import StandardTopKOutput
++    from sglang.srt.models.qwen2_moe import reduce_moe_output
++
++    shared = block.shared_expert
++    wr = block.gate.weight
++    wgu = shared.gate_up_proj.weight
++    wd = shared.down_proj.weight
++    we = block.shared_expert_gate.weight
++    if (
++        defer_finalize or block.enable_shared_expert_fusion
++        or hidden.shape not in ((8, 2560), (16, 2560), (24, 2560), (32, 2560))
++        or hidden.data_ptr() % 64 != 0 or not hidden.is_contiguous()
++        or hidden.dtype != torch.bfloat16 or hidden.device.type != "xpu"
++        or (wr.shape, wgu.shape, wd.shape, we.shape) != ((512, 2560), (320, 2560), (2560, 160), (1, 2560))
++        or not all(w.is_contiguous() and w.dtype == hidden.dtype and w.device == hidden.device
++                   for w in (wr, wgu, wd, we))
++    ):
++        return fallback(hidden, forward_batch, defer_finalize)
++    router, activation, gate = torch.ops.b70_exact_moe_v3.front(hidden, wr, wgu, we)
++    weights, ids = route(router, block.topk.topk_config.renormalize)
++    topk = StandardTopKOutput(weights, ids, router)
++    if (
++        native_shared_experts is not None
++        and not block.reduce_results and not block.experts.reduce_results
++    ):
++        shared = torch.ops.b70_exact_moe_v3.back(activation, wd, gate, hidden, False)
++        return native_shared_experts(block.experts, hidden, topk, shared)
++    routed = block.experts(hidden, topk)
++    shared_output = torch.ops.b70_exact_moe_v3.back(activation, wd, gate, hidden, False)
++    if defer_shared_add is not None and not block.reduce_results:
++        return defer_shared_add(routed, shared_output)
++    routed.add_(shared_output)
++    return reduce_moe_output(routed) if block.reduce_results else routed
++
++
++def ba_projection(module, fallback, x, *args, **kwargs):
++    weight = module.weight
++    if (
++        args or kwargs or module.bias is not None or not 9 <= x.shape[0] <= 32
++        or x.shape[1] != 2560 or weight.shape != (24, 2560)
++        or x.device.type != "xpu" or x.dtype != weight.dtype or x.dtype != torch.bfloat16
++        or not x.is_contiguous() or not weight.is_contiguous()
++    ):
++        return fallback(x, *args, **kwargs)
++    return torch.ops.b70_exact_v1.gemm(x, weight, 1, 3), None

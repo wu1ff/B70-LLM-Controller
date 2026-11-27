@@ -1,0 +1,2261 @@
+diff --git a/python/sglang/srt/managers/schedule_batch.py b/python/sglang/srt/managers/schedule_batch.py
+index 421a7bf6562e987d0807ed3b82cdf27ee94d966d..c35100ee625f4e50c3307b3e13e3e8edac02ae1b 100644
+--- a/python/sglang/srt/managers/schedule_batch.py
++++ b/python/sglang/srt/managers/schedule_batch.py
+@@ -2144,6 +2144,7 @@ class ScheduleBatch(ScheduleBatchDisaggregationDecodeMixin):
+ 
+     # Member rows riding one forward; None whenever reqs and rows are 1:1.
+     beam_tail: Optional[BeamTail] = None
++    flashnext_mixed_budget: int = 0
+ 
+     # === Compound crossing to ForwardBatch (carry their own device tensors) ===
+     # Sampling info
+diff --git a/python/sglang/srt/managers/schedule_policy.py b/python/sglang/srt/managers/schedule_policy.py
+index c69d15c51c09aa412e7fd9619aae7420c6dfa1dd..3d6e0523cb51d30bca12685faabb23f86c6c52f6 100644
+--- a/python/sglang/srt/managers/schedule_policy.py
++++ b/python/sglang/srt/managers/schedule_policy.py
+@@ -812,6 +812,7 @@ class AddReqResult(Enum):
+     CONTINUE = auto()  # Continue to add requests
+     NO_TOKEN = auto()  # No token left
+     OTHER = auto()  # Other reasons to stop adding requests
++    NEEDS_CHUNK_SLOT = auto()  # This waiter would start a second unfinished chunk
+     # No memory comes back for a request no chunk of which fits now
+     # (`PrefillBudget.unschedulable`): it is aborted, not queued.
+     UNSCHEDULABLE = auto()
+@@ -921,7 +922,19 @@ class PrefillAdder:
+         self.rem_input_tokens = rem_input_tokens - num_mixed_decode_tokens
+         self.rem_chunk_tokens = rem_chunk_tokens
+         self.chunked_req_limit: Optional[int] = None
++        self.b70_aligned_chunk = None
++        if os.getenv("SGLANG_FLASHNEXT_V6_PREFILL") == "1" and self.page_size == 128:
++            # Use all of the existing budget for an uncontended chunk. Leave
++            # runway for another request whenever there is concurrent work.
++            self.b70_aligned_chunk = (
++                rem_chunk_tokens // 128 * 128
++                if running_batch.is_empty() and waiting_queue_len <= 1
++                and rem_chunk_tokens in (1024, 2048, 2049, 4096, 4097) else 768
++            )
+         self.dllm_config = dllm_config
++        # Charge actual compute rows on B70. KV and interior chunk cuts still
++        # use physical pages, including recurrent checkpoint boundaries.
++        self.b70_exact_compute = self.b70_aligned_chunk is not None and dllm_config is None
+         # Mamba checkpoints only land on page-aligned chunk ends.
+         # Exact fill ends a chunk off the page grid; deterministic mode keeps chunk
+         # ends on pages, which some batch-invariant kernels depend on.
+@@ -1223,7 +1236,9 @@ class PrefillAdder:
+         raw_extend_input_len = extend_input_len
+         rounded_extend_input_len = self.ceil_paged_tokens(extend_input_len)
+         compute_charge = (
+-            raw_extend_input_len if self.exact_chunk_fill else rounded_extend_input_len
++            raw_extend_input_len
++            if self.exact_chunk_fill or self.b70_exact_compute
++            else rounded_extend_input_len
+         ) + replay_len
+         if is_cp_sharded_padded():
+             extend_input_len = get_cp_sharded_padded_allocation_tokens(
+@@ -1582,6 +1597,8 @@ class PrefillAdder:
+             _rem_tokens = min(_rem_tokens, self.chunked_req_limit)
+ 
+         cand_extend_input_len = len(req.full_untruncated_fill_ids) - req.prefix_len
++        if self.b70_aligned_chunk is not None and cand_extend_input_len > _rem_tokens:
++            _rem_tokens = min(_rem_tokens, self.b70_aligned_chunk)
+         _rem_tokens = self.grid_continuation_limit(_rem_tokens, cand_extend_input_len)
+         prefix_tokens = 0
+         if is_cp_sharded_padded():
+@@ -2111,10 +2128,11 @@ class PrefillAdder:
+         prefix_len = req.prefix_len + host_hit_length
+         extend_len = len(req.full_untruncated_fill_ids) - prefix_len
+         input_tokens = self.ceil_paged_tokens(extend_len)
+-        # Whether the request fits whole. Against the raw length under
+-        # exact-chunk-fill, so a request whose ceiled length would spill is
+-        # not needlessly split into a second chunk.
+-        chunk_fit_tokens = extend_len if self.exact_chunk_fill else input_tokens
++        # A complete extend may use a non-page-aligned last row. Reserve
++        # its full KV page without billing the unused rows as model work.
++        chunk_fit_tokens = (
++            extend_len if self.exact_chunk_fill or self.b70_exact_compute else input_tokens
++        )
+         replay_len = self._replay_len(req, prefix_len)
+         chunk_limit = self.rem_chunk_tokens
+         if chunk_limit is not None and replay_len:
+@@ -2158,9 +2176,13 @@ class PrefillAdder:
+             max_new_tokens = 0
+         elif chunk_tokens_limit is not None and chunk_fit_tokens > chunk_tokens_limit:
+             if has_chunked_req:
+-                # Only one unfinished chunked request can be tracked; a
+-                # continuation cut short by memory leaves chunk budget to spare.
++                # The resumed chunk keeps its slot and runs first. A later
++                # complete short request can use the remainder of this pass.
++                if self.b70_aligned_chunk is not None and not req.kv.holds_kv:
++                    return AddReqResult.NEEDS_CHUNK_SLOT
+                 return AddReqResult.OTHER
++            if self.b70_aligned_chunk is not None:
++                chunk_tokens_limit = min(chunk_tokens_limit, self.b70_aligned_chunk)
+             if self.exact_chunk_fill:
+                 # Take the remainder verbatim so the batch hits exactly
+                 # chunked_prefill_size. `chunk_fit_tokens > chunk_tokens_limit`
+diff --git a/python/sglang/srt/managers/scheduler.py b/python/sglang/srt/managers/scheduler.py
+index b96684dddd27f15ac685f4729188e7971fe03e20..276f57ec969f99e7512cf16a1923d2173603782d 100644
+--- a/python/sglang/srt/managers/scheduler.py
++++ b/python/sglang/srt/managers/scheduler.py
+@@ -2190,13 +2190,28 @@ class Scheduler(
+     @DynamicGradMode()
+     def event_loop_normal(self):
+         """A normal scheduler loop."""
++        # A0040: the TP-wide receive and broadcast for the next iteration runs
++        # while the device executes the current batch. Every rank prefetches at
++        # the same loop position, and dispatch still happens at the top of the
++        # next iteration, after the current result is processed.
++        prefetch = (
++            os.getenv("SGLANG_FLASHNEXT_RECV_PREFETCH") == "1"
++            and self.uocr_runtime is None
++            and getattr(self.request_receiver, "recv_skipper", None) is None
++        )
++        prefetched = None
+         while True:
+             if self.gracefully_exit:
+                 break
+             self.increment_scheduler_iterations()
+ 
+             # Receive requests
+-            self.ingest_requests()
++            if prefetched is not None:
++                received, recv_start_ns = prefetched
++                prefetched = None
++                self._a0040_dispatch_prefetched(received, recv_start_ns)
++            else:
++                self.ingest_requests()
+             if self.pause_state.paused:
+                 self._record_scheduler_state_for_paused_engine()
+                 continue
+@@ -2212,6 +2227,8 @@ class Scheduler(
+             # Launch the current batch
+             if batch:
+                 result = self.run_batch(batch)
++                if prefetch:
++                    prefetched = self._a0040_prefetch_inputs()
+                 self.process_batch_result(batch, result)
+             else:
+                 # When the server is idle, do self-check and re-init some states.
+@@ -2222,6 +2239,27 @@ class Scheduler(
+             self.last_batch = batch
+             self.invariant_checker.run(CheckPhase.BUSY, batch)
+ 
++    def _a0040_prefetch_inputs(self):
++        """Receive and broadcast the next inputs without dispatching them."""
++        local_reqs = []
++        if (
++            not self.pause_state.holds_inputs()
++            and get_parallel().pp_rank == 0
++            and get_parallel().attn_tp_rank == 0
++            and get_parallel().attn_cp_rank == 0
++        ):
++            local_reqs = self._poll_timeout_aborts()
++        recv_start_ns = time.monotonic_ns()
++        return self.request_receiver.recv_requests(local_reqs=local_reqs), recv_start_ns
++
++    def _a0040_dispatch_prefetched(self, received, recv_start_ns):
++        """Dispatch prefetched inputs exactly where ingest_requests would."""
++        recv_reqs = self.pause_state.take_inputs(received, stop_at_pause=False)
++        if recv_reqs:
++            self.metrics_reporter.record_scheduler_active(recv_start_ns)
++        self.process_input_requests(recv_reqs)
++        return received
++
+     @DynamicGradMode()
+     def event_loop_overlap(self):
+         """A scheduler loop that overlaps the CPU processing and GPU computation."""
+@@ -2730,11 +2768,26 @@ class Scheduler(
+             max_recv_per_poll=self.max_recv_per_poll,
+             request_retirer=self.request_retirer,
+             get_last_batch=lambda: self.last_batch,
++            **(
++                {"cold_prefill_can_wait": self._cold_prefill_can_wait}
++                if receiver_factory is SchedulerRequestReceiver
++                and os.getenv("SGLANG_FLASHNEXT_COLD_PREFILL_COALESCE") == "1"
++                else {}
++            ),
+             rust_server_mode=envs.SGLANG_RUST_SERVER.get(),
+             scripted_scheduler_hook=self.scripted_scheduler_hook,
+             scheduler_stage_metrics=self.scheduler_stage_metrics,
+         )
+ 
++    def _cold_prefill_can_wait(self) -> bool:
++        return (
++            not self.pause_state.paused
++            and self.last_batch is None
++            and self.running_batch.is_empty()
++            and not self.waiting_queue
++            and self.chunked_req is None
++        )
++
+     def init_dp_attn_adapter(self) -> None:
+         # Spec workers have no .model_runner of their own; the prefill graph
+         # runner that votes belongs to the target model.
+@@ -4674,6 +4727,83 @@ class Scheduler(
+             if dynamic_size is not None:
+                 chunked_prefill_size = dynamic_size
+ 
++        prefill_limit = self.max_prefill_tokens
++        if (
++            FLASHNEXT_DFLASH2 and os.getenv("SGLANG_FLASHNEXT_WIDE_PREFILL") == "1"
++            and not running_bs and self.page_size == 128
++            and prefill_limit == chunked_prefill_size == 1024
++            and len(self.waiting_queue) + int(self.chunked_req is not None) == 1
++        ):
++            req = self.chunked_req or next(iter(self.waiting_queue))
++            if (len(req.origin_input_ids) > 1024 and not req.return_logprob
++                    and not req.return_hidden_states and req.multimodal_inputs is None
++                    and req.input_embeds is None and req.session_id is None):
++                # A lone final token at the aligned cut would require
++                # another pass through every layer. Capacity still rounds its
++                # KV reservation to pages and retains the 2048 checkpoint.
++                remaining = len(req.origin_input_ids) - req.prefix_len
++                width = 4096 if remaining > 2049 else 2048
++                prefill_limit = chunked_prefill_size = width + int(remaining == width + 1)
++
++        # A short cohort already in the idle queue can share the wider text
++        # forward. Keep active decode on its existing mixed budget and use the
++        # regular adder for each request's KV reservation and cache ownership.
++        if (
++            FLASHNEXT_DFLASH2 and os.getenv("SGLANG_FLASHNEXT_WIDE_PREFILL") == "1"
++            and os.getenv("SGLANG_FLASHNEXT_SHORT_COHORT") == "1"
++            and self.disaggregation_mode == DisaggregationMode.NULL
++            and self.is_generation and not self.enable_overlap
++            and get_parallel().pp_size == 1 and not get_parallel().attn_dp_enabled
++            and not running_bs and self.chunked_req is None and self.page_size == 128
++            and prefill_limit == chunked_prefill_size == 1024
++            and 3 <= len(self.waiting_queue) <= min(4, num_allocatable_reqs)
++        ):
++            cohort_rows = [len(req.origin_input_ids) for req in self.waiting_queue]
++            if (
++                all(128 < rows <= 1024 for rows in cohort_rows)
++                and sum(cohort_rows) <= 2048
++                and all(
++                    not (req.return_logprob or req.return_hidden_states or req.output_ids)
++                    and req.multimodal_inputs is None and req.input_embeds is None
++                    and req.positional_embed_overrides is None
++                    and req.session_id is None and req.beam_group is None
++                    for req in self.waiting_queue
++                )
++            ):
++                prefill_limit = chunked_prefill_size = 2048
++
++        # Two whole waiting text prompts can be cheaper than slicing the second
++        # across two forwards. Reuse the existing wide PLE stage, and let the
++        # ordinary adder reserve KV, preserve queue priority and schedule peers.
++        if (
++            FLASHNEXT_DFLASH2 and os.getenv("SGLANG_FLASHNEXT_QUEUED_TEXT") == "1"
++            and os.getenv("SGLANG_FLASHNEXT_WIDE_PREFILL") == "1"
++            and self.is_generation and not self.enable_overlap and self.page_size == 128
++            and self.disaggregation_mode == DisaggregationMode.NULL
++            and get_parallel().pp_size == 1 and not get_parallel().attn_dp_enabled
++            and prefill_limit == chunked_prefill_size == 1024 and self.chunked_req is None
++            and 2 <= len(self.waiting_queue) <= min(4 - running_bs, num_allocatable_reqs)
++        ):
++            waiting = list(self.waiting_queue)
++            rows = [len(req.origin_input_ids) for req in waiting]
++            if (
++                all(0 < count <= 1024 for count in rows)
++                and 1024 < sum(rows[:2]) + running_bs <= 2048
++                and all(
++                    not (req.return_logprob or req.return_hidden_states or req.output_ids)
++                    and req.multimodal_inputs is None and req.input_embeds is None
++                    and req.positional_embed_overrides is None
++                    and req.session_id is None and req.beam_group is None
++                    for req in waiting
++                )
++                and all(not (req.return_logprob or req.return_hidden_states)
++                        and req.multimodal_inputs is None and req.beam_group is None
++                        for req in running_batch.reqs)
++            ):
++                # Admit complete ready prompts within the existing workspace
++                # and reserve a decode row for every live peer.
++                prefill_limit = chunked_prefill_size = sum(rows) + running_bs
++
+         # Prefill policy
+         # Get BLOCK_M from the backend for tile-budget admission logic
+         attn_backend = self.tp_worker.model_runner.attn_backend
+@@ -4688,7 +4818,7 @@ class Scheduler(
+             self.token_to_kv_pool_allocator,
+             running_batch,
+             self.new_token_ratio_tracker.current,
+-            self.max_prefill_tokens,
++            prefill_limit,
+             chunked_prefill_size,
+             running_bs if self.is_mixed_chunk else 0,
+             self.priority_scheduling_preemption_threshold,
+@@ -4877,6 +5007,10 @@ class Scheduler(
+                 added = len(adder.can_run_list) > 0 and req is adder.can_run_list[-1]
+                 if not added:
+                     self._drop_unadmitted_match(req)
++                if res == AddReqResult.NEEDS_CHUNK_SLOT and not added:
++                    if bounded_active:
++                        self.policy.mark_admission_skipped(req)
++                    continue
+                 if res == AddReqResult.UNSCHEDULABLE and not added:
+                     # Nothing holding memory will give it back: waiting would
+                     # keep the request queued forever.
+@@ -5005,6 +5139,10 @@ class Scheduler(
+                 running_batch.prepare_for_decode()
+                 new_batch.mix_with_running(running_batch)
+                 new_batch.decoding_reqs = running_batch.reqs
++                if (FLASHNEXT_DFLASH2 and not self.enable_overlap
++                        and os.getenv("SGLANG_FLASHNEXT_MIXED_K7") == "1"):
++                    budget = min(chunked_prefill_size, self.max_prefill_tokens)
++                    new_batch.flashnext_mixed_budget = budget - new_batch.extend_num_tokens
+                 if not self.enable_overlap and not self.spec_algorithm.is_none():
+                     # Non-overlap spec never writes the relay; stash the
+                     # tails' pending tokens for the mixed input resolve.
+@@ -5570,9 +5708,24 @@ class Scheduler(
+                     # Non-overlap: drive the V2 worker synchronously (no
+                     # future_map relay / on_publish).
+                     self.resolve_forward_inputs(batch, self.future_map)
++                    kwargs = {}
++                    if (
++                        type(self) is Scheduler
++                        and FLASHNEXT_DFLASH2 and self.spec_algorithm.is_dflash()
++                        and batch.forward_mode.is_decode() and batch.seq_lens_cpu is not None
++                        and get_parallel().pp_size == 1 and not get_parallel().attn_dp_enabled
++                        and self.disaggregation_mode == DisaggregationMode.NULL
++                        and os.getenv("SGLANG_FLASHNEXT_ROUND_PIPELINE") == "1"
++                    ):
++                        from sglang.srt.speculative.flashnext_round import RoundGrant
++
++                        # The normal scheduler already processed the previous
++                        # result and ingress, filtered the active set, and
++                        # reserved the exact verify pages for this launch.
++                        kwargs["round_grant"] = RoundGrant.issue(batch)
+                     with self._forward_isolation(batch, overlap=False):
+                         batch_result = self.model_worker.forward_batch_generation(
+-                            batch, pp_proxy_tensors=pp_proxy_tensors
++                            batch, pp_proxy_tensors=pp_proxy_tensors, **kwargs
+                         )
+                     # The isolation restore reverted the worker's in-forward SB edits;
+                     # re-apply what must carry to the next iter. Under PP the
+@@ -5584,27 +5737,50 @@ class Scheduler(
+                         if is_verify_round
+                         else batch_result.next_draft_input
+                     )
++                    early_decode = batch_result.early_decode_output
++                    defer_decode_lengths = False
++                    if early_decode is not None:
++                        tokens, commits, block_accept, host_lens, ready = early_decode
++                        defer_decode_lengths = (
++                            os.getenv("SGLANG_FLASHNEXT_DEFER_DECODE_READBACK") == "1"
++                            and type(self) is Scheduler and batch.forward_mode.is_decode()
++                            and batch.seq_lens_cpu is not None and host_lens is not None
++                            and not self.enable_unified_memory and self.uocr_runtime is None
++                            and not self.enable_unified_cache_external_linker
++                            and self.disaggregation_mode == DisaggregationMode.NULL
++                        )
++                        batch_result.next_token_ids = tokens
++                        batch_result.accept_lens = commits
++                        batch_result.block_accept_lens = block_accept
++                        batch_result.copy_done = ready
++                        if not defer_decode_lengths:
++                            batch_result.early_decode_output = None
+                     new_seq_lens = batch_result.new_seq_lens
+                     # Extend rounds return batch.seq_lens itself; copying it back
+                     # would block the scheduler until the whole forward has run.
+                     if new_seq_lens is not None and new_seq_lens is not batch.seq_lens:
+                         batch.seq_lens = new_seq_lens
+-                        if batch.seq_lens_cpu is not None:
+-                            batch.seq_lens_cpu = new_seq_lens.to("cpu")
++                        if batch.seq_lens_cpu is not None and not defer_decode_lengths:
++                            if early_decode is None:
++                                batch.seq_lens_cpu = new_seq_lens.to("cpu")
++                            else:
++                                ready.synchronize()
++                                batch.seq_lens_cpu = host_lens
++                                batch_result.copy_done = None
+                             batch.seq_lens_sum = int(batch.seq_lens_cpu.sum())
+                     batch.input_ids = None  # rebuilt next iter from draft_token
+                     self.update_cache_from_scheduler(batch, batch_result)
+                     # Only the last PP rank owns real results requiring D2H; other ranks
+                     # consume device tensors rebuilt from the output ring.
+-                    batch_result.copy_done = self.device_module.Event()
+-                    if (
+-                        batch_result.has_sampled_token_ids
+-                        and get_parallel().pp_size == 1
+-                    ):
+-                        batch_result.copy_to_cpu(
+-                            return_logprob=batch.return_logprob,
+-                            return_hidden_states=batch.return_hidden_states,
+-                        )
++                    if early_decode is None and batch_result.copy_done is None:
++                        batch_result.copy_done = self.device_module.Event()
++                        if batch_result.has_sampled_token_ids and get_parallel().pp_size == 1:
++                            batch_result.copy_to_cpu(
++                                return_logprob=batch.return_logprob,
++                                return_hidden_states=batch.return_hidden_states,
++                            )
++                    elif early_decode is not None:
++                        batch_result.copy_auxiliary_output_to_cpu()
+             else:
+                 kwargs = (
+                     {"pp_proxy_tensors": pp_proxy_tensors}
+@@ -5880,6 +6056,15 @@ class Scheduler(
+         )
+ 
+         if batch.forward_mode.is_decode():
++            if result.early_decode_output is not None:
++                _, _, _, host_lens, ready = result.early_decode_output
++                # Request-independent publication can run while STANDARD and
++                # the pinned copy finish. Only this owner publishes host bounds
++                # before the result processor can retire or donate a slot.
++                ready.synchronize()
++                batch.seq_lens_cpu = host_lens
++                batch.seq_lens_sum = int(host_lens.sum())
++                result.copy_done = result.early_decode_output = None
+             self.batch_result_processor.process_batch_result_decode(batch, result)
+         elif batch.forward_mode.is_extend():
+             if batch.is_dllm():
+diff --git a/python/sglang/srt/managers/scheduler_components/batch_result_processor.py b/python/sglang/srt/managers/scheduler_components/batch_result_processor.py
+index 1d8c506e4209cba881d7e43b6346774be416e9bb..934762ebe4a4517005e9e592832587568e7bd878 100644
+--- a/python/sglang/srt/managers/scheduler_components/batch_result_processor.py
++++ b/python/sglang/srt/managers/scheduler_components/batch_result_processor.py
+@@ -400,6 +400,20 @@ class SchedulerBatchResultProcessor:
+ 
+             # Move next_token_ids and logprobs to cpu
+             next_token_ids = next_token_ids.tolist()
++            mixed_output = {}
++            if result.mixed_verify_rows:
++                lengths = result.accept_lens.tolist()
++                next_token_ids = [next_token_ids[i * 8:(i + 1) * 8] for i in range(len(batch.reqs))]
++                mixed_output = {
++                    i: next_token_ids[i][:lengths[i]] for i in result.mixed_verify_rows
++                }
++                next_token_ids = [row[0] for row in next_token_ids]
++                accepted = sum(map(len, mixed_output.values()))
++                self.metrics_reporter.num_generated_tokens += accepted
++                self.metrics_reporter.update_spec_metrics(
++                    len(mixed_output), accepted - len(mixed_output), num_accept_tokens=accepted,
++                    num_block_accept_tokens=0, num_cap_tokens=0,
++                )
+             self.move_logprobs_to_cpu(batch=batch, logits_output=logits_output)
+             self.materialize_sampling_mask_output(batch.reqs, logits_output)
+             materialize_typed_customized_info(logits_output)
+@@ -483,6 +497,17 @@ class SchedulerBatchResultProcessor:
+                     ):
+                         # The overlap pages' text is already the first outputs.
+                         req.update_finish_state()
++                    elif i in mixed_output:
++                        emitted = mixed_output[i]
++                        req.kv.commit_decode(len(emitted))
++                        req.spec_verify_ct += 1
++                        correct = len(emitted) - 1
++                        req.spec_num_correct_drafts += correct
++                        req.update_spec_correct_drafts_histogram(correct)
++                        req.time_stats.set_last_decode_finish_time()
++                        req.output_ids.extend(emitted)
++                        self._maybe_update_reasoning_tokens(req, emitted)
++                        req.update_finish_state(len(emitted))
+                     else:
+                         # req output_ids are set here
+                         req.output_ids.append(next_token_id)
+@@ -494,6 +519,7 @@ class SchedulerBatchResultProcessor:
+                     # so the next spec prepare_for_decode reserves from the right base.
+                     if (
+                         not req.finished()
++                        and i not in mixed_output
+                         and batch.decoding_reqs
+                         and req in batch.decoding_reqs
+                         and not batch.spec_algorithm.is_none()
+@@ -946,6 +972,18 @@ class SchedulerBatchResultProcessor:
+         next_token_ids = result.next_token_ids.tolist()
+         accept_lens = result.accept_lens.tolist()
+         stride = _get_speculative_output_stride(result)
++        # The signed marker travels with the authoritative TP decision and the
++        # ordinary pinned K7 result. Inspect the entire rail even if EOS or a
++        # length limit trimmed the terminal position. The marker never enters
++        # public history, a grammar, or a donated cache key.
++        if -1 in next_token_ids and batch.spec_algorithm.is_dflash():
++            for i, req in enumerate(batch.reqs):
++                if still_in_batch_rows[i] and -1 in next_token_ids[i*stride:(i+1)*stride]:
++                    req.request_discard(FINISH_ABORT(
++                        "STANDARD terminal distribution has zero or nonfinite mass",
++                        status_code=HTTPStatus.INTERNAL_SERVER_ERROR,
++                    ))
++                    req.skip_radix_cache_insert = True
+         num_non_draft = result.num_non_draft_tokens_per_req
+         result.num_correct_drafts_per_req_cpu = [
+             length - num_non_draft for length in accept_lens
+@@ -1200,8 +1238,8 @@ class SchedulerBatchResultProcessor:
+             is_spec = not batch.spec_algorithm.is_none()
+ 
+             req.time_stats.set_last_decode_finish_time()
+-            sampling_mask_finish_reason = None
+-            if req.return_sampling_mask:
++            sampling_mask_finish_reason = req.discard_output_reason
++            if req.return_sampling_mask and sampling_mask_finish_reason is None:
+                 statuses = logits_output.next_token_sampling_mask_status
+                 status = None if statuses is None else statuses[i]
+                 sampling_mask_finish_reason = self.get_sampling_mask_finish_reason(
+diff --git a/python/sglang/srt/mem_cache/kv_cache_configurator.py b/python/sglang/srt/mem_cache/kv_cache_configurator.py
+index 2cfc1819676d3ce77ba3de8444b8a57c9d8d5f1c..3af45ecc1fd88bb179e7578893021f8e210f011f 100644
+--- a/python/sglang/srt/mem_cache/kv_cache_configurator.py
++++ b/python/sglang/srt/mem_cache/kv_cache_configurator.py
+@@ -932,8 +932,15 @@ class KVCacheConfigurator:
+             is_dsa_model, is_compressed_kv_model, current_platform
+         )
+ 
++        physical_sizes = sizes
++        if self.is_draft_worker and self.model_config.hf_config.architectures == ["DFlash2DraftModel"] and str(self.device).startswith("xpu"):
++            from sglang.srt.speculative.draft_pages import PAGE, RESIDENT_PAGES
++            logical_rows = sizes.max_total_num_tokens
++            if self.pool_page_size != PAGE or logical_rows < PAGE * RESIDENT_PAGES or logical_rows % PAGE:
++                raise ValueError("Draft virtual capacity must cover the resident pages and align to PAGE")
++            physical_sizes = msgspec.structs.replace(sizes, max_total_num_tokens=PAGE * RESIDENT_PAGES)
+         token_to_kv_pool = self._build_token_to_kv_pool(
+-            sizes=sizes,
++            sizes=physical_sizes,
+             is_dsa_model=is_dsa_model,
+             is_compressed_kv_model=is_compressed_kv_model,
+             req_to_token_pool=req_to_token_pool,
+diff --git a/python/sglang/srt/mem_cache/memory_pool.py b/python/sglang/srt/mem_cache/memory_pool.py
+index 02c0545d78e9885ada74a01f6b6ca83e0ddfb451..bc557c221012fbe47b2ed33a0ad881859c30572b 100644
+--- a/python/sglang/srt/mem_cache/memory_pool.py
++++ b/python/sglang/srt/mem_cache/memory_pool.py
+@@ -922,10 +922,20 @@ class MambaPool:
+                 if enable_linear_replayssm_spec or not allocate_intermediate_ssm:
+                     intermediate_ssm_state_cache = None
+                 else:
++                    # The fixed K7 worker addresses verification scratch by
++                    # batch ordinal. All four live requests can use 0..3.
++                    # Request-indexed PP layouts still need their dummy row.
++                    compact = (
++                        os.getenv("SGLANG_FLASHNEXT_COMPACT_VERIFY") == "1"
++                        and str(device).startswith("xpu")
++                        and speculative_num_draft_tokens == 8
++                        and spec_state_size == 4
++                        and not envs.SGLANG_ENABLE_PP_SPEC.get()
++                    )
+                     intermediate_ssm_state_cache = torch.zeros(
+                         size=(
+                             num_mamba_layers,
+-                            spec_state_size + 1,
++                            spec_state_size if compact else spec_state_size + 1,
+                             speculative_num_draft_tokens,
+                             temporal_state_shape[0],
+                             temporal_state_shape[1],
+diff --git a/python/sglang/srt/mem_cache/unified_radix_cache.py b/python/sglang/srt/mem_cache/unified_radix_cache.py
+index e156d3c772a1dae343cce63664ed920cba39be05..2fe97bd57af20a6861fad1e58c71beb29739d6d2 100644
+--- a/python/sglang/srt/mem_cache/unified_radix_cache.py
++++ b/python/sglang/srt/mem_cache/unified_radix_cache.py
+@@ -1609,6 +1609,14 @@ class UnifiedRadixCache(BasePrefixCache):
+         if is_finished:
+             self._release_request_mamba(req)
+ 
++    def reserve_b70_prefill_slots(self, count):
++        mamba = self.components.get(ComponentType.MAMBA)
++        if mamba is None or mamba.quantizes_checkpoints or self._mamba_host_only_checkpoint():
++            return None, None
++        storage, sub_pool = mamba._state()
++        slots = storage.take_state_slots(sub_pool, count)
++        return slots, mamba._free_mamba_value if slots is not None else None
++
+     def _checkpoint_into_tree(self, req: Req, *, up_to: int, **kwargs) -> None:
+         # A finished request hands its component state (mamba) to the tree
+         # instead of forking it, and the tree frees what the request still held.
+@@ -1626,6 +1634,7 @@ class UnifiedRadixCache(BasePrefixCache):
+         ]
+ 
+         # components prepare insert data + return effective cache_len
++        b70_interior = kwargs.get("b70_interior")
+         insert_params = InsertParams(
+             prev_prefix_len=req.kv.cache_protected_len,
+             inserted_len=req.kv.cache_inserted_len,
+@@ -1635,12 +1644,28 @@ class UnifiedRadixCache(BasePrefixCache):
+         )
+         effective_cache_len = len(token_ids)
+         for comp in self._components_tuple:
+-            cl = comp.prepare_for_caching_req(
+-                req=req,
+-                insert_params=insert_params,
+-                token_ids_len=len(token_ids),
+-                is_finished=is_finished,
+-            )
++            if b70_interior is not None and comp.component_type == ComponentType.MAMBA:
++                assert not is_finished and not comp.quantizes_checkpoints
++                if b70_interior.reserved is not None:
++                    slot = b70_interior.take_reserved()
++                else:
++                    slot = comp._try_alloc_mamba_slot(req)
++                    if slot is None:
++                        return
++                    try:
++                        b70_interior.install(slot)
++                    except Exception:
++                        comp._free_mamba_value(slot)
++                        raise
++                insert_params.mamba_value = slot
++                cl = b70_interior.depth
++            else:
++                cl = comp.prepare_for_caching_req(
++                    req=req,
++                    insert_params=insert_params,
++                    token_ids_len=len(token_ids),
++                    is_finished=is_finished,
++                )
+             if cl is not None:
+                 effective_cache_len = min(effective_cache_len, cl)
+ 
+diff --git a/python/sglang/srt/model_executor/forward_batch_info.py b/python/sglang/srt/model_executor/forward_batch_info.py
+index c4687e9d836dd823b8b34fa87c8cf71da405dccd..400d5351a5affac31db58b6718828a897053d80b 100644
+--- a/python/sglang/srt/model_executor/forward_batch_info.py
++++ b/python/sglang/srt/model_executor/forward_batch_info.py
+@@ -452,7 +452,14 @@ class ForwardBatch(ForwardBatchDeepSeekMHAMixin):
+ 
+     # The fixed K7 verifier submits one decode batch per chain position.
+     flashnext_verify_width: Optional[int] = None
++    flashnext_window_rows: Optional[tuple[int, int]] = None
+     flashnext_ple_rows: Optional[dict[int, torch.Tensor]] = None
++    flashnext_ple_chain: Optional[tuple] = None
++    flashnext_mixed: Optional[Any] = None
++    flashnext_prepared_window: Optional[tuple] = None
++    flashnext_draft_paged: bool = False
++    flashnext_draft_windowed: bool = False
++    flashnext_draft_pages: Optional[tuple] = None
+ 
+     # === Borrowed from ScheduleBatch: GPU tensors (cross-stream; clone targets for stream isolation) ===
+     # FIXME(lsyin): these are currently aliased by reference from ScheduleBatch. Once
+diff --git a/python/sglang/srt/model_executor/model_runner.py b/python/sglang/srt/model_executor/model_runner.py
+index aee8688729dd182e85d2ef96ff8b8818028a4e1b..c4d8cb35a61584951962c0b4ff18e22992b32afb 100644
+--- a/python/sglang/srt/model_executor/model_runner.py
++++ b/python/sglang/srt/model_executor/model_runner.py
+@@ -1040,6 +1040,9 @@ class ModelRunner:
+         draft_parallel_layout: DraftParallelLayout | None = None,
+     ):
+         """Allocate KV cache memory pools only (no backends or cuda graphs)."""
++        if self.device == "xpu" and os.getenv("SGLANG_FLASHNEXT_RUNTIME_BUDGET") == "1":
++            from sglang.srt.speculative.budget import check
++            check(self.gpu_id, "draft-pools" if self.is_draft_worker else "target-pools")
+         if memory_pool_config is not None:
+             self.memory_pool_config = memory_pool_config
+ 
+@@ -1378,6 +1381,9 @@ class ModelRunner:
+         warmup_bf16_gemms(self.model, max_m)
+ 
+     def load_model(self):
++        if self.device == "xpu" and os.getenv("SGLANG_FLASHNEXT_RUNTIME_BUDGET") == "1":
++            from sglang.srt.speculative.budget import check
++            check(self.gpu_id, "draft-load" if self.is_draft_worker else "target-load")
+         tic_total = time.perf_counter()
+         before_avail_memory = get_available_gpu_memory(self.device, self.gpu_id)
+         logger.info(
+diff --git a/python/sglang/srt/speculative/admission_copy.py b/python/sglang/srt/speculative/admission_copy.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..9b75927ca1baa5d5e3ee0cfa6b089c1f33fcf40f
+--- /dev/null
++++ b/python/sglang/srt/speculative/admission_copy.py
+@@ -0,0 +1,38 @@
++"""Copy exact packed-admission snapshots to host in bounded contiguous transfers."""
++
++import math
++
++import torch
++
++
++# A C4 GDN working-state layer is 3 MiB. Keep the temporary packing tensor
++# below 8 MiB independently of the number of model layers or active slots.
++PACK_BYTES = 8 * 1024 * 1024
++
++
++def copy_layers(source, owners=None):
++    shape = list(source.shape)
++    if owners is not None:
++        shape[1] = owners.numel()
++    dst = torch.empty(shape, device="cpu", dtype=source.dtype)
++    layer_bytes = source.element_size() * math.prod(shape[1:])
++    chunk = max(1, PACK_BYTES // max(1, layer_bytes))
++    if layer_bytes > PACK_BYTES:
++        # Full-matrix fallback rollback snapshots can exceed the bound per
++        # layer. Preserve the previous layer/owner transfer geometry there.
++        for offset, layer in enumerate(source.unbind()):
++            if owners is None:
++                dst[offset].copy_(layer)
++            else:
++                for row, slot in enumerate(owners.tolist()):
++                    dst[offset, row].copy_(layer[slot])
++        return dst
++    for first in range(0, shape[0], chunk):
++        last = min(first + chunk, shape[0])
++        group = source[first:last]
++        if owners is not None:
++            group = group.index_select(1, owners)
++        # Explicit compaction handles holes between source layers, as well
++        # as the transposed convolution cache; the host sees a single copy.
++        dst[first:last].copy_(group.contiguous())
++    return dst
+diff --git a/python/sglang/srt/speculative/admission_pinned.py b/python/sglang/srt/speculative/admission_pinned.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..f48251b74a42d15fd0b3103a18c3b86e5a51cecb
+--- /dev/null
++++ b/python/sglang/srt/speculative/admission_pinned.py
+@@ -0,0 +1,32 @@
++"""Stage exact strided layer/owner snapshots through one bounded pinned host rail."""
++
++import math
++import torch
++
++
++RAIL_BYTES = 8 * 1024 * 1024
++
++
++def copy_working(source, owners):
++    leaf_shape = tuple(source.shape[2:])
++    row_bytes = math.prod(leaf_shape) * source.element_size()
++    if row_bytes <= 0 or row_bytes > RAIL_BYTES or not source[0,0].is_contiguous():
++        return None
++    slots = len(owners)
++    count = source.shape[0] * slots
++    if count == 0:
++        return source.new_empty((source.shape[0], slots, *leaf_shape), device="cpu")
++    per_transfer = min(count, RAIL_BYTES // row_bytes)
++    output = torch.empty((count, *leaf_shape), device="cpu", dtype=source.dtype)
++    stage = torch.empty((per_transfer, *leaf_shape), device="cpu", dtype=source.dtype, pin_memory=True)
++    stream = torch.xpu.current_stream(source.device)
++    for first in range(0, count, per_transfer):
++        n = min(per_transfer, count-first)
++        for index in range(n):
++            layer, lane = divmod(first + index, slots)
++            stage[index].copy_(source[layer, owners[lane]], non_blocking=True)
++        # The worker is already on a synchronous admission path. Wait for
++        # these exact DMA writes before copying or recycling the host rail.
++        stream.synchronize()
++        output[first:first+n].copy_(stage[:n])
++    return output.view(source.shape[0], slots, *leaf_shape)
+diff --git a/python/sglang/srt/speculative/b70_checkpoints.py b/python/sglang/srt/speculative/b70_checkpoints.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..2dc2a9382217272d3e7007c50d0979a8c33552a5
+--- /dev/null
++++ b/python/sglang/srt/speculative/b70_checkpoints.py
+@@ -0,0 +1,140 @@
++"""Preserve the 256-token APC donation inside a larger worker prefill."""
++from contextlib import contextmanager
++from contextvars import ContextVar
++from dataclasses import dataclass, field
++import os
++
++import torch
++import triton
++import triton.language as tl
++
++_active = ContextVar("b70_prefill_checkpoints", default=())
++POOL_STAGING = os.getenv("SGLANG_FLASHNEXT_PREFILL_WORKSPACE") == "1"
++
++
++@triton.jit
++def _copy_state_row(state, source, dest, STRIDE: tl.constexpr, SIZE: tl.constexpr):
++    offsets = tl.program_id(0) * 1024 + tl.arange(0, 1024)
++    src = tl.load(source).to(tl.int64)
++    dst = tl.load(dest).to(tl.int64)
++    values = tl.load(state + src * STRIDE + offsets, offsets < SIZE, other=0)
++    tl.store(state + dst * STRIDE + offsets, values, offsets < SIZE)
++
++
++@dataclass
++class Interior:
++    row: int
++    depth: int
++    offset: int
++    parts: dict = field(default_factory=dict)
++    reserved: torch.Tensor | None = None
++
++    def save(self, name, pool, data):
++        if self.reserved is None:
++            self._remember(name, pool, data.detach().clone())
++        else:
++            pool.index_copy_(0, self.reserved, data)
++            self._remember(name, pool, None)
++
++    def save_recurrence(self, name, state, owner):
++        if self.reserved is None:
++            # index_select returns fresh storage owned by this checkpoint.
++            self._remember(name, state, state.index_select(0, owner))
++        else:
++            size = state[0].numel()
++            _copy_state_row[(triton.cdiv(size, 1024),)](
++                state, owner, self.reserved, state.stride(0), size,
++            )
++            self._remember(name, state, None)
++
++    def save_exported_recurrence(self, name, state, scratch_row):
++        # The native producer already wrote the leased slot or the
++        # scratch allocation owned by this checkpoint.
++        self._remember(name, state, scratch_row)
++
++    def _remember(self, name, pool, data):
++        if name in self.parts:
++            raise RuntimeError(f"Duplicate B70 checkpoint component {name}")
++        self.parts[name] = (pool, data)
++
++    def snapshot(self, name):
++        pool, data = self.parts[name]
++        return pool.index_select(0, self.reserved) if data is None else data
++
++    def check_complete(self):
++        # Layer IDs can follow another dense-layer order; the state components
++        # must still cover all 36 distinct GDN layers and their convolutions.
++        gdn = {key[1] for key in self.parts if key[0]=="gdn"}
++        conv = {key[1] for key in self.parts if key[0]=="conv"}
++        if len(gdn)!=36 or conv!=gdn or len(self.parts)!=74:
++            raise RuntimeError(f"Incomplete B70 interior checkpoint: {sorted(self.parts)}")
++
++    def install(self, slot):
++        self.check_complete()
++        for pool,data in self.parts.values():
++            pool.index_copy_(0, slot.long(), data)
++
++    def take_reserved(self):
++        self.check_complete()
++        slot, self.reserved = self.reserved, None
++        return slot
++
++
++@contextmanager
++def collect(batch, *, stage_in_pool=False):
++    interior = []
++    if batch.tree_cache is not None and not batch.tree_cache.disable:
++        for row, (req, prefix, length) in enumerate(zip(batch.reqs,batch.prefix_lens,batch.extend_lens,strict=True)):
++            tracked = req.kv.mamba_last_track_seqlen
++            if tracked is None or req.skip_radix_cache_insert or req.session_id is not None:
++                continue
++            # Each former 1024-row pass donated its interior 256-token
++            # state and its aligned end. Keep the same donation points.
++            offsets = (
++                base + relative
++                for base in range(0, length, 1024)
++                for relative in ((0, 256) if base else (256,))
++            )
++            for offset in offsets:
++                depth = prefix + offset
++                if offset < length and depth < tracked and depth % 128 == 0:
++                    interior.append(Interior(row, depth, offset))
++    reserve, release = None, None
++    if (POOL_STAGING and stage_in_pool and len(interior) > 1
++            and len(batch.reqs) == 1 and batch.extend_lens[0] > 1024):
++        # Only borrow already-free slots. Tree insertion and eviction still
++        # happen at publish, after the prefill and draft consumers are ordered.
++        reserve_slots = getattr(batch.tree_cache, "reserve_b70_prefill_slots", None)
++        if reserve_slots is not None:
++            reserve, release = reserve_slots(len(interior))
++    if reserve is not None:
++        for item, slot in zip(interior, reserve.split(1), strict=True):
++            item.reserved = slot
++    token = _active.set(interior)
++    try:
++        yield interior
++    finally:
++        _active.reset(token)
++        if release is not None:
++            for item in interior:
++                if item.reserved is not None:
++                    release(item.reserved)
++                    item.reserved = None
++
++
++def active():
++    return _active.get()
++
++
++def publish(batch, checkpoints):
++    for item in checkpoints:
++        req = batch.reqs[item.row]
++        tree = batch.tree_cache
++        # Ordinary tree insertion takes ownership of the new checkpoint slot,
++        # deduplicates dense pages, and advances the request's real tree lock.
++        # Keep the later checkpoint that the scheduler has yet to publish.
++        old = req.kv.mamba_last_track_seqlen, req.kv.mamba_prev_track_seqlen
++        try:
++            tree.checkpoint(req, up_to=item.depth, b70_interior=item)
++        finally:
++            req.kv.mamba_last_track_seqlen, req.kv.mamba_prev_track_seqlen = old
+diff --git a/python/sglang/srt/speculative/b70_prefill.py b/python/sglang/srt/speculative/b70_prefill.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..6b08de111b2aa10a130bb6d560a3279085f6d254
+--- /dev/null
++++ b/python/sglang/srt/speculative/b70_prefill.py
+@@ -0,0 +1,367 @@
++"""Bridge the accepted v6 Xe2 operators to Flash Next's SGLang state pools."""
++from collections import defaultdict
++from dataclasses import dataclass
++from functools import cache, lru_cache
++from itertools import accumulate, zip_longest
++import logging
++import hashlib
++import os
++from pathlib import Path
++
++import torch
++
++from sglang.srt.utils.device import async_h2d
++
++LIBDIR = Path("/opt/venv/lib/python3.12/site-packages/vllm_xpu_kernels")
++ISOLATED_PHASE_VIEWS = os.getenv("SGLANG_FLASHNEXT_PREFILL_GDN_VIEWS") == "1"
++NATIVE_CHECKPOINTS = os.getenv("SGLANG_FLASHNEXT_PREFILL_GDN_EXPORT") == "1"
++HASHES = {
++    "gdn_index64": "101e6a2555449dc92d94b9acc4b79c9581e458f95c4866ce7446bb03518ffa87",
++    "long_prefill_v3": "fe7ba008bd1251ffc1cd6bac7bc08b93fb76b61ec78bed1b66a737300f20c55f",
++    "long_hc": "959439265e485be1434b038b2050aab775c7d421646bc77806415552749499c5",
++}
++
++
++@cache
++def load(name):
++    path = LIBDIR / f"lib{name}.so"
++    if hashlib.sha256(path.read_bytes()).hexdigest() != HASHES[name]:
++        raise RuntimeError(f"Unexpected B70 library {path}")
++    torch.ops.load_library(str(path))
++    logging.getLogger(__name__).info("B70 admitted native library %s on XPU %d", name, torch.xpu.current_device())
++
++
++@lru_cache(maxsize=64)
++def segment_inputs(device, length, seeded):
++    return (torch.tensor([0, length], dtype=torch.int32, device=device),
++            torch.full((1,), seeded, dtype=torch.bool, device=device),
++            torch.zeros(1, dtype=torch.int32, device=device))
++
++
++def prefill(backend, layer, batch, qkv, a, b, conv, state, owners):
++    """Stage each request's channel-major convolution history in donor order.
++
++    Real offsets delimit each call, including a selected interior APC checkpoint.
++    Model projections supply the live Z independently. The unused Z lane only
++    fills the packed convolution ABI. Time and request slots never alias.
++    """
++    load("gdn_index64")
++    count = qkv.shape[0]
++    out = qkv.new_zeros((count, 12, 128))
++    if not count:
++        return out.unsqueeze(0)
++    if qkv.shape[1] != 2560 or qkv.dtype != torch.bfloat16 or state.dtype != torch.float32:
++        raise ValueError("Unexpected B70 prefill shape or precision")
++    from sglang.srt.speculative import b70_checkpoints
++    interior = defaultdict(dict)
++    for item in b70_checkpoints.active():
++        interior[item.row][item.offset] = item
++    lengths = batch.extend_seq_lens_cpu
++    prefixes = batch.extend_prefix_lens_cpu
++    if sum(lengths) != count:
++        raise ValueError("GDN request lengths do not cover the activation rows")
++    meta = backend.forward_metadata
++    track = meta.has_mamba_track_mask and meta.track_ssm_h_src.numel() > 0
++    boundaries = meta.track_chunk_idx.tolist() if track else [0] * len(lengths)
++    tracked = state.new_empty((len(lengths), *state.shape[1:])) if track else None
++    qkvz = torch.cat((qkv, qkv.new_zeros(count, 1536)), dim=-1)
++    ba = torch.cat((b.reshape(count, 12), a.reshape(count, 12)), dim=-1).contiguous()
++    base = 0
++    for row, (length, prefix, chunk) in enumerate(zip(lengths, prefixes, boundaries, strict=True)):
++        if not length:
++            continue
++        owner = owners[row:row+1].long()
++        history = conv.index_select(0, owner).transpose(1, 2).contiguous()
++        if not prefix:
++            history.zero_()
++        checkpoint = chunk * backend.mamba_chunk_size
++        checkpoints = interior.get(row, {})
++        ends = {length}
++        if 0 < checkpoint < length:
++            ends.add(checkpoint)
++        ends.update(checkpoints)
++        start = 0
++        for end in sorted(ends):
++            span = slice(base+start, base+end)
++            n = end-start
++            offsets, seeded, zero = segment_inputs(qkv.device, n, bool(prefix or start))
++            z = torch.empty_like(out[span])
++            parts = torch.ops._gdn_index64.causal_conv1d_non_spec(
++                z, qkvz[span], ba[span], 16, 48, 128, 128, history,
++                layer.conv_weights.contiguous(), layer.bias, layer.activation,
++                1, 0, 0, seeded, offsets, None, zero, n, 4, True)
++            torch.ops._gdn_index64.gated_delta_rule_non_spec(
++                out[span], *parts, 48, 128, layer.A_log.float().reshape(-1).contiguous(),
++                layer.dt_bias.reshape(-1).contiguous(), state, 1, 0, 0, seeded,
++                offsets, None, owner.int(), n, 4)
++            item = checkpoints.get(end)
++            if item is not None:
++                item.save_recurrence(("gdn",layer.layer_id), state, owner)
++                item.save(("conv",layer.layer_id), conv, history.transpose(1,2))
++            if track and end == checkpoint:
++                tracked[row:row+1].copy_(state.index_select(0, owner))
++            start = end
++        conv.index_copy_(0, owner, history.transpose(1, 2))
++        base += length
++    if meta.has_mamba_track_mask:
++        backend._track_mamba_state_extend(batch, None, state, meta, h_track_buf=tracked)
++    return out.unsqueeze(0)
++
++
++@dataclass(frozen=True)
++class PrefillPhase:
++    rows: tuple
++    offsets: torch.Tensor
++    seeded: torch.Tensor
++    tokens: torch.Tensor | None
++    owner_rows: torch.Tensor
++    history_rows: torch.Tensor
++
++
++@dataclass(frozen=True)
++class NativeCheckpointPlan:
++    covered_phases: int
++    rows: int
++    offsets: torch.Tensor
++    destinations: torch.Tensor
++    scratch_rows: int
++    checkpoints: tuple
++
++
++@cache
++def _load_native_checkpoints():
++    path = Path("/opt/flashnext/a0035/liba0035_prefill_gdn.so")
++    digest, filename = path.with_name("prefill-gdn-native.sha256").read_text().split()
++    if filename != path.name or hashlib.sha256(path.read_bytes()).hexdigest() != digest:
++        raise RuntimeError("Unexpected native GDN checkpoint export library")
++    torch.ops.load_library(str(path))
++    logging.getLogger(__name__).info("B70 admitted native GDN checkpoint export on XPU %d", torch.xpu.current_device())
++
++
++def _native_checkpoint_plan(phases, device):
++    if not (ISOLATED_PHASE_VIEWS and NATIVE_CHECKPOINTS) or len(phases) < 2:
++        return None
++    if any(phase.tokens is not None or len(phase.rows) != 1 for phase in phases):
++        return None
++
++    # On the short isolated route the donor can fold the final residue at
++    # an aligned cut and still export the previous exact checkpoint. Keep
++    # wide work on the qualified phase geometry.
++    _, tail_start, tail_size, *_ = phases[-1].rows[0]
++    covered = len(phases) - int(tail_size < 8 and tail_start + tail_size > 1024)
++    if covered < 2:
++        return None
++    segments = [phase.rows[0] for phase in phases[:covered]]
++    _, last_start, last_size, *_ = segments[-1]
++    rows = last_start + last_size
++    if any(row != 0 or start % 64 or (size < 8 and start + size != rows)
++           for row, start, size, *_ in segments):
++        return None
++
++    destinations = [0] * ((rows + 63) // 64)
++    checkpoints = []
++    leased = []
++    scratch_rows = 0
++    for _, start, size, _, item, track in segments:
++        if item is None and not track:
++            continue
++        end = start + size
++        chunk = (end - 1) // 64
++        slot = None if item is None else item.reserved
++        scratch_idx = None
++        if slot is None:
++            scratch_idx = scratch_rows
++            scratch_rows += 1
++            destinations[chunk] = -scratch_rows
++        else:
++            leased.append((chunk, slot))
++        checkpoints.append((end, item, track, scratch_idx))
++    if not checkpoints:
++        return None
++
++    rail = async_h2d(destinations, dtype=torch.int32, device=device)
++    for index, slot in leased:
++        rail[index:index + 1].copy_(slot)
++    offsets = async_h2d([0, rows], dtype=torch.int32, device=device)
++    return NativeCheckpointPlan(covered, rows, offsets, rail, scratch_rows, tuple(checkpoints))
++
++
++def _run_native_checkpoints(plan, first, layer, qkvz, ba, out, z, conv, history, state, owners, tracked):
++    _load_native_checkpoints()
++    rows = plan.rows
++    parts = torch.ops._gdn_index64.causal_conv1d_non_spec(
++        z[:rows], qkvz[:rows], ba[:rows], 16, 48, 128, 128, history,
++        layer.conv_weights.contiguous(), layer.bias, layer.activation,
++        1, 0, 0, first.seeded, plan.offsets, None, first.history_rows, rows, 4, True,
++    )
++    scratch = state.new_empty((plan.scratch_rows, *state.shape[1:]))
++    torch.ops.a0035_prefill_gdn.forward(
++        out[:rows], *parts, layer.A_log.float().reshape(-1).contiguous(),
++        layer.dt_bias.reshape(-1).contiguous(), state, plan.offsets, owners.int(),
++        first.seeded, plan.destinations, scratch,
++    )
++    for end, item, track, scratch_idx in plan.checkpoints:
++        saved = None if scratch_idx is None else scratch[scratch_idx:scratch_idx + 1]
++        if item is not None:
++            item.save_exported_recurrence(("gdn", layer.layer_id), state, saved)
++            # Donor reordering uses the original leading Q/K/V channels.
++            # At these aligned cuts its convolution window is the last
++            # three original BF16 projection rows.
++            checkpoint_conv = qkvz[end - 3:end, :2560].transpose(0, 1).unsqueeze(0)
++            item.save(("conv", layer.layer_id), conv, checkpoint_conv)
++        if track:
++            if saved is None:
++                torch.index_select(state, 0, item.reserved, out=tracked)
++            else:
++                tracked.copy_(saved)
++
++
++def _phase_plan(batch, backend, count, device, interior):
++    meta = backend.forward_metadata
++    lengths = batch.extend_seq_lens_cpu
++    prefixes = batch.extend_prefix_lens_cpu
++    track = meta.has_mamba_track_mask and meta.track_ssm_h_src.numel() > 0
++    if track and backend._has_cpu_prefill_track_metadata(batch):
++        from sglang.srt.layers.attention.mamba.prefill_track_metadata import build_prefill_track_plan
++
++        boundaries = build_prefill_track_plan(
++            batch.mamba_prefill_track_mask_cpu, batch.mamba_track_seqlens_cpu,
++            lengths, prefixes, backend.mamba_chunk_size, mamba2=False,
++        ).chunk_indices
++    else:
++        boundaries = meta.track_chunk_idx.tolist() if track else [-1] * len(lengths)
++
++    per_request = []
++    skip = () if batch.flashnext_mixed is None else batch.flashnext_mixed.verify_rows
++    base = 0
++    for row, (length, prefix, chunk) in enumerate(zip(lengths, prefixes, boundaries, strict=True)):
++        if row in skip:
++            base += length
++            continue
++        checkpoint = chunk * backend.mamba_chunk_size
++        checkpoints = interior.get(row, {})
++        ends = {length}
++        if 0 < checkpoint < length:
++            ends.add(checkpoint)
++        ends.update(checkpoints)
++        segments = []
++        cuts = sorted(ends)
++        for start, end in zip([0, *cuts[:-1]], cuts, strict=True):
++            segments.append((
++                row, base + start, end - start, bool(prefix or start),
++                checkpoints.get(end),
++                track and end == checkpoint,
++            ))
++        per_request.append(segments)
++        base += length
++
++    phases = []
++    use_phase_views = ISOLATED_PHASE_VIEWS and len(lengths) == 1 and not skip
++    for column in zip_longest(*per_request):
++        rows = tuple(segment for segment in column if segment is not None)
++        offsets = [0, *accumulate(segment[2] for segment in rows)]
++        tokens = None
++        if not use_phase_views and offsets[-1] != count:
++            selected = [index for _, start, size, *_ in rows for index in range(start, start + size)]
++            tokens = async_h2d(selected, dtype=torch.int32, device=device)
++        phases.append(PrefillPhase(
++            rows,
++            async_h2d(offsets, dtype=torch.int32, device=device),
++            async_h2d([segment[3] for segment in rows], dtype=torch.bool, device=device),
++            tokens,
++            async_h2d([segment[0] for segment in rows], dtype=torch.int64, device=device),
++            async_h2d([segment[0] for segment in rows], dtype=torch.int32, device=device),
++        ))
++    return tuple(phases), track
++
++
++def grouped_prefill(backend, layer, batch, qkv, a, b, conv, state, owners, *, projected=None):
++    """Dispatch one Xe2 pair per APC cut across requests on the mixed extend."""
++    lengths = batch.extend_seq_lens_cpu
++    if lengths is None or not 1 <= len(lengths) <= 4 or not all(lengths) or sum(lengths) != qkv.shape[0]:
++        return prefill(backend, layer, batch, qkv, a, b, conv, state, owners)
++
++    from sglang.srt.speculative import b70_checkpoints
++
++    load("gdn_index64")
++    count = qkv.shape[0]
++    meta = backend.forward_metadata
++    if meta.flashnext_prefill_plan is None:
++        interior = defaultdict(dict)
++        for item in b70_checkpoints.active():
++            interior[item.row][item.offset] = item
++        meta.flashnext_prefill_plan = _phase_plan(batch, backend, count, qkv.device, interior)
++        if projected is not None and len(lengths) == 1 and batch.flashnext_mixed is None:
++            meta.flashnext_prefill_export_plan = _native_checkpoint_plan(
++                meta.flashnext_prefill_plan[0], qkv.device,
++            )
++        elif (projected is not None and batch.flashnext_mixed is None
++              and os.getenv("SGLANG_FLASHNEXT_COHORT_GDN_EXPORT") == "1"):
++            from sglang.srt.speculative.cohort_checkpoints import build_plan
++
++            meta.flashnext_prefill_export_plan = build_plan(meta.flashnext_prefill_plan[0], lengths, qkv.device)
++    phases, track = meta.flashnext_prefill_plan
++
++    owners = owners.long()
++    history = conv.index_select(0, owners).transpose(1, 2).contiguous()
++    if projected is None:
++        qkvz = torch.cat((qkv, qkv.new_zeros(count, 1536)), dim=-1)
++        ba = torch.cat((b.reshape(count, 12), a.reshape(count, 12)), dim=-1)
++    else:
++        qkvz, ba = projected
++    z = qkv.new_empty((count, 12, 128))
++    out = torch.empty_like(z)
++    tracked = state.new_empty((len(lengths), *state.shape[1:])) if track else None
++    ops = torch.ops._gdn_index64
++    export = meta.flashnext_prefill_export_plan if projected is not None else None
++    if export is not None and len(lengths) > 1:
++        from sglang.srt.speculative.cohort_checkpoints import run
++
++        run(export, layer, qkvz, ba, out, z, conv, history, state, owners, tracked)
++        phases = ()
++    elif export is not None:
++        _run_native_checkpoints(export, phases[0], layer, qkvz, ba, out, z, conv, history, state, owners, tracked)
++        phases = phases[export.covered_phases:]
++    for phase in phases:
++        if phase.tokens is None and len(phase.rows) == 1:
++            _, start, length, *_ = phase.rows[0]
++        else:
++            start, length = 0, count
++        span = slice(start, start + length)
++        # The Xe2 delta rule sizes and clears A/W/U from its output extent,
++        # even if its indexed phase only writes a subset. Serve contiguous
++        # single-request donors directly through their sized view.
++        phase_owners = owners.index_select(0, phase.owner_rows)
++        parts = ops.causal_conv1d_non_spec(
++            z[span], qkvz[span], ba[span], 16, 48, 128, 128, history,
++            layer.conv_weights.contiguous(), layer.bias, layer.activation,
++            len(phase.rows), 0, 0, phase.seeded, phase.offsets, phase.tokens,
++            phase.history_rows, length, 4, True,
++        )
++        ops.gated_delta_rule_non_spec(
++            out[span], *parts, 48, 128, layer.A_log.float().reshape(-1).contiguous(),
++            layer.dt_bias.reshape(-1).contiguous(), state, len(phase.rows), 0, 0,
++            phase.seeded, phase.offsets, phase.tokens, phase_owners.int(), length, 4,
++        )
++        for row, _, _, _, item, save_track in phase.rows:
++            owner = owners[row:row + 1]
++            if item is not None:
++                item.save_recurrence(("gdn", layer.layer_id), state, owner)
++                item.save(("conv", layer.layer_id), conv, history[row:row + 1].transpose(1, 2))
++            if save_track:
++                torch.index_select(state, 0, owner, out=tracked[row:row + 1])
++
++    conv.index_copy_(0, owners, history.transpose(1, 2))
++    if meta.has_mamba_track_mask:
++        backend._track_mamba_state_extend(batch, None, state, meta, h_track_buf=tracked)
++    if batch.flashnext_mixed is not None:
++        mixed = batch.flashnext_mixed
++        selected = mixed.verify_tokens.flatten()
++        verifier = mixed.gdn
++        cache = backend.state_layer_cache(layer.layer_id)
++        mixed_out, mixed_z = verifier._verify(
++            layer, qkvz.index_select(0, selected), ba.index_select(0, selected), cache,
++        )
++        out.index_copy_(0, selected, mixed_out)
++        z.index_copy_(0, selected, mixed_z)
++    return (out, z) if projected is not None else out.unsqueeze(0)
+diff --git a/python/sglang/srt/speculative/bucket_hc.py b/python/sglang/srt/speculative/bucket_hc.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..fd96c25524cf58e022bda4cbb692b18eb8b22e2e
+--- /dev/null
++++ b/python/sglang/srt/speculative/bucket_hc.py
+@@ -0,0 +1,87 @@
++"""Replay the parent's short HC equations on shared row-bucket rails with the layer's own weights."""
++from weakref import WeakKeyDictionary
++import torch
++
++from sglang.srt.speculative.short_regions import norm_ops
++
++_banks = {}
++
++
++def supported(module,x):
++    return (x.is_xpu and x.dtype == torch.bfloat16 and x.shape[1:] == (10240,)
++            and 16 <= len(x) <= 256 and hasattr(module,"_v6_down")
++            and module.hc_count == 4 and module.hidden_size == 2560 and module.hc_norm.group_size == 2560
++            and module.input_mix_weight_up.weight.shape == (10240,320) and not torch.xpu.is_current_stream_capturing())
++
++
++class Bank:
++    def __init__(self,width,device):
++        self.stream = torch.xpu.current_stream(device)
++        self.pool = torch.xpu.graph_pool_handle()
++        self.entries = WeakKeyDictionary()
++        with torch.inference_mode(False):
++            self.x = torch.zeros((width,10240),device=device,dtype=torch.bfloat16)
++            self.n = torch.empty_like(self.x)
++            self.mixed = self.x.new_zeros((width,2560))
++            self.block = torch.empty_like(self.mixed)
++            self.updated = torch.empty_like(self.x)
++        self.owner = None
++
++    def capture(self,module):
++        def mix():
++            n, = norm_ops(self.x,module.hc_norm.weight,module.hc_norm.variance_epsilon)
++            self.n.copy_(n)
++            self.mixed.copy_(module._mix_compute(self.n,module.input_mix_weight_down.weight,
++                                                 module.input_mix_weight_up.weight,4,2560))
++        def inject():
++            self.updated.copy_(module._combine_compute(self.block,self.x,self.n,
++                                                       module.block_inject_weight.weight,4,2560))
++        mix(); self.block.zero_(); inject()
++        read,write = torch.xpu.XPUGraph(),torch.xpu.XPUGraph()
++        with torch.xpu.graph(read,pool=self.pool):
++            mix()
++        with torch.xpu.graph(write,pool=self.pool):
++            inject()
++        return read,write
++
++    def mix(self,module,x):
++        from sglang.srt.speculative.budget import can_admit
++        n=len(x)
++        if module not in self.entries:
++            self.entries[module] = self.capture(module) if can_admit(x.device,("short-hc-mix",len(self.x),len(self.entries))) else None
++        entry = self.entries[module]
++        if entry is None:
++            return None
++        self.x[:n].copy_(x)
++        entry[0].replay()
++        norm = self.n[:n].clone()
++        self.owner = (module,x,norm)
++        return self.mixed[:n].clone(),(x,norm,None)
++
++    def combine(self,module,block,prior):
++        if self.owner is None or not all(a is b for a,b in zip(self.owner,(module,prior[0],prior[1]))):
++            return None
++        self.block[:len(block)].copy_(block)
++        self.entries[module][1].replay()
++        self.owner = None
++        return self.updated[:len(block)].clone()
++
++
++def width(rows):
++    return 64 if rows<=64 else 128 if rows<=128 else 256
++
++
++@torch.inference_mode()
++def mix(module,x):
++    key=(x.device,width(len(x)))
++    if key not in _banks:
++        from sglang.srt.speculative.budget import can_admit
++        _banks[key] = Bank(key[1],x.device) if can_admit(x.device,("short-hc-rails",key[1])) else None
++    bank = _banks[key]
++    return bank.mix(module,x) if bank and bank.stream==torch.xpu.current_stream(x.device) else None
++
++
++@torch.inference_mode()
++def combine(module,block,prior):
++    bank = _banks.get((block.device,width(len(block))))
++    return bank.combine(module,block,prior) if bank and bank.stream==torch.xpu.current_stream(block.device) else None
+diff --git a/python/sglang/srt/speculative/budget.py b/python/sglang/srt/speculative/budget.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..ea5def7655015545494614aa23c0fa422fa1b56f
+--- /dev/null
++++ b/python/sglang/srt/speculative/budget.py
+@@ -0,0 +1,46 @@
++"""Per-rank installed-profile checks before target load, pools, and graph admission."""
++import logging
++
++import torch
++
++# Maximum physical growth from each boundary to the RC11 high-water mark
++# across all four cards, rounded up to 64 MiB. This includes the complete
++# input rescore and all graph widths. Each entry already includes subsequent
++# model/pool loads, driver allocations and transient work at that boundary.
++GROWTH_MIB = {
++    "target-load": 30208,
++    "draft-load": 11328,
++    "target-pools": 10368,
++    "draft-pools": 5824,
++    "post-pools": 5824,
++}
++SAFETY = 1 << 30
++UNSAMPLED_ALLOWANCE = 128 << 20
++
++
++def check(device, phase):
++    required = (GROWTH_MIB[phase] << 20) + UNSAMPLED_ALLOWANCE + SAFETY
++    free, total = torch.xpu.mem_get_info(device)
++    logging.getLogger(__name__).info("B70 physical budget phase=%s device=%s total=%d free=%d required=%d",
++                                      phase, device, total, free, required)
++    if free < required:
++        raise RuntimeError(f"B70 {phase} requires {required} free physical bytes, available {free}")
++
++
++def can_admit(device, key):
++    """Agree across all TP ranks before allocating a new graph and its shadow."""
++    from sglang.srt.hardware_backend.xpu.graph_runner.flashnext_target import TargetGraphs
++    free, _ = torch.xpu.mem_get_info(device)
++    # A0025's observed rank-0 peak was 431,706,112 bytes above its C4
++    # sampled boundary. Allow 768 MiB of transient demand above the reserve.
++    required = SAFETY + (768 << 20)
++    admitted = TargetGraphs._all_ranks(free >= required)
++    if not admitted:
++        # Torch can still own unused eager segments after a different workload.
++        # Recover those segments on every rank before testing the same reserve.
++        torch.xpu.empty_cache()
++        free, _ = torch.xpu.mem_get_info(device)
++        admitted = TargetGraphs._all_ranks(free >= required)
++    logging.getLogger(__name__).info("B70 physical graph admission key=%s free=%d required=%d admitted=%s",
++                                      key, free, required, admitted)
++    return admitted
+diff --git a/python/sglang/srt/speculative/class_ffn.py b/python/sglang/srt/speculative/class_ffn.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..254f60148111181eaffb141bf032006278834ebe
+--- /dev/null
++++ b/python/sglang/srt/speculative/class_ffn.py
+@@ -0,0 +1,103 @@
++"""Replay the complete rank-local short FFN at its oneDNN row class."""
++import logging
++from dataclasses import replace
++from unittest.mock import patch
++from weakref import WeakKeyDictionary
++
++import torch
++
++from sglang.srt.layers.moe.topk import StandardTopKOutput
++from sglang.srt.model_executor.forward_context import forward_context, get_forward_context
++from sglang.srt.speculative.budget import can_admit
++from sglang.srt.speculative.proposal_bindings import Bindings
++from sglang.srt.speculative.staged_short_ffn import eligible
++
++log = logging.getLogger(__name__)
++_banks = {}
++
++
++class Entry:
++    def __init__(self, module, graph):
++        weights = (*module.parameters(), *module.buffers())
++        self.guard = Bindings(tuple(module.modules()), weights, ())
++        self.storage = tuple(x.detach() for x in weights)
++        self.graph = graph
++        self.checks = 0
++        self.disabled = False
++
++
++class Bank:
++    def __init__(self, tensor):
++        self.stream = torch.xpu.current_stream(tensor.device)
++        self.pool = torch.xpu.graph_pool_handle()
++        self.entries = WeakKeyDictionary()
++        with torch.inference_mode(False), torch.no_grad():
++            self.x = tensor.new_zeros((256,2560))
++            self.out = torch.empty_like(self.x)
++            self.rows = self.x.new_zeros((),dtype=torch.int32)
++            self.bound = torch.zeros_like(self.rows)
++            self.positions = torch.arange(256, device=tensor.device)
++
++    def capture(self,module,batch,width):
++        x = self.x[:width]
++        out = self.out[:width]
++        rows = self.positions[:width]
++        ctx = replace(get_forward_context(),moe_num_token_non_padded=lambda:self.bound)
++
++        def routed(hidden_states, *, defer_finalize=False):
++            if defer_finalize:
++                raise ValueError("Short FFN needs the local routed result")
++            logits, _ = module.gate(hidden_states)
++            route = module.topk(hidden_states, logits)
++            if not isinstance(route,StandardTopKOutput):
++                raise ValueError("Short FFN requires explicit expert indices")
++            ids = route.topk_ids.masked_fill(rows[:,None] >= self.rows,-1)
++            return module.experts(hidden_states,StandardTopKOutput(route.topk_weights,ids,logits))
++
++        with forward_context(ctx), patch.object(module,"_forward_router_experts",routed):
++            module(x,batch,defer_finalize=False)
++            graph = torch.xpu.XPUGraph()
++            with torch.xpu.graph(graph,pool=self.pool):
++                out.copy_(module(x,batch,defer_finalize=False))
++        return Entry(module,graph)
++
++    def run(self,module,hidden,batch):
++        n=len(hidden)
++        width=next(w for w in (16,32,64,128,192,256) if w>=n)
++        entries=self.entries.setdefault(module,{})
++        entry=entries.get(width)
++        if entry is False or (entry is not None and (entry.disabled or not entry.guard.valid(()))):
++            return module(hidden,batch,defer_finalize=False)
++        self.x[:n].copy_(hidden)
++        self.rows.fill_(n)
++        bound=batch.moe_num_token_non_padded()
++        self.bound.copy_(self.rows if bound is None else bound.reshape(()))
++        if entry is None:
++            if not can_admit(hidden.device,("short-ffn-class",module.layer_id,width)):
++                entries[width]=False
++                return module(hidden,batch,defer_finalize=False)
++            entry=entries[width]=self.capture(module,batch,width)
++        entry.graph.replay()
++        result=self.out[:n]
++        if entry.checks<2:
++            ordinary=module(hidden,batch,defer_finalize=False)
++            ok=torch.equal(ordinary.view(torch.int16),result.view(torch.int16))
++            entry.checks+=1
++            entry.disabled=not ok
++            log.info("A0042 local FFN layer=%d width=%d rows=%d check=%d exact=%s",
++                     module.layer_id,width,n,entry.checks,ok)
++            return ordinary
++        return result.clone()
++
++
++@torch.inference_mode()
++def run(module,hidden,batch):
++    if not eligible(module,hidden):
++        return module(hidden,batch,defer_finalize=False)
++    key=hidden.device
++    if key not in _banks:
++        _banks[key]=Bank(hidden) if can_admit(key,("short-ffn-class-storage",256)) else None
++    bank=_banks[key]
++    if bank is None or bank.stream!=torch.xpu.current_stream(key):
++        return module(hidden,batch,defer_finalize=False)
++    return bank.run(module,hidden,batch)
+diff --git a/python/sglang/srt/speculative/class_hc.py b/python/sglang/srt/speculative/class_hc.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..30432acd449f180c9716c1d2500eb97dae3e7dc5
+--- /dev/null
++++ b/python/sglang/srt/speculative/class_hc.py
+@@ -0,0 +1,73 @@
++"""Share one set of HC rails across the B70 oneDNN row-size regimes."""
++from weakref import WeakKeyDictionary
++import torch
++from sglang.srt.speculative.bucket_hc import Bank, supported
++from sglang.srt.speculative.proposal_bindings import Bindings
++
++WIDTHS=(16,32,64,128,192,256)
++_workspace=None
++
++
++class View(Bank):
++    def __init__(self,storage,width):
++        self.stream,self.pool=storage.stream,storage.pool
++        self.entries=WeakKeyDictionary()
++        self.guards=WeakKeyDictionary()
++        self.owner=None
++        self.x,self.n,self.mixed,self.block,self.updated=(v[:width] for v in
++            (storage.x,storage.n,storage.mixed,storage.block,storage.updated))
++
++    def capture(self,module):
++        weights=(module.hc_norm.weight,module.input_mix_weight_down.weight,
++                 module.input_mix_weight_up.weight,module.block_inject_weight.weight)
++        modules=tuple(module.modules())
++        if any(type(registry) is not dict for m in modules for registry in (m._modules,m._parameters,m._buffers)):
++            return None
++        guard=Bindings(modules,weights,())
++        # Retain independent tensor views of captured storage across replacement
++        # of a parameter object or its backing storage.
++        self.guards[module]=(guard,tuple(w.detach() for w in weights),
++                             module._mix_compute,module._combine_compute)
++        return super().capture(module)
++
++    def valid(self,module):
++        g=self.guards.get(module)
++        return g is None or (g[2] is module._mix_compute and g[3] is module._combine_compute and g[0].valid(()))
++
++
++class Shared:
++    def __init__(self,x):
++        storage=Bank(256,x.device)
++        self.stream=storage.stream
++        self.views={w:View(storage,w) for w in WIDTHS}
++        self.active=None
++
++    def mix(self,module,x):
++        w=next(w for w in WIDTHS if len(x)<=w)
++        v=self.views[w]
++        if self.active is not None:
++            self.active.owner=None
++        self.active=v
++        return v.mix(module,x) if v.valid(module) else None
++
++    def combine(self,module,block,prior):
++        v=self.active
++        return v.combine(module,block,prior) if v is not None and v.valid(module) else None
++
++
++@torch.inference_mode()
++def mix(module,x):
++    global _workspace
++    if _workspace is None:
++        from sglang.srt.speculative.budget import can_admit
++        _workspace=Shared(x) if can_admit(x.device,("class-hc-workspace",256)) else False
++    if _workspace and _workspace.stream==torch.xpu.current_stream(x.device):
++        return _workspace.mix(module,x)
++    return None
++
++
++@torch.inference_mode()
++def combine(module,block,prior):
++    if _workspace and _workspace.stream==torch.xpu.current_stream(block.device):
++        return _workspace.combine(module,block,prior)
++    return None
+diff --git a/python/sglang/srt/speculative/cohort_checkpoints.py b/python/sglang/srt/speculative/cohort_checkpoints.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..d1d0a34354cd873f50130a110221ade980dccee4
+--- /dev/null
++++ b/python/sglang/srt/speculative/cohort_checkpoints.py
+@@ -0,0 +1,93 @@
++"""Export working and intermediate GDN states for several packed prefill requests."""
++from dataclasses import dataclass
++from functools import cache
++import hashlib
++from itertools import accumulate
++from pathlib import Path
++
++import torch
++
++from sglang.srt.utils.device import async_h2d
++
++
++@cache
++def load():
++    lib = Path("/opt/flashnext/a0039/liba0039_cohort_gdn.so")
++    digest, filename = lib.with_suffix(".sha256").read_text().split()
++    if filename != lib.name or hashlib.sha256(lib.read_bytes()).hexdigest() != digest:
++        raise RuntimeError("Unexpected multi-request GDN checkpoint export library")
++    torch.ops.load_library(str(lib))
++
++
++@dataclass
++class CohortPlan:
++    rows: int
++    covered_phases: int
++    offsets: torch.Tensor
++    history_rows: torch.Tensor
++    seeded: torch.Tensor
++    destinations: torch.Tensor
++    checkpoints: list
++
++
++def build_plan(phases, lengths, device):
++    if len(phases) < 2 or not 2 <= len(lengths) <= 4 or sum(lengths) > 4097:
++        return None
++    if any(sum(segment[2] for segment in phase.rows) < 8 for phase in phases):
++        # The original phase selected the donor's untiled short convolution.
++        return None
++    offsets = list(accumulate(lengths, initial=0))
++    first = phases[0]
++    if [s[0] for s in first.rows] != list(range(len(lengths))):
++        return None
++    chunks = list(accumulate(((n + 63) // 64 for n in lengths), initial=0))
++    destinations = [0] * ((offsets[-1] + len(lengths) * 63) // 64)
++    checkpoints = []
++    for phase in phases:
++        for row, start, size, _, item, track in phase.rows:
++            relative = start - offsets[row]
++            end = relative + size
++            if relative % 64 or end != lengths[row] and end % 64:
++                return None
++            if item is None and not track:
++                continue
++            if item is not None and (item.reserved is not None or end < 3):
++                return None
++            chunk = chunks[row] + (end - 1) // 64
++            if destinations[chunk]:
++                raise RuntimeError("Two checkpoint writes target the same recurrence chunk")
++            checkpoints.append((row, offsets[row] + end, item, track))
++            destinations[chunk] = -len(checkpoints)
++    if not checkpoints:
++        return None
++    return CohortPlan(
++        offsets[-1], len(phases), async_h2d(offsets, dtype=torch.int32, device=device),
++        first.history_rows, first.seeded, async_h2d(destinations, dtype=torch.int32, device=device),
++        checkpoints,
++    )
++
++
++def run(plan, layer, qkvz, ba, out, z, conv, history, state, owners, tracked):
++    load()
++    rows = len(out)
++    count = len(owners)
++    parts = torch.ops._gdn_index64.causal_conv1d_non_spec(
++        z, qkvz, ba, 16, 48, 128, 128, history, layer.conv_weights.contiguous(),
++        layer.bias, layer.activation, count, 0, 0, plan.seeded, plan.offsets, None,
++        plan.history_rows, rows, 4, True,
++    )
++    scratch = state.new_empty((len(plan.checkpoints), *state.shape[1:]))
++    torch.ops.a0039_cohort_gdn.forward(
++        out, *parts, layer.A_log.float().reshape(-1).contiguous(), layer.dt_bias.reshape(-1).contiguous(),
++        state, plan.offsets, owners.int(), plan.seeded, plan.destinations, scratch,
++    )
++    for index, (row, end, item, track) in enumerate(plan.checkpoints):
++        current = scratch[index:index + 1]
++        if item is not None:
++            # Only persist this checkpoint's words. Keeping a view of the slab
++            # would retain every other request's transient tracker for 36 layers.
++            item.save_exported_recurrence(("gdn", layer.layer_id), state, current.clone())
++            item.save(("conv", layer.layer_id), conv,
++                      qkvz[end - 3:end, :2560].transpose(0, 1).unsqueeze(0))
++        if track:
++            tracked[row:row + 1].copy_(current)
+diff --git a/python/sglang/srt/speculative/flashnext_prefill.py b/python/sglang/srt/speculative/flashnext_prefill.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..afecdc6962ff7aaf3da2a27c6b6cdfb4293c6dbd
+--- /dev/null
++++ b/python/sglang/srt/speculative/flashnext_prefill.py
+@@ -0,0 +1,147 @@
++"""Fixed-width prefill expert replay on B70, after same-input qualification."""
++import logging
++import os
++import weakref
++from dataclasses import replace
++from sglang.srt.model_executor.forward_context import forward_context, get_forward_context
++
++import torch
++from sglang.srt.hardware_backend.xpu.graph_runner.flashnext_target import TargetGraphs
++
++log = logging.getLogger(__name__)
++
++
++class PrefillExperts:
++    def __init__(self,x):
++        self.input=torch.empty_like(x)
++        self.output=torch.empty_like(x)
++        self.pool=torch.xpu.graph_pool_handle()
++        self.real_rows=torch.full((),x.shape[0],dtype=torch.int32,device=x.device)
++        self.entries=weakref.WeakKeyDictionary()
++        self.padded_counts=weakref.WeakKeyDictionary()
++        self.retired_graphs=[]
++
++    def run(self,module,hidden,batch):
++        entry=self.entries.get(module)
++        if entry is False:
++            return module(hidden,batch,defer_finalize=False)
++        self.input.copy_(hidden)
++        # TopK resolves a scheduler-owned device scalar via ForwardContext.
++        # Retain and stage our own scalar for the lifetime of the captured graph.
++        bound=batch.moe_num_token_non_padded()
++        if bound is None:
++            self.real_rows.fill_(hidden.shape[0])
++        else:
++            self.real_rows.copy_(bound.reshape(()))
++        if entry is None:
++            from sglang.srt.speculative.budget import can_admit
++            if not can_admit(hidden.device, ("prefill-expert", module.layer_id, hidden.shape[0])):
++                self.entries[module] = False
++                return module(hidden,batch,defer_finalize=False)
++            expected=module(hidden,batch,defer_finalize=False)
++            graph=torch.xpu.XPUGraph()
++            ctx=replace(get_forward_context(),moe_num_token_non_padded=lambda:self.real_rows)
++            with forward_context(ctx), torch.inference_mode(), torch.xpu.graph(graph,pool=self.pool):
++                self.output.copy_(module(self.input,batch,defer_finalize=False))
++            checks=0
++        else:
++            graph,checks=entry
++            expected=module(hidden,batch,defer_finalize=False) if checks<2 else None
++        with torch.inference_mode():
++            graph.replay()
++        if expected is not None:
++            passed=TargetGraphs._all_ranks(torch.equal(expected,self.output))
++            if not passed:
++                self.retired_graphs.append(graph)
++            self.entries[module]=(graph,checks+1) if passed else False
++            log.info('Flash Next prefill expert graph check layer=%d rows=%d replay=%d exact=%s',
++                     module.layer_id,hidden.shape[0],checks+1,passed)
++            return expected
++        return self.output.clone()
++
++
++_bucket_regions = {}
++
++
++def _bucket(module, hidden, batch):
++    # Only the local FFN is padded. The original row count reaches the
++    # layer boundary and its BF16 TP reduction, including on uneven widths.
++    global _regions
++    live = hidden.shape[0]
++    width = 128 if live <= 128 else 256
++    region = _regions if width == 256 else _bucket_regions.get(width)
++    if region is None:
++        region = PrefillExperts(hidden.new_empty((width, hidden.shape[1])))
++        if width == 256:
++            _regions = region
++        else:
++            _bucket_regions[width] = region
++    entry = region.entries.get(module)
++    padded_checks = region.padded_counts.get(module, 0)
++    if entry is False or padded_checks is False:
++        return module(hidden, batch, defer_finalize=False)
++    region.input[:live].copy_(hidden)
++    region.input[live:].zero_()
++    bound = batch.moe_num_token_non_padded()
++    if bound is None:
++        region.real_rows.fill_(live)
++    else:
++        region.real_rows.copy_(bound.reshape(()))
++    if entry is None:
++        from sglang.srt.speculative.budget import can_admit
++        if not can_admit(hidden.device, ("short-prefill-experts", module.layer_id, width)):
++            region.entries[module] = False
++            return module(hidden, batch, defer_finalize=False)
++        ctx = replace(get_forward_context(), moe_num_token_non_padded=lambda: region.real_rows)
++        with forward_context(ctx), torch.inference_mode():
++            module(region.input, batch, defer_finalize=False)
++            graph = torch.xpu.XPUGraph()
++            with torch.xpu.graph(graph, pool=region.pool):
++                region.output.copy_(module(region.input, batch, defer_finalize=False))
++        region.entries[module] = (graph, 0)
++    else:
++        graph, _ = entry
++    with torch.inference_mode():
++        graph.replay()
++        partial = region.output[:live]
++        if padded_checks < 2:
++            ordinary = module(hidden, batch, defer_finalize=False)
++            passed = TargetGraphs._all_ranks(torch.equal(ordinary, partial))
++            region.padded_counts[module] = padded_checks + 1 if passed else False
++            log.info("Short expert graph layer=%d bucket=%d real=%d check=%d exact=%s",
++                     module.layer_id, width, live, padded_checks + 1, passed)
++            return ordinary
++        return partial.clone()
++
++
++_regions=None
++
++
++def experts(module,hidden,batch,deferred):
++    global _regions
++    if (
++        os.getenv("SGLANG_FLASHNEXT_BUCKET_EXPERTS") == "1"
++        and (16 <= hidden.shape[0] < 256 or
++             hidden.shape[0] == 256 and os.getenv("SGLANG_FLASHNEXT_STAGED_SHORT_FFN") == "1")
++        and hidden.shape[1:] == (2560,)
++        and hidden.is_xpu and hidden.dtype == torch.bfloat16
++        and batch.forward_mode.is_extend_without_speculative()
++        and not deferred and not module.reduce_results and not module.experts.reduce_results
++        and hasattr(module.experts, "intel_cyclic_w4") and not torch.xpu.is_current_stream_capturing()
++        and not batch.return_logprob and not any(batch.lora_ids or ())
++        and not batch.contains_mm_inputs() and batch.tbo_split_seq_index is None
++        and batch.flashnext_mixed is None
++    ):
++        if os.getenv("SGLANG_FLASHNEXT_STAGED_SHORT_FFN") == "1":
++            from sglang.srt.speculative.class_ffn import run
++
++            return run(module,hidden,batch)
++        return _bucket(module, hidden, batch)
++    if (os.environ.get('SGLANG_FLASHNEXT_PREFILL_EXPERT_GRAPH')!='1'
++        or hidden.shape!=(256,2560) or hidden.dtype!=torch.bfloat16 or hidden.device.type!='xpu'
++        or not batch.forward_mode.is_extend_without_speculative() or deferred
++        or not hasattr(module.experts,'intel_cyclic_w4') or torch.xpu.is_current_stream_capturing()):
++        return module(hidden,batch,defer_finalize=deferred)
++    if _regions is None:
++        _regions=PrefillExperts(hidden)
++    return _regions.run(module,hidden,batch)
+diff --git a/python/sglang/srt/speculative/gdn_admission.py b/python/sglang/srt/speculative/gdn_admission.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..aa52fb07428195bcde59c56689b1f134bfda1c83
+--- /dev/null
++++ b/python/sglang/srt/speculative/gdn_admission.py
+@@ -0,0 +1,54 @@
++"""Compare all candidate GDN prefixes against the independent eager verifier."""
++import torch
++import triton
++import triton.language as tl
++
++
++@triton.jit
++def _compare(live, records, owners, expected, flags,
++             WORK_LAYER: tl.constexpr, WORK_SLOT: tl.constexpr,
++             SRC_LAYER: tl.constexpr, SRC_REQUEST: tl.constexpr, SRC_STEP: tl.constexpr,
++             DST_LAYER: tl.constexpr, DST_REQUEST: tl.constexpr, DST_STEP: tl.constexpr,
++             ROWS: tl.constexpr, TILES: tl.constexpr):
++    layer = tl.program_id(0).to(tl.int64)
++    row = tl.program_id(1)
++    tile = tl.program_id(2)
++    head = tile // 16
++    v = (tile % 16) * 8 + tl.arange(0, 8)
++    k = tl.arange(0, 128)
++    coord = (head * 128 + v[:, None]) * 128 + k[None, :]
++    slot = tl.load(owners + row).to(tl.int64)
++    state = tl.load(live + layer * WORK_LAYER + slot * WORK_SLOT + coord)
++    src = records + layer * SRC_LAYER + row * SRC_REQUEST + head * 257
++    dst = expected + layer * DST_LAYER + row * DST_REQUEST + coord
++    ok = tl.full((8, 128), True, tl.int1)
++    for t in tl.static_range(8):
++        words = src + t * SRC_STEP
++        key = tl.load(words + k)
++        innovation = tl.load(words + 128 + v)
++        decay = tl.load(words + 256)
++        state = tl.fma(state, decay, key[None, :] * innovation[:, None])
++        reference = tl.load(dst + t * DST_STEP)
++        ok &= (state.to(tl.int32, bitcast=True) == reference.to(tl.int32, bitcast=True))
++        ok &= tl.abs(state) < float("inf")
++    flag = tl.min(tl.reshape(ok.to(tl.int32), (1024,)), axis=0)
++    tl.store(flags + (layer * ROWS + row) * TILES + tile, flag)
++
++
++def save_records(states, n):
++    # This runs after capture's changed-input replay and before eager reuses
++    # the intermediate pool. Each record is 12 * (128 + 128 + 1) FP32 words.
++    return states[:, :n, :8].flatten(3)[..., :12 * 257].contiguous()
++
++
++def compare_all(live, records, owners, expected):
++    layers, n, depth, words = records.shape
++    assert (depth, words) == (8, 12 * 257) and owners.numel() == n
++    assert live.dtype == records.dtype == expected.dtype == torch.float32
++    tiles = 12 * 16
++    flags = records.new_empty((layers, n, tiles), dtype=torch.int32)
++    _compare[(layers, n, tiles)](
++        live, records, owners, expected, flags, *live.stride()[:2],
++        *records.stride()[:3], *expected.stride()[:3], n, tiles,
++    )
++    return bool(flags.all().item())
+diff --git a/python/sglang/srt/speculative/short_regions.py b/python/sglang/srt/speculative/short_regions.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..0abc2be7cdeea9957b6f0f1634f2e3a130bff6fa
+--- /dev/null
++++ b/python/sglang/srt/speculative/short_regions.py
+@@ -0,0 +1,66 @@
++"""Share stateless row-local XPU graphs across layers. State writes stay at the true row count."""
++import torch
++import torch.nn.functional as F
++
++
++def gdn_ops(q, k, v, a, b, a_log, dt_bias):
++    q, k = q.float(), k.float()
++    q = q * (q.square().sum(-1, keepdim=True) + 1e-6).rsqrt()
++    k = k * (k.square().sum(-1, keepdim=True) + 1e-6).rsqrt()
++    gate = (-a_log.float().exp() * F.softplus(a.float() + dt_bias.float())).exp()
++    return ((q * (128 ** -0.5)).repeat_interleave(3, dim=1),
++            k.repeat_interleave(3, dim=1), v.float(), gate, b.float().sigmoid())
++
++
++def norm_ops(x, weight, eps):
++    grouped = x.float().reshape(-1, 4, 2560)
++    scaled = grouped * (grouped.square().mean(-1, keepdim=True) + eps).rsqrt()
++    return ((scaled.flatten(1) * (1.0 + weight.float())).to(x.dtype),)
++
++
++class Region:
++    def __init__(self, operation, width, values, row_inputs):
++        self.row_inputs = row_inputs
++        self.values = tuple(v.new_zeros((width, *v.shape[1:]) if i < row_inputs else v.shape)
++                            for i, v in enumerate(values))
++        operation(*self.values)
++        self.graph = torch.xpu.XPUGraph()
++        with torch.xpu.graph(self.graph):
++            self.outputs = operation(*self.values)
++
++    def replay(self, values):
++        rows = len(values[0])
++        destinations = [v[:rows] if i < self.row_inputs else v for i, v in enumerate(self.values)]
++        torch._foreach_copy_(destinations, values)
++        self.graph.replay()
++        return tuple(v[:rows] for v in self.outputs)
++
++
++_regions = {}
++
++
++@torch.inference_mode()
++def _run(name, fn, values, row_inputs, limit, extra=()):
++    width = 64 if len(values[0]) <= 64 else 128 if len(values[0]) <= 128 else 256
++    stream = torch.xpu.current_stream(values[0].device)
++    key = (name, width, values[0].device, stream.sycl_queue, tuple(v.dtype for v in values), extra)
++    if key not in _regions:
++        if sum(k[0] == name for k in _regions) >= limit:
++            return fn(*values)
++        from sglang.srt.speculative.budget import can_admit
++        _regions[key] = Region(fn, width, values, row_inputs) if can_admit(values[0].device, (name, width)) else None
++    entry = _regions[key]
++    return entry.replay(values) if entry is not None else fn(*values)
++
++
++def gdn(q, k, v, a, b, a_log, bias):
++    return _run("gdn-operands", gdn_ops, (q, k, v, a.reshape(-1, 12), b.reshape(-1, 12),
++                                          a_log.reshape(12), bias.reshape(12)), 5, 2)
++
++
++def norm(module, x):
++    eps = module.variance_epsilon
++    result, = _run("hc-norm", lambda data, weight: norm_ops(data, weight, eps),
++                   (x, module.weight), 1, 3, (eps,))
++    # HC can retain the normalized activation across the following block.
++    return result.clone()
+diff --git a/python/sglang/srt/speculative/staged_short_ffn.py b/python/sglang/srt/speculative/staged_short_ffn.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..4f9e61575b0c76f78586b1ecc8225ad73be55531
+--- /dev/null
++++ b/python/sglang/srt/speculative/staged_short_ffn.py
+@@ -0,0 +1,150 @@
++"""Replay the row-local short expert FFN after ordinary dense math and routing."""
++from dataclasses import dataclass
++import logging
++from unittest.mock import patch
++from weakref import WeakKeyDictionary
++
++from dataclasses import replace
++from sglang.srt.model_executor.forward_context import forward_context, get_forward_context
++import torch
++import triton
++import triton.language as tl
++
++from sglang.srt.layers.moe.topk import StandardTopKOutput
++from sglang.srt.hardware_backend.xpu.graph_runner.flashnext_target import TargetGraphs
++from sglang.srt.speculative.budget import can_admit
++
++log = logging.getLogger(__name__)
++_regions = {}
++
++
++@triton.jit(do_not_specialize=["rows"])
++def _stage(hidden, logits, shared, static_hidden, static_logits, static_shared, rows):
++    row = tl.program_id(0)
++    tile = tl.program_id(1)
++    col = tile * 512 + tl.arange(0, 512)
++    active = row < rows
++    x = tl.load(hidden + row * 2560 + col, mask=active, other=0.0)
++    s = tl.load(shared + row * 2560 + col, mask=active, other=0.0)
++    tl.store(static_hidden + row * 2560 + col, x)
++    tl.store(static_shared + row * 2560 + col, s)
++    if tile == 0:
++        gate = tl.load(logits + row * 512 + col, mask=active, other=0.0)
++        tl.store(static_logits + row * 512 + col, gate)
++
++
++
++@dataclass
++class Entry:
++    graph: torch.xpu.XPUGraph
++    checks: int = 0
++    blocked: bool = False
++
++
++class Regions:
++    def __init__(self, value, width):
++        self.width = width
++        self.stream = torch.xpu.current_stream(value.device)
++        # Keep the persistent output usable on both scheduler entry modes.
++        with torch.inference_mode(False), torch.no_grad():
++            self.hidden = value.new_empty((width,2560))
++            self.logits = value.new_empty((width,512))
++            self.shared = torch.empty_like(self.hidden)
++            self.rows = torch.zeros((),device=value.device,dtype=torch.int32)
++            self.bound = torch.zeros_like(self.rows)
++            self.output = torch.empty_like(self.hidden)
++        self.pool = torch.xpu.graph_pool_handle()
++        self.entries = WeakKeyDictionary()
++
++    def capture(self,module,batch):
++        ctx = replace(get_forward_context(), moe_num_token_non_padded=lambda: self.bound)
++        # Run the installed FFN control flow. The shared result, true top-k
++        # and router logits were already produced by its original modules on
++        # true rows. Only cyclic expert arithmetic and the original fused
++        # scalar gate/mul/add remain on the padded side of the boundary.
++        def shared_result(hidden_states,apply_gate=True):
++            if apply_gate:
++                raise RuntimeError("Unexpected shared FFN gate dispatch during short capture")
++            return self.shared
++
++        def routed_result(hidden_states,*,defer_finalize=False):
++            if defer_finalize:
++                raise RuntimeError("Unexpected deferred FFN during short capture")
++            routes = module.topk(hidden_states, self.logits)
++            if not isinstance(routes, StandardTopKOutput):
++                raise RuntimeError("Unexpected short expert routing layout")
++            rows = torch.arange(self.width, device=self.hidden.device)
++            ids = routes.topk_ids.masked_fill(rows[:, None] >= self.rows, -1)
++            return module.experts(hidden_states, StandardTopKOutput(routes.topk_weights, ids, self.logits))
++
++        with (torch.inference_mode(), forward_context(ctx),
++              patch.object(module,"_forward_shared_experts",shared_result),
++              patch.object(module,"_forward_router_experts",routed_result)):
++            module(self.hidden,batch,defer_finalize=False)
++            graph = torch.xpu.XPUGraph()
++            with torch.xpu.graph(graph,pool=self.pool):
++                self.output.copy_(module(self.hidden,batch,defer_finalize=False))
++        return Entry(graph)
++
++    def run(self,module,hidden,batch):
++        entry = self.entries.get(module)
++        if (entry is False or (entry is not None and entry.blocked)
++                or self.stream != torch.xpu.current_stream(hidden.device)):
++            return module(hidden,batch,defer_finalize=False)
++        if entry is None and not can_admit(hidden.device, ("staged-short-ffn",module.layer_id,self.width)):
++            self.entries[module] = False
++            return module(hidden,batch,defer_finalize=False)
++        # Preserve all three real-row oneDNN geometries (router, shared gate/up
++        # and shared down), SiLU precision, tie handling and the true route bound.
++        shared = module._forward_shared_experts(hidden,apply_gate=False)
++        logits, _ = module.gate(hidden)
++        if not logits.is_contiguous() or not shared.is_contiguous():
++            return module(hidden,batch,defer_finalize=False)
++        bound = batch.moe_num_token_non_padded()
++        with torch.inference_mode():
++            self.rows.fill_(len(hidden))
++            self.bound.copy_(self.rows if bound is None else bound.reshape(()))
++            _stage[(self.width,5)](hidden,logits,shared,self.hidden,self.logits,self.shared,len(hidden))
++            if entry is None:
++                entry = self.capture(module,batch)
++                self.entries[module] = entry
++            entry.graph.replay()
++        partial = self.output[:len(hidden)]
++        if entry.checks < 2:
++            ordinary = module(hidden,batch,defer_finalize=False)
++            passed = TargetGraphs._all_ranks(torch.equal(ordinary,partial))
++            entry.checks += 1
++            entry.blocked = not passed
++            log.info("Staged short FFN graph check layer=%d bucket=%d rows=%d replay=%d exact=%s",
++                     module.layer_id,self.width,len(hidden),entry.checks,passed)
++            return ordinary
++        return partial.clone()
++
++
++def eligible(module,hidden):
++    shared = getattr(module,"shared_expert",None)
++    if (module.enable_shared_expert_fusion or module.alt_stream is not None
++            or module.shared_expert_gate is None or shared is None or not 0 <= module.layer_id < 48
++            or getattr(shared,"_enable_silu_fp4_quant_fusion",False) or not hidden.is_contiguous()):
++        return False
++    for proj,shape in ((module.gate,(512,2560)),(shared.gate_up_proj,(320,2560)),
++                       (shared.down_proj,(2560,160))):
++        if (proj.bias is not None or proj.weight.shape != shape
++                or proj.weight.dtype != hidden.dtype or proj.weight.device != hidden.device
++                or not proj.weight.is_contiguous()):
++            return False
++    return True
++
++
++def run(module,hidden,batch):
++    if not eligible(module,hidden):
++        return module(hidden,batch,defer_finalize=False)
++    width = 128 if len(hidden)<=128 else 256
++    key = (hidden.device,width)
++    region = _regions.get(key)
++    if region is None:
++        if not can_admit(hidden.device,("staged-short-ffn-rails",width)):
++            _regions[key] = False
++            return module(hidden,batch,defer_finalize=False)
++        region = _regions[key] = Regions(hidden,width)
++    return region.run(module,hidden,batch) if region else module(hidden,batch,defer_finalize=False)
+diff --git a/python/sglang/srt/speculative/wide_hc.py b/python/sglang/srt/speculative/wide_hc.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..1d489f0a0e4920bf0febd66a7828e3a9ac125cd8
+--- /dev/null
++++ b/python/sglang/srt/speculative/wide_hc.py
+@@ -0,0 +1,135 @@
++"""Own isolated XPU prefill residual rows on one TP rank through each HC stage."""
++
++import logging
++import os
++
++import torch.nn.functional as F
++
++from sglang.srt.layers import layernorm_sp
++from sglang.srt.layers.layer_boundary import get_attn_tp_context
++from sglang.srt.layers.moe.utils import get_moe_a2a_backend
++from sglang.srt.runtime_context import get_forward, get_parallel
++from sglang.srt.speculative import v6_target
++
++log = logging.getLogger(__name__)
++
++
++class WideHC:
++    def __init__(self, rows, group, reduction):
++        self.rows = rows
++        self.group = group
++        self.shard_rows = (rows + group.world_size - 1) // group.world_size
++        self.reduction = reduction
++
++    @classmethod
++    def create(cls, model, batch, hidden):
++        mode = os.getenv("SGLANG_FLASHNEXT_HC_ROW_SHARDS")
++        if mode not in ("reduce", "scatter") or not 512 <= hidden.shape[0] <= 4097:
++            return None
++        parallel = get_parallel()
++        if (
++            parallel.tp_size != 4 or parallel.moe_ep_size != 4
++            or parallel.attn_cp_size != 1 or parallel.attn_dp_size != 1
++            or get_forward().sp_active or get_attn_tp_context().input_scattered
++            or not get_moe_a2a_backend().is_none() or batch.flashnext_mixed is not None
++            or any(batch.lora_ids or ()) or batch.replace_embeds is not None
++            or batch.tbo_split_seq_index is not None
++            or os.getenv("SGLANG_FLASHNEXT_V6_PREFILL") != "1"
++            or (model.start_layer, model.end_layer) != (0, 48)
++            or model.hidden_size != 2560 or model.hc_count != 4
++        ):
++            if not getattr(model, "_flashnext_wide_row_guard_reported", False):
++                model._flashnext_wide_row_guard_reported = True
++                log.info(
++                    "Flash Next wide prefill HC ineligible rows=%d tp=%d ep=%d cp=%d dp=%d "
++                    "sp=%s input_scattered=%s a2a=%s mixed=%s lora=%s replaced=%s "
++                    "tbo=%s v6_prefill=%s layers=%s geometry=%s",
++                    hidden.shape[0], parallel.tp_size, parallel.moe_ep_size,
++                    parallel.attn_cp_size, parallel.attn_dp_size, get_forward().sp_active,
++                    get_attn_tp_context().input_scattered, get_moe_a2a_backend(),
++                    batch.flashnext_mixed is not None, any(batch.lora_ids or ()),
++                    batch.replace_embeds is not None, batch.tbo_split_seq_index,
++                    os.getenv("SGLANG_FLASHNEXT_V6_PREFILL"), (model.start_layer, model.end_layer),
++                    (model.hidden_size, model.hc_count),
++                )
++            return None
++        eligible = getattr(model, "_flashnext_wide_row_layout", None)
++        if eligible is None:
++            # These modules own partial tensor-parallel outputs. The row-stage
++            # reducer replaces the ordinary boundary immediately after each.
++            eligible = True
++            for layer in model.layers:
++                projection = layer.linear_attn.out_proj if hasattr(layer, "linear_attn") else layer.o_proj
++                if (projection.reduce_results or layer.mlp.reduce_results
++                        or layer.mlp.experts.reduce_results
++                        or not hasattr(layer.mlp.experts, "intel_cyclic_w4")
++                        or not hasattr(layer.attn_hyper_connection, "_v6_down")
++                        or not hasattr(layer.mlp_hyper_connection, "_v6_down")):
++                    eligible = False
++                    break
++            model._flashnext_wide_row_layout = eligible
++            log.info("Flash Next wide prefill HC rank=%d reduction=%s layout=%s",
++                     parallel.tp_group.rank_in_group, mode, eligible)
++        if eligible and not getattr(model, "_flashnext_short_hc_reported", False) and hidden.shape[0] < 2048:
++            model._flashnext_short_hc_reported = True
++            log.info("Flash Next row-sharded prefill short route lengths=%s mode=%s",
++                     batch.extend_seq_lens_cpu, batch.forward_mode)
++        if eligible and len(batch.extend_seq_lens_cpu) > 1 and not getattr(model, "_flashnext_hc_cohort_reported", False):
++            model._flashnext_hc_cohort_reported = True
++            log.info("Flash Next row-sharded prefill cohort lengths=%s mode=%s",
++                     batch.extend_seq_lens_cpu, batch.forward_mode)
++        return cls(hidden.shape[0], parallel.tp_group, mode) if eligible else None
++
++    def shard(self, value):
++        # Only the final owner can have fewer token rows. Padding before
++        # the split would copy the whole reduced activation on every rank.
++        start = self.group.rank_in_group * self.shard_rows
++        local = value[start : start + self.shard_rows]
++        missing = self.shard_rows - local.shape[0]
++        return F.pad(local, (0, 0, 0, missing)) if missing else local
++
++    def gather(self, value):
++        return layernorm_sp.all_gather_token_rows(value, total_rows=self.rows, group=self.group)
++
++    def reduce(self, partial):
++        if self.reduction == "scatter":
++            return layernorm_sp.reduce_scatter_token_rows(partial, group=self.group)
++        if self.rows * 2560 * 2 > 4 * 1024 * 1024:
++            from sglang.srt.speculative.checked_scatter import run
++            return run(self,partial)
++        return self.shard(self.group.all_reduce(partial))
++
++    def mix(self, module, residual, normalized):
++        # The full prefill used the native 32-row-tiled projection. Four rank
++        # shards retain that kernel even for local 128-256 row inputs.
++        return v6_target.hc_mix(module, residual, normalized, long_prefill=True)
++
++    def layer(self, layer, residual, normalized, next_norm, positions, batch, ple_batch):
++        if layer.ple is not None:
++            full = self.gather(residual)
++            embedding = layer.ple(full, batch, ple_batch)
++            del full
++            start = self.group.rank_in_group * self.shard_rows
++            live = min(self.shard_rows, self.rows - start)
++            # Sum only the rows this rank keeps. Recreate the original zero
++            # padding on the final rank, even if a padded input row is dirty.
++            residual = residual[:live] + embedding[start:start+live]
++            del embedding
++            if live < self.shard_rows:
++                residual = F.pad(residual, (0, 0, 0, self.shard_rows - live))
++            normalized = None
++        hidden, prior = self.mix(layer.attn_hyper_connection, residual, normalized)
++        hidden = self.gather(hidden)
++        if hasattr(layer, "linear_attn"):
++            partial = layer.linear_attn(hidden, batch)
++        else:
++            partial = layer.self_attention(positions, hidden, batch)
++        local = self.reduce(partial)
++        del hidden, partial
++        residual, normalized = v6_target.hc_combine_and_normalize(
++            local, prior, layer.mlp_hyper_connection.hc_norm,
++        )
++        del local, prior
++        hidden, prior = self.mix(layer.mlp_hyper_connection, residual, normalized)
++        partial = layer.mlp(self.gather(hidden), batch, defer_finalize=False)
++        return v6_target.hc_combine_and_normalize(self.reduce(partial), prior, next_norm)

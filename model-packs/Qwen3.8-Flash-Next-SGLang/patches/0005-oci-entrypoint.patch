@@ -1,0 +1,21 @@
+diff --git a/entrypoint.sh b/entrypoint.sh
+index b633659a02ad20f0ab0362546d004cd3a2db82b3..01915e870298b847148c090bd02f531b41317448 100755
+--- a/entrypoint.sh
++++ b/entrypoint.sh
+@@ -36,6 +36,7 @@ exec /opt/venv/bin/python -u -m sglang.launch_server \
+     --no-allow-local-media-files --linear-attn-prefill-backend intel_xpu \
+     --reasoning-parser qwen3 --sampling-backend pytorch --sampling-defaults model \
+     --disable-prefill-cuda-graph --disable-decode-cuda-graph \
++    --radix-eviction-policy state_cost --radix-eviction-policy-config '{"d":1.0,"e":0.0}' \
+     --page-size 128 --mamba-radix-cache-strategy extra_buffer \
+     --hybrid-cache-checkpoints-level 3 --enable-cache-report --max-mamba-cache-size 16 \
+     --speculative-algorithm DFLASH --speculative-draft-model-path /draft \
+@@ -44,6 +45,6 @@ exec /opt/venv/bin/python -u -m sglang.launch_server \
+     --speculative-use-rejection-sampling \
+     --disable-custom-all-reduce --disable-overlap-schedule --grammar-backend xgrammar \
+     --tool-call-parser qwen3_coder \
+-    --chunked-prefill-size 256 --max-prefill-tokens 256 --context-length 262144 \
+-    --max-total-tokens 266240 --max-running-requests 4 --enable-mixed-chunk \
++    --chunked-prefill-size 1024 --max-prefill-tokens 1024 --context-length 262144 \
++    --max-total-tokens 276480 --max-running-requests 4 --enable-mixed-chunk \
+     --mem-fraction-static 0.88 --skip-server-warmup
